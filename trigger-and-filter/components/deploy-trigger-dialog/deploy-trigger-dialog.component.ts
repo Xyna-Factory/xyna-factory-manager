@@ -31,7 +31,8 @@ import { XoRuntimeContext, XoRuntimeContextArray } from '@fman/runtime-contexts/
 
 @Component({
     templateUrl: './deploy-trigger-dialog.component.html',
-    styleUrls: ['./deploy-trigger-dialog.component.scss']
+    styleUrls: ['./deploy-trigger-dialog.component.scss'],
+    standalone: false
 })
 export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerInstance, XoTrigger> {
 

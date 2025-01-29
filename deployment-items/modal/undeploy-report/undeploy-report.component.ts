@@ -37,7 +37,8 @@ export interface UndeployReportComponentData {
 
 @Component({
     templateUrl: './undeploy-report.component.html',
-    styleUrls: ['./undeploy-report.component.scss']
+    styleUrls: ['./undeploy-report.component.scss'],
+    standalone: false
 })
 export class UndeployReportComponent extends XcDialogComponent<XoUndeployDeploymentItemParamArray, UndeployReportComponentData> {
 

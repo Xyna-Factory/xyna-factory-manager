@@ -26,7 +26,8 @@ import { XoRuntimeContextState } from '../xo/xo-runtime-context-state.model';
 @Component({
     selector: 'runtime-context-icon',
     templateUrl: './runtime-context-icon.component.html',
-    styleUrls: ['./runtime-context-icon.component.scss']
+    styleUrls: ['./runtime-context-icon.component.scss'],
+    standalone: false
 })
 export class RuntimeContextIconComponent extends XcDynamicComponent<{state: string}> {
 

@@ -38,7 +38,8 @@ interface XcRighteousNavListItem extends XcNavListItem {
 
 @Component({
     templateUrl: './factory-manager.component.html',
-    styleUrls: ['./factory-manager.component.scss']
+    styleUrls: ['./factory-manager.component.scss'],
+    standalone: false
 })
 export class FactoryManagerComponent extends RouteComponent {
 

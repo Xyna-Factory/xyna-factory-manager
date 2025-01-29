@@ -31,7 +31,8 @@ import { TimeControlledOrderTableEntryTemplateData } from '../../xo/xo-time-cont
         <i *ngIf="archived;else normal" xc-i18n xc-tooltip="tooltip-archived"><xc-icon color="normal" xc-icon-name="folder" xc-icon-material></xc-icon>{{id}}</i>
         <ng-template #normal>{{id}}</ng-template>
     `,
-    styleUrls: ['./time-controlled-order-table-entry-template.component.scss']
+    styleUrls: ['./time-controlled-order-table-entry-template.component.scss'],
+    standalone: false
 })
 export class TimeControlledOrderTableEntryTemplateComponent extends XcDynamicComponent<TimeControlledOrderTableEntryTemplateData> {
     get id(): string {

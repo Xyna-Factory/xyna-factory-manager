@@ -46,7 +46,8 @@ export const TimeConversion = {
 @Component({
     selector: 'tco-execution-restriction',
     templateUrl: './tco-execution-restriction.component.html',
-    styleUrls: ['./tco-execution-restriction.component.scss']
+    styleUrls: ['./tco-execution-restriction.component.scss'],
+    standalone: false
 })
 export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild(XcFormDirective, { static: false })

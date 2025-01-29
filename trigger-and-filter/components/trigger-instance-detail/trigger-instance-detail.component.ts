@@ -47,7 +47,8 @@ class FilterInstanceData extends Comparable {
 @Component({
     templateUrl: './trigger-instance-detail.component.html',
     styleUrls: ['./trigger-instance-detail.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TriggerInstanceDetailComponent extends XcDynamicComponent<TriggerInstanceDetailsData> {
 

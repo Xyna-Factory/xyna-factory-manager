@@ -41,7 +41,8 @@ class NodeWrapper {
 @Component({
     templateUrl: './import-runtime-application-dialog.component.html',
     styleUrls: ['./import-runtime-application-dialog.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ImportRuntimeApplicationDialogComponent extends XcDialogComponent<boolean, void> {
 

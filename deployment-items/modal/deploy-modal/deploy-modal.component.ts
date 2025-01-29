@@ -41,7 +41,8 @@ export interface DeployModalComponentData {
 
 @Component({
     templateUrl: './deploy-modal.component.html',
-    styleUrls: ['./deploy-modal.component.scss']
+    styleUrls: ['./deploy-modal.component.scss'],
+    standalone: false
 })
 export class DeployModalComponent extends XcDialogComponent<boolean, DeployModalComponentData> {
 

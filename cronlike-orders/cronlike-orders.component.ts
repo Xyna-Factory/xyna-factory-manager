@@ -38,7 +38,8 @@ const ISWP = CRONLIKE_ORDERS_ISWP;
 
 @Component({
     templateUrl: './cronlike-orders.component.html',
-    styleUrls: ['./cronlike-orders.component.scss']
+    styleUrls: ['./cronlike-orders.component.scss'],
+    standalone: false
 })
 export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
 

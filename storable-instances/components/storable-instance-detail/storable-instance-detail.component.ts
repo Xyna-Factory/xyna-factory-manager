@@ -30,7 +30,8 @@ import { XoStoreParameter } from '../../xo/xo-storeparameter.model';
 @Component({
     selector: 'storable-instance-detail',
     templateUrl: './storable-instance-detail.component.html',
-    styleUrls: ['./storable-instance-detail.component.scss']
+    styleUrls: ['./storable-instance-detail.component.scss'],
+    standalone: false
 })
 export class StorableInstanceDetailComponent implements OnDestroy {
     @Output()

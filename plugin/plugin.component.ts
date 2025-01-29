@@ -33,7 +33,8 @@ import { PluginService } from './plugin.service';
 @Component({
     selector: 'plugin',
     templateUrl: './plugin.component.html',
-    styleUrls: ['./plugin.component.scss']
+    styleUrls: ['./plugin.component.scss'],
+    standalone: false
 })
 export class PluginComponent extends RouteComponent implements OnDestroy {
 

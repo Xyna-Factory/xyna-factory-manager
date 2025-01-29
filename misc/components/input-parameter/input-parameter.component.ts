@@ -44,7 +44,8 @@ export interface InputDataTypesTreeData {
 @Component({
     selector: 'input-parameter',
     templateUrl: './input-parameter.component.html',
-    styleUrls: ['./input-parameter.component.scss']
+    styleUrls: ['./input-parameter.component.scss'],
+    standalone: false
 })
 export class InputParameterComponent implements OnInit {
 

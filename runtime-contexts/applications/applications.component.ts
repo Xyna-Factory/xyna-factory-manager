@@ -40,7 +40,8 @@ import { ApplicationTileComponent } from './application-tile/application-tile.co
 
 @Component({
     templateUrl: './applications.component.html',
-    styleUrls: ['./applications.component.scss']
+    styleUrls: ['./applications.component.scss'],
+    standalone: false
 })
 export class ApplicationsComponent extends RouteComponent implements OnDestroy, AfterViewInit {
 

@@ -52,7 +52,8 @@ const ISWP = ORDER_TYPE_ISWP;
 
 @Component({
     templateUrl: './order-types.component.html',
-    styleUrls: ['./order-types.component.scss']
+    styleUrls: ['./order-types.component.scss'],
+    standalone: false
 })
 export class OrderTypesComponent extends RestorableOrderTypesComponent implements OnDestroy {
 

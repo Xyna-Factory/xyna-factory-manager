@@ -46,7 +46,8 @@ export interface InputDataTypesTreeData {
 
 @Component({
     templateUrl: './order-input-sources.component.html',
-    styleUrls: ['./order-input-sources.component.scss']
+    styleUrls: ['./order-input-sources.component.scss'],
+    standalone: false
 })
 export class OrderInputSourcesComponent extends RestorableOrderInputSourcesComponent {
 

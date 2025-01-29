@@ -38,7 +38,8 @@ type RuntimeApplicationVersion = string;
 
 @Component({
     templateUrl: './create-runtime-application-dialog.component.html',
-    styleUrls: ['./create-runtime-application-dialog.component.scss']
+    styleUrls: ['./create-runtime-application-dialog.component.scss'],
+    standalone: false
 })
 export class CreateRuntimeApplicationDialogComponent extends XcDialogComponent<RuntimeApplicationVersion, {workspaceName: string; applicationDefinitionName: string}> {
 

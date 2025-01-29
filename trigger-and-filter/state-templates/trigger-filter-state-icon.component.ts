@@ -32,7 +32,8 @@ export const TriggerFilterState = {
 @Component({
     selector: 'trigger-filter-state-icon',
     templateUrl: './trigger-filter-state-icon.component.html',
-    styleUrls: ['./trigger-filter-state-icon.component.scss']
+    styleUrls: ['./trigger-filter-state-icon.component.scss'],
+    standalone: false
 })
 export class TriggerFilterStateIconComponent extends XcDynamicComponent<{state: string}> {
 

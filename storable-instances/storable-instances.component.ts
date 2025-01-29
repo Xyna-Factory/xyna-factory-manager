@@ -250,7 +250,8 @@ class StorableTableDataSource extends XcLocalTableDataSource<XoObject> {
 @Component({
     selector: 'storable-instances',
     templateUrl: './storable-instances.component.html',
-    styleUrls: ['./storable-instances.component.scss']
+    styleUrls: ['./storable-instances.component.scss'],
+    standalone: false
 })
 export class StorableInstancesComponent implements OnInit {
     rtcDataWrapper: XcAutocompleteDataWrapper<XoRuntimeContext>;

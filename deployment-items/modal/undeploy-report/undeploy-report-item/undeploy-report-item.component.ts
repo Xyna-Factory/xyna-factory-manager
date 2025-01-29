@@ -34,7 +34,8 @@ export interface UndeployReportItemComponentData {
 
 @Component({
     templateUrl: './undeploy-report-item.component.html',
-    styleUrls: [ './undeploy-report-item.component.scss']
+    styleUrls: ['./undeploy-report-item.component.scss'],
+    standalone: false
 })
 export class UndeployReportItemComponent extends XcRichListItemComponent<void, UndeployReportItemComponentData> {
 

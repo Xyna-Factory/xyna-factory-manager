@@ -27,7 +27,8 @@ import { XoRuntimeContext } from '../xo/xo-runtime-context.model';
 @Component({
     selector: 'runtime-context-button',
     templateUrl: './runtime-context-button.component.html',
-    styleUrls: ['./runtime-context-button.component.scss']
+    styleUrls: ['./runtime-context-button.component.scss'],
+    standalone: false
 })
 export class RuntimeContextButtonComponent {
 

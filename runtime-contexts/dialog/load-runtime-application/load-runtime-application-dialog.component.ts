@@ -48,7 +48,8 @@ class RuntimeApplicationsTableInfo extends XoTableInfo {
 
 @Component({
     templateUrl: './load-runtime-application-dialog.component.html',
-    styleUrls: ['./load-runtime-application-dialog.component.scss']
+    styleUrls: ['./load-runtime-application-dialog.component.scss'],
+    standalone: false
 })
 export class LoadRuntimeApplicationDialogComponent extends XcDialogComponent<boolean, {workspaceName: string; runtimeApplication: XoRuntimeApplication}> {
 

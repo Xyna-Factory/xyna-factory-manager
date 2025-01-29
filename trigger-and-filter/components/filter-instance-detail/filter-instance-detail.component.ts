@@ -35,7 +35,8 @@ export interface FilterInstanceDetailsData{
 @Component({
     templateUrl: './filter-instance-detail.component.html',
     styleUrls: ['./filter-instance-detail.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class FilterInstanceDetailComponent extends XcDynamicComponent<FilterInstanceDetailsData> {
 

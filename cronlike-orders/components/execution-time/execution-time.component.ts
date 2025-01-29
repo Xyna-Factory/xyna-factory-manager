@@ -32,7 +32,8 @@ import { ExecutionTimeInterval, ExecutionTimeMonth, ExecutionTimeMonthlyAtWhichD
 @Component({
     selector: 'execution-time',
     templateUrl: './execution-time.component.html',
-    styleUrls: ['./execution-time.component.scss']
+    styleUrls: ['./execution-time.component.scss'],
+    standalone: false
 })
 export class ExecutionTimeComponent {
     @ViewChild(XcFormDirective, { static: false })

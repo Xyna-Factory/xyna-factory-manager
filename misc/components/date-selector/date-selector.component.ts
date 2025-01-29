@@ -29,7 +29,8 @@ import { XoTimezoneArray } from '../../../xo/xo-timezone.model';
 @Component({
     selector: 'date-selector',
     templateUrl: './date-selector.component.html',
-    styleUrls: ['./date-selector.component.scss']
+    styleUrls: ['./date-selector.component.scss'],
+    standalone: false
 })
 export class DateSelectorComponent implements AfterViewInit, OnDestroy {
 

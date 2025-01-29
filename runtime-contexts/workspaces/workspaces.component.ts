@@ -41,7 +41,8 @@ import { WorkspaceTileComponent } from './workspace-tile/workspace-tile.componen
 
 @Component({
     templateUrl: './workspaces.component.html',
-    styleUrls: ['./workspaces.component.scss']
+    styleUrls: ['./workspaces.component.scss'],
+    standalone: false
 })
 export class WorkspacesComponent extends RouteComponent implements AfterViewInit, OnDestroy {
 

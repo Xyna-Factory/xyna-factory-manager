@@ -51,7 +51,8 @@ import { Application } from '../application-data-source';
 @Component({
     selector: 'application-tile',
     templateUrl: './application-tile.component.html',
-    styleUrls: ['./application-tile.component.scss']
+    styleUrls: ['./application-tile.component.scss'],
+    standalone: false
 })
 export class ApplicationTileComponent implements OnInit {
     @ViewChild('header', {static: false})

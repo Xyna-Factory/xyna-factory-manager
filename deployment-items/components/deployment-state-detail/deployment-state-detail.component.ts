@@ -26,7 +26,8 @@ import { XoDeploymentItem } from '../../xo/xo-deployment-item.model';
 @Component({
     selector: 'deployment-state-detail',
     templateUrl: './deployment-state-detail.component.html',
-    styleUrls: ['./deployment-state-detail.component.scss']
+    styleUrls: ['./deployment-state-detail.component.scss'],
+    standalone: false
 })
 export class DeploymentStateDetailComponent {
     private _deploymentItem: XoDeploymentItem;
