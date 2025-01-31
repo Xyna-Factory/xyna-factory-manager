@@ -25,7 +25,7 @@ $application-tile-details-button-row-border-bottom: unset !default;     // 2px s
 $application-tile-details-button-row-border-top: unset !default;     // unset
 
 
-@import 'const';
+@use '../../../const' as *;
 
 
 :host {
