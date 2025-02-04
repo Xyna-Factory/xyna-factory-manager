@@ -16,6 +16,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { ChangeDetectorRef, Component, InjectionToken, Injector } from '@angular/core';
+
 import { FM_RTC } from '@fman/const';
 import { XoRuntimeApplication } from '@fman/runtime-contexts/xo/xo-runtime-application.model';
 import { XoWorkspace } from '@fman/runtime-contexts/xo/xo-workspace.model';
@@ -24,12 +25,12 @@ import { XoFilterDetails } from '@fman/trigger-and-filter/xo/xo-filter-details.m
 import { XoFilter } from '@fman/trigger-and-filter/xo/xo-filter.model';
 import { XoGetFilterDetailRequest } from '@fman/trigger-and-filter/xo/xo-get-filter-detail-request.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-
 import { I18nService } from '@zeta/i18n';
 import { XC_COMPONENT_DATA, XcDialogService, XcDynamicComponent } from '@zeta/xc';
 
 
 @Component({
+    selector: 'filter-detail',
     templateUrl: './filter-detail.component.html',
     styleUrls: ['./filter-detail.component.scss']
 })

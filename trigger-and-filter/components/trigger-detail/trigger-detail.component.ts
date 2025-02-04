@@ -16,6 +16,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, InjectionToken, Injector } from '@angular/core';
+
 import { FM_RTC } from '@fman/const';
 import { XoRuntimeApplication } from '@fman/runtime-contexts/xo/xo-runtime-application.model';
 import { XoWorkspace } from '@fman/runtime-contexts/xo/xo-workspace.model';
@@ -24,11 +25,11 @@ import { XoGetTriggerRequest } from '@fman/trigger-and-filter/xo/xo-get-trigger-
 import { XoTriggerDetail } from '@fman/trigger-and-filter/xo/xo-trigger-detail.model';
 import { XoTrigger } from '@fman/trigger-and-filter/xo/xo-trigger.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-
 import { XC_COMPONENT_DATA, XcDialogService, XcDynamicComponent } from '@zeta/xc';
 
 
 @Component({
+    selector: 'trigger-detail',
     templateUrl: './trigger-detail.component.html',
     styleUrls: ['./trigger-detail.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush

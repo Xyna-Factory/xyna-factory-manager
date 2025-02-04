@@ -30,6 +30,7 @@ import { XoAdministrativeVeto } from './xo/xo-administrative-veto.model';
 
 
 @Component({
+    selector: 'restorable-administrative-veto',
     template: ''
 })
 export class RestorableAdministrativeVetoComponent extends RestorableRouteComponent<XoAdministrativeVeto> implements OnInit {
