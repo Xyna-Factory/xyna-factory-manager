@@ -17,8 +17,6 @@
  */
  @use '../../../const' as *;
 
- $application-tile-details-background-color: unset !default; // $color-gray-0;
-
  :host {
      display: flex;
      flex: 0 0 auto;
