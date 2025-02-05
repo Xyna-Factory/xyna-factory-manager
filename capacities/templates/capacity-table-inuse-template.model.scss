@@ -16,6 +16,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 @use '../../const' as *;
+@use "sass:color";
 
 :host {
 
@@ -45,7 +46,7 @@
         position: inherit;
 
         div {
-            background-color: transparentize($color: $color-gray-0, $amount: 0.25);
+            background-color: color.scale($color-gray-0, $alpha: -25%);
             width: fit-content;
             padding: 0px 10px;
             border-radius: 5px;
