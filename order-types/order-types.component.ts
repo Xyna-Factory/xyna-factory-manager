@@ -147,7 +147,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
 
         this.tableInfoChangeSubscription = this.remoteTableDataSource.tableInfoChange.subscribe(() => {
             // reset overriding execution destination filter that might have been set via jumping from workflow in PMOD to order type overview
-            console.log('tableInfoChange');
+            // console.log('tableInfoChange');
             this.remoteTableDataSource.input = [ new XoExecutionDestinationFilter(), this.orderTypeTableFilter ];
         });
 
@@ -212,7 +212,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
         // filter with query params that are set when jumping from workflow in PMOD to order type overview
         route.queryParams.subscribe(queryParams => {
             if (!queryParams.executionDestinationFilter) {
-                console.log('queryParams.executionDestinationFilter === undefined -> nothing to do');
+                // console.log('queryParams.executionDestinationFilter === undefined -> nothing to do');
                 return;
             }
 
@@ -230,10 +230,10 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
                 executionDestinationFilter.workspace = rtc.ws.workspace;
             }
 
-            console.log('executionDestinationFilter.application: ' + executionDestinationFilter.application);
-            console.log('executionDestinationFilter.version: ' + executionDestinationFilter.version);
-            console.log('executionDestinationFilter.workspace: ' + executionDestinationFilter.workspace);
-            console.log('executionDestinationFilter.executionDestination: ' + executionDestinationFilter.executionDestination);
+            // console.log('executionDestinationFilter.application: ' + executionDestinationFilter.application);
+            // console.log('executionDestinationFilter.version: ' + executionDestinationFilter.version);
+            // console.log('executionDestinationFilter.workspace: ' + executionDestinationFilter.workspace);
+            // console.log('executionDestinationFilter.executionDestination: ' + executionDestinationFilter.executionDestination);
 
             this.remoteTableDataSource.input = [ executionDestinationFilter ];
             this.refresh();
