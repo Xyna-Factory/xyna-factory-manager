@@ -104,7 +104,7 @@ export class StorableInstanceDetailComponent implements OnDestroy {
     private _fqn: FullQualifiedName;
     private _selectedStorable: XoObject;
 
-    structureTreeDataSource: XcStructureTreeDataSource;
+    structureTreeDataSource: XcStructureTreeDataSource = new XcStructureTreeDataSource(this.apiService, this.i18n, null, []);
 
     ERROR_MESSAGE = 'fman.storable-instances.storable-instances-details.error-message';
 
