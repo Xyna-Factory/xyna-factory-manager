@@ -1,4 +1,6 @@
 <xc-button [color]="color" (click)="click()">
-    <span [xc-tooltip]="tooltip">{{runtimeContext.title}}</span>
-    <runtime-context-icon *ngIf="hasIcon" [state]="runtimeContext.state"></runtime-context-icon>
+  <span [xc-tooltip]="tooltip">{{runtimeContext.title}}</span>
+  @if (hasIcon) {
+    <runtime-context-icon [state]="runtimeContext.state"></runtime-context-icon>
+  }
 </xc-button>

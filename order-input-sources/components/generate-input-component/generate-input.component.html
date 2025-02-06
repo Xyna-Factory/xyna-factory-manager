@@ -1,21 +1,28 @@
 <ng-container>
-    <xc-panel>
-        <header>
-            <h3 xc-i18n="Panel-Header">generate-input</h3>
-        </header>
-        <section>
-            <xc-button (click)="generateInputHandler()" xc-i18n>generate-input</xc-button>
-            <div *ngIf="inputParamterTreeDataSource && noInputData" xc-i18n>no-input-parameter</div>
-            <xc-tree
-                *ngIf="inputParamterTreeDataSource && !noInputData"
-                [xc-tree-datasource]="inputParamterTreeDataSource"
-            ></xc-tree>
-            <xc-button [disabled]="!inputParamterTreeDataSource || startOrderBusy" [busy]="startOrderBusy" (click)="startOrderHandler()" xc-i18n>button-start-order</xc-button>
-            <div *ngIf="processOrderId">
-                <label>OrderId: {{processOrderId}}</label>
-                <!-- <xc-button (click)="jumpToOrder()" xc-i18n>button-show-order</xc-button> -->
-            </div>
-            <label *ngIf="processError">Error: {{processError}}</label>
-        </section>
-    </xc-panel>
+  <xc-panel>
+    <header>
+      <h3 xc-i18n="Panel-Header">generate-input</h3>
+    </header>
+    <section>
+      <xc-button (click)="generateInputHandler()" xc-i18n>generate-input</xc-button>
+      @if (inputParamterTreeDataSource && noInputData) {
+        <div xc-i18n>no-input-parameter</div>
+      }
+      @if (inputParamterTreeDataSource && !noInputData) {
+        <xc-tree
+          [xc-tree-datasource]="inputParamterTreeDataSource"
+        ></xc-tree>
+      }
+      <xc-button [disabled]="!inputParamterTreeDataSource || startOrderBusy" [busy]="startOrderBusy" (click)="startOrderHandler()" xc-i18n>button-start-order</xc-button>
+      @if (processOrderId) {
+        <div>
+          <label>OrderId: {{processOrderId}}</label>
+          <!-- <xc-button (click)="jumpToOrder()" xc-i18n>button-show-order</xc-button> -->
+        </div>
+      }
+      @if (processError) {
+        <label>Error: {{processError}}</label>
+      }
+    </section>
+  </xc-panel>
 </ng-container>

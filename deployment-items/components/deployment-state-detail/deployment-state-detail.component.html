@@ -1,39 +1,45 @@
-<div class="info-table" *ngIf="deploymentItem">
+@if (deploymentItem) {
+  <div class="info-table">
     <div class="header" xc-i18n>header</div>
     <div class="content">
-        <div class="row">
-            <span xc-i18n>state</span>
-            <span>{{ deploymentItem.state || '-' }}</span>
-        </div>
-        <div class="row">
-            <span xc-i18n>state-changed</span>
-            <span>{{ detailsLastStateChange || '-' }}</span>
-        </div>
-        <div class="row">
-            <span xc-i18n>by</span>
-            <span>{{ deploymentItem.lastStateChangeBy || '-' }}</span>
-        </div>
-        <div class="row">
-            <span xc-i18n>modified</span>
-            <span>{{ detailsLastModified || '-' }}</span>
-        </div>
-        <div class="row">
-            <span xc-i18n>by</span>
-            <span>{{ deploymentItem.lastModifiedBy || '-' }}</span>
-        </div>
-        <div class="row">
-            <span xc-i18n>locked-by</span>
-            <span>{{ deploymentItem.lockedBy || '-' }}</span>
-        </div>
+      <div class="row">
+        <span xc-i18n>state</span>
+        <span>{{ deploymentItem.state || '-' }}</span>
+      </div>
+      <div class="row">
+        <span xc-i18n>state-changed</span>
+        <span>{{ detailsLastStateChange || '-' }}</span>
+      </div>
+      <div class="row">
+        <span xc-i18n>by</span>
+        <span>{{ deploymentItem.lastStateChangeBy || '-' }}</span>
+      </div>
+      <div class="row">
+        <span xc-i18n>modified</span>
+        <span>{{ detailsLastModified || '-' }}</span>
+      </div>
+      <div class="row">
+        <span xc-i18n>by</span>
+        <span>{{ deploymentItem.lastModifiedBy || '-' }}</span>
+      </div>
+      <div class="row">
+        <span xc-i18n>locked-by</span>
+        <span>{{ deploymentItem.lockedBy || '-' }}</span>
+      </div>
     </div>
-    <div class="rollback" *ngIf="deploymentItem.rollbackOccurred">
+    @if (deploymentItem.rollbackOccurred) {
+      <div class="rollback">
         <div>
-            <xc-icon xc-icon-name="mini-catch" color="warn" xc-icon-style="modeller" xc-icon-size="small"></xc-icon>
-            <p>
-                {{ deploymentItem.rollbackCause.message }}
-            </p>
+          <xc-icon xc-icon-name="mini-catch" color="warn" xc-icon-style="modeller" xc-icon-size="small"></xc-icon>
+          <p>
+            {{ deploymentItem.rollbackCause.message }}
+          </p>
         </div>
         <div class="class" [xc-tooltip]="deploymentItem.rollbackCause.className">In {{ deploymentItem.rollbackCause.className }}</div>
-        <div class="details" ><xc-button *ngIf="deploymentItem.rollbackCause.stacktrace" (click)="openErrorDetails()" xc-i18n>button-details</xc-button></div>
-    </div>
-</div>
+        <div class="details" >@if (deploymentItem.rollbackCause.stacktrace) {
+          <xc-button (click)="openErrorDetails()" xc-i18n>button-details</xc-button>
+        }</div>
+      </div>
+    }
+  </div>
+}

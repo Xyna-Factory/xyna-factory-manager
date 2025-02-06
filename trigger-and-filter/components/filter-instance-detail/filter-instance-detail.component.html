@@ -1,48 +1,68 @@
 <xc-panel class="panel">
-    <header>
-        <div class="actions">
-            <xc-button (click)="enable()" [disabled]="busy" xc-i18n xc-tooltip="tooltip-enable">
-                <xc-icon xc-icon-material xc-i18n xc-icon-name="play_arrow">enable</xc-icon>
-            </xc-button>
-            <xc-button (click)="disable()" [disabled]="busy" xc-i18n xc-tooltip="tooltip-disable">
-                <xc-icon xc-icon-material xc-i18n xc-icon-name="stop">disable</xc-icon>
-            </xc-button>
-            <xc-button (click)="undeploy()" [disabled]="busy" xc-i18n xc-tooltip="tooltip-undeploy">
-                <xc-icon xc-i18n [xc-icon-name]="XDSIconName.DELETE">undeploy</xc-icon>
-            </xc-button>
-        </div>
-    </header>
-    <section class="section" *ngIf="detail">
-        <div class="side">
-            <h1>Trigger</h1>
-            <dl>
-                <dt xc-i18n>name</dt>
-                <dd>{{triggerName}}</dd>
-                <dt xc-i18n>instance.name</dt>
-                <dd>{{triggerInstanceName}}</dd>
-                <dt *ngIf="triggerDescription" xc-i18n>description</dt>
-                <dd *ngIf="triggerDescription">{{triggerDescription}}</dd>
-                <dt xc-i18n>context</dt>
-                <dd>{{triggerRuntimeContext}}</dd>
-                <dt *ngIf="triggerStartParameter" xc-i18n>start.parameter</dt>
-                <dd *ngIf="triggerStartParameter">{{triggerStartParameter}}</dd>
-            </dl>
-        </div>
-        <div class="side">
-            <h1>Filter</h1>
-            <dl>
-                <dt xc-i18n>name</dt>
-                <dd>{{filterName}}</dd>
-                <dt xc-i18n>instance.name</dt>
-                <dd>{{instanceName}}</dd>
-                <dt *ngIf="description" xc-i18n>description</dt>
-                <dd *ngIf="description">{{description}}</dd>
-                <dt xc-i18n>context</dt>
-                <dd>{{runtimeContext}}</dd>
-                <dt *ngIf="configParameter" xc-i18n>configuration.parameter</dt>
-                <dd *ngIf="configParameter">{{configParameter}}</dd>
-            </dl>
-        </div>
-        <xc-spinner *ngIf="busy"></xc-spinner>
+  <header>
+    <div class="actions">
+      <xc-button (click)="enable()" [disabled]="busy" xc-i18n xc-tooltip="tooltip-enable">
+        <xc-icon xc-icon-material xc-i18n xc-icon-name="play_arrow">enable</xc-icon>
+      </xc-button>
+      <xc-button (click)="disable()" [disabled]="busy" xc-i18n xc-tooltip="tooltip-disable">
+        <xc-icon xc-icon-material xc-i18n xc-icon-name="stop">disable</xc-icon>
+      </xc-button>
+      <xc-button (click)="undeploy()" [disabled]="busy" xc-i18n xc-tooltip="tooltip-undeploy">
+        <xc-icon xc-i18n [xc-icon-name]="XDSIconName.DELETE">undeploy</xc-icon>
+      </xc-button>
+    </div>
+  </header>
+  @if (detail) {
+    <section class="section">
+      <div class="side">
+        <h1>Trigger</h1>
+        <dl>
+          <dt xc-i18n>name</dt>
+          <dd>{{triggerName}}</dd>
+          <dt xc-i18n>instance.name</dt>
+          <dd>{{triggerInstanceName}}</dd>
+          @if (triggerDescription) {
+            <dt xc-i18n>description</dt>
+          }
+          @if (triggerDescription) {
+            <dd>{{triggerDescription}}</dd>
+          }
+          <dt xc-i18n>context</dt>
+          <dd>{{triggerRuntimeContext}}</dd>
+          @if (triggerStartParameter) {
+            <dt xc-i18n>start.parameter</dt>
+          }
+          @if (triggerStartParameter) {
+            <dd>{{triggerStartParameter}}</dd>
+          }
+        </dl>
+      </div>
+      <div class="side">
+        <h1>Filter</h1>
+        <dl>
+          <dt xc-i18n>name</dt>
+          <dd>{{filterName}}</dd>
+          <dt xc-i18n>instance.name</dt>
+          <dd>{{instanceName}}</dd>
+          @if (description) {
+            <dt xc-i18n>description</dt>
+          }
+          @if (description) {
+            <dd>{{description}}</dd>
+          }
+          <dt xc-i18n>context</dt>
+          <dd>{{runtimeContext}}</dd>
+          @if (configParameter) {
+            <dt xc-i18n>configuration.parameter</dt>
+          }
+          @if (configParameter) {
+            <dd>{{configParameter}}</dd>
+          }
+        </dl>
+      </div>
+      @if (busy) {
+        <xc-spinner></xc-spinner>
+      }
     </section>
+  }
 </xc-panel>
