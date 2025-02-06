@@ -281,7 +281,7 @@ export class StorableInstancesComponent implements OnInit {
         private readonly settings: FactoryManagerSettingsService
     ) {
         // prevent XoSelectionMask from being pruned
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+         
         const mask = new XoSelectionMask();
 
         this.i18nService.setTranslations(LocaleService.DE_DE, storable_instances_translations_de_DE);

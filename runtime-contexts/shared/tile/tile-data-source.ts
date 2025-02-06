@@ -18,7 +18,9 @@
 
 import { Comparable } from '@zeta/base';
 import { XcSelectionDataSource, XcSelectionModel, XcSortDirection, XcSortPredicate, XcTemplate } from '@zeta/xc';
+
 import { Observable, Subject } from 'rxjs';
+
 
 export interface TileItem extends Comparable {
     getDetailTemplate(): XcTemplate;
@@ -35,7 +37,7 @@ export class TileDataSource extends XcSelectionDataSource<TileItem> {
     private _isSelected = true;
     private leftSelected = true;
 
-    constructor(selectionModel: XcSelectionModel<TileItem>, leftItems: TileItem[], rightItems: TileItem[], public label: string = '') {
+    constructor(selectionModel: XcSelectionModel<TileItem>, leftItems: TileItem[], rightItems: TileItem[], public label = '') {
         super(selectionModel);
         this.leftItems = leftItems;
         this.rightItems = rightItems;
@@ -65,7 +67,7 @@ export class TileDataSource extends XcSelectionDataSource<TileItem> {
         return this.hasDetail() ? this.selectionModel.selection[0] : undefined;
     }
 
-    set detailItem(value: TileItem)  {
+    set detailItem(value: TileItem) {
         let selected = this.leftItems.find(item => item.equals(value));
         if (selected) {
             this.leftSelected = true;

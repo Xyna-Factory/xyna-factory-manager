@@ -29,7 +29,7 @@ import { XoRuntimeContextState } from '../xo/xo-runtime-context-state.model';
     styleUrls: ['./runtime-context-icon.component.scss'],
     standalone: false
 })
-export class RuntimeContextIconComponent extends XcDynamicComponent<{state: string}> {
+export class RuntimeContextIconComponent extends XcDynamicComponent<{ state: string }> {
 
     @Input()
     state: string;

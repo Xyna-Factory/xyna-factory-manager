@@ -27,7 +27,7 @@ import { XC_COMPONENT_DATA, XcDynamicComponent } from '@zeta/xc';
     styleUrls: ['./runtime-context-name.component.scss'],
     standalone: false
 })
-export class RuntimeContextNameComponent extends XcDynamicComponent<{name: string; hierarchyLevel: number}> {
+export class RuntimeContextNameComponent extends XcDynamicComponent<{ name: string; hierarchyLevel: number }> {
 
     @Input()
     name: string;

@@ -16,18 +16,19 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, InjectionToken, Injector } from '@angular/core';
+
 import { FM_RTC } from '@fman/const';
 import { ORDER_TYPES } from '@fman/trigger-and-filter/order-types';
 import { XoFilterInstanceDetails } from '@fman/trigger-and-filter/xo/xo-filter-instance-details.model';
 import { XoFilterInstance } from '@fman/trigger-and-filter/xo/xo-filter-instance.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-
 import { I18nService } from '@zeta/i18n';
-import { XC_COMPONENT_DATA, XDSIconName, XcDialogService, XcDynamicComponent } from '@zeta/xc';
+import { XC_COMPONENT_DATA, XcDialogService, XcDynamicComponent, XDSIconName } from '@zeta/xc';
+
 import { filter } from 'rxjs';
 
 
-export interface FilterInstanceDetailsData{
+export interface FilterInstanceDetailsData {
     filterinstance: XoFilterInstance;
     refresh: () => void;
 }

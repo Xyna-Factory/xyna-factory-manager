@@ -41,7 +41,7 @@ type RuntimeApplicationVersion = string;
     styleUrls: ['./create-runtime-application-dialog.component.scss'],
     standalone: false
 })
-export class CreateRuntimeApplicationDialogComponent extends XcDialogComponent<RuntimeApplicationVersion, {workspaceName: string; applicationDefinitionName: string}> {
+export class CreateRuntimeApplicationDialogComponent extends XcDialogComponent<RuntimeApplicationVersion, { workspaceName: string; applicationDefinitionName: string }> {
 
     workspaceDataWrapper: XcAutocompleteDataWrapper<XoWorkspace>;
     workspace: XoWorkspace;
@@ -61,15 +61,15 @@ export class CreateRuntimeApplicationDialogComponent extends XcDialogComponent<R
 
         this.workspaceDataWrapper = new XcAutocompleteDataWrapper(
             () => this.workspace,
-            () => {},
+            () => { },
             this.apiService.startOrderAssertFlat<XoWorkspace>(FM_RTC, ORDER_TYPES.GET_WORKSPACES, undefined, XoWorkspaceArray).pipe(
                 tap(workspaces => this.changeWorkspace(workspaces.find(workspace => workspace.name === this.injectedData.workspaceName))),
-                map(workspaces => workspaces.map(workspace => <XcOptionItem>{name: workspace.name, value: workspace}))
+                map(workspaces => workspaces.map(workspace => <XcOptionItem>{ name: workspace.name, value: workspace }))
             )
         );
 
         this.applicationDefinitionDataWrapper = new XcAutocompleteDataWrapper(
-            ()                    => this.applicationDefinition,
+            () => this.applicationDefinition,
             applicationDefinition => this.applicationDefinition = applicationDefinition,
             []
         );
@@ -85,7 +85,7 @@ export class CreateRuntimeApplicationDialogComponent extends XcDialogComponent<R
 
             // update application definition options
             this.applicationDefinitionDataWrapper.values = this.workspace
-                ? this.workspace.applicationDefinitions.data.map(applicationDefinition => <XcOptionItem>{name: applicationDefinition.name, value: applicationDefinition})
+                ? this.workspace.applicationDefinitions.data.map(applicationDefinition => <XcOptionItem>{ name: applicationDefinition.name, value: applicationDefinition })
                 : [];
         }
     }

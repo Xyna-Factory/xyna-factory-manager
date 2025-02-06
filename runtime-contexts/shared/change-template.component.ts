@@ -31,7 +31,7 @@ import { XC_COMPONENT_DATA, XcDynamicComponent } from '@zeta/xc';
     styleUrls: ['change-template.component.scss'],
     standalone: false
 })
-export class ChangeTemplateComponent extends XcDynamicComponent<{dependency; XoDependencyType}> {
+export class ChangeTemplateComponent extends XcDynamicComponent<{ dependency; XoDependencyType }> {
 
     protected getToken(): InjectionToken<string> {
         return XC_COMPONENT_DATA;
