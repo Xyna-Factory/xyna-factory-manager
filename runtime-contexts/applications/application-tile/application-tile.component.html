@@ -1,99 +1,118 @@
 <div class="header" #header>
-    <label>{{application.name}}</label>
-    <div class="aside">
-        <runtime-context-button
-            *ngFor="let runtimeApplication of application.runtimeApplications"
-            [runtimeContext]="runtimeApplication"
-            [selected]="isSelected(runtimeApplication)"
-            (select)="select($event)"
-        ></runtime-context-button>
-    </div>
+  <label>{{application.name}}</label>
+  <div class="aside">
+    @for (runtimeApplication of application.runtimeApplications; track runtimeApplication) {
+      <runtime-context-button
+        [runtimeContext]="runtimeApplication"
+        [selected]="isSelected(runtimeApplication)"
+        (select)="select($event)"
+      ></runtime-context-button>
+    }
+  </div>
 </div>
-<div class="detail" *ngIf="hasDetails">
+@if (hasDetails) {
+  <div class="detail">
     <div class="row">
-        <div class="title">
-            <span xc-i18n>runtime-application</span>
-            <span>{{details.label}}</span>
-            <span *ngIf="details.isStub" class="stub">(Stub)</span>
-        </div>
-        <div class="actions">
-            <xc-button (click)="start()" [disabled]="isRunning" xc-i18n xc-tooltip="tooltip-start"><xc-icon xc-icon-material xc-i18n xc-icon-name="play_arrow">start</xc-icon></xc-button>
-            <xc-button (click)="stop()" [disabled]="isStopped" xc-i18n xc-tooltip="tooltip-stop"><xc-icon xc-icon-material xc-i18n xc-icon-name="stop">stop</xc-icon></xc-button>
-            <xc-button (click)="export()" xc-i18n xc-tooltip="tooltip-export">export</xc-button>
-            <xc-button (click)="startMigration()" color="normal" xc-i18n xc-tooltip="tooltip-migrate">migrate</xc-button>
-            <xc-button (click)="loadRuntimeApplication()" xc-i18n xc-tooltip="tooltip-load-into-workspace">load-into-workspace</xc-button>
-            <xc-button (click)="deleteRuntimeApplication()" xc-i18n xc-tooltip="tooltip-delete-runtime-application"><xc-icon xc-i18n [xc-icon-name]="XDSIconName.DELETE">delete-runtime-application</xc-icon></xc-button>
-        </div>
+      <div class="title">
+        <span xc-i18n>runtime-application</span>
+        <span>{{details.label}}</span>
+        @if (details.isStub) {
+          <span class="stub">(Stub)</span>
+        }
+      </div>
+      <div class="actions">
+        <xc-button (click)="start()" [disabled]="isRunning" xc-i18n xc-tooltip="tooltip-start"><xc-icon xc-icon-material xc-i18n xc-icon-name="play_arrow">start</xc-icon></xc-button>
+        <xc-button (click)="stop()" [disabled]="isStopped" xc-i18n xc-tooltip="tooltip-stop"><xc-icon xc-icon-material xc-i18n xc-icon-name="stop">stop</xc-icon></xc-button>
+        <xc-button (click)="export()" xc-i18n xc-tooltip="tooltip-export">export</xc-button>
+        <xc-button (click)="startMigration()" color="normal" xc-i18n xc-tooltip="tooltip-migrate">migrate</xc-button>
+        <xc-button (click)="loadRuntimeApplication()" xc-i18n xc-tooltip="tooltip-load-into-workspace">load-into-workspace</xc-button>
+        <xc-button (click)="deleteRuntimeApplication()" xc-i18n xc-tooltip="tooltip-delete-runtime-application"><xc-icon xc-i18n [xc-icon-name]="XDSIconName.DELETE">delete-runtime-application</xc-icon></xc-button>
+      </div>
     </div>
     <div class="row">
-        <xc-form-input
-            xc-i18n
-            label="documentation"
-            [value]="details.documentation"
-            disabled
-            xc-form-field-compact
-        ></xc-form-input>
-        <xc-form-input
-            xc-i18n
-            label="version"
-            [value]="details.version"
-            disabled
-            xc-form-field-compact
-        ></xc-form-input>
+      <xc-form-input
+        xc-i18n
+        label="documentation"
+        [value]="details.documentation"
+        disabled
+        xc-form-field-compact
+      ></xc-form-input>
+      <xc-form-input
+        xc-i18n
+        label="version"
+        [value]="details.version"
+        disabled
+        xc-form-field-compact
+      ></xc-form-input>
     </div>
     <div class="row">
-        <div class="dependencies">
-            <div class="requires">
-                <div class="row">
-                    <xc-form-label xc-i18n>requires</xc-form-label>
-                    <xc-button *ngIf="details.isLocal" (click)="manageDependencies()" xc-tooltip="{{'manage-dependencies-of-runtime-context' | xcI18n:details.name}}">{{'manage-dependencies' | xcI18n}}</xc-button>
-                </div>
-                <xc-table [xc-table-datasource]="requiresDataSource" xc-table-allowsort xc-table-allowfilter xc-table-lazyupdate></xc-table>
-            </div>
-            <div class="required-by">
-                <xc-form-label xc-i18n>required-by</xc-form-label>
-                <xc-table [xc-table-datasource]="requiredByDataSource" xc-table-allowsort xc-table-allowfilter xc-table-lazyupdate></xc-table>
-            </div>
+      <div class="dependencies">
+        <div class="requires">
+          <div class="row">
+            <xc-form-label xc-i18n>requires</xc-form-label>
+            @if (details.isLocal) {
+              <xc-button (click)="manageDependencies()" xc-tooltip="{{'manage-dependencies-of-runtime-context' | xcI18n:details.name}}">{{'manage-dependencies' | xcI18n}}</xc-button>
+            }
+          </div>
+          <xc-table [xc-table-datasource]="requiresDataSource" xc-table-allowsort xc-table-allowfilter xc-table-lazyupdate></xc-table>
         </div>
+        <div class="required-by">
+          <xc-form-label xc-i18n>required-by</xc-form-label>
+          <xc-table [xc-table-datasource]="requiredByDataSource" xc-table-allowsort xc-table-allowfilter xc-table-lazyupdate></xc-table>
+        </div>
+      </div>
     </div>
     <div class="row">
-        <div class="application">
-            <div class="content">
-                <div class="row">
-                    <xc-form-label xc-i18n>content</xc-form-label>
-                    <xc-button (click)="manageContent()" xc-tooltip="{{'manage-content-of-runtime-context' | xcI18n:details.name}}">{{'view-content' | xcI18n}}</xc-button>
-                </div>
-                <xc-table [xc-table-datasource]="contentDataSource" xc-table-allowsort xc-table-allowfilter xc-table-lazyupdate></xc-table>
-            </div>
+      <div class="application">
+        <div class="content">
+          <div class="row">
+            <xc-form-label xc-i18n>content</xc-form-label>
+            <xc-button (click)="manageContent()" xc-tooltip="{{'manage-content-of-runtime-context' | xcI18n:details.name}}">{{'view-content' | xcI18n}}</xc-button>
+          </div>
+          <xc-table [xc-table-datasource]="contentDataSource" xc-table-allowsort xc-table-allowfilter xc-table-lazyupdate></xc-table>
         </div>
+      </div>
     </div>
     <div class="row">
-        <div class="order-entries">
-            <xc-form-label xc-i18n>order-entries</xc-form-label>
-            <div class="list">
-                <xc-checkbox *ngFor="let orderEntry of details.orderEntries"
-                    [label]="orderEntry.name"
-                    [(checked)]="orderEntry.isActive"
-                    (checkedChange)="changeOrderEntry(orderEntry)"
-                    xc-i18n
-                    [xc-tooltip]="orderEntry.name"
-                ></xc-checkbox>
-            </div>
+      <div class="order-entries">
+        <xc-form-label xc-i18n>order-entries</xc-form-label>
+        <div class="list">
+          @for (orderEntry of details.orderEntries; track orderEntry) {
+            <xc-checkbox
+              [label]="orderEntry.name"
+              [(checked)]="orderEntry.isActive"
+              (checkedChange)="changeOrderEntry(orderEntry)"
+              xc-i18n
+              [xc-tooltip]="orderEntry.name"
+            ></xc-checkbox>
+          }
         </div>
+      </div>
     </div>
-    <div *ngIf="issues.length > 0" class="row issues">
+    @if (issues.length > 0) {
+      <div class="row issues">
         <xc-form-label xc-i18n>issues</xc-form-label>
-        <div *ngFor="let issue of issues; let i = index">
-            <div *ngIf="!truncateIssues || i < 20" class="row">
+        @for (issue of issues; track issue; let i = $index) {
+          <div>
+            @if (!truncateIssues || i < 20) {
+              <div class="row">
                 <span class="issue-identifier">{{issue.identifier}}</span>
                 <div class="issue-entries">
-                    <div *ngFor="let entry of issue.entries" class="issue-entry">
-                        <span class="issue-entry-key">{{entry.key}}</span>
-                        <span class="issue-entry-value">{{entry.value}}</span>
+                  @for (entry of issue.entries; track entry) {
+                    <div class="issue-entry">
+                      <span class="issue-entry-key">{{entry.key}}</span>
+                      <span class="issue-entry-value">{{entry.value}}</span>
                     </div>
+                  }
                 </div>
-            </div>
-        </div>
-        <xc-button *ngIf="issues.length > 20" (click)="truncateIssues = !truncateIssues">{{truncateIssues ? ('show-all-issues' | xcI18n) : ('hide-issues' | xcI18n)}}</xc-button>
-    </div>
-</div>
+              </div>
+            }
+          </div>
+        }
+        @if (issues.length > 20) {
+          <xc-button (click)="truncateIssues = !truncateIssues">{{truncateIssues ? ('show-all-issues' | xcI18n) : ('hide-issues' | xcI18n)}}</xc-button>
+        }
+      </div>
+    }
+  </div>
+}

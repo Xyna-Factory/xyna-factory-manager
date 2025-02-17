@@ -1,27 +1,30 @@
 <xc-panel xc-i18n-context="fman.rtcs.workspaces">
-    <header>
-        <h1 class="items-left" xc-i18n>workspaces-title</h1>
-        <div class="items-right">
-            <xc-icon xc-icon-name="filter"></xc-icon>
-            <xc-form-input [(value)]="filterText" xc-form-field-compact xc-form-field-suffix="clear" xc-i18n placeholder="filter-workspace" (keydown.enter)="filter()"></xc-form-input>
-            <xc-button (click)="startMigration()" color="normal" xc-i18n xc-tooltip="tooltip-migrate">migrate</xc-button>
-            <xc-icon-button [disabled]="refreshing" xc-icon-name="reload" (click)="refresh()" xc-i18n xc-tooltip="tooltip-refresh"></xc-icon-button>
-            <xc-icon-button (click)="createWorkspace()" xc-icon-name="add" xc-i18n xc-tooltip="create-workspace"></xc-icon-button>
-        </div>
-    </header>
-    <section class="scroll zeta-scrollbar">
-        <workspace-tile
-            *ngFor="let workspace of workspaces"
-            xc-i18n-context="workspace-tile"
-            [workspace]="workspace"
-            [selection]="selection"
-            [details]="details"
-            [forceRefresh]="needsRefresh(workspace)"
-            (validationChange)="refresh()"
-            (selectionChange)="select($event)"
-            (selectionDetailsChange)="selectDetails($event)"
-            #workspaceTiles
-        ></workspace-tile>
-        <xc-spinner *ngIf="refreshing"></xc-spinner>
-    </section>
+  <header>
+    <h1 class="items-left" xc-i18n>workspaces-title</h1>
+    <div class="items-right">
+      <xc-icon xc-icon-name="filter"></xc-icon>
+      <xc-form-input [(value)]="filterText" xc-form-field-compact xc-form-field-suffix="clear" xc-i18n placeholder="filter-workspace" (keydown.enter)="filter()"></xc-form-input>
+      <xc-button (click)="startMigration()" color="normal" xc-i18n xc-tooltip="tooltip-migrate">migrate</xc-button>
+      <xc-icon-button [disabled]="refreshing" xc-icon-name="reload" (click)="refresh()" xc-i18n xc-tooltip="tooltip-refresh"></xc-icon-button>
+      <xc-icon-button (click)="createWorkspace()" xc-icon-name="add" xc-i18n xc-tooltip="create-workspace"></xc-icon-button>
+    </div>
+  </header>
+  <section class="scroll zeta-scrollbar">
+    @for (workspace of workspaces; track workspace) {
+      <workspace-tile
+        xc-i18n-context="workspace-tile"
+        [workspace]="workspace"
+        [selection]="selection"
+        [details]="details"
+        [forceRefresh]="needsRefresh(workspace)"
+        (validationChange)="refresh()"
+        (selectionChange)="select($event)"
+        (selectionDetailsChange)="selectDetails($event)"
+        #workspaceTiles
+      ></workspace-tile>
+    }
+    @if (refreshing) {
+      <xc-spinner></xc-spinner>
+    }
+  </section>
 </xc-panel>

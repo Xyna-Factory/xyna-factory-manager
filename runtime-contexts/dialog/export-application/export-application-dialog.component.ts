@@ -34,7 +34,8 @@ import { exportapplication_translations_en_US } from './locale/export-applicatio
 
 @Component({
     templateUrl: './export-application-dialog.component.html',
-    styleUrls: ['./export-application-dialog.component.scss']
+    styleUrls: ['./export-application-dialog.component.scss'],
+    standalone: false
 })
 export class ExportApplicationDialogComponent extends XcDialogComponent<boolean, XoRuntimeApplication> {
 

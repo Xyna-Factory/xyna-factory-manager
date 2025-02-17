@@ -15,17 +15,8 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-$application-tile-border: unset !default; // none
-$application-tile-header-background-color: unset !default;  // $color-gray-1
-$application-tile-header-color: unset !default; // $color-white
-$application-tile-selected-header-background-color: unset !default;  // $color-invert
-$application-tile-details-background-color: unset !default; // $color-gray-0;
-$application-tile-details-button-row-background-color: unset !default; // $color-gray-0
-$application-tile-details-button-row-border-bottom: unset !default;     // 2px solid $color-invert
-$application-tile-details-button-row-border-top: unset !default;     // unset
 
-
-@import 'const';
+@use '../../../const' as *;
 
 
 :host {

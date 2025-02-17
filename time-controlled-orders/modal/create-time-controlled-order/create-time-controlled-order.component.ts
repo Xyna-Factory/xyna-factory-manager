@@ -42,7 +42,8 @@ export interface TCODefaultData {
 @Component({
     selector: 'create-time-controlled-order',
     templateUrl: './create-time-controlled-order.component.html',
-    styleUrls: ['./create-time-controlled-order.component.scss']
+    styleUrls: ['./create-time-controlled-order.component.scss'],
+    standalone: false
 })
 export class CreateTimeControlledOrderComponent extends XcDialogComponent<boolean, TCODefaultData> {
     @ViewChild(XcFormDirective, { static: false })

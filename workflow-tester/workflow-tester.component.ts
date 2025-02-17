@@ -46,7 +46,8 @@ interface WorkflowTest {
 @Component({
     selector: 'xfm-fman-workflow-tester',
     templateUrl: './workflow-tester.component.html',
-    styleUrls: ['./workflow-tester.component.scss']
+    styleUrls: ['./workflow-tester.component.scss'],
+    standalone: false
 })
 export class WorkflowTesterComponent {
     private static readonly history = new Map<string, WorkflowTest>();

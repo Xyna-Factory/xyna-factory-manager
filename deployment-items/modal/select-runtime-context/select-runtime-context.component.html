@@ -1,35 +1,39 @@
 <xc-dialog-wrapper xc-form xc-i18n-context="fman.select-runtime-context">
-    <ng-container header><span xc-i18n>header</span></ng-container>
+  <ng-container header><span xc-i18n>header</span></ng-container>
 
-    <section content>
-        <div *ngIf="error" class="error-box">
-            <div
-                [fm-focus-candidate]="errorBoxFocusCandidateRef"
-                fm-focus-candidate-focus-onload
-                class="error-msg"
-            ><div class="icon-div"><xc-icon xc-icon-name="msgwarning"></xc-icon></div><div>{{error}}</div></div>
+  <section content>
+    @if (error) {
+      <div class="error-box">
+        <div
+          [fm-focus-candidate]="errorBoxFocusCandidateRef"
+          fm-focus-candidate-focus-onload
+          class="error-msg"
+          ><div class="icon-div"><xc-icon xc-icon-name="msgwarning"></xc-icon></div><div>{{error}}</div></div>
         </div>
+      }
 
-        <div style="display: flex">
-            <xc-form-autocomplete
-                label="label-runtime-context"
-                placeholder="tooltip-select"
-                [(xc-form-autocomplete-option)]="runtimeContextsDataWrapper.value"
-                [xc-form-autocomplete-options]="runtimeContextsDataWrapper.values"
-                xc-form-field-suffix="clear"
-                xc-form-autocomplete-fulltextsearch
-                xc-form-field-compact
-                xc-i18n
-            ></xc-form-autocomplete>
-            <div *ngIf="injectedData.showLoadFeedback()">
-                <xc-spinner></xc-spinner>
-            </div>
-        </div>
+      <div style="display: flex">
+        <xc-form-autocomplete
+          label="label-runtime-context"
+          placeholder="tooltip-select"
+          [(xc-form-autocomplete-option)]="runtimeContextsDataWrapper.value"
+          [xc-form-autocomplete-options]="runtimeContextsDataWrapper.values"
+          xc-form-field-suffix="clear"
+          xc-form-autocomplete-fulltextsearch
+          xc-form-field-compact
+          xc-i18n
+        ></xc-form-autocomplete>
+        @if (injectedData.showLoadFeedback()) {
+          <div>
+            <xc-spinner></xc-spinner>
+          </div>
+        }
+      </div>
 
     </section>
 
     <ng-container footer>
-        <xc-button (click)="apply()" xc-i18n>button-ok</xc-button>
+      <xc-button (click)="apply()" xc-i18n>button-ok</xc-button>
     </ng-container>
 
-</xc-dialog-wrapper>
+  </xc-dialog-wrapper>

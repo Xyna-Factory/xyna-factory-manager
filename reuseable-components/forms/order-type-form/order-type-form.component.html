@@ -1,29 +1,31 @@
 <xc-panel>
-    <header><h3 xc-i18n>header</h3></header>
-    <section xc-form>
-        <xc-form-autocomplete
-            label="label-workspace-application"
-            placeholder="placeholder-select"
-            [(xc-form-autocomplete-option)]="runtimeContextsDataWrapper.value"
-            [xc-form-autocomplete-options]="runtimeContextsDataWrapper.values"
-            xc-form-field-suffix="clear"
-            xc-form-autocomplete-fulltextsearch
-            xc-form-validator-required
-            xc-form-field-compact
-            xc-i18n
-        ></xc-form-autocomplete>
-        <span *ngIf="masterWorkflowInfoText" xc-i18n>master-workflow-info-text</span><br>
-        <xc-form-autocomplete
-            label="header"
-            placeholder="placeholder-select"
-            [(xc-form-autocomplete-option)]="orderTypeStringDataWrapper.value"
-            [xc-form-autocomplete-options]="orderTypeStringDataWrapper.values"
-            xc-form-field-suffix="clear"
-            xc-form-autocomplete-fulltextsearch
-            xc-form-validator-required
-            xc-form-field-compact
-            xc-i18n
-        ></xc-form-autocomplete>
-        <div class="error">{{  error ? (error | xcI18n) : '' }}</div>
+  <header><h3 xc-i18n>header</h3></header>
+  <section xc-form>
+    <xc-form-autocomplete
+      label="label-workspace-application"
+      placeholder="placeholder-select"
+      [(xc-form-autocomplete-option)]="runtimeContextsDataWrapper.value"
+      [xc-form-autocomplete-options]="runtimeContextsDataWrapper.values"
+      xc-form-field-suffix="clear"
+      xc-form-autocomplete-fulltextsearch
+      xc-form-validator-required
+      xc-form-field-compact
+      xc-i18n
+    ></xc-form-autocomplete>
+    @if (masterWorkflowInfoText) {
+      <span xc-i18n>master-workflow-info-text</span>
+      }<br>
+      <xc-form-autocomplete
+        label="header"
+        placeholder="placeholder-select"
+        [(xc-form-autocomplete-option)]="orderTypeStringDataWrapper.value"
+        [xc-form-autocomplete-options]="orderTypeStringDataWrapper.values"
+        xc-form-field-suffix="clear"
+        xc-form-autocomplete-fulltextsearch
+        xc-form-validator-required
+        xc-form-field-compact
+        xc-i18n
+      ></xc-form-autocomplete>
+      <div class="error">{{  error ? (error | xcI18n) : '' }}</div>
     </section>
-</xc-panel>
+  </xc-panel>

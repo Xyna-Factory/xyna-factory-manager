@@ -34,7 +34,8 @@ import { clearWorkspace_translations_en_US } from './locale/clear-workspace-tran
 
 @Component({
     templateUrl: './clear-workspace-dialog.component.html',
-    styleUrls: ['./clear-workspace-dialog.component.scss']
+    styleUrls: ['./clear-workspace-dialog.component.scss'],
+    standalone: false
 })
 export class ClearWorkspaceDialogComponent extends XcDialogComponent<boolean, XoWorkspace> {
 

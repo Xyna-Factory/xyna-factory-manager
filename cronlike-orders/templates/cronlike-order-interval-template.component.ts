@@ -34,7 +34,8 @@ export interface CronlikeOrderIntervalTemplateData {
 
 @Component({
     template: '<span>{{interval}}</span>',
-    styleUrls: ['./cronlike-order-interval-template.component.scss']
+    styleUrls: ['./cronlike-order-interval-template.component.scss'],
+    standalone: false
 })
 export class CronlikeOrderIntervalTemplateComponent extends XcDynamicComponent<CronlikeOrderIntervalTemplateData> {
 

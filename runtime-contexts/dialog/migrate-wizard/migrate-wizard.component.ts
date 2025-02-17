@@ -120,7 +120,8 @@ export class RuntimeContextTableInfo extends XoTableInfo {
 @Component({
     selector: 'migrate-wizard',
     templateUrl: './migrate-wizard.component.html',
-    styleUrls: ['./migrate-wizard.component.scss']
+    styleUrls: ['./migrate-wizard.component.scss'],
+    standalone: false
 })
 export class MigrateWizardComponent extends XcDialogComponent<boolean, MigrationWizardData> {
     /** Current state of wizard (can be set via injected data to skip a step) */

@@ -1,28 +1,31 @@
 <xc-panel xc-i18n-context="fman.rtcs.applications">
-    <header>
-        <h1 class="items-left" xc-i18n>applications-title</h1>
-        <div class="items-right">
-            <xc-icon xc-icon-name="filter"></xc-icon>
-            <xc-form-input [(value)]="filterText" xc-form-field-compact xc-form-field-suffix="clear" xc-i18n placeholder="filter-runtime-application" (keydown.enter)="filter()"></xc-form-input>
-            <xc-button (click)="startMigration()" color="normal" xc-i18n xc-tooltip="tooltip-migrate">migrate</xc-button>
-            <xc-button (click)="importApplication()" color="normal" xc-i18n>import-runtime-application</xc-button>
-            <xc-icon-button [disabled]="refreshing" xc-icon-name="reload" (click)="refresh()" xc-i18n xc-tooltip="tooltip-refresh"></xc-icon-button>
-            <xc-icon-button (click)="createRuntimeApplication()" xc-icon-name="add" xc-i18n xc-tooltip="create-runtime-application"></xc-icon-button>
-        </div>
-    </header>
-    <section class="scroll zeta-scrollbar">
-        <application-tile
-            xc-i18n-context="application-tile"
-            *ngFor="let application of applications"
-            [selection]="selection"
-            [application]="application"
-            [details]="details"
-            [forceRefresh]="needsRefresh(application)"
-            (validationChange)="refresh()"
-            (selectionChange)="select($event)"
-            (selectionDetailsChange)="selectDetails($event)"
-            #applicationTiles
-        ></application-tile>
-        <xc-spinner *ngIf="refreshing"></xc-spinner>
-    </section>
+  <header>
+    <h1 class="items-left" xc-i18n>applications-title</h1>
+    <div class="items-right">
+      <xc-icon xc-icon-name="filter"></xc-icon>
+      <xc-form-input [(value)]="filterText" xc-form-field-compact xc-form-field-suffix="clear" xc-i18n placeholder="filter-runtime-application" (keydown.enter)="filter()"></xc-form-input>
+      <xc-button (click)="startMigration()" color="normal" xc-i18n xc-tooltip="tooltip-migrate">migrate</xc-button>
+      <xc-button (click)="importApplication()" color="normal" xc-i18n>import-runtime-application</xc-button>
+      <xc-icon-button [disabled]="refreshing" xc-icon-name="reload" (click)="refresh()" xc-i18n xc-tooltip="tooltip-refresh"></xc-icon-button>
+      <xc-icon-button (click)="createRuntimeApplication()" xc-icon-name="add" xc-i18n xc-tooltip="create-runtime-application"></xc-icon-button>
+    </div>
+  </header>
+  <section class="scroll zeta-scrollbar">
+    @for (application of applications; track application) {
+      <application-tile
+        xc-i18n-context="application-tile"
+        [selection]="selection"
+        [application]="application"
+        [details]="details"
+        [forceRefresh]="needsRefresh(application)"
+        (validationChange)="refresh()"
+        (selectionChange)="select($event)"
+        (selectionDetailsChange)="selectDetails($event)"
+        #applicationTiles
+      ></application-tile>
+    }
+    @if (refreshing) {
+      <xc-spinner></xc-spinner>
+    }
+  </section>
 </xc-panel>

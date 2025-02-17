@@ -1,5 +1,11 @@
-<div [ngSwitch]="length">
-    <span *ngSwitchCase="-1">{{"complex-datatype" | xcI18n}}</span>
-    <span *ngSwitchDefault>{{"complex-datatypes" | xcI18n:length}}</span>
+<div>
+  @switch (length) {
+    @case (-1) {
+      <span>{{"complex-datatype" | xcI18n}}</span>
+    }
+    @default {
+      <span>{{"complex-datatypes" | xcI18n:length}}</span>
+    }
+  }
 </div>
 

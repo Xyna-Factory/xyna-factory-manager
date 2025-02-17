@@ -1,90 +1,115 @@
 <xc-dialog-wrapper xc-i18n-context="fman.migrate-wizard">
-    <ng-container header>{{'header' | xcI18n:stepName }}</ng-container>
-    <section content class="min-width">
-        <h2>
-            <span *ngIf="!lastStep">{{ stepNumber + 1 }}.</span> {{ stepName }}
-        </h2>
-        <div [ngSwitch]="stepNumber">
-            <div *ngSwitchCase="0">
-                <xc-table [xc-table-datasource]="tableSource" xc-table-allowsort xc-table-allowfilter xc-table-allowselect> </xc-table>
+  <ng-container header>{{'header' | xcI18n:stepName }}</ng-container>
+  <section content class="min-width">
+    <h2>
+      @if (!lastStep) {
+        <span>{{ stepNumber + 1 }}.</span>
+        } {{ stepName }}
+      </h2>
+      <div>
+        @switch (stepNumber) {
+          @case (0) {
+            <div>
+              <xc-table [xc-table-datasource]="tableSource" xc-table-allowsort xc-table-allowfilter xc-table-allowselect> </xc-table>
             </div>
-            <div *ngSwitchCase="1">
-                <xc-table
-                    [xc-table-lazyupdate]="true"
-                    [xc-table-datasource]="tableSource"
-                    xc-table-allowsort
-                    xc-table-allowfilter
-                    xc-table-allowselect
-                ></xc-table>
+          }
+          @case (1) {
+            <div>
+              <xc-table
+                [xc-table-lazyupdate]="true"
+                [xc-table-datasource]="tableSource"
+                xc-table-allowsort
+                xc-table-allowfilter
+                xc-table-allowselect
+              ></xc-table>
             </div>
-            <div *ngSwitchCase="2">
-                <xc-table
-                    [xc-table-lazyupdate]="true"
-                    [xc-table-datasource]="tableSource"
-                    xc-table-allowsort
-                    xc-table-allowfilter
-                    xc-table-allowselect
-                ></xc-table>
+          }
+          @case (2) {
+            <div>
+              <xc-table
+                [xc-table-lazyupdate]="true"
+                [xc-table-datasource]="tableSource"
+                xc-table-allowsort
+                xc-table-allowfilter
+                xc-table-allowselect
+              ></xc-table>
             </div>
-            <div *ngSwitchCase="3">
-                <xc-table [xc-table-datasource]="tableSource" xc-table-allowsort xc-table-allowfilter> </xc-table>
-                <br />
-                <xc-checkbox xc-i18n label="abort" [(checked)]="abortProbelamticOrders"></xc-checkbox>
+          }
+          @case (3) {
+            <div>
+              <xc-table [xc-table-datasource]="tableSource" xc-table-allowsort xc-table-allowfilter> </xc-table>
+              <br />
+              <xc-checkbox xc-i18n label="abort" [(checked)]="abortProbelamticOrders"></xc-checkbox>
             </div>
-            <div *ngSwitchCase="4">
-                <ng-template #resultList>
-                    <div *ngIf="resultError" class="items-row">
-                        <xc-icon color="warn" xc-icon-name="msgwarning"></xc-icon>
-                        <div class="items-row">{{ resultError }}</div>
-                    </div>
-                    <ng-container *ngIf="!!result">
-                        <div *ngFor="let migrationResult of result.data">
-                            <xc-panel xc-panel-collapsable [xc-panel-collapsed]="true">
-                                <header>
-                                    <div class="items-left title">
-                                        {{ migrationResult.rTCMigration.source.name }} {{ migrationResult.rTCMigration.source.version }}
-                                        <xc-icon class="arrow" color="primary" xc-icon-name="arrow_forward" xc-icon-size="normal" xc-icon-material></xc-icon>
-                                        {{ migrationResult.rTCMigration.target.name }} {{ migrationResult.rTCMigration.target.version }}
-                                    </div>
-                                    <div class="items-right">
-                                        <span class="resultBadge" [ngClass]="{ success: migrationResult.wasSuccessful }">{{
-                                            (migrationResult.wasSuccessful ? 'success' : 'failure') | xcI18n
-                                        }}</span>
-                                    </div>
-                                </header>
-                                <section class="stretch scroll">
-                                    <p class="message-text">{{ migrationResult.message }}</p>
-                                    <small
-                                        ><b>{{ migrationResult.rTCMigration.factoryNode.name }}</b></small
-                                    >
-                                </section>
-                            </xc-panel>
-                        </div>
-                    </ng-container>
-                </ng-template>
-                <xc-spinner *ngIf="!!!result && !resultError; else resultList"></xc-spinner>
-            </div>
+          }
+          @case (4) {
+            <div>
+              @if (!!!result && !resultError) {
+                <xc-spinner></xc-spinner>
+              } @else {
+                @if (resultError) {
+                  <div class="items-row">
+                    <xc-icon color="warn" xc-icon-name="msgwarning"></xc-icon>
+                    <div class="items-row">{{ resultError }}</div>
+                  </div>
+                }
+                @if (!!result) {
+                  @for (migrationResult of result.data; track migrationResult) {
+                    <div>
+                      <xc-panel xc-panel-collapsable [xc-panel-collapsed]="true">
+                        <header>
+                          <div class="items-left title">
+                            {{ migrationResult.rTCMigration.source.name }} {{ migrationResult.rTCMigration.source.version }}
+                            <xc-icon class="arrow" color="primary" xc-icon-name="arrow_forward" xc-icon-size="normal" xc-icon-material></xc-icon>
+                            {{ migrationResult.rTCMigration.target.name }} {{ migrationResult.rTCMigration.target.version }}
+                          </div>
+                          <div class="items-right">
+                            <span class="resultBadge" [ngClass]="{ success: migrationResult.wasSuccessful }">{{
+                              (migrationResult.wasSuccessful ? 'success' : 'failure') | xcI18n
+                            }}</span>
+                          </div>
+                        </header>
+                        <section class="stretch scroll">
+                          <p class="message-text">{{ migrationResult.message }}</p>
+                          <small
+                            ><b>{{ migrationResult.rTCMigration.factoryNode.name }}</b></small
+                            >
+                          </section>
+                        </xc-panel>
+                      </div>
+                    }
+                  }
+                }
+              </div>
+            }
+          }
         </div>
-    </section>
-    <ng-container footer>
+      </section>
+      <ng-container footer>
         <div class="footer">
-            <xc-button color="normal" (click)="closeDialog()">
-                {{ closeButtonName }}
+          <xc-button color="normal" (click)="closeDialog()">
+            {{ closeButtonName }}
+          </xc-button>
+          @if (!!stepBackButtonName) {
+            <xc-button [disabled]="!canStepToOffset(-1)" color="normal" (click)="step(-1)">
+              <xc-icon xc-icon-size="small" color="normal" [xc-icon-name]="XDSIconName.ARROWLEFT" class="margin-right"></xc-icon>
+              {{ stepBackButtonName }}
             </xc-button>
-            <xc-button [disabled]="!canStepToOffset(-1)" *ngIf="!!stepBackButtonName" color="normal" (click)="step(-1)">
-                <xc-icon xc-icon-size="small" color="normal" [xc-icon-name]="XDSIconName.ARROWLEFT" class="margin-right"></xc-icon>
-                {{ stepBackButtonName }}
+          }
+          @if (stepNumber === 3) {
+            <xc-button (click)="addAnother()">
+              <xc-icon xc-icon-size="small" [xc-icon-name]="XDSIconName.ADD" class="margin-right"></xc-icon>
+              <span xc-i18n>addOther</span>
             </xc-button>
-            <xc-button *ngIf="stepNumber === 3" (click)="addAnother()">
-                <xc-icon xc-icon-size="small" [xc-icon-name]="XDSIconName.ADD" class="margin-right"></xc-icon>
-                <span xc-i18n>addOther</span>
-            </xc-button>
-            <div [xc-tooltip]="disabledTooltipForOffset(+1)">
-                <xc-button [disabled]="!canStepToOffset(+1)" *ngIf="!!stepNextButtonName" color="primary" (click)="step(+1)">
-                    {{ stepNextButtonName }}
-                    <xc-icon color="primary" class="margin-left" xc-icon-size="small" [xc-icon-name]="XDSIconName.ARROWRIGHT"></xc-icon>
-                </xc-button>
-            </div>
+          }
+          <div [xc-tooltip]="disabledTooltipForOffset(+1)">
+            @if (!!stepNextButtonName) {
+              <xc-button [disabled]="!canStepToOffset(+1)" color="primary" (click)="step(+1)">
+                {{ stepNextButtonName }}
+                <xc-icon color="primary" class="margin-left" xc-icon-size="small" [xc-icon-name]="XDSIconName.ARROWRIGHT"></xc-icon>
+              </xc-button>
+            }
+          </div>
         </div>
-    </ng-container>
-</xc-dialog-wrapper>
+      </ng-container>
+    </xc-dialog-wrapper>

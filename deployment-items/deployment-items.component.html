@@ -1,177 +1,177 @@
 <xc-master-detail
-    [xc-master-detail-opened]="detailsObject"
-    xc-master-detail-side-area-size="golden"
-    xc-i18n-context="fman.deployment-items"
->
-    <xc-panel master>
+  [xc-master-detail-opened]="detailsObject"
+  xc-master-detail-side-area-size="golden"
+  xc-i18n-context="fman.deployment-items"
+  >
+  <xc-panel master>
+    <header>
+      <h1 class="items-left" xc-i18n>header</h1>
+      <div class="items-right">
+        <!-- <xc-spinner *ngIf="showRuntimeContextLoadFeedback"></xc-spinner> -->
+        <xc-form-autocomplete
+          placeholder="select-placeholder"
+          [(xc-form-autocomplete-option)]="runtimeContextsDataWrapper.value"
+          [xc-form-autocomplete-options]="runtimeContextsDataWrapper.values"
+          xc-form-field-suffix="clear"
+          xc-form-autocomplete-fulltextsearch
+          xc-form-field-compact
+          xc-i18n
+        ></xc-form-autocomplete>
+        <xc-icon-button (click)="refresh()" xc-tooltip="refresh-tooltip" xc-i18n class="refresh" xc-icon-name="reload"></xc-icon-button>
+      </div>
+    </header>
+    <section class="stretch scroll">
+      <xc-table
+        class="zeta-scrollbar"
+        [xc-table-datasource]="remoteTableDataSource"
+        xc-table-allowsort
+        xc-table-allowfilter
+        xc-table-lazyupdate
+        xc-table-allowselect
+        xc-table-multiselect
+      ></xc-table>
+    </section>
+    <footer>
+      <div class="items-left">
+        <xc-button
+          (click)="selectAll()"
+          [disabled]="remoteTableDataSource.rows.length === 0"
+          xc-i18n
+        >select-all-button</xc-button>
+      </div>
+      <div class="items-right">
+        <xc-button
+          (click)="deleteHandler()"
+          [disabled]="remoteTableDataSource.selectionModel.isEmpty()"
+          xc-i18n
+        >delete-button</xc-button>
+        <xc-button
+          (click)="deploy(false)"
+          [disabled]="remoteTableDataSource.selectionModel.isEmpty()"
+          xc-i18n
+        >deploy-button</xc-button>
+        <xc-button
+          (click)="deploy(true)"
+          [disabled]="remoteTableDataSource.selectionModel.isEmpty()"
+          xc-i18n
+        >force-deploy-button</xc-button>
+        <xc-button
+          (click)="undeploy()"
+          [disabled]="remoteTableDataSource.selectionModel.isEmpty()"
+          xc-i18n
+        >undeploy-button</xc-button>
+        @if (singleObject('WORKFLOW')) {
+          <xc-button
+            (click)="open('workflow')"
+            xc-i18n
+          >open-workflow-button</xc-button>
+        }
+        @if (singleObject('DATATYPE')) {
+          <xc-button
+            (click)="open('dataType')"
+            xc-i18n
+          >open-datatype-button</xc-button>
+          <xc-button
+            (click)="open('serviceGroup')"
+            xc-i18n
+          >open-servicegroup-button</xc-button>
+        }
+        @if (singleObject('EXCEPTION')) {
+          <xc-button
+            (click)="open('exceptionType')"
+            xc-i18n
+          >open-exception-button</xc-button>
+        }
+        <xc-button
+          (click)="test()"
+          [disabled]="testButtonDisabled"
+          xc-i18n
+        >test-button</xc-button>
+      </div>
+    </footer>
+  </xc-panel>
+  @if (detailsObject) {
+    <xc-panel detail>
+      <header>
+        <h2 class="items-left" xc-i18n>deployment-item-details</h2>
+      </header>
+      <section xc-form class="stretch scroll">
+        <div class="items-row">
+          <xc-form-input label="type-input" [value]="detailsObject.typeNiceName" readonly xc-i18n></xc-form-input>
+          <xc-form-input label="name-input" [value]="detailsObject.id.name" readonly xc-i18n></xc-form-input>
+        </div>
+        <div class="items-row">
+          <xc-form-input label="runtime-context-input" [value]="detailsRuntimeContext.toString()" readonly xc-i18n></xc-form-input>
+          <xc-form-input label="label-input" [value]="detailsObject.label" readonly xc-i18n></xc-form-input>
+        </div>
+        <deployment-state-detail xc-i18n-context='deployment-state-detail' [deploymentItem]="detailsObject" ></deployment-state-detail>
+        @if (detailsObject.inconsitencies && detailsObject.inconsitencies.data && detailsObject.inconsitencies.data.length) {
+          <xc-panel>
+            <header>
+              <h3 xc-i18n>inconsistencies</h3>
+            </header>
+            <section class="compact">
+              <xc-form-textarea
+                label="inconsistencies-label"
+                [value]="inconsistencies"
+                xc-i18n
+                xc-form-textarea-minlines="1"
+                xc-form-textarea-maxlines="15"
+                xc-form-textarea-autosize
+                readonly
+              ></xc-form-textarea>
+            </section>
+          </xc-panel>
+        }
+        @if (detailsObject.unresolvable && detailsObject.unresolvable.data && detailsObject.unresolvable.data.length) {
+          <xc-panel>
+            <header>
+              <h3 xc-i18n>resolution</h3>
+            </header>
+            <section class="compact">
+              @for (resolution of detailsObject.unresolvable.data; track resolution) {
+                <xc-form-textarea
+                  label="resolution-label"
+                  [value]="resolution.friendlyString"
+                  xc-form-textarea-lines="3"
+                  xc-i18n
+                ></xc-form-textarea>
+              }
+            </section>
+          </xc-panel>
+        }
+        @if (detailsObject.rollbackOccurred) {
+          <xc-panel>
+            <header>
+              <h3 xc-i18n>rollback</h3>
+            </header>
+            <section class="compact">
+              <xc-form-textarea
+                label="cause"
+                [value]="detailsObject.rollbackCause.stacktrace"
+                xc-form-textarea-lines="8"
+                xc-i18n
+              ></xc-form-textarea>
+            </section>
+          </xc-panel>
+        }
+        <!-- <xc-panel *ngIf="detailsObject.buildExceptionOccurred">
         <header>
-            <h1 class="items-left" xc-i18n>header</h1>
-            <div class="items-right">
-                <!-- <xc-spinner *ngIf="showRuntimeContextLoadFeedback"></xc-spinner> -->
-                <xc-form-autocomplete
-                    placeholder="select-placeholder"
-                    [(xc-form-autocomplete-option)]="runtimeContextsDataWrapper.value"
-                    [xc-form-autocomplete-options]="runtimeContextsDataWrapper.values"
-                    xc-form-field-suffix="clear"
-                    xc-form-autocomplete-fulltextsearch
-                    xc-form-field-compact
-                    xc-i18n
-                ></xc-form-autocomplete>
-                <xc-icon-button (click)="refresh()" xc-tooltip="refresh-tooltip" xc-i18n class="refresh" xc-icon-name="reload"></xc-icon-button>
-            </div>
+          <h3 xc-i18n>build-exception</h3>
         </header>
-        <section class="stretch scroll">
-            <xc-table
-                class="zeta-scrollbar"
-                [xc-table-datasource]="remoteTableDataSource"
-                xc-table-allowsort
-                xc-table-allowfilter
-                xc-table-lazyupdate
-                xc-table-allowselect
-                xc-table-multiselect
-            ></xc-table>
+        <section class="compact">
+          <xc-form-textarea
+            label="cause"
+            [value]="detailsObject.buildException.stacktrace"
+            xc-form-textarea-lines="8"
+            xc-i18n
+          ></xc-form-textarea>
         </section>
-        <footer>
-            <div class="items-left">
-                <xc-button
-                    (click)="selectAll()"
-                    [disabled]="remoteTableDataSource.rows.length === 0"
-                    xc-i18n
-                >select-all-button</xc-button>
-            </div>
-            <div class="items-right">
-                <xc-button
-                    (click)="deleteHandler()"
-                    [disabled]="remoteTableDataSource.selectionModel.isEmpty()"
-                    xc-i18n
-                >delete-button</xc-button>
-                <xc-button
-                    (click)="deploy(false)"
-                    [disabled]="remoteTableDataSource.selectionModel.isEmpty()"
-                    xc-i18n
-                >deploy-button</xc-button>
-                <xc-button
-                    (click)="deploy(true)"
-                    [disabled]="remoteTableDataSource.selectionModel.isEmpty()"
-                    xc-i18n
-                >force-deploy-button</xc-button>
-                <xc-button
-                    (click)="undeploy()"
-                    [disabled]="remoteTableDataSource.selectionModel.isEmpty()"
-                    xc-i18n
-                >undeploy-button</xc-button>
-                <ng-container *ngIf="singleObject('WORKFLOW')">
-                    <xc-button
-                        (click)="open('workflow')"
-                        xc-i18n
-                    >open-workflow-button</xc-button>
-                </ng-container>
-                <ng-container *ngIf="singleObject('DATATYPE')">
-                    <xc-button
-                        (click)="open('dataType')"
-                        xc-i18n
-                    >open-datatype-button</xc-button>
-                    <xc-button
-                        (click)="open('serviceGroup')"
-                        xc-i18n
-                    >open-servicegroup-button</xc-button>
-                </ng-container>
-                <ng-container *ngIf="singleObject('EXCEPTION')">
-                    <xc-button
-                        (click)="open('exceptionType')"
-                        xc-i18n
-                    >open-exception-button</xc-button>
-                </ng-container>
-                <xc-button
-                    (click)="test()"
-                    [disabled]="testButtonDisabled"
-                    xc-i18n
-                >test-button</xc-button>
-            </div>
-        </footer>
-    </xc-panel>
-    <xc-panel detail *ngIf="detailsObject">
-        <header>
-            <h2 class="items-left" xc-i18n>deployment-item-details</h2>
-        </header>
-        <section xc-form class="stretch scroll">
-
-            <div class="items-row">
-                <xc-form-input label="type-input" [value]="detailsObject.typeNiceName" readonly xc-i18n></xc-form-input>
-                <xc-form-input label="name-input" [value]="detailsObject.id.name" readonly xc-i18n></xc-form-input>
-            </div>
-            <div class="items-row">
-                <xc-form-input label="runtime-context-input" [value]="detailsRuntimeContext.toString()" readonly xc-i18n></xc-form-input>
-                <xc-form-input label="label-input" [value]="detailsObject.label" readonly xc-i18n></xc-form-input>
-            </div>
-
-            <deployment-state-detail xc-i18n-context='deployment-state-detail' [deploymentItem]="detailsObject" ></deployment-state-detail>
-
-
-            <xc-panel *ngIf="detailsObject.inconsitencies && detailsObject.inconsitencies.data && detailsObject.inconsitencies.data.length">
-                <header>
-                    <h3 xc-i18n>inconsistencies</h3>
-                </header>
-                <section class="compact">
-                    <xc-form-textarea
-                        label="inconsistencies-label"
-                        [value]="inconsistencies"
-                        xc-i18n
-                        xc-form-textarea-minlines="1"
-                        xc-form-textarea-maxlines="15"
-                        xc-form-textarea-autosize
-                        readonly
-                    ></xc-form-textarea>
-                </section>
-            </xc-panel>
-
-            <xc-panel *ngIf="detailsObject.unresolvable && detailsObject.unresolvable.data && detailsObject.unresolvable.data.length">
-                <header>
-                    <h3 xc-i18n>resolution</h3>
-                </header>
-                <section class="compact">
-                    <ng-container *ngFor="let resolution of detailsObject.unresolvable.data">
-                        <xc-form-textarea
-                            label="resolution-label"
-                            [value]="resolution.friendlyString"
-                            xc-form-textarea-lines="3"
-                            xc-i18n
-                        ></xc-form-textarea>
-                    </ng-container>
-                </section>
-            </xc-panel>
-
-            <xc-panel *ngIf="detailsObject.rollbackOccurred">
-                <header>
-                    <h3 xc-i18n>rollback</h3>
-                </header>
-                <section class="compact">
-                    <xc-form-textarea
-                        label="cause"
-                        [value]="detailsObject.rollbackCause.stacktrace"
-                        xc-form-textarea-lines="8"
-                        xc-i18n
-                    ></xc-form-textarea>
-                </section>
-            </xc-panel>
-
-            <!-- <xc-panel *ngIf="detailsObject.buildExceptionOccurred">
-                <header>
-                    <h3 xc-i18n>build-exception</h3>
-                </header>
-                <section class="compact">
-                    <xc-form-textarea
-                        label="cause"
-                        [value]="detailsObject.buildException.stacktrace"
-                        xc-form-textarea-lines="8"
-                        xc-i18n
-                    ></xc-form-textarea>
-                </section>
-            </xc-panel> -->
-
-        </section>
-        <footer class='items-row'>
-            <div class="items-left"><xc-button (click)="dismiss()" xc-i18n>cancel-button</xc-button></div>
-        </footer>
-    </xc-panel>
+      </xc-panel> -->
+    </section>
+    <footer class='items-row'>
+      <div class="items-left"><xc-button (click)="dismiss()" xc-i18n>cancel-button</xc-button></div>
+    </footer>
+  </xc-panel>
+}
 </xc-master-detail>

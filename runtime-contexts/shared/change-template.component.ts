@@ -28,9 +28,10 @@ import { XC_COMPONENT_DATA, XcDynamicComponent } from '@zeta/xc';
             <xc-checkbox [checked]="to" color="primary"></xc-checkbox>
         </div>
     `,
-    styleUrls: ['change-template.component.scss']
+    styleUrls: ['change-template.component.scss'],
+    standalone: false
 })
-export class ChangeTemplateComponent extends XcDynamicComponent<{dependency; XoDependencyType}> {
+export class ChangeTemplateComponent extends XcDynamicComponent<{ dependency; XoDependencyType }> {
 
     protected getToken(): InjectionToken<string> {
         return XC_COMPONENT_DATA;

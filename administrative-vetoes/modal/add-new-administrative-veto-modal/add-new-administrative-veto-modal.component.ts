@@ -38,7 +38,8 @@ export interface AddNewAdministrativeVetoModalData {
 @Component({
     selector: 'app-add-new-administrative-veto-modal',
     templateUrl: './add-new-administrative-veto-modal.component.html',
-    styleUrls: ['./add-new-administrative-veto-modal.component.scss']
+    styleUrls: ['./add-new-administrative-veto-modal.component.scss'],
+    standalone: false
 })
 export class AddNewAdministrativeVetoModalComponent extends XcDialogComponent<boolean, AddNewAdministrativeVetoModalData> {
 

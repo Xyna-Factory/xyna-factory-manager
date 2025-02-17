@@ -37,7 +37,8 @@ import { XoTimeControlledOrder } from './xo/xo-time-controlled-order.model';
 @Component({
     selector: 'selector-name',
     templateUrl: './time-controlled-orders.component.html',
-    styleUrls: ['./time-controlled-orders.component.scss']
+    styleUrls: ['./time-controlled-orders.component.scss'],
+    standalone: false
 })
 export class TimeControlledOrdersComponent extends RestorableTimeControlledOrderComponent implements OnInit {
     selection: XoTimeControlledOrderTableEntry;

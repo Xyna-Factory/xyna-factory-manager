@@ -1,13 +1,15 @@
 <xc-dialog-wrapper xc-i18n-context="fman.storable-instance-creation">
-    <ng-container header><span xc-i18n>header-create-storable</span></ng-container>
-    <ng-container content>
-        <div class="column">
-            <div><xc-tree [xc-tree-datasource]="structureTreeDataSource" xc-tree-autoexpand="first"> </xc-tree></div>
-            <div class="error-message" *ngIf="error">{{ errorMessage }}</div>
-        </div>
-    </ng-container>
-    <ng-container footer>
-        <xc-button xc-i18n (click)="dismiss(false)">button-cancel</xc-button>
-        <xc-button xc-i18n (click)="submit()" color="primary" [disabled]="isLoading" [busy]="isLoading">button-add</xc-button>
-    </ng-container>
+  <ng-container header><span xc-i18n>header-create-storable</span></ng-container>
+  <ng-container content>
+    <div class="column">
+      <div><xc-tree [xc-tree-datasource]="structureTreeDataSource" xc-tree-autoexpand="first"> </xc-tree></div>
+      @if (error) {
+        <div class="error-message">{{ errorMessage }}</div>
+      }
+    </div>
+  </ng-container>
+  <ng-container footer>
+    <xc-button xc-i18n (click)="dismiss(false)">button-cancel</xc-button>
+    <xc-button xc-i18n (click)="submit()" color="primary" [disabled]="isLoading" [busy]="isLoading">button-add</xc-button>
+  </ng-container>
 </xc-dialog-wrapper>

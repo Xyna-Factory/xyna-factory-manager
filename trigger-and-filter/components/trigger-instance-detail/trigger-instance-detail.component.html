@@ -1,38 +1,50 @@
 <xc-panel class="panel">
-    <header>
-        <div class="actions">
-            <xc-button (click)="enable()" [disabled]="busy" xc-i18n xc-tooltip="tooltip-enable">
-                <xc-icon xc-icon-material xc-i18n xc-icon-name="play_arrow">enable</xc-icon>
-            </xc-button>
-            <xc-button (click)="disable()" [disabled]="busy" xc-i18n xc-tooltip="tooltip-disable">
-                <xc-icon xc-icon-material xc-i18n xc-icon-name="stop">disable</xc-icon>
-            </xc-button>
-            <xc-button (click)="undeploy()" [disabled]="busy" xc-i18n xc-tooltip="tooltip-undeploy">
-                <xc-icon xc-i18n [xc-icon-name]="XDSIconName.DELETE">undeploy</xc-icon>
-            </xc-button>
-        </div>
-    </header>
-    <section class="section" *ngIf="detail">
-        <div class="trigger side">
-            <h1>Trigger</h1>
-            <dl>
-                <dt xc-i18n>name</dt>
-                <dd>{{triggerName}}</dd>
-                <dt xc-i18n>instance.name</dt>
-                <dd>{{triggerInstanceName}}</dd>
-                <dt *ngIf="triggerDescription" xc-i18n>description</dt>
-                <dd *ngIf="triggerDescription">{{triggerDescription}}</dd>
-                <dt xc-i18n>context</dt>
-                <dd>{{triggerRuntimeContext}}</dd>
-                <dt *ngIf="triggerStartParameter" xc-i18n>start.parameter</dt>
-                <dd *ngIf="triggerStartParameter">{{triggerStartParameter}}</dd>
-            </dl>
-        </div>
-        <xc-table class="side" [xc-table-datasource]="datasource"
-            xc-table-allowsort
-            xc-table-allowfilter
-            xc-table-lazyupdate
-        ></xc-table>
-        <xc-spinner *ngIf="busy"></xc-spinner>
+  <header>
+    <div class="actions">
+      <xc-button (click)="enable()" [disabled]="busy" xc-i18n xc-tooltip="tooltip-enable">
+        <xc-icon xc-icon-material xc-i18n xc-icon-name="play_arrow">enable</xc-icon>
+      </xc-button>
+      <xc-button (click)="disable()" [disabled]="busy" xc-i18n xc-tooltip="tooltip-disable">
+        <xc-icon xc-icon-material xc-i18n xc-icon-name="stop">disable</xc-icon>
+      </xc-button>
+      <xc-button (click)="undeploy()" [disabled]="busy" xc-i18n xc-tooltip="tooltip-undeploy">
+        <xc-icon xc-i18n [xc-icon-name]="XDSIconName.DELETE">undeploy</xc-icon>
+      </xc-button>
+    </div>
+  </header>
+  @if (detail) {
+    <section class="section">
+      <div class="trigger side">
+        <h1>Trigger</h1>
+        <dl>
+          <dt xc-i18n>name</dt>
+          <dd>{{triggerName}}</dd>
+          <dt xc-i18n>instance.name</dt>
+          <dd>{{triggerInstanceName}}</dd>
+          @if (triggerDescription) {
+            <dt xc-i18n>description</dt>
+          }
+          @if (triggerDescription) {
+            <dd>{{triggerDescription}}</dd>
+          }
+          <dt xc-i18n>context</dt>
+          <dd>{{triggerRuntimeContext}}</dd>
+          @if (triggerStartParameter) {
+            <dt xc-i18n>start.parameter</dt>
+          }
+          @if (triggerStartParameter) {
+            <dd>{{triggerStartParameter}}</dd>
+          }
+        </dl>
+      </div>
+      <xc-table class="side" [xc-table-datasource]="datasource"
+        xc-table-allowsort
+        xc-table-allowfilter
+        xc-table-lazyupdate
+      ></xc-table>
+      @if (busy) {
+        <xc-spinner></xc-spinner>
+      }
     </section>
+  }
 </xc-panel>

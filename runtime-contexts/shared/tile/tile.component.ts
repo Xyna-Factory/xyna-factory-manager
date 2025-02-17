@@ -32,7 +32,8 @@ export interface ActionButtonData {
 @Component({
     selector: 'tile',
     templateUrl: './tile.component.html',
-    styleUrls: ['./tile.component.scss']
+    styleUrls: ['./tile.component.scss'],
+    standalone: false
 })
 export class TileComponent  implements OnInit {
     @ViewChild('header', { static: false })

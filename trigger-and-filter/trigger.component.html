@@ -1,16 +1,20 @@
 <xc-panel xc-i18n-context="fman.taf.trigger">
-    <header>
-        <h1 class="items-left" xc-i18n>trigger-title</h1>
-        <div class="items-right">
-            <xc-icon-button [disabled]="refreshing" xc-icon-name="reload" (click)="refresh()" xc-i18n xc-tooltip="tooltip-refresh"></xc-icon-button>
-        </div>
-    </header>
-    <section class="scroll zeta-scrollbar">
-        <tile *ngFor="let datasource of datasources"
-            xc-i18n-context="tile"
-            [tile-datasource]="datasource"
-            [action-button]="deployButton"
-        ></tile>
-        <xc-spinner *ngIf="refreshing"></xc-spinner>
-    </section>
+  <header>
+    <h1 class="items-left" xc-i18n>trigger-title</h1>
+    <div class="items-right">
+      <xc-icon-button [disabled]="refreshing" xc-icon-name="reload" (click)="refresh()" xc-i18n xc-tooltip="tooltip-refresh"></xc-icon-button>
+    </div>
+  </header>
+  <section class="scroll zeta-scrollbar">
+    @for (datasource of datasources; track datasource) {
+      <tile
+        xc-i18n-context="tile"
+        [tile-datasource]="datasource"
+        [action-button]="deployButton"
+      ></tile>
+    }
+    @if (refreshing) {
+      <xc-spinner></xc-spinner>
+    }
+  </section>
 </xc-panel>

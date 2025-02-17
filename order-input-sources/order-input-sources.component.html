@@ -1,29 +1,31 @@
 <xc-master-detail [xc-master-detail-opened]="detailsObject" xc-i18n-context="fman.ois">
 
-    <xc-panel master>
-        <header>
-            <h1 class="items-left" xc-i18n>header</h1>
-            <div class="items-right">
-                <xc-icon-button (click)="refresh()" xc-tooltip="icon-refresh" xc-i18n class="refresh" xc-icon-name="reload">
-                </xc-icon-button>
-                <xc-icon-button (click)="add()" xc-tooltip="icon-add" xc-i18n class="add" xc-icon-name="add">
-                </xc-icon-button>
-            </div>
-        </header>
-        <section class="stretch scroll">
-            <xc-table
-                [xc-table-datasource]="remoteTableDataSource"
-                xc-table-allowsort
-                xc-table-allowfilter
-                xc-table-allowselect
-                xc-table-lazyupdate
-            ></xc-table>
-        </section>
-        <footer></footer>
-    </xc-panel>
-    <order-input-source-details *ngIf="detailsObject" detail
-        [order-input-source]="detailsObject"
-        xc-i18n-context="order-input-source-details"
-        (closed)="dismiss($event)"
+  <xc-panel master>
+    <header>
+      <h1 class="items-left" xc-i18n>header</h1>
+      <div class="items-right">
+        <xc-icon-button (click)="refresh()" xc-tooltip="icon-refresh" xc-i18n class="refresh" xc-icon-name="reload">
+        </xc-icon-button>
+        <xc-icon-button (click)="add()" xc-tooltip="icon-add" xc-i18n class="add" xc-icon-name="add">
+        </xc-icon-button>
+      </div>
+    </header>
+    <section class="stretch scroll">
+      <xc-table
+        [xc-table-datasource]="remoteTableDataSource"
+        xc-table-allowsort
+        xc-table-allowfilter
+        xc-table-allowselect
+        xc-table-lazyupdate
+      ></xc-table>
+    </section>
+    <footer></footer>
+  </xc-panel>
+  @if (detailsObject) {
+    <order-input-source-details detail
+      [order-input-source]="detailsObject"
+      xc-i18n-context="order-input-source-details"
+      (closed)="dismiss($event)"
     ></order-input-source-details>
+  }
 </xc-master-detail>

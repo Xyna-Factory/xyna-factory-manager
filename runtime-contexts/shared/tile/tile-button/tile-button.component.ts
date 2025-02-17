@@ -23,7 +23,8 @@ import { TileItem } from '../tile-data-source';
 @Component({
     selector: 'tile-button',
     templateUrl: './tile-button.component.html',
-    styleUrls: ['./tile-button.component.scss']
+    styleUrls: ['./tile-button.component.scss'],
+    standalone: false
 })
 export class TileButtonComponent {
 

@@ -1,42 +1,43 @@
 <xc-dialog-wrapper xc-i18n-context="fman.load-runtime-application">
-    <ng-container header><span xc-i18n>load-runtime-application-title</span></ng-container>
-    <section content xc-form #form="xc-form">
-        <ng-container *ngIf="!injectedData.runtimeApplication">
-            <xc-form-label required xc-i18n>load-runtime-application-runtime-application</xc-form-label>
-            <xc-table [xc-table-datasource]="dataSource" xc-table-allowselect xc-table-allowsort xc-table-allowfilter xc-table-lazyupdate></xc-table>
-        </ng-container>
-        <xc-form-input
-            *ngIf="injectedData.runtimeApplication"
-            [value]="injectedData.runtimeApplication.label"
-            label="load-runtime-application-runtime-application"
-            xc-i18n
-            xc-form-validator-required
-            disabled
-        ></xc-form-input>
-        <xc-form-autocomplete
-            xc-form-validator-required
-            (xc-form-autocomplete-optionChange)="changeWorkspace($event?.value)"
-            [xc-form-autocomplete-option]="workspaceDataWrapper.value"
-            [xc-form-autocomplete-options]="workspaceDataWrapper.values"
-            xc-form-autocomplete-sortdirection="asc"
-            xc-form-autocomplete-fulltextsearch
-            xc-form-field-suffix="clear"
-            label="load-runtime-application-workspace" 
-            xc-i18n
-        ></xc-form-autocomplete>
-        <xc-form-input
-            [(value)]="documentation"
-            label="load-runtime-application-documentation"
-            xc-i18n
-        ></xc-form-input>
-        <xc-checkbox
-            [(checked)]="overwrite"
-            label="load-runtime-application-overwrite" 
-            xc-i18n
-        ></xc-checkbox>
-    </section>
-    <ng-container footer>
-        <xc-button (click)="dismiss()" xc-i18n>load-runtime-application-cancel</xc-button>
-        <xc-button (click)="load()" color="primary" [busy]="loading" [disabled]="form.invalid || !this.runtimeApplication || loading" xc-i18n>load-runtime-application-load</xc-button>
-    </ng-container>
+  <ng-container header><span xc-i18n>load-runtime-application-title</span></ng-container>
+  <section content xc-form #form="xc-form">
+    @if (!injectedData.runtimeApplication) {
+      <xc-form-label required xc-i18n>load-runtime-application-runtime-application</xc-form-label>
+      <xc-table [xc-table-datasource]="dataSource" xc-table-allowselect xc-table-allowsort xc-table-allowfilter xc-table-lazyupdate></xc-table>
+    }
+    @if (injectedData.runtimeApplication) {
+      <xc-form-input
+        [value]="injectedData.runtimeApplication.label"
+        label="load-runtime-application-runtime-application"
+        xc-i18n
+        xc-form-validator-required
+        disabled
+      ></xc-form-input>
+    }
+    <xc-form-autocomplete
+      xc-form-validator-required
+      (xc-form-autocomplete-optionChange)="changeWorkspace($event?.value)"
+      [xc-form-autocomplete-option]="workspaceDataWrapper.value"
+      [xc-form-autocomplete-options]="workspaceDataWrapper.values"
+      xc-form-autocomplete-sortdirection="asc"
+      xc-form-autocomplete-fulltextsearch
+      xc-form-field-suffix="clear"
+      label="load-runtime-application-workspace"
+      xc-i18n
+    ></xc-form-autocomplete>
+    <xc-form-input
+      [(value)]="documentation"
+      label="load-runtime-application-documentation"
+      xc-i18n
+    ></xc-form-input>
+    <xc-checkbox
+      [(checked)]="overwrite"
+      label="load-runtime-application-overwrite"
+      xc-i18n
+    ></xc-checkbox>
+  </section>
+  <ng-container footer>
+    <xc-button (click)="dismiss()" xc-i18n>load-runtime-application-cancel</xc-button>
+    <xc-button (click)="load()" color="primary" [busy]="loading" [disabled]="form.invalid || !this.runtimeApplication || loading" xc-i18n>load-runtime-application-load</xc-button>
+  </ng-container>
 </xc-dialog-wrapper>

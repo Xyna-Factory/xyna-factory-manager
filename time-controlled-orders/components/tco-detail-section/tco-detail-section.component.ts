@@ -34,7 +34,8 @@ import { InputParameter, StorableInputParameterComponent } from '../storable-inp
 @Component({
     selector: 'tco-detail-section',
     templateUrl: './tco-detail-section.component.html',
-    styleUrls: ['./tco-detail-section.component.scss']
+    styleUrls: ['./tco-detail-section.component.scss'],
+    standalone: false
 })
 export class TcoDetailSectionComponent implements OnInit, OnDestroy {
     @ViewChild(XcFormDirective, { static: false })

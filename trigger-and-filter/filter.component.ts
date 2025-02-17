@@ -94,7 +94,8 @@ class FilterInstanceTile extends Comparable implements TileItem {
 @Component({
     templateUrl: './filter.component.html',
     styleUrls: ['./filter.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class FilterComponent extends RouteComponent {
 

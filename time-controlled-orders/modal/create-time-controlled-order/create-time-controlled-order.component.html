@@ -1,56 +1,58 @@
 <xc-dialog-wrapper xc-i18n-context="fman.create-time-controlled-order">
-    <ng-container header><span xc-i18n>header</span></ng-container>
-    <section xc-form content class="min-width scroll compact">
-        <div #errorMessage [ngClass]="{'error-wrapper': !!error}"><span *ngIf="error" class="error">{{ error }}</span></div>
-        <div class="custom-items-row equal-width-2">
-            <xc-form-input label="label-name" [(value)]="selectedName" xc-form-validator-required xc-i18n></xc-form-input>
-            <xc-checkbox [(checked)]="selectedActiveState" label="label-is-active" xc-i18n></xc-checkbox>
-        </div>
-        <order-type-form
-            xc-i18n-context="order-type-form"
-            [(selectedOrderType)]="selectedOrderType"
-            [(selectedRuntimeContext)]="selectedRuntimeContext"
-            [masterWorkflowInfoText]="true"
-            (validationChange)="orderTypeChange($event)"
-        ></order-type-form>
-        <br />
-        <storable-input-parameter
-            xc-i18n-context="storable-input-parameter"
-            [storableFqn]="selectedStorableFqn"
-            [payload]="injectedData.default ? injectedData.default.inputPayload : null"
-            [(destination)]="selectedDestination"
-            (querySelectionChange)="querySelection = $event"
-        ></storable-input-parameter>
-        <ng-container *ngIf="querySelection">
-            <br />
-            <xc-panel class="compact">
-                <header><h3 xc-i18n>header-query-storable-for-input</h3></header>
-                <section>
-                    <xc-form-input label="label-query-filter" xc-i18n [(value)]="selectedfilterCriteria"></xc-form-input>
-                    <xc-form-input label="label-sorting" xc-i18n [(value)]="selectedSortCriteria"></xc-form-input>
-                </section>
-            </xc-panel>
-        </ng-container>
-        <br />
-        <execution-time
-            xc-i18n-context="execution-time"
-            [hasTimeWindow]="true"
-            header="Planning horizon"
-            [(executionTime)]="selectedExecutionTime"
-            (invalidChange)="executionTimeValid = !$event"
-        ></execution-time>
-        <br />
-        <tco-execution-restriction
-            xc-i18n-context="tco-execution-restriction"
-            [(executionRestriction)]="selectedExecutionRestriction"
-            (validationChange)="executionRestrictionValid = $event"
-        ></tco-execution-restriction>
-        <br />
-        <custom-information-form xc-i18n-context="custom-information-form" [(customFields)]="selectedCustomFields"></custom-information-form>
-        <br />
-    </section>
-    <ng-container footer>
-        <xc-button (click)="dismiss(false)" xc-i18n>button-cancel</xc-button>
-        <xc-button (click)="createTCO()" [busy]="loading" color="primary" [disabled]="!valid || loading" xc-i18n>button-start</xc-button>
-    </ng-container>
+  <ng-container header><span xc-i18n>header</span></ng-container>
+  <section xc-form content class="min-width scroll compact">
+    <div #errorMessage [ngClass]="{'error-wrapper': !!error}">@if (error) {
+      <span class="error">{{ error }}</span>
+    }</div>
+    <div class="custom-items-row equal-width-2">
+      <xc-form-input label="label-name" [(value)]="selectedName" xc-form-validator-required xc-i18n></xc-form-input>
+      <xc-checkbox [(checked)]="selectedActiveState" label="label-is-active" xc-i18n></xc-checkbox>
+    </div>
+    <order-type-form
+      xc-i18n-context="order-type-form"
+      [(selectedOrderType)]="selectedOrderType"
+      [(selectedRuntimeContext)]="selectedRuntimeContext"
+      [masterWorkflowInfoText]="true"
+      (validationChange)="orderTypeChange($event)"
+    ></order-type-form>
+    <br />
+    <storable-input-parameter
+      xc-i18n-context="storable-input-parameter"
+      [storableFqn]="selectedStorableFqn"
+      [payload]="injectedData.default ? injectedData.default.inputPayload : null"
+      [(destination)]="selectedDestination"
+      (querySelectionChange)="querySelection = $event"
+    ></storable-input-parameter>
+    @if (querySelection) {
+      <br />
+      <xc-panel class="compact">
+        <header><h3 xc-i18n>header-query-storable-for-input</h3></header>
+        <section>
+          <xc-form-input label="label-query-filter" xc-i18n [(value)]="selectedfilterCriteria"></xc-form-input>
+          <xc-form-input label="label-sorting" xc-i18n [(value)]="selectedSortCriteria"></xc-form-input>
+        </section>
+      </xc-panel>
+    }
+    <br />
+    <execution-time
+      xc-i18n-context="execution-time"
+      [hasTimeWindow]="true"
+      header="Planning horizon"
+      [(executionTime)]="selectedExecutionTime"
+      (invalidChange)="executionTimeValid = !$event"
+    ></execution-time>
+    <br />
+    <tco-execution-restriction
+      xc-i18n-context="tco-execution-restriction"
+      [(executionRestriction)]="selectedExecutionRestriction"
+      (validationChange)="executionRestrictionValid = $event"
+    ></tco-execution-restriction>
+    <br />
+    <custom-information-form xc-i18n-context="custom-information-form" [(customFields)]="selectedCustomFields"></custom-information-form>
+    <br />
+  </section>
+  <ng-container footer>
+    <xc-button (click)="dismiss(false)" xc-i18n>button-cancel</xc-button>
+    <xc-button (click)="createTCO()" [busy]="loading" color="primary" [disabled]="!valid || loading" xc-i18n>button-start</xc-button>
+  </ng-container>
 </xc-dialog-wrapper>

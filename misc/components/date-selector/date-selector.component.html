@@ -1,46 +1,47 @@
 <div xc-form class="form-wrapper" xc-i18n-context="date-selector">
+  @if (!disableTimeZoneSelection) {
     <xc-form-autocomplete
-        *ngIf="!disableTimeZoneSelection"
-        label="label-time-zone" 
-        xc-i18n
-        placeholder="placeholder-select-time-zone"
-        [(xc-form-autocomplete-option)]="timezoneDataWrapper.value"
-        [xc-form-autocomplete-options]="timezoneDataWrapper.values"
-        xc-form-field-suffix="clear"
-        xc-form-autocomplete-fulltextsearch
-        xc-form-validator-required
+      label="label-time-zone"
+      xc-i18n
+      placeholder="placeholder-select-time-zone"
+      [(xc-form-autocomplete-option)]="timezoneDataWrapper.value"
+      [xc-form-autocomplete-options]="timezoneDataWrapper.values"
+      xc-form-field-suffix="clear"
+      xc-form-autocomplete-fulltextsearch
+      xc-form-validator-required
     ></xc-form-autocomplete>
+  }
 
-    <!--#region - START TIME - Date -->
-    <xc-panel>
-        <header><h3>{{header ? header : 'start-time' | xcI18n}}</h3></header>
-        <section>
-            <div class="items-row">
-                <xc-form-input label="label-year" xc-i18n [(value)]="yearDataWrapper.value"
-                    xc-form-validator-number xc-form-validator-minvalue="1970" xc-form-validator-required xc-form-field-compact
-                ></xc-form-input>
-                <xc-form-input label="label-month" xc-i18n [(value)]="monthDataWrapper.value"
-                    xc-form-validator-number xc-form-validator-minvalue="1" xc-form-validator-maxvalue="12" xc-form-validator-required xc-form-field-compact
-                ></xc-form-input>
-                <xc-form-input label="label-day" xc-i18n [(value)]="dateDataWrapper.value"
-                    xc-form-validator-number xc-form-validator-minvalue="1" xc-form-validator-maxvalue="31" xc-form-validator-required xc-form-field-compact
-                ></xc-form-input>
-            </div>
+  <!--#region - START TIME - Date -->
+  <xc-panel>
+    <header><h3>{{header ? header : 'start-time' | xcI18n}}</h3></header>
+    <section>
+      <div class="items-row">
+        <xc-form-input label="label-year" xc-i18n [(value)]="yearDataWrapper.value"
+          xc-form-validator-number xc-form-validator-minvalue="1970" xc-form-validator-required xc-form-field-compact
+        ></xc-form-input>
+        <xc-form-input label="label-month" xc-i18n [(value)]="monthDataWrapper.value"
+          xc-form-validator-number xc-form-validator-minvalue="1" xc-form-validator-maxvalue="12" xc-form-validator-required xc-form-field-compact
+        ></xc-form-input>
+        <xc-form-input label="label-day" xc-i18n [(value)]="dateDataWrapper.value"
+          xc-form-validator-number xc-form-validator-minvalue="1" xc-form-validator-maxvalue="31" xc-form-validator-required xc-form-field-compact
+        ></xc-form-input>
+      </div>
 
-            <div class="items-row">
-                <xc-form-input label="label-hour" xc-i18n [(value)]="hoursDataWrapper.value"
-                    xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-maxvalue="23" xc-form-validator-required xc-form-field-compact
-                ></xc-form-input>
-                <xc-form-input label="label-minutes" xc-i18n [(value)]="minutesDataWrapper.value"
-                    xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-maxvalue="59" xc-form-validator-required xc-form-field-compact
-                ></xc-form-input>
-                <xc-form-input label="label-seconds" xc-i18n [(value)]="secondsDataWrapper.value"
-                    xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-maxvalue="59" xc-form-validator-required xc-form-field-compact
-                ></xc-form-input>
-                <xc-form-input label="label-milliseconds" xc-i18n [(value)]="millisecondsDataWrapper.value"
-                    xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-maxvalue="999" xc-form-validator-required xc-form-field-compact
-                ></xc-form-input>
-            </div>
-        </section>
-    </xc-panel>
+      <div class="items-row">
+        <xc-form-input label="label-hour" xc-i18n [(value)]="hoursDataWrapper.value"
+          xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-maxvalue="23" xc-form-validator-required xc-form-field-compact
+        ></xc-form-input>
+        <xc-form-input label="label-minutes" xc-i18n [(value)]="minutesDataWrapper.value"
+          xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-maxvalue="59" xc-form-validator-required xc-form-field-compact
+        ></xc-form-input>
+        <xc-form-input label="label-seconds" xc-i18n [(value)]="secondsDataWrapper.value"
+          xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-maxvalue="59" xc-form-validator-required xc-form-field-compact
+        ></xc-form-input>
+        <xc-form-input label="label-milliseconds" xc-i18n [(value)]="millisecondsDataWrapper.value"
+          xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-maxvalue="999" xc-form-validator-required xc-form-field-compact
+        ></xc-form-input>
+      </div>
+    </section>
+  </xc-panel>
 </div>

@@ -34,7 +34,8 @@ import { showWorkspaceContent_translations_en_US } from './locale/show-workspace
 
 @Component({
     templateUrl: './show-workspace-content-dialog.component.html',
-    styleUrls: ['./show-workspace-content-dialog.component.scss']
+    styleUrls: ['./show-workspace-content-dialog.component.scss'],
+    standalone: false
 })
 export class ShowWorkspaceContentDialogComponent extends XcDialogComponent<boolean, XoRuntimeContext> {
 

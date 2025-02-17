@@ -1,185 +1,178 @@
 <xc-panel>
-    <header>
-        <h2 class="items-left" xc-i18n>details-header</h2>
-    </header>
-    <section *ngIf="detailsObject" xc-form class="stretch scroll">
-
-        <!-- FIXME: MERGE WITH CODE FROM MODAL -->
-
-        <xc-form-input label="name-input" [(value)]="detailsObject.name" readonly xc-i18n xc-form-field-compact></xc-form-input>
-
+  <header>
+    <h2 class="items-left" xc-i18n>details-header</h2>
+  </header>
+  @if (detailsObject) {
+    <section xc-form class="stretch scroll">
+      <!-- FIXME: MERGE WITH CODE FROM MODAL -->
+      <xc-form-input label="name-input" [(value)]="detailsObject.name" readonly xc-i18n xc-form-field-compact></xc-form-input>
+      <xc-form-autocomplete
+        label="label-workspace-application"
+        placeholder="placeholder-select"
+        [(xc-form-autocomplete-option)]="runtimeContextsDataWrapper.value"
+        [xc-form-autocomplete-options]="runtimeContextsDataWrapper.values"
+        xc-form-field-suffix="clear"
+        xc-form-autocomplete-fulltextsearch
+        xc-form-validator-required
+        xc-form-field-compact
+        xc-i18n
+      ></xc-form-autocomplete>
+      @if (!noOrderTypes) {
         <xc-form-autocomplete
-            label="label-workspace-application"
-            placeholder="placeholder-select"
-            [(xc-form-autocomplete-option)]="runtimeContextsDataWrapper.value"
-            [xc-form-autocomplete-options]="runtimeContextsDataWrapper.values"
-            xc-form-field-suffix="clear"
-            xc-form-autocomplete-fulltextsearch
-            xc-form-validator-required
-            xc-form-field-compact
-            xc-i18n
+          label="label-order-type"
+          placeholder="placeholder-select"
+          [(xc-form-autocomplete-option)]="orderTypeDataWrapper.value"
+          [xc-form-autocomplete-options]="orderTypeDataWrapper.values"
+          xc-form-autocomplete-showtooltip
+          xc-form-field-suffix="clear"
+          xc-form-autocomplete-fulltextsearch
+          xc-form-validator-required
+          xc-form-field-compact
+          xc-i18n
         ></xc-form-autocomplete>
-
-        <xc-form-autocomplete *ngIf="!noOrderTypes"
-            label="label-order-type"
-            placeholder="placeholder-select"
-            [(xc-form-autocomplete-option)]="orderTypeDataWrapper.value"
-            [xc-form-autocomplete-options]="orderTypeDataWrapper.values"
-            xc-form-autocomplete-showtooltip
-            xc-form-field-suffix="clear"
-            xc-form-autocomplete-fulltextsearch
-            xc-form-validator-required
-            xc-form-field-compact
-            xc-i18n
-        ></xc-form-autocomplete>
-
-        <xc-form-input *ngIf="noOrderTypes" label="label-order-type" value="{{'value-no-order-types-found' | xcI18n}}" xc-i18n readonly></xc-form-input>
-
-        <xc-form-autocomplete label="label-source-type" placeholder="placeholder-select"
-            [(xc-form-autocomplete-option)]="sourceTypeDataWrapper.value"
-            [xc-form-autocomplete-options]="sourceTypeDataWrapper.values"
-            xc-form-autocomplete-asdropdown
-            xc-form-field-suffix="clear"
-            xc-form-autocomplete-fulltextsearch
-            xc-i18n
-            xc-form-field-compact
-        ></xc-form-autocomplete>
-
-        <ng-container *ngIf="isSourceTypeConstant">
-
-            <input-parameter
-                xc-i18n-context="input-parameter"
-                [ref]="inputParameterRef"
-            ></input-parameter>
-
-            <xc-panel>
-                <header>
-                    <h2 xc-i18n>custom-fields</h2>
-                </header>
-                <section>
-                    <div class="items-row">
-                        <xc-form-input label="custom-fields1" [(value)]="customField0" xc-i18n xc-form-field-compact>
-                        </xc-form-input>
-                        <xc-form-input label="custom-fields2" [(value)]="customField1" xc-i18n xc-form-field-compact>
-                        </xc-form-input>
-                    </div>
-                    <div class="items-row">
-                        <xc-form-input label="custom-fields3" [(value)]="customField2" xc-i18n xc-form-field-compact>
-                        </xc-form-input>
-                        <xc-form-input label="custom-fields4" [(value)]="customField3" xc-i18n xc-form-field-compact>
-                        </xc-form-input>
-                    </div>
-                </section>
-            </xc-panel>
-
-            <xc-form-input label="label-priority" [(value)]="priority" xc-form-validator-required
-                xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-maxvalue="10"
-                xc-form-field-compact
-                xc-i18n
-            ></xc-form-input>
-
-            <xc-form-autocomplete label="label-monitoring-level" placeholder="placeholder-select"
-                [(xc-form-autocomplete-option)]="monitoringLevelDataWrapper.value"
-                [xc-form-autocomplete-options]="monitoringLevelDataWrapper.values"
-                xc-form-autocomplete-asdropdown
-                xc-form-field-suffix="clear"
-                xc-form-autocomplete-fulltextsearch
-                xc-form-field-compact
-                xc-i18n
-            ></xc-form-autocomplete>
-        </ng-container>
-
-        <ng-container *ngIf="isSourceTypeWorkflow">
-            <xc-panel>
-                <header>
-                    <h2 xc-i18n>generating-order-type</h2>
-                </header>
-                <section>
-                    <xc-form-autocomplete label="generating-order-type"
-                        [disabled]="!generatingOrderTypeDataWrapper.values || !generatingOrderTypeDataWrapper.values.length"
-                        placeholder="placeholder-select"
-                        [(xc-form-autocomplete-option)]="generatingOrderTypeDataWrapper.value"
-                        [xc-form-autocomplete-options]="generatingOrderTypeDataWrapper.values"
-                        xc-form-autocomplete-showtooltip
-                        xc-form-field-suffix="clear"
-                        xc-form-autocomplete-fulltextsearch
-                        xc-form-field-compact
-                        xc-i18n
-                    ></xc-form-autocomplete>
-                </section>
-            </xc-panel>
-        </ng-container>
-
-        <ng-container *ngIf="isSourceTypeXTF">
-            <xc-panel>
-                <header>
-                    <h2 xcI18n>generating-order-type</h2>
-                </header>
-                <section>
-                    <xc-form-autocomplete label="label-input-generator"
-                        [disabled]="!generatingOrderTypeDataWrapper.values || !generatingOrderTypeDataWrapper.values.length"
-                        placeholder="placeholder-select"
-                        [(xc-form-autocomplete-option)]="generatingOrderTypeDataWrapper.value"
-                        [xc-form-autocomplete-options]="generatingOrderTypeDataWrapper.values"
-                        xc-form-autocomplete-showtooltip
-                        xc-form-field-suffix="clear"
-                        xc-form-autocomplete-fulltextsearch
-                        xc-form-field-compact
-                        xc-i18n
-                    ></xc-form-autocomplete>
-                    <xc-form-input label="label-test-case-id" [(value)]="xTFTestCaseID" readonly xc-form-validator-required xc-i18n xc-form-field-compact></xc-form-input>
-                    <xc-form-input label="label-test-case-name" [(value)]="xTFTestCaseName" readonly xc-form-validator-required xc-i18n xc-form-field-compact></xc-form-input>
-                </section>
-            </xc-panel>
-        </ng-container>
-
-        <xc-form-textarea label="textarea-documentation" [(value)]="detailsObject.documentation" xc-i18n xc-form-field-compact></xc-form-textarea>
-
-        <generate-input-component
-            xc-i18n-context="generate-input"
-            [orderInputSource]="detailsObject"
-            [fmanRtc]="fmanRTC"
-            [disabled]="invalid"
-            (generatingErrorEmitter)="onGeneratingError($event)"
-        ></generate-input-component>
-
+      }
+      @if (noOrderTypes) {
+        <xc-form-input label="label-order-type" value="{{'value-no-order-types-found' | xcI18n}}" xc-i18n readonly></xc-form-input>
+      }
+      <xc-form-autocomplete label="label-source-type" placeholder="placeholder-select"
+        [(xc-form-autocomplete-option)]="sourceTypeDataWrapper.value"
+        [xc-form-autocomplete-options]="sourceTypeDataWrapper.values"
+        xc-form-autocomplete-asdropdown
+        xc-form-field-suffix="clear"
+        xc-form-autocomplete-fulltextsearch
+        xc-i18n
+        xc-form-field-compact
+      ></xc-form-autocomplete>
+      @if (isSourceTypeConstant) {
+        <input-parameter
+          xc-i18n-context="input-parameter"
+          [ref]="inputParameterRef"
+        ></input-parameter>
         <xc-panel>
-            <header>
-                <h2 xc-i18n>frequency-controlled-task</h2>
-            </header>
-            <section>
-                <xc-form-input label="label-name" [(value)]="detailsObject.name" xc-i18n xc-form-field-compact></xc-form-input>
-                <xc-form-input label="label-number-of-orders" xc-form-validator-number="float" xc-i18n [(value)]="fctNumberOfOdersDataWrapper.value" xc-form-field-compact></xc-form-input>
-                <div class="items-row">
-                    <xc-form-autocomplete label="label-type"
-                        [xc-form-autocomplete-options]="frequencyControlledTaskTypes.values" [(xc-form-autocomplete-option)]="frequencyControlledTaskTypes.value" placeholder="placeholder-select"
-                        xc-form-autocomplete-asdropdown
-                        xc-form-field-compact
-                        xc-i18n
-                        xc-form-autocomplete-fulltextsearch
-                    ></xc-form-autocomplete>
-                    <xc-form-input xc-form-validator-number="float" [(value)]="fctParameterValueDataWrapper.value" xc-form-field-compact></xc-form-input>
-                </div>
-                <xc-checkbox label="label-create-inputs-once" xc-i18n [(checked)]="fctParameters.createInputOnce"></xc-checkbox>
-                <xc-form-input label="label-data-point-count" xc-i18n xc-form-validator-number="float" [(value)]="fctDataPointCountDataWrapper.value" xc-form-field-compact></xc-form-input>
-                <xc-form-input label="label-data-point-distance" xc-i18n xc-form-validator-number="float" [(value)]="fctDataPointDistanceDataWrapper.value" xc-form-field-compact></xc-form-input>
-                <xc-checkbox label="label-delayed-start" xc-i18n [(checked)]="startDelayed"></xc-checkbox>
-                <date-selector *ngIf="startDelayed" [(datetime)]="delayDataWrapper.value" [(timezone)]="fctParameters.timezone" [runtimeContext]="fmanRTC" (validityChange)="dateValidityChange($event)"></date-selector>
-                <xc-button (click)="startTask()" [disabled]="!isAbleToStartTask() || startDelayed && !dateValid || startingTask" [busy]="startingTask" xc-i18n>button-start-task</xc-button>
-                <div *ngIf="frequencyId">
-                    <span xc-i18n>span-task-id</span><span>: &nbsp; {{ frequencyId }} </span> <!--<xc-button (click)="jumpToTask()">Go to Task</xc-button>-->
-                    <xc-button (click)="jumpToTask()" [disabled]="startingTask" xc-i18n>button-show-task</xc-button>
-                </div>
-            </section>
+          <header>
+            <h2 xc-i18n>custom-fields</h2>
+          </header>
+          <section>
+            <div class="items-row">
+              <xc-form-input label="custom-fields1" [(value)]="customField0" xc-i18n xc-form-field-compact>
+              </xc-form-input>
+              <xc-form-input label="custom-fields2" [(value)]="customField1" xc-i18n xc-form-field-compact>
+              </xc-form-input>
+            </div>
+            <div class="items-row">
+              <xc-form-input label="custom-fields3" [(value)]="customField2" xc-i18n xc-form-field-compact>
+              </xc-form-input>
+              <xc-form-input label="custom-fields4" [(value)]="customField3" xc-i18n xc-form-field-compact>
+              </xc-form-input>
+            </div>
+          </section>
         </xc-panel>
-
+        <xc-form-input label="label-priority" [(value)]="priority" xc-form-validator-required
+          xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-maxvalue="10"
+          xc-form-field-compact
+          xc-i18n
+        ></xc-form-input>
+        <xc-form-autocomplete label="label-monitoring-level" placeholder="placeholder-select"
+          [(xc-form-autocomplete-option)]="monitoringLevelDataWrapper.value"
+          [xc-form-autocomplete-options]="monitoringLevelDataWrapper.values"
+          xc-form-autocomplete-asdropdown
+          xc-form-field-suffix="clear"
+          xc-form-autocomplete-fulltextsearch
+          xc-form-field-compact
+          xc-i18n
+        ></xc-form-autocomplete>
+      }
+      @if (isSourceTypeWorkflow) {
+        <xc-panel>
+          <header>
+            <h2 xc-i18n>generating-order-type</h2>
+          </header>
+          <section>
+            <xc-form-autocomplete label="generating-order-type"
+              [disabled]="!generatingOrderTypeDataWrapper.values || !generatingOrderTypeDataWrapper.values.length"
+              placeholder="placeholder-select"
+              [(xc-form-autocomplete-option)]="generatingOrderTypeDataWrapper.value"
+              [xc-form-autocomplete-options]="generatingOrderTypeDataWrapper.values"
+              xc-form-autocomplete-showtooltip
+              xc-form-field-suffix="clear"
+              xc-form-autocomplete-fulltextsearch
+              xc-form-field-compact
+              xc-i18n
+            ></xc-form-autocomplete>
+          </section>
+        </xc-panel>
+      }
+      @if (isSourceTypeXTF) {
+        <xc-panel>
+          <header>
+            <h2 xcI18n>generating-order-type</h2>
+          </header>
+          <section>
+            <xc-form-autocomplete label="label-input-generator"
+              [disabled]="!generatingOrderTypeDataWrapper.values || !generatingOrderTypeDataWrapper.values.length"
+              placeholder="placeholder-select"
+              [(xc-form-autocomplete-option)]="generatingOrderTypeDataWrapper.value"
+              [xc-form-autocomplete-options]="generatingOrderTypeDataWrapper.values"
+              xc-form-autocomplete-showtooltip
+              xc-form-field-suffix="clear"
+              xc-form-autocomplete-fulltextsearch
+              xc-form-field-compact
+              xc-i18n
+            ></xc-form-autocomplete>
+            <xc-form-input label="label-test-case-id" [(value)]="xTFTestCaseID" readonly xc-form-validator-required xc-i18n xc-form-field-compact></xc-form-input>
+            <xc-form-input label="label-test-case-name" [(value)]="xTFTestCaseName" readonly xc-form-validator-required xc-i18n xc-form-field-compact></xc-form-input>
+          </section>
+        </xc-panel>
+      }
+      <xc-form-textarea label="textarea-documentation" [(value)]="detailsObject.documentation" xc-i18n xc-form-field-compact></xc-form-textarea>
+      <generate-input-component
+        xc-i18n-context="generate-input"
+        [orderInputSource]="detailsObject"
+        [fmanRtc]="fmanRTC"
+        [disabled]="invalid"
+        (generatingErrorEmitter)="onGeneratingError($event)"
+      ></generate-input-component>
+      <xc-panel>
+        <header>
+          <h2 xc-i18n>frequency-controlled-task</h2>
+        </header>
+        <section>
+          <xc-form-input label="label-name" [(value)]="detailsObject.name" xc-i18n xc-form-field-compact></xc-form-input>
+          <xc-form-input label="label-number-of-orders" xc-form-validator-number="float" xc-i18n [(value)]="fctNumberOfOdersDataWrapper.value" xc-form-field-compact></xc-form-input>
+          <div class="items-row">
+            <xc-form-autocomplete label="label-type"
+              [xc-form-autocomplete-options]="frequencyControlledTaskTypes.values" [(xc-form-autocomplete-option)]="frequencyControlledTaskTypes.value" placeholder="placeholder-select"
+              xc-form-autocomplete-asdropdown
+              xc-form-field-compact
+              xc-i18n
+              xc-form-autocomplete-fulltextsearch
+            ></xc-form-autocomplete>
+            <xc-form-input xc-form-validator-number="float" [(value)]="fctParameterValueDataWrapper.value" xc-form-field-compact></xc-form-input>
+          </div>
+          <xc-checkbox label="label-create-inputs-once" xc-i18n [(checked)]="fctParameters.createInputOnce"></xc-checkbox>
+          <xc-form-input label="label-data-point-count" xc-i18n xc-form-validator-number="float" [(value)]="fctDataPointCountDataWrapper.value" xc-form-field-compact></xc-form-input>
+          <xc-form-input label="label-data-point-distance" xc-i18n xc-form-validator-number="float" [(value)]="fctDataPointDistanceDataWrapper.value" xc-form-field-compact></xc-form-input>
+          <xc-checkbox label="label-delayed-start" xc-i18n [(checked)]="startDelayed"></xc-checkbox>
+          @if (startDelayed) {
+            <date-selector [(datetime)]="delayDataWrapper.value" [(timezone)]="fctParameters.timezone" [runtimeContext]="fmanRTC" (validityChange)="dateValidityChange($event)"></date-selector>
+          }
+          <xc-button (click)="startTask()" [disabled]="!isAbleToStartTask() || startDelayed && !dateValid || startingTask" [busy]="startingTask" xc-i18n>button-start-task</xc-button>
+          @if (frequencyId) {
+            <div>
+              <span xc-i18n>span-task-id</span><span>: &nbsp; {{ frequencyId }} </span> <!--<xc-button (click)="jumpToTask()">Go to Task</xc-button>-->
+              <xc-button (click)="jumpToTask()" [disabled]="startingTask" xc-i18n>button-show-task</xc-button>
+            </div>
+          }
+        </section>
+      </xc-panel>
     </section>
-    <footer class='items-row'>
-        <div class="items-left">
-            <xc-button (click)="dismiss()" xc-i18n>button-cancel</xc-button>
-        </div>
-        <div class="items-right">
-            <xc-button (click)="save()" color="primary" [disabled]="invalid" xc-i18n>button-save</xc-button>
-        </div>
-    </footer>
+  }
+  <footer class='items-row'>
+    <div class="items-left">
+      <xc-button (click)="dismiss()" xc-i18n>button-cancel</xc-button>
+    </div>
+    <div class="items-right">
+      <xc-button (click)="save()" color="primary" [disabled]="invalid" xc-i18n>button-save</xc-button>
+    </div>
+  </footer>
 </xc-panel>

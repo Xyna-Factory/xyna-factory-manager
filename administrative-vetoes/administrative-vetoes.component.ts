@@ -35,7 +35,8 @@ const ISWP = ADMINISTRATIVE_VETOES_ISWP;
 
 @Component({
     templateUrl: './administrative-vetoes.component.html',
-    styleUrls: ['./administrative-vetoes.component.scss']
+    styleUrls: ['./administrative-vetoes.component.scss'],
+    standalone: false
 })
 export class AdministrativeVetoesComponent extends RestorableAdministrativeVetoComponent {
 

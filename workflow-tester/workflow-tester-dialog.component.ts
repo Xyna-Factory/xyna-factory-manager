@@ -34,7 +34,8 @@ export interface WorkflowTesterData {
 
 @Component({
     templateUrl: './workflow-tester-dialog.component.html',
-    styleUrls: ['./workflow-tester-dialog.component.scss']
+    styleUrls: ['./workflow-tester-dialog.component.scss'],
+    standalone: false
 })
 export class WorkflowTesterDialogComponent extends XcDialogComponent<void, WorkflowTesterData> {
 

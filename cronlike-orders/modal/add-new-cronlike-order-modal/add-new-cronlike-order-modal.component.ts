@@ -45,7 +45,8 @@ export interface AddNewCronLikeOrderModalComponentData {
 @Component({
     selector: 'app-add-new-cronlike-order-modal',
     templateUrl: './add-new-cronlike-order-modal.component.html',
-    styleUrls: ['./add-new-cronlike-order-modal.component.scss']
+    styleUrls: ['./add-new-cronlike-order-modal.component.scss'],
+    standalone: false
 })
 export class AddNewCronlikeOrderModalComponent extends XcDialogComponent<boolean, AddNewCronLikeOrderModalComponentData> {
     @ViewChild(XcFormDirective, { static: false })

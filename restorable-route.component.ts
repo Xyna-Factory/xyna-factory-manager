@@ -38,7 +38,8 @@ export interface InputScreenWorkflowPackage {
 
 
 @Component({
-    template: ''
+    template: '',
+    standalone: false
 })
 export class RestorableRouteComponent<T extends XoObject = XoObject, D = T> extends RouteComponent implements OnInit {
 

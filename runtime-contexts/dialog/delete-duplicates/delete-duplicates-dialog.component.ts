@@ -34,7 +34,8 @@ import { deleteDuplicates_translations_en_US } from './locale/delete-duplicates-
 
 @Component({
     templateUrl: './delete-duplicates-dialog.component.html',
-    styleUrls: ['./delete-duplicates-dialog.component.scss']
+    styleUrls: ['./delete-duplicates-dialog.component.scss'],
+    standalone: false
 })
 export class DeleteDuplicatesDialogComponent extends XcDialogComponent<boolean, XoWorkspace> {
 

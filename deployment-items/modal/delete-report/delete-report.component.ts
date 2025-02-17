@@ -37,7 +37,8 @@ export interface DeleteReportComponentData {
 
 @Component({
     templateUrl: './delete-report.component.html',
-    styleUrls: ['./delete-report.component.scss']
+    styleUrls: ['./delete-report.component.scss'],
+    standalone: false
 })
 export class DeleteReportComponent extends XcDialogComponent<XoDeleteDeploymentItemParamArray, DeleteReportComponentData> {
 

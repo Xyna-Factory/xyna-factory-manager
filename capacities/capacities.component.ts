@@ -36,7 +36,8 @@ const ISWP = CAPACITY_ISWP;
 
 @Component({
     templateUrl: './capacities.component.html',
-    styleUrls: ['./capacities.component.scss']
+    styleUrls: ['./capacities.component.scss'],
+    standalone: false
 })
 export class CapacitiesComponent extends RestorableCapacitiesComponent {
 

@@ -1,218 +1,220 @@
 <xc-dialog-wrapper xc-form xc-i18n-context="fman.add-new-order-type-modal">
-    <ng-container header><span xc-i18n>header</span></ng-container>
+  <ng-container header><span xc-i18n>header</span></ng-container>
 
-    <section content>
-        <div *ngIf="error" class="error-box">
-            <div
-                [fm-focus-candidate]="errorBoxFocusCandidateRef"
-                fm-focus-candidate-focus-onload
-                class="error-msg"
-            ><div class="icon-div"><xc-icon xc-icon-name="msgwarning"></xc-icon></div><div>{{error}}</div></div>
+  <section content>
+    @if (error) {
+      <div class="error-box">
+        <div
+          [fm-focus-candidate]="errorBoxFocusCandidateRef"
+          fm-focus-candidate-focus-onload
+          class="error-msg"
+          ><div class="icon-div"><xc-icon xc-icon-name="msgwarning"></xc-icon></div><div>{{error}}</div></div>
         </div>
+      }
 
-        <xc-form-input label="label-name" [(value)]="orderType.fullQualifiedName" xc-form-validator-required xc-i18n></xc-form-input>
+      <xc-form-input label="label-name" [(value)]="orderType.fullQualifiedName" xc-form-validator-required xc-i18n></xc-form-input>
 
-        <xc-form-autocomplete label="label-workspace-application" placeholder="tooltip-select"
-            [(xc-form-autocomplete-option)]="runtimeContextsDataWrapper.value"
-            [xc-form-autocomplete-options]="runtimeContextsDataWrapper.values" xc-form-field-suffix="clear"
+      <xc-form-autocomplete label="label-workspace-application" placeholder="tooltip-select"
+        [(xc-form-autocomplete-option)]="runtimeContextsDataWrapper.value"
+        [xc-form-autocomplete-options]="runtimeContextsDataWrapper.values" xc-form-field-suffix="clear"
+        xc-form-validator-required
+        xc-i18n
+        xc-form-autocomplete-fulltextsearch
+      ></xc-form-autocomplete>
+
+      <!-- #region - PLANNING DESTINATION -->
+      <div class="custom-items-row equal-width-2">
+
+        @if (!defaultPlanningDestination) {
+          <xc-form-autocomplete
+            label="label-planning-destination"
+            placeholder="tooltip-select"
+            [(xc-form-autocomplete-option)]="planningDestinationDataWrapper.value"
+            [xc-form-autocomplete-options]="planningDestinationDataWrapper.values"
+            xc-form-field-suffix="clear"
+            xc-form-autocomplete-fulltextsearch
             xc-form-validator-required
             xc-i18n
-            xc-form-autocomplete-fulltextsearch
+          ></xc-form-autocomplete>
+        }
+
+        @if (defaultPlanningDestination) {
+          <xc-form-input
+            label="label-planning-destination"
+            value="{{'value-default-planning' | xcI18n }}"
+            readonly
+            xc-i18n
+          ></xc-form-input>
+        }
+
+        <xc-checkbox
+          [(checked)]="defaultPlanningDestination"
+          label="label-default-planning-service"
+          xc-i18n
+        ></xc-checkbox>
+
+      </div>
+      <!-- #endregion -->
+
+      <!-- #region - EXECUTION DESTINATION -->
+      <div class="custom-items-row equal-width-2">
+
+        <xc-form-autocomplete
+          label="label-execution-destination"
+          placeholder="tooltip-select"
+          [(xc-form-autocomplete-option)]="executionDestinationDataWrapper.value"
+          [xc-form-autocomplete-options]="executionDestinationDataWrapper.values"
+          xc-form-field-suffix="clear"
+          xc-form-autocomplete-fulltextsearch
+          xc-form-validator-required
+          xc-i18n
         ></xc-form-autocomplete>
 
-        <!-- #region - PLANNING DESTINATION -->
+        <div class="dummy"></div>
+
+      </div>
+      <!-- #endregion -->
+
+      <!-- #region - Monitoring level -->
+      <div class="custom-items-row equal-width-2">
+
+        <xc-form-autocomplete
+          label="label-monitoring-level"
+          placeholder="tooltip-select"
+          [(xc-form-autocomplete-option)]="monitoringLevelDataWrapper.value"
+          [xc-form-autocomplete-options]="monitoringLevelDataWrapper.values"
+          xc-form-field-suffix="clear"
+          xc-form-autocomplete-fulltextsearch
+          xc-form-autocomplete-asinput
+          xc-i18n
+        ></xc-form-autocomplete>
+
+        <div></div>
+
+      </div>
+      <!-- #endregion -->
+
+      <!-- #region - PRECEDENCE AND PRIORITY -->
+      <div class="custom-items-row equal-width-2">
+        <xc-form-input
+          label="label-precedence"
+          [(value)]="precedenceDataWrapper.value"
+          xc-i18n
+          xc-form-validator-number
+        ></xc-form-input>
+
         <div class="custom-items-row equal-width-2">
 
-            <ng-container *ngIf="!defaultPlanningDestination">
-                <xc-form-autocomplete
-                    label="label-planning-destination"
-                    placeholder="tooltip-select"
-                    [(xc-form-autocomplete-option)]="planningDestinationDataWrapper.value"
-                    [xc-form-autocomplete-options]="planningDestinationDataWrapper.values"
-                    xc-form-field-suffix="clear"
-                    xc-form-autocomplete-fulltextsearch
-                    xc-form-validator-required
-                    xc-i18n
-                ></xc-form-autocomplete>
-            </ng-container>
-
-            <ng-container *ngIf="defaultPlanningDestination">
-                <xc-form-input
-                    label="label-planning-destination"
-                    value="{{'value-default-planning' | xcI18n }}"
-                    readonly
-                    xc-i18n
-                ></xc-form-input>
-            </ng-container>
-
-            <xc-checkbox
-                [(checked)]="defaultPlanningDestination"
-                label="label-default-planning-service"
-                xc-i18n
-            ></xc-checkbox>
-
-        </div>
-        <!-- #endregion -->
-
-        <!-- #region - EXECUTION DESTINATION -->
-        <div class="custom-items-row equal-width-2">
-
-            <xc-form-autocomplete
-                label="label-execution-destination"
-                placeholder="tooltip-select"
-                [(xc-form-autocomplete-option)]="executionDestinationDataWrapper.value"
-                [xc-form-autocomplete-options]="executionDestinationDataWrapper.values"
-                xc-form-field-suffix="clear"
-                xc-form-autocomplete-fulltextsearch
-                xc-form-validator-required
-                xc-i18n
-            ></xc-form-autocomplete>
-
-            <div class="dummy"></div>
-
-        </div>
-        <!-- #endregion -->
-
-        <!-- #region - Monitoring level -->
-        <div class="custom-items-row equal-width-2">
-
-            <xc-form-autocomplete
-                label="label-monitoring-level"
-                placeholder="tooltip-select"
-                [(xc-form-autocomplete-option)]="monitoringLevelDataWrapper.value"
-                [xc-form-autocomplete-options]="monitoringLevelDataWrapper.values"
-                xc-form-field-suffix="clear"
-                xc-form-autocomplete-fulltextsearch
-                xc-form-autocomplete-asinput
-                xc-i18n
-            ></xc-form-autocomplete>
-
-            <div></div>
-
-        </div>
-        <!-- #endregion -->
-
-        <!-- #region - PRECEDENCE AND PRIORITY -->
-        <div class="custom-items-row equal-width-2">
+          @if (defaultPriority) {
             <xc-form-input
-                label="label-precedence"
-                [(value)]="precedenceDataWrapper.value"
-                xc-i18n
-                xc-form-validator-number
+              label="label-priority"
+              value=""
+              xc-i18n
+              disabled
+              xc-form-validator-number
+              xc-form-validator-minvalue="1"
+              xc-form-validator-maxvalue="10"
+            ></xc-form-input>
+          }
+
+          @if (!defaultPriority) {
+            <xc-form-input
+              label="label-priority"
+              [(value)]="priorityDataWrapper.value"
+              xc-i18n
+              xc-form-validator-required
+              xc-form-validator-number
+              xc-form-validator-minvalue="1"
+              xc-form-validator-maxvalue="10"
+            ></xc-form-input>
+          }
+
+          <xc-checkbox
+            [(checked)]="defaultPriority"
+            label="label-default-priority"
+            xc-i18n
+          ></xc-checkbox>
+
+        </div>
+
+      </div>
+      <!-- #endregion -->
+
+      <!-- #region - CHILD ORDER INHERITANCE RULES -->
+      <xc-panel>
+        <header>
+          <h3 xc-i18n>header-child-order-inheritance-rules</h3>
+        </header>
+        <section>
+
+          <div class="items-row">
+
+            <xc-form-input
+              label="label-filter"
+              [(value)]="childOrderInheritanceRulesFilter"
+              xc-i18n
             ></xc-form-input>
 
-            <div class="custom-items-row equal-width-2">
+            <xc-form-autocomplete
+              label="label-monitoring-level"
+              placeholder="tooltip-select"
+              [(xc-form-autocomplete-option)]="childOrderInheritanceRulesMonitoringLevelDataWrapper.value"
+              [xc-form-autocomplete-options]="childOrderInheritanceRulesMonitoringLevelDataWrapper.values"
+              xc-form-field-suffix="clear"
+              xc-form-autocomplete-fulltextsearch
+              xc-form-autocomplete-asinput
+              xc-i18n
+            ></xc-form-autocomplete>
 
-                <ng-container *ngIf="defaultPriority">
-                    <xc-form-input
-                        label="label-priority"
-                        value=""
-                        xc-i18n
-                        disabled
-                        xc-form-validator-number
-                        xc-form-validator-minvalue="1"
-                        xc-form-validator-maxvalue="10"
-                    ></xc-form-input>
-                </ng-container>
+            <xc-form-input
+              label="label-precedence"
+              [(value)]="childOrderInheritanceRulesPrecedenceDataWrapper.value"
+              xc-i18n
+              xc-form-validator-number
+            ></xc-form-input>
 
-                <ng-container *ngIf="!defaultPriority">
-                    <xc-form-input
-                        label="label-priority"
-                        [(value)]="priorityDataWrapper.value"
-                        xc-i18n
-                        xc-form-validator-required
-                        xc-form-validator-number
-                        xc-form-validator-minvalue="1"
-                        xc-form-validator-maxvalue="10"
-                    ></xc-form-input>
-                </ng-container>
+            <xc-icon-button
+              (click)="addChildOrderInheritanceRule()"
+              xc-tooltip="tooltip-add-child-order-inheritance-rule"
+              xc-i18n
+              class="add"
+              xc-icon-name="add"
+            ></xc-icon-button>
 
-                <xc-checkbox
-                    [(checked)]="defaultPriority"
-                    label="label-default-priority"
-                    xc-i18n
-                ></xc-checkbox>
+          </div>
 
-            </div>
+          <xc-rich-list [xc-rich-list-items]="childOrderInheritanceRulesItems" xc-i18n-context="child-order-inheritance-rules"></xc-rich-list>
 
-        </div>
-        <!-- #endregion -->
-
-        <!-- #region - CHILD ORDER INHERITANCE RULES -->
-        <xc-panel>
-            <header>
-                <h3 xc-i18n>header-child-order-inheritance-rules</h3>
-            </header>
-            <section>
-
-                <div class="items-row">
-
-                    <xc-form-input
-                        label="label-filter"
-                        [(value)]="childOrderInheritanceRulesFilter"
-                        xc-i18n
-                    ></xc-form-input>
-
-                    <xc-form-autocomplete
-                        label="label-monitoring-level"
-                        placeholder="tooltip-select"
-                        [(xc-form-autocomplete-option)]="childOrderInheritanceRulesMonitoringLevelDataWrapper.value"
-                        [xc-form-autocomplete-options]="childOrderInheritanceRulesMonitoringLevelDataWrapper.values"
-                        xc-form-field-suffix="clear"
-                        xc-form-autocomplete-fulltextsearch
-                        xc-form-autocomplete-asinput
-                        xc-i18n
-                    ></xc-form-autocomplete>
-
-                    <xc-form-input
-                        label="label-precedence"
-                        [(value)]="childOrderInheritanceRulesPrecedenceDataWrapper.value"
-                        xc-i18n
-                        xc-form-validator-number
-                    ></xc-form-input>
-
-                    <xc-icon-button
-                        (click)="addChildOrderInheritanceRule()"
-                        xc-tooltip="tooltip-add-child-order-inheritance-rule"
-                        xc-i18n
-                        class="add"
-                        xc-icon-name="add"
-                    ></xc-icon-button>
-
-                </div>
-
-                <xc-rich-list [xc-rich-list-items]="childOrderInheritanceRulesItems" xc-i18n-context="child-order-inheritance-rules"></xc-rich-list>
-
-            </section>
-        </xc-panel>
-        <br>
+        </section>
+      </xc-panel>
+      <br>
         <!-- #endregion -->
 
         <!-- #region - CAPACITIES -->
         <xc-panel style="max-height: 400px">
-            <header>
-                <h3 xc-i18n>header-capacities</h3>
-                <xc-icon-button (click)="refreshOrderTypeCapacitiesDataSource()" xc-tooltip="tooltip-refresh" xc-i18n class="refresh items-right" xc-icon-name="reload"></xc-icon-button>
-            </header>
-                <xc-table
-                    [xc-table-datasource]="dsOrderTypeCapacitiesDataSource"
-                    xc-table-allowsort
-                    xc-table-allowfilter
-                ></xc-table>
+          <header>
+            <h3 xc-i18n>header-capacities</h3>
+            <xc-icon-button (click)="refreshOrderTypeCapacitiesDataSource()" xc-tooltip="tooltip-refresh" xc-i18n class="refresh items-right" xc-icon-name="reload"></xc-icon-button>
+          </header>
+          <xc-table
+            [xc-table-datasource]="dsOrderTypeCapacitiesDataSource"
+            xc-table-allowsort
+            xc-table-allowfilter
+          ></xc-table>
         </xc-panel>
         <br>
-        <!-- #endregion -->
+          <!-- #endregion -->
 
-        <!-- #region - DOCUMENTATION -->
-        <xc-form-textarea label="label-documentation" [(value)]="orderType.documentation" xc-i18n>
-        </xc-form-textarea>
-        <!-- #endregion -->
+          <!-- #region - DOCUMENTATION -->
+          <xc-form-textarea label="label-documentation" [(value)]="orderType.documentation" xc-i18n>
+          </xc-form-textarea>
+          <!-- #endregion -->
 
-    </section>
+        </section>
 
-    <ng-container footer>
-        <xc-button (click)="dismiss(false)" xc-i18n>button-cancel</xc-button>
-        <xc-button (click)="add()" [busy]="busy" color="primary" [disabled]="invalid" xc-i18n>button-add</xc-button>
-    </ng-container>
+        <ng-container footer>
+          <xc-button (click)="dismiss(false)" xc-i18n>button-cancel</xc-button>
+          <xc-button (click)="add()" [busy]="busy" color="primary" [disabled]="invalid" xc-i18n>button-add</xc-button>
+        </ng-container>
 
-</xc-dialog-wrapper>
+      </xc-dialog-wrapper>

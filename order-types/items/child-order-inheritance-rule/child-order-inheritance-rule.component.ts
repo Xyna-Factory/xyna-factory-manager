@@ -29,7 +29,8 @@ export interface ChildOrderInheritanceRuleComponentData {
 
 @Component({
     templateUrl: './child-order-inheritance-rule.component.html',
-    styleUrls: [ './child-order-inheritance-rule.component.scss']
+    styleUrls: ['./child-order-inheritance-rule.component.scss'],
+    standalone: false
 })
 export class ChildOrderInheritanceRuleComponent extends XcRichListItemComponent<void, ChildOrderInheritanceRuleComponentData> {
 
