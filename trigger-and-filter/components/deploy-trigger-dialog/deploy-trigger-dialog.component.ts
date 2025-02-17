@@ -126,11 +126,7 @@ export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerIns
         request.triggerName = this.injectedData.name;
         request.triggerInstanceName = this.instance;
         request.runtimeContext = this.context;
-        if (this.legacy) {
-            request.startParameter = this.parameter;
-        } else {
-            request.startParameter = this.buildStartparameterRequest();
-        }
+        request.startParameter = this.legacy ? this.parameter : this.buildStartparameterRequest();
         request.documentation = this.documentation;
 
         this.apiService.startOrder(FM_RTC, ORDER_TYPES.DEPLOY_TRIGGER, request, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
