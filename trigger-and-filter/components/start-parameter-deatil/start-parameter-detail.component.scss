@@ -15,36 +15,21 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { XoRuntimeContext } from '@fman/runtime-contexts/xo/xo-runtime-context.model';
-import { XoObjectClass, XoArrayClass, XoProperty, XoObject, XoArray } from '@zeta/api';
+@import 'const';
 
+:host {
 
-@XoObjectClass(null, 'xmcp.factorymanager.filtermanager', 'DeployTriggerRequest')
-export class XoDeployTriggerRequest extends XoObject {
+    ::ng-deep {
+        td {
+            white-space: pre-wrap;
+        }
+    }
 
-
-    @XoProperty()
-    triggerName: string;
-
-
-    @XoProperty()
-    triggerInstanceName: string;
-
-
-    @XoProperty()
-    documentation: string;
-
-
-    @XoProperty(XoRuntimeContext)
-    runtimeContext: XoRuntimeContext = new XoRuntimeContext();
-
-
-    @XoProperty()
-    startParameter: string;
-
-
-}
-
-@XoArrayClass(XoDeployTriggerRequest)
-export class XoDeployTriggerRequestArray extends XoArray<XoDeployTriggerRequest> {
+    .legacy {
+        display: flex;
+        flex-direction: column;
+        ul {
+            margin: 0 0 20px;
+        }
+    }
 }

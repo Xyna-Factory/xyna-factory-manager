@@ -18,7 +18,7 @@
 import { Component, Injector } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-import { XcAutocompleteDataWrapper, XcDialogComponent, XcDialogService, XcOptionItem } from '@zeta/xc';
+import { XcAutocompleteDataWrapper, XcDialogComponent, XcDialogService, XcOptionItem, XDSIconName } from '@zeta/xc';
 
 import { FM_RTC } from '../../../const';
 import { ORDER_TYPES } from '../../order-types';
@@ -26,7 +26,12 @@ import { XoTrigger } from '@fman/trigger-and-filter/xo/xo-trigger.model';
 import { XoTriggerInstance } from '@fman/trigger-and-filter/xo/xo-trigger-instance.model';
 import { XoDeployTriggerRequest } from '@fman/trigger-and-filter/xo/xo-deploy-trigger-request.model';
 import { XoRuntimeContext, XoRuntimeContextArray } from '@fman/runtime-contexts/xo/xo-runtime-context.model';
+import { XoStartParameterDetails, XoStartParameterDetailsArray } from '@fman/trigger-and-filter/xo/xo-start-parameter-details.model';
 
+interface StartParameter {
+    key: string;
+    value: string;
+}
 
 
 @Component({
@@ -35,10 +40,15 @@ import { XoRuntimeContext, XoRuntimeContextArray } from '@fman/runtime-contexts/
 })
 export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerInstance, XoTrigger> {
 
+    readonly XDSIconName = XDSIconName;
+
     instance: string;
     parameter: string;
     documentation: string;
     busy: boolean;
+    startParameter: XoStartParameterDetails[];
+    legacy: boolean;
+    startparameter: {parameter: StartParameter; wrapper: XcAutocompleteDataWrapper<string>}[] = [];
 
     context: XoRuntimeContext = this.injectedData.runtimeContext;
 
@@ -54,6 +64,34 @@ export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerIns
         super(injector);
 
         this.fillContextWrapper();
+        this.getStartParameter();
+    }
+
+    deleteStartParameter(index: number) {
+        this.startparameter.splice(index, 1);
+    }
+
+    appendStartparameter() {
+        const param = {key: '', value: ''};
+        this.startparameter.push({
+            parameter: param,
+            wrapper: new XcAutocompleteDataWrapper<string>(
+                () => param.key,
+                value => {
+                    param.key = value;
+                },
+                this.startParameter.map(para =>
+                    <XcOptionItem<string>>{name: para.name, value: para.name}
+                )
+            )
+        });
+    }
+
+    private buildStartparameterRequest(): string {
+        return this.startparameter.
+            filter(para => !!para.parameter.key).
+            map(para => para.parameter.key + '=' + para.parameter.value).
+            reduce((pre, cur) => pre + ' ' + cur);
     }
 
     fillContextWrapper() {
@@ -68,6 +106,18 @@ export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerIns
             });
     }
 
+    getStartParameter() {
+        this.apiService.startOrderAssertFlat<XoStartParameterDetails>(FM_RTC, ORDER_TYPES.POSSIBLE_START_PARAMETER_TRIGGER, this.injectedData, XoStartParameterDetailsArray).subscribe({
+            next: result => {
+                this.startParameter = result;
+                this.legacy = result.length > 0 && result[0].lagacyParameterCombination?.length > 0;
+            },
+            error: err => {
+                this.dialogService.error(err);
+            }
+        });
+    }
+
     deploy() {
 
         this.busy = true;
@@ -76,7 +126,7 @@ export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerIns
         request.triggerName = this.injectedData.name;
         request.triggerInstanceName = this.instance;
         request.runtimeContext = this.context;
-        request.startParameter = this.parameter;
+        request.startParameter = this.legacy ? this.parameter : this.buildStartparameterRequest();
         request.documentation = this.documentation;
 
         this.apiService.startOrder(FM_RTC, ORDER_TYPES.DEPLOY_TRIGGER, request, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)

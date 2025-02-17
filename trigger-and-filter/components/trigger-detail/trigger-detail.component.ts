@@ -22,6 +22,7 @@ import { XoRuntimeApplication } from '@fman/runtime-contexts/xo/xo-runtime-appli
 import { XoWorkspace } from '@fman/runtime-contexts/xo/xo-workspace.model';
 import { ORDER_TYPES } from '@fman/trigger-and-filter/order-types';
 import { XoGetTriggerRequest } from '@fman/trigger-and-filter/xo/xo-get-trigger-request.model';
+import { XoStartParameterDetails, XoStartParameterDetailsArray } from '@fman/trigger-and-filter/xo/xo-start-parameter-details.model';
 import { XoTriggerDetail } from '@fman/trigger-and-filter/xo/xo-trigger-detail.model';
 import { XoTrigger } from '@fman/trigger-and-filter/xo/xo-trigger.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
@@ -36,6 +37,7 @@ import { XC_COMPONENT_DATA, XcDialogService, XcDynamicComponent } from '@zeta/xc
 })
 export class TriggerDetailComponent extends XcDynamicComponent<XoTrigger> {
 
+    startParameter: XoStartParameterDetails[];
 
     protected getToken(): InjectionToken<string> {
         return XC_COMPONENT_DATA;
@@ -49,7 +51,20 @@ export class TriggerDetailComponent extends XcDynamicComponent<XoTrigger> {
         private readonly dialogService: XcDialogService,
         private readonly cdr: ChangeDetectorRef) {
         super(injector);
+        this.getStartParameter();
         this.refresh();
+    }
+
+    getStartParameter() {
+        this.apiService.startOrderAssertFlat<XoStartParameterDetails>(FM_RTC, ORDER_TYPES.POSSIBLE_START_PARAMETER_TRIGGER, this.injectedData, XoStartParameterDetailsArray).subscribe({
+            next: result => {
+                this.startParameter = result;
+                this.cdr.markForCheck();
+            },
+            error: err => {
+                this.dialogService.error(err);
+            }
+        });
     }
 
     refresh() {

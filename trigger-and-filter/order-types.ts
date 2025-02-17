@@ -32,5 +32,6 @@ export const ORDER_TYPES = {
     UNDEPLOY_TRIGGER: 'xmcp.factorymanager.filtermanager.UndeployTriggerInstance',
     POSSIBLE_TRIGGER_INSTANCES: 'xmcp.factorymanager.filtermanager.GetPossibleTriggerInstanceForFilterDeployment',
     POSSIBLE_CONTEXT_TRIGGER: 'xmcp.factorymanager.filtermanager.GetPossibleRTCForTriggerDeployment',
+    POSSIBLE_START_PARAMETER_TRIGGER: 'xmcp.factorymanager.filtermanager.GetPossibleStartParameterForTriggerDeployment',
     POSSIBLE_CONTEXT_FILTER: 'xmcp.factorymanager.filtermanager.GetPossibleRTCForFilterDeployment'
 };
