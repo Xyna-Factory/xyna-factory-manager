@@ -31,6 +31,8 @@ export const trigger_and_filter_translations_de_DE: I18nTranslation[] = [
     { key: 'fman.taf.trigger.trigger-title', value: 'Trigger' },
     { key: 'fman.taf.trigger.tooltip-refresh', value: 'Aktualisieren' },
     { key: 'fman.taf.trigger.tile.deploy', value: 'Deploy' },
+    { key: 'fman.taf.trigger.tile.Possible start parameter combinations', value: 'Mögliche Startparameter Kombinationen' },
+    { key: 'fman.taf.trigger.tile.Combination', value: 'Kombination' },
 
     // FilterInstanceDetailComponent
 
@@ -78,6 +80,10 @@ export const trigger_and_filter_translations_de_DE: I18nTranslation[] = [
     { key: 'fman.deploy-trigger-dialog.documentation', value: 'Beschreibung' },
     { key: 'fman.deploy-trigger-dialog.cancel', value: 'Abbrechen' },
     { key: 'fman.deploy-trigger-dialog.deploy', value: 'Deploy Trigger' },
+    { key: 'fman.deploy-trigger-dialog.Possible start parameter combinations', value: 'Mögliche Startparameter Kombinationen' },
+    { key: 'fman.deploy-trigger-dialog.Combination', value: 'Kombination' },
+    { key: 'Necessity', value: 'Notwendigkeit' },
+    { key: 'fman.deploy-trigger-dialog.Parameter', value: 'Parameter' },
 
 
 

@@ -105,6 +105,7 @@ import { WorkflowTesterComponent } from './workflow-tester/workflow-tester.compo
 import { AddNewXynaPropertyModalComponent } from './xyna-properties/modal/add-new-xyna-property-modal/add-new-xyna-property-modal.component';
 import { XynaPropertyTableValueTemplateComponent } from './xyna-properties/templates/xyna-property-table-value-template.model';
 import { XynaPropertiesComponent } from './xyna-properties/xyna-properties.component';
+import { StartParameterDetailComponent } from './trigger-and-filter/components/start-parameter-deatil/start-parameter-detail.component';
 
 
 @NgModule({
@@ -175,6 +176,7 @@ import { XynaPropertiesComponent } from './xyna-properties/xyna-properties.compo
         RuntimeContextNameComponent,
         ShowWorkspaceContentDialogComponent,
         SelectRuntimeContextComponent,
+        StartParameterDetailComponent,
         StorableInputParameterComponent,
         StorableInstancesComponent,
         StorableInstanceCreationComponent,

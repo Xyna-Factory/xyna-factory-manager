@@ -17,24 +17,19 @@
  */
 @import 'const';
 
-
 :host {
-    [content] {
-        display: flex;
-        flex-direction: column;
-        min-width: 480px;
-        overflow: auto;
+
+    ::ng-deep {
+        td {
+            white-space: pre-wrap;
+        }
     }
 
-    .startparameter {
+    .legacy {
         display: flex;
-        .item {
-            flex: 1 1 auto;
-            margin-right: 10px;
-        }
-        .icon {
-            flex: 0 0 auto;
-            align-items: center;
+        flex-direction: column;
+        ul {
+            margin: 0 0 20px;
         }
     }
 }
