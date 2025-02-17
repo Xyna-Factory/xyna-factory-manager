@@ -18,7 +18,7 @@
 import { Component, Injector } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-import { XcAutocompleteDataWrapper, XcDialogComponent, XcDialogService, XcOptionItem, XcOptionItemString, XDSIconName } from '@zeta/xc';
+import { XcAutocompleteDataWrapper, XcDialogComponent, XcDialogService, XcOptionItem, XDSIconName } from '@zeta/xc';
 
 import { FM_RTC } from '../../../const';
 import { ORDER_TYPES } from '../../order-types';
