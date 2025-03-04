@@ -15,4 +15,4 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-@import '../../../misc/styles/default-modal-styles.scss';
+@use '../../../misc/styles/default-modal-styles.scss' as *;

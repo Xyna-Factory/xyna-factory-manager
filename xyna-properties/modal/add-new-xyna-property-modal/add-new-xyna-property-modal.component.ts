@@ -37,7 +37,8 @@ export interface AddNewXynaPropertyModalComponentData {
 
 @Component({
     templateUrl: './add-new-xyna-property-modal.component.html',
-    styleUrls: ['./add-new-xyna-property-modal.component.scss']
+    styleUrls: ['./add-new-xyna-property-modal.component.scss'],
+    standalone: false
 })
 export class AddNewXynaPropertyModalComponent extends XcDialogComponent<boolean, AddNewXynaPropertyModalComponentData> {
 

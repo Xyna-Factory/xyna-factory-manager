@@ -52,7 +52,8 @@ const ISWP = ORDER_TYPE_ISWP;
 
 @Component({
     templateUrl: './order-types.component.html',
-    styleUrls: ['./order-types.component.scss']
+    styleUrls: ['./order-types.component.scss'],
+    standalone: false
 })
 export class OrderTypesComponent extends RestorableOrderTypesComponent implements OnDestroy {
 
@@ -146,8 +147,8 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
 
         this.tableInfoChangeSubscription = this.remoteTableDataSource.tableInfoChange.subscribe(() => {
             // reset overriding execution destination filter that might have been set via jumping from workflow in PMOD to order type overview
-            console.log('tableInfoChange');
-            this.remoteTableDataSource.input = [ new XoExecutionDestinationFilter(), this.orderTypeTableFilter ];
+            // console.log('tableInfoChange');
+            this.remoteTableDataSource.input = [new XoExecutionDestinationFilter(), this.orderTypeTableFilter];
         });
 
         this.selectedEntryChange.subscribe(
@@ -211,12 +212,12 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
         // filter with query params that are set when jumping from workflow in PMOD to order type overview
         route.queryParams.subscribe(queryParams => {
             if (!queryParams.executionDestinationFilter) {
-                console.log('queryParams.executionDestinationFilter === undefined -> nothing to do');
+                // console.log('queryParams.executionDestinationFilter === undefined -> nothing to do');
                 return;
             }
 
             console.log('QueryParams: ' + JSON.stringify(queryParams));
-            const filterValues = JSON.parse(decodeURI(queryParams.executionDestinationFilter)) as {rtc: string; fqn: string; type: XmomObjectType};
+            const filterValues = JSON.parse(decodeURI(queryParams.executionDestinationFilter)) as { rtc: string; fqn: string; type: XmomObjectType };
             const rtc = XoRuntimeContext.fromQueryParam(filterValues.rtc).runtimeContext();
             const fqn = FullQualifiedName.decode(filterValues.fqn);
 
@@ -229,12 +230,12 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
                 executionDestinationFilter.workspace = rtc.ws.workspace;
             }
 
-            console.log('executionDestinationFilter.application: ' + executionDestinationFilter.application);
-            console.log('executionDestinationFilter.version: ' + executionDestinationFilter.version);
-            console.log('executionDestinationFilter.workspace: ' + executionDestinationFilter.workspace);
-            console.log('executionDestinationFilter.executionDestination: ' + executionDestinationFilter.executionDestination);
+            // console.log('executionDestinationFilter.application: ' + executionDestinationFilter.application);
+            // console.log('executionDestinationFilter.version: ' + executionDestinationFilter.version);
+            // console.log('executionDestinationFilter.workspace: ' + executionDestinationFilter.workspace);
+            // console.log('executionDestinationFilter.executionDestination: ' + executionDestinationFilter.executionDestination);
 
-            this.remoteTableDataSource.input = [ executionDestinationFilter ];
+            this.remoteTableDataSource.input = [executionDestinationFilter];
             this.refresh();
 
             void this.router.navigateByUrl(ORDER_TYPES_URL);
@@ -276,7 +277,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
                 if (negativnumber.test(this.detailsObject.monitoringLevel)) {
                     this.detailsObject.monitoringLevel = '-1';
                 } else if (!this.monitoringLevelDataWrapper.values.find(item => item.value === this.detailsObject.monitoringLevel)) {
-                    this.monitoringLevelDataWrapper.values.push({name: this.detailsObject.monitoringLevel, value: this.detailsObject.monitoringLevel});
+                    this.monitoringLevelDataWrapper.values.push({ name: this.detailsObject.monitoringLevel, value: this.detailsObject.monitoringLevel });
                 }
             } else {
                 this.detailsObject.monitoringLevel = '-1';

@@ -36,7 +36,8 @@ const ISWP = XYNA_PROPERTY_ISWP;
 
 @Component({
     templateUrl: './xyna-properties.component.html',
-    styleUrls: ['./xyna-properties.component.scss']
+    styleUrls: ['./xyna-properties.component.scss'],
+    standalone: false
 })
 export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
 

@@ -41,7 +41,8 @@ export interface InputParameter {
 @Component({
     selector: 'storable-input-parameter',
     templateUrl: './storable-input-parameter.component.html',
-    styleUrls: ['./storable-input-parameter.component.scss']
+    styleUrls: ['./storable-input-parameter.component.scss'],
+    standalone: false
 })
 export class StorableInputParameterComponent {
     @Output()

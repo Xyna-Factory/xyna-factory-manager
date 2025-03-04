@@ -1,65 +1,73 @@
 <xc-dialog-wrapper xc-i18n-context="fman.import-runtime-application">
-    <ng-container header><span xc-i18n>import-runtime-application-title</span></ng-container>
-    <section content xc-form #form="xc-form">
-        <span class="archive">
-            <xc-form-label xc-i18n>import-runtime-application-archive</xc-form-label>
-            <label *ngIf="filename && filename.length > 0" [class.error]="erroneousFilename">{{filename}}</label>
-            <xc-button (click)="chooseFile()" [busy]="loadingFile" [disabled]="importing || loadingFile" xc-i18n>import-runtime-application-choosefile</xc-button>
-        </span>
+  <ng-container header><span xc-i18n>import-runtime-application-title</span></ng-container>
+  <section content xc-form #form="xc-form">
+    <span class="archive">
+      <xc-form-label xc-i18n>import-runtime-application-archive</xc-form-label>
+      @if (filename && filename.length > 0) {
+        <label [class.error]="erroneousFilename">{{filename}}</label>
+      }
+      <xc-button (click)="chooseFile()" [busy]="loadingFile" [disabled]="importing || loadingFile" xc-i18n>import-runtime-application-choosefile</xc-button>
+    </span>
 
-        <xc-panel>
-            <header>
-                <h2 xc-i18n>import-runtime-application-target-nodes</h2>
-            </header>
-            <section>
-                <div *ngFor="let node of nodes"
-                    class="target-node"
-                >
-                    <xc-checkbox
-                        [(checked)]="node.used"
-                        [label]="node.node.name"
-                    ></xc-checkbox>
-                </div>
-            </section>
-        </xc-panel>
+    <xc-panel>
+      <header>
+        <h2 xc-i18n>import-runtime-application-target-nodes</h2>
+      </header>
+      <section>
+        @for (node of nodes; track node) {
+          <div
+            class="target-node"
+            >
+            <xc-checkbox
+              [(checked)]="node.used"
+              [label]="node.node.name"
+            ></xc-checkbox>
+          </div>
+        }
+      </section>
+    </xc-panel>
 
-        <xc-panel>
-            <header>
-                <h2 xc-i18n>import-runtime-application-global-settings</h2>
-            </header>
-            <section>
-                <xc-checkbox
-                    [(checked)]="useApplication"
-                    label="import-runtime-application-settings-application"
-                    xc-i18n
-                ></xc-checkbox>
-                <xc-checkbox *ngIf="useApplication"
-                    [(checked)]="importRequest.overrideExisting"
-                    label="import-runtime-application-settings-overwriteexisting"
-                    xc-i18n
-                    class="indent"
-                ></xc-checkbox>
-                <xc-checkbox *ngIf="useApplication"
-                    [(checked)]="importRequest.onAllClusterNodes"
-                    label="import-runtime-application-settings-onallclusternodes"
-                    xc-i18n
-                    class="indent"
-                ></xc-checkbox>
-                <xc-checkbox
-                    [(checked)]="importRequest.includeXynaProperties"
-                    label="import-runtime-application-settings-xynaproperties"
-                    xc-i18n
-                ></xc-checkbox>
-                <xc-checkbox
-                    [(checked)]="importRequest.includeXynaCapacities"
-                    label="import-runtime-application-settings-capacities"
-                    xc-i18n
-                ></xc-checkbox>
-            </section>
-        </xc-panel>
-    </section>
-    <ng-container footer>
-        <xc-button (click)="dismiss()" xc-i18n>button-cancel</xc-button>
-        <xc-button color="primary" (click)="import()" [busy]="importing" [disabled]="importing || loadingFile || !importRequest.managedFileId" xc-i18n>button-import</xc-button>
-    </ng-container>
+    <xc-panel>
+      <header>
+        <h2 xc-i18n>import-runtime-application-global-settings</h2>
+      </header>
+      <section>
+        <xc-checkbox
+          [(checked)]="useApplication"
+          label="import-runtime-application-settings-application"
+          xc-i18n
+        ></xc-checkbox>
+        @if (useApplication) {
+          <xc-checkbox
+            [(checked)]="importRequest.overrideExisting"
+            label="import-runtime-application-settings-overwriteexisting"
+            xc-i18n
+            class="indent"
+          ></xc-checkbox>
+        }
+        @if (useApplication) {
+          <xc-checkbox
+            [(checked)]="importRequest.onAllClusterNodes"
+            label="import-runtime-application-settings-onallclusternodes"
+            xc-i18n
+            class="indent"
+          ></xc-checkbox>
+        }
+        <xc-checkbox
+          [(checked)]="importRequest.includeXynaProperties"
+          label="import-runtime-application-settings-xynaproperties"
+          xc-i18n
+        ></xc-checkbox>
+        <xc-checkbox
+          [(checked)]="importRequest.includeXynaCapacities"
+          label="import-runtime-application-settings-capacities"
+          xc-i18n
+        ></xc-checkbox>
+      </section>
+    </xc-panel>
+  </section>
+  <ng-container footer>
+    <xc-button (click)="dismiss()" xc-i18n>button-cancel</xc-button>
+    <xc-button color="primary" (click)="import()" [busy]="importing" [disabled]="importing || loadingFile || !importRequest.managedFileId" xc-i18n>button-import</xc-button>
+  </ng-container>
 </xc-dialog-wrapper>

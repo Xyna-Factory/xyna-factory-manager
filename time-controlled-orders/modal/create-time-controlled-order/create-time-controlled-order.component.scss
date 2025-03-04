@@ -15,8 +15,8 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-@import '../../../misc/styles/default-modal-styles.scss';
-@import 'const';
+@use '../../../misc/styles/default-modal-styles.scss' as *;
+@use '../../../const' as *;
 
 :host::ng-deep {
     .mat-mdc-dialog-content {

@@ -28,7 +28,8 @@ import { XoComplexStorableTemplateData } from '../../xo/xo-complex-storable.mode
 @Component({
     selector: 'xo-complex-storable-template',
     templateUrl: './xo-complex-storable-template.component.html',
-    styleUrls: ['./xo-complex-storable-template.component.scss']
+    styleUrls: ['./xo-complex-storable-template.component.scss'],
+    standalone: false
 })
 export class XoComplexStorableTemplateComponent extends XcDynamicComponent<XoComplexStorableTemplateData> {
     get obj(): XoObject | XoArray | Array<any> {

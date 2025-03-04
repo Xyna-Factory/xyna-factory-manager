@@ -36,7 +36,8 @@ export interface SelectRuntimeContextComponentData {
 
 @Component({
     templateUrl: './select-runtime-context.component.html',
-    styleUrls: ['./select-runtime-context.component.scss']
+    styleUrls: ['./select-runtime-context.component.scss'],
+    standalone: false
 })
 export class SelectRuntimeContextComponent extends XcDialogComponent<boolean, SelectRuntimeContextComponentData> {
 

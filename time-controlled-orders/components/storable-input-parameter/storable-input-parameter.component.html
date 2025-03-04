@@ -1,23 +1,30 @@
 <xc-panel>
-    <header><h3 xc-i18n>header</h3></header>
-    <section xc-form>
-        <span *ngIf="!inputParameters.length" xc-i18n>no-input-parameters</span>
-        <div *ngIf="destination && inputParameters.length">
-            <div *ngFor="let inputParameter of inputParameters">
-                <div class="items-row">
-                    <xc-tree
-                        [xc-tree-autoexpand]="loadedPayload && !inputParameter.queryable ? 'first' : null"
-                        [xc-tree-datasource]="inputParameter.treeDataSource"
-                    ></xc-tree>
-                    <xc-checkbox
-                        [disabled]="inputParameter.checkBoxDisabled"
-                        label="label-query"
-                        xc-i18n
-                        *ngIf="inputParameter.queryable"
-                        [(checked)]="inputParameter.querySet"
-                    ></xc-checkbox>
-                </div>
+  <header><h3 xc-i18n>header</h3></header>
+  <section xc-form>
+    @if (!inputParameters.length) {
+      <span xc-i18n>no-input-parameters</span>
+    }
+    @if (destination && inputParameters.length) {
+      <div>
+        @for (inputParameter of inputParameters; track inputParameter) {
+          <div>
+            <div class="items-row">
+              <xc-tree
+                [xc-tree-autoexpand]="loadedPayload && !inputParameter.queryable ? 'first' : null"
+                [xc-tree-datasource]="inputParameter.treeDataSource"
+              ></xc-tree>
+              @if (inputParameter.queryable) {
+                <xc-checkbox
+                  [disabled]="inputParameter.checkBoxDisabled"
+                  label="label-query"
+                  xc-i18n
+                  [(checked)]="inputParameter.querySet"
+                ></xc-checkbox>
+              }
             </div>
-        </div>
-    </section>
+          </div>
+        }
+      </div>
+    }
+  </section>
 </xc-panel>

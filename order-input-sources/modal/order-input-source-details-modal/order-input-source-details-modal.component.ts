@@ -30,7 +30,8 @@ export interface OrderInputSourceDetailsModalComponentData {
 
 @Component({
     templateUrl: './order-input-source-details-modal.component.html',
-    styleUrls: ['./order-input-source-details-modal.component.scss']
+    styleUrls: ['./order-input-source-details-modal.component.scss'],
+    standalone: false
 })
 export class OrderInputSourceDetailsModalComponent extends XcDialogComponent<boolean, OrderInputSourceDetailsModalComponentData> {
     close(event?: OrderInputSourceCloseEvent) {

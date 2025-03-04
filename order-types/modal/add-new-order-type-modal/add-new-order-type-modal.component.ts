@@ -48,7 +48,8 @@ export interface AddNewOrderTypeModalComponentData {
 
 @Component({
     templateUrl: './add-new-order-type-modal.component.html',
-    styleUrls: ['./add-new-order-type-modal.component.scss']
+    styleUrls: ['./add-new-order-type-modal.component.scss'],
+    standalone: false
 })
 export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, AddNewOrderTypeModalComponentData> {
 

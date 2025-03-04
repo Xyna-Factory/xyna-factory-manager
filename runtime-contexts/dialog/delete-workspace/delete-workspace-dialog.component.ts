@@ -34,7 +34,8 @@ import { deleteWorkspace_translations_en_US } from './locale/delete-workspace-tr
 
 @Component({
     templateUrl: './delete-workspace-dialog.component.html',
-    styleUrls: ['./delete-workspace-dialog.component.scss']
+    styleUrls: ['./delete-workspace-dialog.component.scss'],
+    standalone: false
 })
 export class DeleteWorkspaceDialogComponent extends XcDialogComponent<boolean, XoWorkspace> {
 

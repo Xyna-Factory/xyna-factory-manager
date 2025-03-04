@@ -34,7 +34,8 @@ export interface DeleteReportItemComponentData {
 
 @Component({
     templateUrl: './delete-report-item.component.html',
-    styleUrls: [ './delete-report-item.component.scss']
+    styleUrls: ['./delete-report-item.component.scss'],
+    standalone: false
 })
 export class DeleteReportItemComponent extends XcRichListItemComponent<void, DeleteReportItemComponentData> {
 

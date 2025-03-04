@@ -41,7 +41,8 @@ import { manageDependencies_translations_en_US } from './locale/manage-dependenc
 
 @Component({
     templateUrl: './manage-dependencies-dialog.component.html',
-    styleUrls: ['./manage-dependencies-dialog.component.scss']
+    styleUrls: ['./manage-dependencies-dialog.component.scss'],
+    standalone: false
 })
 export class ManageDependenciesDialogComponent extends XcDialogComponent<boolean, XoRuntimeContext> implements OnDestroy {
 

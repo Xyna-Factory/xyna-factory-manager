@@ -94,7 +94,8 @@ class TriggerInstanceTile extends Comparable implements TileItem {
 @Component({
     templateUrl: './trigger.component.html',
     styleUrls: ['./trigger.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TriggerComponent extends RouteComponent {
 

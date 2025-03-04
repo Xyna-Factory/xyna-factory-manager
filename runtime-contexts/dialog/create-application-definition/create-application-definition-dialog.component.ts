@@ -38,7 +38,8 @@ type WorkspaceName = string;
 
 @Component({
     templateUrl: './create-application-definition-dialog.component.html',
-    styleUrls: ['./create-application-definition-dialog.component.scss']
+    styleUrls: ['./create-application-definition-dialog.component.scss'],
+    standalone: false
 })
 export class CreateApplicationDefinitionDialogComponent extends XcDialogComponent<ApplicationDefinitionName, WorkspaceName> {
 

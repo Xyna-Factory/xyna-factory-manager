@@ -1,340 +1,327 @@
 <xc-panel>
-    <header>
-        <h3 xc-i18n>header</h3>
-    </header>
-    <section>
-        <ng-container *ngIf="executionTime" xc-form (xc-form-validity-change)="validityChange($event)">
-            <xc-form-autocomplete
-                label="label-time-zone"
+  <header>
+    <h3 xc-i18n>header</h3>
+  </header>
+  <section>
+    @if (executionTime) {
+      <ng-container xc-form (xc-form-validity-change)="validityChange($event)">
+        <xc-form-autocomplete
+          label="label-time-zone"
+          placeholder="placeholder-select"
+          xc-i18n
+          [(xc-form-autocomplete-option)]="timeZoneDataWrapper.value"
+          [xc-form-autocomplete-options]="timeZoneDataWrapper.values"
+          xc-form-field-suffix="clear"
+          xc-form-autocomplete-fulltextsearch
+          xc-form-validator-required
+          xc-form-field-compact
+        ></xc-form-autocomplete>
+        <!--#region - START TIME - Date -->
+        <xc-panel>
+          <header><h3 xc-i18n>start-time</h3></header>
+          <section>
+            <div class="items-row">
+              <xc-form-input label="label-year" [(value)]="yearDataWrapper.value" xc-i18n xc-form-field-compact xc-form-validator-number xc-form-validator-minvalue="1970" xc-form-validator-required></xc-form-input>
+              <xc-form-input label="label-month" [(value)]="monthDataWrapper.value" xc-i18n xc-form-field-compact xc-form-validator-number xc-form-validator-minvalue="1" xc-form-validator-maxvalue="12" xc-form-validator-required></xc-form-input>
+              <xc-form-input label="label-day" [(value)]="dateDataWrapper.value" xc-i18n xc-form-field-compact xc-form-validator-number xc-form-validator-minvalue="1" xc-form-validator-maxvalue="31" xc-form-validator-required></xc-form-input>
+            </div>
+            <div class="items-row">
+              <xc-form-input label="label-hour" [(value)]="hoursDataWrapper.value" xc-i18n xc-form-field-compact xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-maxvalue="23" xc-form-validator-required></xc-form-input>
+              <xc-form-input label="label-minutes" [(value)]="minutesDataWrapper.value" xc-i18n xc-form-field-compact xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-maxvalue="59" xc-form-validator-required></xc-form-input>
+              <xc-form-input label="label-seconds" [(value)]="secondsDataWrapper.value" xc-i18n xc-form-field-compact xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-maxvalue="59" xc-form-validator-required></xc-form-input>
+              <xc-form-input label="label-milliseconds" [(value)]="millisecondsDataWrapper.value" xc-i18n xc-form-field-compact xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-maxvalue="999" xc-form-validator-required></xc-form-input>
+            </div>
+          </section>
+        </xc-panel>
+        <!--#endregion-->
+        <!-- SELECT EXECUTION TYPE -->
+        @if (hasTimeWindow) {
+          <xc-form-autocomplete
+            label="label-execution-type"
+            placeholder="placeholder-select"
+            xc-i18n
+            [(xc-form-autocomplete-option)]="executionTypeDataWrapper.value"
+            [xc-form-autocomplete-options]="executionTypeDataWrapper.values"
+            xc-form-field-suffix="clear"
+            xc-form-autocomplete-fulltextsearch
+            xc-form-validator-required
+            xc-form-autocomplete-asdropdown
+            xc-form-field-compact
+          ></xc-form-autocomplete>
+        }
+        @if (enableInterval) {
+          <!-- ################################# SELECT AN INTERVAL -->
+          <xc-form-autocomplete
+            label="label-interval"
+            xc-i18n
+            placeholder="placeholder-select"
+            [(xc-form-autocomplete-option)]="intervalDataWrapper.value"
+            [xc-form-autocomplete-options]="intervalDataWrapper.values"
+            xc-form-field-suffix="clear"
+            xc-form-autocomplete-fulltextsearch
+            xc-form-validator-required
+            xc-form-autocomplete-asdropdown
+            xc-form-field-compact
+          ></xc-form-autocomplete>
+          @switch (intervalUnit) {
+            <!--#region - INTERVAL - MILLISECONDS -->
+            @case (ExecutionTimeInterval.MILLISECONDS) {
+              <xc-form-input label="label-every-x-milliseconds" [(value)]="intervalValueIdentityDataWrapper.value" xc-form-field-compact xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-required xc-i18n></xc-form-input>
+            }
+            <!-- #endregion -->
+            <!--#region - INTERVAL - SECONDS -->
+            @case (ExecutionTimeInterval.SECONDS) {
+              <xc-form-input label="label-every-x-seconds" [(value)]="intervalValueIdentityDataWrapper.value" xc-form-field-compact xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-required xc-i18n></xc-form-input>
+            }
+            <!-- #endregion -->
+            <!--#region - INTERVAL - MINUTES -->
+            @case (ExecutionTimeInterval.MINUTES) {
+              <xc-form-input label="label-every-x-minutes" [(value)]="intervalValueIdentityDataWrapper.value" xc-form-field-compact xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-required xc-i18n></xc-form-input>
+            }
+            <!-- #endregion -->
+            <!--#region - INTERVAL - HOURS -->
+            @case (ExecutionTimeInterval.HOURS) {
+              <xc-form-input label="label-every-x-hours" [(value)]="intervalValueIdentityDataWrapper.value" xc-form-field-compact xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-required xc-i18n></xc-form-input>
+            }
+            <!-- #endregion -->
+            <!--#region - INTERVAL - DAYS -->
+            @case (ExecutionTimeInterval.DAYS) {
+              <xc-form-input label="label-every-x-days" [(value)]="intervalValueIdentityDataWrapper.value" xc-form-field-compact xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-required xc-i18n></xc-form-input>
+            }
+            <!-- #endregion -->
+            <!--#region - INTERVAL - WEEK -->
+            @case (ExecutionTimeInterval.WEEK) {
+              <div class="weekday-checkboxes">
+                <div xc-i18n class="on-weekday">label-on</div>
+                @for (day of weekdaysArray; track day) {
+                  <div class="weekday-checkbox">
+                    <xc-checkbox [(checked)]="weekdayCheckboxValues[day]" (checkedChange)="updateBoundObject()" [label]="weekdayCheckboxLabels[day]"></xc-checkbox>
+                  </div>
+                }
+              </div>
+            }
+            <!-- #endregion -->
+            <!--#region - INTERVAL - MONTH-->
+            @case (ExecutionTimeInterval.MONTH) {
+              <xc-form-input label="label-every-x-months" xc-i18n [(value)]="intervalValueIdentityDataWrapper.value" xc-form-field-compact xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-required></xc-form-input>
+              <xc-form-autocomplete
+                label="label-by"
                 placeholder="placeholder-select"
                 xc-i18n
-                [(xc-form-autocomplete-option)]="timeZoneDataWrapper.value"
-                [xc-form-autocomplete-options]="timeZoneDataWrapper.values"
-                xc-form-field-suffix="clear"
-                xc-form-autocomplete-fulltextsearch
-                xc-form-validator-required
-                xc-form-field-compact
-            ></xc-form-autocomplete>
-            <!--#region - START TIME - Date -->
-            <xc-panel>
-                <header><h3 xc-i18n>start-time</h3></header>
-                <section>
-                    <div class="items-row">
-                        <xc-form-input label="label-year" [(value)]="yearDataWrapper.value" xc-i18n xc-form-field-compact xc-form-validator-number xc-form-validator-minvalue="1970" xc-form-validator-required></xc-form-input>
-                        <xc-form-input label="label-month" [(value)]="monthDataWrapper.value" xc-i18n xc-form-field-compact xc-form-validator-number xc-form-validator-minvalue="1" xc-form-validator-maxvalue="12" xc-form-validator-required></xc-form-input>
-                        <xc-form-input label="label-day" [(value)]="dateDataWrapper.value" xc-i18n xc-form-field-compact xc-form-validator-number xc-form-validator-minvalue="1" xc-form-validator-maxvalue="31" xc-form-validator-required></xc-form-input>
-                    </div>
-
-                    <div class="items-row">
-                        <xc-form-input label="label-hour" [(value)]="hoursDataWrapper.value" xc-i18n xc-form-field-compact xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-maxvalue="23" xc-form-validator-required></xc-form-input>
-                        <xc-form-input label="label-minutes" [(value)]="minutesDataWrapper.value" xc-i18n xc-form-field-compact xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-maxvalue="59" xc-form-validator-required></xc-form-input>
-                        <xc-form-input label="label-seconds" [(value)]="secondsDataWrapper.value" xc-i18n xc-form-field-compact xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-maxvalue="59" xc-form-validator-required></xc-form-input>
-                        <xc-form-input label="label-milliseconds" [(value)]="millisecondsDataWrapper.value" xc-i18n xc-form-field-compact xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-maxvalue="999" xc-form-validator-required></xc-form-input>
-                    </div>
-                </section>
-            </xc-panel>
-            <!--#endregion-->
-            <!-- SELECT EXECUTION TYPE -->
-            <xc-form-autocomplete
-                *ngIf="hasTimeWindow"
-                label="label-execution-type"
-                placeholder="placeholder-select"
-                xc-i18n
-                [(xc-form-autocomplete-option)]="executionTypeDataWrapper.value"
-                [xc-form-autocomplete-options]="executionTypeDataWrapper.values"
+                [(xc-form-autocomplete-option)]="monthlyByDataWrapper.value"
+                [xc-form-autocomplete-options]="monthlyByDataWrapper.values"
                 xc-form-field-suffix="clear"
                 xc-form-autocomplete-fulltextsearch
                 xc-form-validator-required
                 xc-form-autocomplete-asdropdown
                 xc-form-field-compact
-            ></xc-form-autocomplete>
-
-            <ng-container *ngIf="enableInterval">
-                <!-- ################################# SELECT AN INTERVAL -->
-                <xc-form-autocomplete
-                    label="label-interval"
-                    xc-i18n
-                    placeholder="placeholder-select"
-                    [(xc-form-autocomplete-option)]="intervalDataWrapper.value"
-                    [xc-form-autocomplete-options]="intervalDataWrapper.values"
-                    xc-form-field-suffix="clear"
-                    xc-form-autocomplete-fulltextsearch
-                    xc-form-validator-required
-                    xc-form-autocomplete-asdropdown
-                    xc-form-field-compact
-                ></xc-form-autocomplete>
-
-                <ng-container [ngSwitch]="intervalUnit">
-                    <!--#region - INTERVAL - MILLISECONDS -->
-                    <ng-container *ngSwitchCase="ExecutionTimeInterval.MILLISECONDS">
-                        <xc-form-input label="label-every-x-milliseconds" [(value)]="intervalValueIdentityDataWrapper.value" xc-form-field-compact xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-required xc-i18n></xc-form-input>
-                    </ng-container>
-                    <!-- #endregion -->
-
-                    <!--#region - INTERVAL - SECONDS -->
-                    <ng-container *ngSwitchCase="ExecutionTimeInterval.SECONDS">
-                        <xc-form-input label="label-every-x-seconds" [(value)]="intervalValueIdentityDataWrapper.value" xc-form-field-compact xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-required xc-i18n></xc-form-input>
-                    </ng-container>
-                    <!-- #endregion -->
-
-                    <!--#region - INTERVAL - MINUTES -->
-                    <ng-container *ngSwitchCase="ExecutionTimeInterval.MINUTES">
-                        <xc-form-input label="label-every-x-minutes" [(value)]="intervalValueIdentityDataWrapper.value" xc-form-field-compact xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-required xc-i18n></xc-form-input>
-                    </ng-container>
-                    <!-- #endregion -->
-
-                    <!--#region - INTERVAL - HOURS -->
-                    <ng-container *ngSwitchCase="ExecutionTimeInterval.HOURS">
-                        <xc-form-input label="label-every-x-hours" [(value)]="intervalValueIdentityDataWrapper.value" xc-form-field-compact xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-required xc-i18n></xc-form-input>
-                    </ng-container>
-                    <!-- #endregion -->
-
-                    <!--#region - INTERVAL - DAYS -->
-                    <ng-container *ngSwitchCase="ExecutionTimeInterval.DAYS">
-                        <xc-form-input label="label-every-x-days" [(value)]="intervalValueIdentityDataWrapper.value" xc-form-field-compact xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-required xc-i18n></xc-form-input>
-                    </ng-container>
-                    <!-- #endregion -->
-
-                    <!--#region - INTERVAL - WEEK -->
-                    <ng-container *ngSwitchCase="ExecutionTimeInterval.WEEK">
-                        <div class="weekday-checkboxes">
-                            <div xc-i18n class="on-weekday">label-on</div>
-                            <div class="weekday-checkbox" *ngFor="let day of weekdaysArray">
-                                <xc-checkbox [(checked)]="weekdayCheckboxValues[day]" (checkedChange)="updateBoundObject()" [label]="weekdayCheckboxLabels[day]"></xc-checkbox>
-                            </div>
-                        </div>
-                    </ng-container>
-                    <!-- #endregion -->
-
-                    <!--#region - INTERVAL - MONTH-->
-                    <ng-container *ngSwitchCase="ExecutionTimeInterval.MONTH">
-                        <xc-form-input label="label-every-x-months" xc-i18n [(value)]="intervalValueIdentityDataWrapper.value" xc-form-field-compact xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-required></xc-form-input>
-
-                        <xc-form-autocomplete
-                            label="label-by"
-                            placeholder="placeholder-select"
-                            xc-i18n
-                            [(xc-form-autocomplete-option)]="monthlyByDataWrapper.value"
-                            [xc-form-autocomplete-options]="monthlyByDataWrapper.values"
-                            xc-form-field-suffix="clear"
-                            xc-form-autocomplete-fulltextsearch
-                            xc-form-validator-required
-                            xc-form-autocomplete-asdropdown
-                            xc-form-field-compact
-                        ></xc-form-autocomplete>
-
-                        <!--#region - INTERVAL - MONTH - BY-SWITCH -->
-                        <ng-container [ngSwitch]="monthlyBySwitchValue">
-                            <!--#region - INTERVAL - MONTH - DAY OF MONTH -->
-                            <ng-container *ngSwitchCase="ExecutionTimeMonthlyBy.DAY_OF_MONTH">
-                                <div class="items-row">
-                                    <xc-form-autocomplete
-                                        label="label-at"
-                                        placeholder="placeholder-select"
-                                        xc-i18n
-                                        [(xc-form-autocomplete-option)]="atWhichDayOfTheMonthDataWrapper.value"
-                                        [xc-form-autocomplete-options]="atWhichDayOfTheMonthDataWrapper.values"
-                                        xc-form-field-suffix="clear"
-                                        xc-form-autocomplete-fulltextsearch
-                                        xc-form-validator-required
-                                        xc-form-autocomplete-asdropdown
-                                        xc-form-field-compact
-                                    ></xc-form-autocomplete>
-
-                                    <ng-container [ngSwitch]="atWhichDaySwitchValue">
-                                        <ng-container *ngSwitchCase="!atWhichDaySwitchValue">
-                                            <div class="dummy" style="width: 100%;"></div>
-                                        </ng-container>
-
-                                        <ng-container *ngSwitchCase="ExecutionTimeMonthlyAtWhichDayOfTheMonth.FIRST">
-                                            <div class="dummy" style="width: 100%;"></div>
-                                        </ng-container>
-
-                                        <ng-container *ngSwitchCase="ExecutionTimeMonthlyAtWhichDayOfTheMonth.LAST">
-                                            <div class="dummy" style="width: 100%;"></div>
-                                        </ng-container>
-
-                                        <ng-container *ngSwitchCase="ExecutionTimeMonthlyAtWhichDayOfTheMonth.OTHER">
-                                            <xc-form-input
-                                                label="label-at-day-x-of-the-month"
-                                                [(value)]="atWhichDayValueIdentityDataWrapper.value"
-                                                xc-i18n
-                                                xc-form-validator-number
-                                                xc-form-validator-minvalue="1"
-                                                xc-form-validator-maxvalue="31"
-                                                xc-form-validator-required
-                                                xc-form-field-compact
-                                            ></xc-form-input>
-                                        </ng-container>
-                                    </ng-container>
-                                </div>
-                            </ng-container>
-                            <!-- #endregion -->
-
-                            <!--#region - INTERVAL - MONTH - WEEKDAY-->
-                            <ng-container *ngSwitchCase="ExecutionTimeMonthlyBy.WEEKDAY">
-                                <div class="items-row">
-                                    <xc-form-autocomplete
-                                        label="label-position-in-month"
-                                        placeholder="placeholder-select"
-                                        xc-i18n
-                                        [(xc-form-autocomplete-option)]="monthlyByWeekdayPositionDataWrapper.value"
-                                        [xc-form-autocomplete-options]="monthlyByWeekdayPositionDataWrapper.values"
-                                        xc-form-field-suffix="clear"
-                                        xc-form-autocomplete-fulltextsearch
-                                        xc-form-validator-required
-                                        xc-form-autocomplete-asdropdown
-                                        xc-form-field-compact
-                                    ></xc-form-autocomplete>
-
-                                    <xc-form-autocomplete
-                                        label="label-at-which-weekday"
-                                        xc-i18n
-                                        placeholder="placeholder-select"
-                                        [(xc-form-autocomplete-option)]="monthlyByWeekdayWeekdayDataWrapper.value"
-                                        [xc-form-autocomplete-options]="monthlyByWeekdayWeekdayDataWrapper.values"
-                                        xc-form-field-suffix="clear"
-                                        xc-form-autocomplete-fulltextsearch
-                                        xc-form-validator-required
-                                        xc-form-autocomplete-asdropdown
-                                        xc-form-field-compact
-                                    ></xc-form-autocomplete>
-                                </div>
-                            </ng-container>
-                            <!-- #endregion -->
-                        </ng-container>
-                        <!-- #endregion -->
-                    </ng-container>
-                    <!-- #endregion -->
-
-                    <!--#region - INTERVAL - YEAR -->
-                    <ng-container *ngSwitchCase="ExecutionTimeInterval.YEAR">
-                        <xc-form-input label="label-every-x-years" [(value)]="intervalValueIdentityDataWrapper.value" xc-form-field-compact xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-required xc-i18n></xc-form-input>
-
-                        <xc-form-autocomplete
-                            label="label-by"
-                            placeholder="placeholder-select"
-                            xc-i18n
-                            [(xc-form-autocomplete-option)]="yearlyByDataWrapper.value"
-                            [xc-form-autocomplete-options]="yearlyByDataWrapper.values"
-                            xc-form-field-suffix="clear"
-                            xc-form-autocomplete-fulltextsearch
-                            xc-form-validator-required
-                            xc-form-autocomplete-asdropdown
-                            xc-form-field-compact
-                        ></xc-form-autocomplete>
-
-                        <!--#region - INTERVAL - YEAR - BY-SWITCH -->
-                        <ng-container [ngSwitch]="yearlyBySwitchValue">
-                            <!--#region - INTERVAL - YEAR - DATE-->
-                            <ng-container *ngSwitchCase="ExecutionTimeYearlyBy.DATE">
-                                <div class="items-row">
-                                    <xc-form-input
-                                        label="label-day"
-                                        [(value)]="yearlyByDateDayValueIdentityDateWrapper.value"
-                                        xc-form-validator-number
-                                        xc-form-validator-minvalue="0"
-                                        xc-form-validator-maxvalue="31"
-                                        xc-form-validator-required
-                                        xc-i18n
-                                    ></xc-form-input>
-
-                                    <xc-form-autocomplete
-                                        label="label-month"
-                                        xc-i18n
-                                        placeholder="placeholder-select"
-                                        [(xc-form-autocomplete-option)]="yearlyByDateMonthDataWrapper.value"
-                                        [xc-form-autocomplete-options]="yearlyByDateMonthDataWrapper.values"
-                                        xc-form-field-suffix="clear"
-                                        xc-form-autocomplete-fulltextsearch
-                                        xc-form-validator-required
-                                        xc-form-autocomplete-asdropdown
-                                        xc-form-field-compact
-                                    ></xc-form-autocomplete>
-                                </div>
-                            </ng-container>
-                            <!-- #endregion -->
-
-                            <!--#region - INTERVAL - YEAR - WEEKDAY -->
-                            <ng-container *ngSwitchCase="ExecutionTimeYearlyBy.WEEKDAY">
-                                <div class="items-row">
-                                    <xc-form-autocomplete
-                                        label="label-position-of-the-weekday"
-                                        xc-i18n
-                                        placeholder="placeholder-select"
-                                        [(xc-form-autocomplete-option)]="yearlyByWeekdayPositionDataWrapper.value"
-                                        [xc-form-autocomplete-options]="yearlyByWeekdayPositionDataWrapper.values"
-                                        xc-form-field-suffix="clear"
-                                        xc-form-autocomplete-fulltextsearch
-                                        xc-form-validator-required
-                                        xc-form-autocomplete-asdropdown
-                                        xc-form-field-compact
-                                    ></xc-form-autocomplete>
-
-                                    <xc-form-autocomplete
-                                        label="label-weekday"
-                                        xc-i18n
-                                        placeholder="placeholder-select"
-                                        [(xc-form-autocomplete-option)]="yearlyByWeekdayWeekdayDataWrapper.value"
-                                        [xc-form-autocomplete-options]="yearlyByWeekdayWeekdayDataWrapper.values"
-                                        xc-form-field-suffix="clear"
-                                        xc-form-autocomplete-fulltextsearch
-                                        xc-form-validator-required
-                                        xc-form-autocomplete-asdropdown
-                                        xc-form-field-compact
-                                    ></xc-form-autocomplete>
-
-                                    <xc-form-autocomplete
-                                        label="label-month"
-                                        placeholder="placeholder-select"
-                                        xc-i18n
-                                        [(xc-form-autocomplete-option)]="yearlyByWeekdayMonthDataWrapper.value"
-                                        [xc-form-autocomplete-options]="yearlyByWeekdayMonthDataWrapper.values"
-                                        xc-form-field-suffix="clear"
-                                        xc-form-autocomplete-fulltextsearch
-                                        xc-form-validator-required
-                                        xc-form-autocomplete-asdropdown
-                                        xc-form-field-compact
-                                    ></xc-form-autocomplete>
-                                </div>
-                            </ng-container>
-                            <!-- #endregion -->
-                        </ng-container>
-                        <!-- #endregion -->
-                    </ng-container>
-                    <!-- #endregion -->
-                </ng-container>
-                <ng-container *ngIf="hasTimeWindow">
+              ></xc-form-autocomplete>
+              <!--#region - INTERVAL - MONTH - BY-SWITCH -->
+              @switch (monthlyBySwitchValue) {
+                <!--#region - INTERVAL - MONTH - DAY OF MONTH -->
+                @case (ExecutionTimeMonthlyBy.DAY_OF_MONTH) {
+                  <div class="items-row">
                     <xc-form-autocomplete
-                        *ngIf="hasTimeWindow"
-                        label="label-window-length"
-                        xc-i18n
-                        placeholder="placeholder-select"
-                        [(xc-form-autocomplete-option)]="windowLengthDataWrapper.value"
-                        [xc-form-autocomplete-options]="windowLengthDataWrapper.values"
-                        xc-form-field-suffix="clear"
-                        xc-form-autocomplete-fulltextsearch
-                        xc-form-validator-required
-                        xc-form-autocomplete-asdropdown
-                        xc-form-field-compact
+                      label="label-at"
+                      placeholder="placeholder-select"
+                      xc-i18n
+                      [(xc-form-autocomplete-option)]="atWhichDayOfTheMonthDataWrapper.value"
+                      [xc-form-autocomplete-options]="atWhichDayOfTheMonthDataWrapper.values"
+                      xc-form-field-suffix="clear"
+                      xc-form-autocomplete-fulltextsearch
+                      xc-form-validator-required
+                      xc-form-autocomplete-asdropdown
+                      xc-form-field-compact
                     ></xc-form-autocomplete>
-                    <div *ngIf="allowCustomWindowLength" class="items-row">
-                        <xc-form-input xc-form-validator-number [(value)]="customWindowLengthYYYY" placeholder="YYYY"></xc-form-input><span class="spacer-minus">-</span>
-                        <xc-form-input xc-form-validator-number [(value)]="customWindowLengthMM" placeholder="MM"></xc-form-input><span class="spacer-minus">-</span>
-                        <xc-form-input xc-form-validator-number [(value)]="customWindowLengthDD" placeholder="DD"></xc-form-input><span class="spacer-minus">T</span>
-                        <xc-form-input xc-form-validator-number [(value)]="customWindowLengthhh" placeholder="hh"></xc-form-input><span class="spacer-minus">-</span>
-                        <xc-form-input xc-form-validator-number [(value)]="customWindowLengthmm" placeholder="mm"></xc-form-input><span class="spacer-minus">-</span>
-                        <xc-form-input xc-form-validator-number [(value)]="customWindowLengthss" placeholder="ss"></xc-form-input>
-                    </div>
-                </ng-container>
-            </ng-container>
-            <date-selector *ngIf="hasTimeWindow && !noEndTime" [runtimeContext]="fmanRTC" [(datetime)]="endTime" (validityChange)="validityChangeBoolean(!$event)" header="{{'end-time' | xcI18n}}" [disableTimeZoneSelection]="true" xc-i18n-context="date-selector"></date-selector>
-            <xc-checkbox
-                *ngIf="hasTimeWindow"
-                label="label-no-end-time"
+                    @switch (atWhichDaySwitchValue) {
+                      @case (!atWhichDaySwitchValue) {
+                        <div class="dummy" style="width: 100%;"></div>
+                      }
+                      @case (ExecutionTimeMonthlyAtWhichDayOfTheMonth.FIRST) {
+                        <div class="dummy" style="width: 100%;"></div>
+                      }
+                      @case (ExecutionTimeMonthlyAtWhichDayOfTheMonth.LAST) {
+                        <div class="dummy" style="width: 100%;"></div>
+                      }
+                      @case (ExecutionTimeMonthlyAtWhichDayOfTheMonth.OTHER) {
+                        <xc-form-input
+                          label="label-at-day-x-of-the-month"
+                          [(value)]="atWhichDayValueIdentityDataWrapper.value"
+                          xc-i18n
+                          xc-form-validator-number
+                          xc-form-validator-minvalue="1"
+                          xc-form-validator-maxvalue="31"
+                          xc-form-validator-required
+                          xc-form-field-compact
+                        ></xc-form-input>
+                      }
+                    }
+                  </div>
+                }
+                <!-- #endregion -->
+                <!--#region - INTERVAL - MONTH - WEEKDAY-->
+                @case (ExecutionTimeMonthlyBy.WEEKDAY) {
+                  <div class="items-row">
+                    <xc-form-autocomplete
+                      label="label-position-in-month"
+                      placeholder="placeholder-select"
+                      xc-i18n
+                      [(xc-form-autocomplete-option)]="monthlyByWeekdayPositionDataWrapper.value"
+                      [xc-form-autocomplete-options]="monthlyByWeekdayPositionDataWrapper.values"
+                      xc-form-field-suffix="clear"
+                      xc-form-autocomplete-fulltextsearch
+                      xc-form-validator-required
+                      xc-form-autocomplete-asdropdown
+                      xc-form-field-compact
+                    ></xc-form-autocomplete>
+                    <xc-form-autocomplete
+                      label="label-at-which-weekday"
+                      xc-i18n
+                      placeholder="placeholder-select"
+                      [(xc-form-autocomplete-option)]="monthlyByWeekdayWeekdayDataWrapper.value"
+                      [xc-form-autocomplete-options]="monthlyByWeekdayWeekdayDataWrapper.values"
+                      xc-form-field-suffix="clear"
+                      xc-form-autocomplete-fulltextsearch
+                      xc-form-validator-required
+                      xc-form-autocomplete-asdropdown
+                      xc-form-field-compact
+                    ></xc-form-autocomplete>
+                  </div>
+                }
+                <!-- #endregion -->
+              }
+              <!-- #endregion -->
+            }
+            <!-- #endregion -->
+            <!--#region - INTERVAL - YEAR -->
+            @case (ExecutionTimeInterval.YEAR) {
+              <xc-form-input label="label-every-x-years" [(value)]="intervalValueIdentityDataWrapper.value" xc-form-field-compact xc-form-validator-number xc-form-validator-minvalue="0" xc-form-validator-required xc-i18n></xc-form-input>
+              <xc-form-autocomplete
+                label="label-by"
+                placeholder="placeholder-select"
                 xc-i18n
-                [(checked)]="noEndTime"
-            ></xc-checkbox>
-        </ng-container>
-    </section>
+                [(xc-form-autocomplete-option)]="yearlyByDataWrapper.value"
+                [xc-form-autocomplete-options]="yearlyByDataWrapper.values"
+                xc-form-field-suffix="clear"
+                xc-form-autocomplete-fulltextsearch
+                xc-form-validator-required
+                xc-form-autocomplete-asdropdown
+                xc-form-field-compact
+              ></xc-form-autocomplete>
+              <!--#region - INTERVAL - YEAR - BY-SWITCH -->
+              @switch (yearlyBySwitchValue) {
+                <!--#region - INTERVAL - YEAR - DATE-->
+                @case (ExecutionTimeYearlyBy.DATE) {
+                  <div class="items-row">
+                    <xc-form-input
+                      label="label-day"
+                      [(value)]="yearlyByDateDayValueIdentityDateWrapper.value"
+                      xc-form-validator-number
+                      xc-form-validator-minvalue="0"
+                      xc-form-validator-maxvalue="31"
+                      xc-form-validator-required
+                      xc-i18n
+                    ></xc-form-input>
+                    <xc-form-autocomplete
+                      label="label-month"
+                      xc-i18n
+                      placeholder="placeholder-select"
+                      [(xc-form-autocomplete-option)]="yearlyByDateMonthDataWrapper.value"
+                      [xc-form-autocomplete-options]="yearlyByDateMonthDataWrapper.values"
+                      xc-form-field-suffix="clear"
+                      xc-form-autocomplete-fulltextsearch
+                      xc-form-validator-required
+                      xc-form-autocomplete-asdropdown
+                      xc-form-field-compact
+                    ></xc-form-autocomplete>
+                  </div>
+                }
+                <!-- #endregion -->
+                <!--#region - INTERVAL - YEAR - WEEKDAY -->
+                @case (ExecutionTimeYearlyBy.WEEKDAY) {
+                  <div class="items-row">
+                    <xc-form-autocomplete
+                      label="label-position-of-the-weekday"
+                      xc-i18n
+                      placeholder="placeholder-select"
+                      [(xc-form-autocomplete-option)]="yearlyByWeekdayPositionDataWrapper.value"
+                      [xc-form-autocomplete-options]="yearlyByWeekdayPositionDataWrapper.values"
+                      xc-form-field-suffix="clear"
+                      xc-form-autocomplete-fulltextsearch
+                      xc-form-validator-required
+                      xc-form-autocomplete-asdropdown
+                      xc-form-field-compact
+                    ></xc-form-autocomplete>
+                    <xc-form-autocomplete
+                      label="label-weekday"
+                      xc-i18n
+                      placeholder="placeholder-select"
+                      [(xc-form-autocomplete-option)]="yearlyByWeekdayWeekdayDataWrapper.value"
+                      [xc-form-autocomplete-options]="yearlyByWeekdayWeekdayDataWrapper.values"
+                      xc-form-field-suffix="clear"
+                      xc-form-autocomplete-fulltextsearch
+                      xc-form-validator-required
+                      xc-form-autocomplete-asdropdown
+                      xc-form-field-compact
+                    ></xc-form-autocomplete>
+                    <xc-form-autocomplete
+                      label="label-month"
+                      placeholder="placeholder-select"
+                      xc-i18n
+                      [(xc-form-autocomplete-option)]="yearlyByWeekdayMonthDataWrapper.value"
+                      [xc-form-autocomplete-options]="yearlyByWeekdayMonthDataWrapper.values"
+                      xc-form-field-suffix="clear"
+                      xc-form-autocomplete-fulltextsearch
+                      xc-form-validator-required
+                      xc-form-autocomplete-asdropdown
+                      xc-form-field-compact
+                    ></xc-form-autocomplete>
+                  </div>
+                }
+                <!-- #endregion -->
+              }
+              <!-- #endregion -->
+            }
+            <!-- #endregion -->
+          }
+          @if (hasTimeWindow) {
+            @if (hasTimeWindow) {
+              <xc-form-autocomplete
+                label="label-window-length"
+                xc-i18n
+                placeholder="placeholder-select"
+                [(xc-form-autocomplete-option)]="windowLengthDataWrapper.value"
+                [xc-form-autocomplete-options]="windowLengthDataWrapper.values"
+                xc-form-field-suffix="clear"
+                xc-form-autocomplete-fulltextsearch
+                xc-form-validator-required
+                xc-form-autocomplete-asdropdown
+                xc-form-field-compact
+              ></xc-form-autocomplete>
+            }
+            @if (allowCustomWindowLength) {
+              <div class="items-row">
+                <xc-form-input xc-form-validator-number [(value)]="customWindowLengthYYYY" placeholder="YYYY"></xc-form-input><span class="spacer-minus">-</span>
+                <xc-form-input xc-form-validator-number [(value)]="customWindowLengthMM" placeholder="MM"></xc-form-input><span class="spacer-minus">-</span>
+                <xc-form-input xc-form-validator-number [(value)]="customWindowLengthDD" placeholder="DD"></xc-form-input><span class="spacer-minus">T</span>
+                <xc-form-input xc-form-validator-number [(value)]="customWindowLengthhh" placeholder="hh"></xc-form-input><span class="spacer-minus">-</span>
+                <xc-form-input xc-form-validator-number [(value)]="customWindowLengthmm" placeholder="mm"></xc-form-input><span class="spacer-minus">-</span>
+                <xc-form-input xc-form-validator-number [(value)]="customWindowLengthss" placeholder="ss"></xc-form-input>
+              </div>
+            }
+          }
+        }
+        @if (hasTimeWindow && !noEndTime) {
+          <date-selector [runtimeContext]="fmanRTC" [(datetime)]="endTime" (validityChange)="validityChangeBoolean(!$event)" header="{{'end-time' | xcI18n}}" [disableTimeZoneSelection]="true" xc-i18n-context="date-selector"></date-selector>
+        }
+        @if (hasTimeWindow) {
+          <xc-checkbox
+            label="label-no-end-time"
+            xc-i18n
+            [(checked)]="noEndTime"
+          ></xc-checkbox>
+        }
+      </ng-container>
+    }
+  </section>
 </xc-panel>

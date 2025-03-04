@@ -33,7 +33,8 @@ export interface CapacityUsageTemplateData {
 @Component({
     selector: 'capacity-usage-template',
     templateUrl: './capacity-usage-template.component.html',
-    styleUrls: ['./capacity-usage-template.component.scss']
+    styleUrls: ['./capacity-usage-template.component.scss'],
+    standalone: false
 })
 export class CapacityUsageTemplateComponent extends XcDynamicComponent<CapacityUsageTemplateData> {
 

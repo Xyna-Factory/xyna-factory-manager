@@ -34,7 +34,8 @@ import { deleteRuntimeApplication_translations_en_US } from './locale/delete-run
 
 @Component({
     templateUrl: './delete-runtime-application-dialog.component.html',
-    styleUrls: ['./delete-runtime-application-dialog.component.scss']
+    styleUrls: ['./delete-runtime-application-dialog.component.scss'],
+    standalone: false
 })
 export class DeleteRuntimeApplicationDialogComponent extends XcDialogComponent<boolean, XoRuntimeApplication> {
 

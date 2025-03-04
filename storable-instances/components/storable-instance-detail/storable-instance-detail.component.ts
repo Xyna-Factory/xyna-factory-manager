@@ -30,7 +30,8 @@ import { XoStoreParameter } from '../../xo/xo-storeparameter.model';
 @Component({
     selector: 'storable-instance-detail',
     templateUrl: './storable-instance-detail.component.html',
-    styleUrls: ['./storable-instance-detail.component.scss']
+    styleUrls: ['./storable-instance-detail.component.scss'],
+    standalone: false
 })
 export class StorableInstanceDetailComponent implements OnDestroy {
     @Output()
@@ -103,7 +104,7 @@ export class StorableInstanceDetailComponent implements OnDestroy {
     private _fqn: FullQualifiedName;
     private _selectedStorable: XoObject;
 
-    structureTreeDataSource: XcStructureTreeDataSource;
+    structureTreeDataSource: XcStructureTreeDataSource = new XcStructureTreeDataSource(this.apiService, this.i18n, null, []);
 
     ERROR_MESSAGE = 'fman.storable-instances.storable-instances-details.error-message';
 

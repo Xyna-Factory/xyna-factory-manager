@@ -30,7 +30,8 @@ import { XoTimeControlledOrderTableEntry } from './xo/xo-time-controlled-order-t
 
 
 @Component({
-    template: ''
+    template: '',
+    standalone: false
 })
 export class RestorableTimeControlledOrderComponent extends RestorableRouteComponent<XoTimeControlledOrderTableEntry> implements OnInit {
 

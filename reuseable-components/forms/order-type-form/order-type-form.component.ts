@@ -27,7 +27,8 @@ import { XoOrderTypeArray } from '../../../xo/xo-order-type.model';
 @Component({
     selector: 'order-type-form',
     templateUrl: './order-type-form.component.html',
-    styleUrls: ['./order-type-form.component.scss']
+    styleUrls: ['./order-type-form.component.scss'],
+    standalone: false
 })
 export class OrderTypeFormComponent {
     @ViewChild(XcFormDirective, { static: false })

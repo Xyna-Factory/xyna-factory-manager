@@ -58,7 +58,8 @@ export const DUPLICATE_ELEMENT_IDENTIFIER = 'duplicate element';
 @Component({
     selector: 'workspace-tile',
     templateUrl: './workspace-tile.component.html',
-    styleUrls: ['./workspace-tile.component.scss']
+    styleUrls: ['./workspace-tile.component.scss'],
+    standalone: false
 })
 export class WorkspaceTileComponent implements OnInit {
     @ViewChild('header', { static: false })
