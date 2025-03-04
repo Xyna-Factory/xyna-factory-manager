@@ -149,7 +149,7 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
     orderTypeDataWrapper: XcAutocompleteDataWrapper;
 
     get noOrderTypes(): boolean {
-        return this.orderTypeDataWrapper?.values.length === 0;
+        return this.orderTypeDataWrapper?.values?.length === 0;
     }
 
     get selectedOrderType(): XoOrderType {
@@ -170,7 +170,7 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
     sourceTypeDataWrapper: XcAutocompleteDataWrapper;
 
     get noSourceTypes(): boolean {
-        return this.sourceTypeDataWrapper?.values.length === 0;
+        return this.sourceTypeDataWrapper?.values?.length === 0;
     }
 
     get selectedSourceType() {
