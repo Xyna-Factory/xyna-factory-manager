@@ -23,17 +23,13 @@
           <dd>{{triggerInstanceName}}</dd>
           @if (triggerDescription) {
             <dt xc-i18n>description</dt>
-          }
-          @if (triggerDescription) {
-            <dd>{{triggerDescription}}</dd>
+            <dd>{{ triggerDescription }}</dd>
           }
           <dt xc-i18n>context</dt>
           <dd>{{triggerRuntimeContext}}</dd>
           @if (triggerStartParameter) {
             <dt xc-i18n>start.parameter</dt>
-          }
-          @if (triggerStartParameter) {
-            <dd>{{triggerStartParameter}}</dd>
+            <dd>{{ triggerStartParameter }}</dd>
           }
         </dl>
       </div>
