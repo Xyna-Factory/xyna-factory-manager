@@ -33,7 +33,6 @@ import { TimeControlledOrderTableEntryTemplateData } from '../../xo/xo-time-cont
         } @else {
           {{id}}
         }
-        <ng-template #normal>{{id}}</ng-template>
         `,
     styleUrls: ['./time-controlled-order-table-entry-template.component.scss'],
     standalone: false
