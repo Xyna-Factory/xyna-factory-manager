@@ -96,7 +96,8 @@ export class FrequencyControlledTaskLoadPreset extends FrequencyControlledTaskPr
     selector: 'order-input-source-details',
     templateUrl: './order-input-source-details.component.html',
     styleUrls: ['./order-input-source-details.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class OrderInputSourceDetailsComponent extends RestorableOrderInputSourcesComponent {
 

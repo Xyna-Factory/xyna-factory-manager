@@ -15,10 +15,10 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-@import 'const';
+@use '../../../const' as *;
 
 .info-table {
-    background-color: $color-white;
+    background-color: $color-normal;
     color: $color-gray-1;
     border-radius: 4px;
 
@@ -27,7 +27,7 @@
         font-size: $font-size-medium;
         border-top-right-radius: 4px;
         border-top-left-radius: 4px;
-        color: $color-white;
+        color: $color-normal;
         min-height: 16px;
         padding: 8px;
     }

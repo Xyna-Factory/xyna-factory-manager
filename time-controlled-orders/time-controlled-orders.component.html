@@ -1,44 +1,47 @@
 <xc-master-detail [xc-master-detail-opened]="!!selection" xc-i18n-context="fman.tco">
-    <xc-panel master>
-        <header>
-            <h1 class="items-left" xc-i18n>header</h1>
-            <div class="items-right">
-                <xc-checkbox
-                    class="center-horizontal"
-                    label="label-show-archived-tcos"
-                    xc-i18n
-                    [(checked)]="showArchived"
-                ></xc-checkbox>
-                <xc-icon-button xc-tooltip="tooltip-refresh" xc-i18n class="refresh" (click)="refresh()" xc-icon-name="reload"> </xc-icon-button>
-                <xc-icon-button xc-tooltip="tooltip-add" xc-i18n class="add" (click)="create()" xc-icon-name="add"> </xc-icon-button>
-            </div>
-        </header>
-        <section class="stretch scroll">
-            <xc-table
-                [xc-table-datasource]="remoteTableDataSource"
-                xc-table-allowsort
-                xc-table-allowfilter
-                xc-table-allowselect
-                xc-table-lazyupdate
-            ></xc-table>
-        </section>
-    </xc-panel>
-    <xc-panel detail class="details">
-        <header>
-            <h2 class="items-left" xc-i18n>header-details</h2>
-            <xc-icon-button class="items-right" (click)="cancelDetail()" xc-icon-name="close" xc-tooltip="button-cancel" xc-i18n></xc-icon-button>
-        </header>
-        <section class="stretch scroll" xc-form>
-            <tco-detail-section xc-i18n-context="detail-section" (refresh)="refresh()"[selectionObservable]="remoteTableDataSource.selectionModel.selectionChange" [WFP_UPDATE_TCO]="WFP_UPDATE_TCO" [WFP_GET_TCO_DETAILS]="WFP_GET_TCO_DETAILS" #tcoDetails></tco-detail-section>
-        </section>
-        <footer>
-            <div class="items-left">
-                <xc-button (click)="cancelDetail()" xc-i18n>button-cancel</xc-button>
-            </div>
-            <div class="items-right">
-                <xc-button [disabled]="true" xc-i18n *ngIf="tcoDetails.timeControlledOrder ? tcoDetails.timeControlledOrder.archived : false;else saveButton">button-cannot-change-archived-order</xc-button>
-                <ng-template #saveButton><xc-button (click)="tcoDetails.saveChanges()" [busy]="tcoDetails.loading" [disabled]="!tcoDetails.valid || tcoDetails.loading" color="primary" xc-i18n>button-save</xc-button></ng-template>
-            </div>
-        </footer>
-    </xc-panel>
+  <xc-panel master>
+    <header>
+      <h1 class="items-left" xc-i18n>header</h1>
+      <div class="items-right">
+        <xc-checkbox
+          class="center-horizontal"
+          label="label-show-archived-tcos"
+          xc-i18n
+          [(checked)]="showArchived"
+        ></xc-checkbox>
+        <xc-icon-button xc-tooltip="tooltip-refresh" xc-i18n class="refresh" (click)="refresh()" xc-icon-name="reload"> </xc-icon-button>
+        <xc-icon-button xc-tooltip="tooltip-add" xc-i18n class="add" (click)="create()" xc-icon-name="add"> </xc-icon-button>
+      </div>
+    </header>
+    <section class="stretch scroll">
+      <xc-table
+        [xc-table-datasource]="remoteTableDataSource"
+        xc-table-allowsort
+        xc-table-allowfilter
+        xc-table-allowselect
+        xc-table-lazyupdate
+      ></xc-table>
+    </section>
+  </xc-panel>
+  <xc-panel detail class="details">
+    <header>
+      <h2 class="items-left" xc-i18n>header-details</h2>
+      <xc-icon-button class="items-right" (click)="cancelDetail()" xc-icon-name="close" xc-tooltip="button-cancel" xc-i18n></xc-icon-button>
+    </header>
+    <section class="stretch scroll" xc-form>
+      <tco-detail-section xc-i18n-context="detail-section" (refresh)="refresh()"[selectionObservable]="remoteTableDataSource.selectionModel.selectionChange" [WFP_UPDATE_TCO]="WFP_UPDATE_TCO" [WFP_GET_TCO_DETAILS]="WFP_GET_TCO_DETAILS" #tcoDetails></tco-detail-section>
+    </section>
+    <footer>
+      <div class="items-left">
+        <xc-button (click)="cancelDetail()" xc-i18n>button-cancel</xc-button>
+      </div>
+      <div class="items-right">
+        @if (tcoDetails.timeControlledOrder ? tcoDetails.timeControlledOrder.archived : false) {
+          <xc-button [disabled]="true" xc-i18n>button-cannot-change-archived-order</xc-button>
+        } @else {
+          <xc-button (click)="tcoDetails.saveChanges()" [busy]="tcoDetails.loading" [disabled]="!tcoDetails.valid || tcoDetails.loading" color="primary" xc-i18n>button-save</xc-button>
+        }
+      </div>
+    </footer>
+  </xc-panel>
 </xc-master-detail>

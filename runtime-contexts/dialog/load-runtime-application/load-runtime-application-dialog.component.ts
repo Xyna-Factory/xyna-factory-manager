@@ -48,9 +48,10 @@ class RuntimeApplicationsTableInfo extends XoTableInfo {
 
 @Component({
     templateUrl: './load-runtime-application-dialog.component.html',
-    styleUrls: ['./load-runtime-application-dialog.component.scss']
+    styleUrls: ['./load-runtime-application-dialog.component.scss'],
+    standalone: false
 })
-export class LoadRuntimeApplicationDialogComponent extends XcDialogComponent<boolean, {workspaceName: string; runtimeApplication: XoRuntimeApplication}> {
+export class LoadRuntimeApplicationDialogComponent extends XcDialogComponent<boolean, { workspaceName: string; runtimeApplication: XoRuntimeApplication }> {
 
     workspaceDataWrapper: XcAutocompleteDataWrapper<XoWorkspace>;
     workspace: XoWorkspace;
@@ -75,10 +76,10 @@ export class LoadRuntimeApplicationDialogComponent extends XcDialogComponent<boo
         // create data wrapper
         this.workspaceDataWrapper = new XcAutocompleteDataWrapper(
             () => this.workspace,
-            () => {},
+            () => { },
             this.apiService.startOrderAssertFlat<XoWorkspace>(FM_RTC, ORDER_TYPES.GET_WORKSPACES, undefined, XoWorkspaceArray).pipe(
                 tap(workspaces => this.changeWorkspace(workspaces.find(workspace => workspace.name === this.injectedData.workspaceName))),
-                map(workspaces => workspaces.map(workspace => <XcOptionItem>{name: workspace.name, value: workspace}))
+                map(workspaces => workspaces.map(workspace => <XcOptionItem>{ name: workspace.name, value: workspace }))
             )
         );
 

@@ -1,74 +1,76 @@
 <xc-dialog-wrapper xc-i18n-context="fman.create-workspace-dialog">
-    <ng-container header><span xc-i18n>create-workspace-title</span></ng-container>
-    <section content xc-form #form="xc-form">
-        <xc-form-input
-            xc-form-validator-required
-            [(value)]="name"
-            label="create-workspace-name"
-            xc-i18n
-        ></xc-form-input>
-        <xc-form-label xc-i18n>create-workspace-repository-link</xc-form-label>
-        <xc-panel [xc-panel-collapsed]="!repositoryLinkType">
-            <header>
-                <label class="items-left">Link Type:</label>
-                <xc-form-autocomplete
-                    class="items-right"
-                    [(xc-form-autocomplete-option)]="repositoryLinkTypeDataWrapper.value"
-                    [xc-form-autocomplete-options]="repositoryLinkTypeDataWrapper.values"
-                    xc-form-autocomplete-sortdirection="asc"
-                    xc-form-autocomplete-asdropdown
-                    xc-form-autocomplete-fulltextsearch
-                    xc-form-field-compact
-                ></xc-form-autocomplete>
-            </header>
-            <section content *ngIf="repositoryLinkType === SVNRepositoryAccess">
-                <div class="items-row">
-                    <xc-form-input
-                        [(value)]="repositoryLink.sVNServerNameIP"
-                        label="create-workspace-repository-link-svnservernameip"
-                        xc-i18n
-                        xc-form-field-compact
-                    ></xc-form-input>
-                    <xc-form-input
-                        [(value)]="repositoryLink.hookManagerPort"
-                        label="create-workspace-repository-link-hookmanagerport"
-                        xc-i18n
-                        xc-form-field-compact
-                    ></xc-form-input>
-                </div>
-                <div class="items-row">
-                    <xc-form-input
-                        [(value)]="repositoryLink.pathInSVN"
-                        label="create-workspace-repository-link-pathinsvn"
-                        xc-i18n
-                        xc-form-field-compact
-                    ></xc-form-input>
-                    <xc-form-input
-                        [(value)]="repositoryLink.baseDirectoryForBranches"
-                        label="create-workspace-repository-link-basedirectoryforbranches"
-                        xc-i18n
-                        xc-form-field-compact
-                    ></xc-form-input>
-                </div>
-                <div class="items-row">
-                    <xc-form-input
-                        [(value)]="repositoryLink.username"
-                        label="create-workspace-repository-link-username"
-                        xc-i18n
-                        xc-form-field-compact
-                    ></xc-form-input>
-                    <xc-form-input
-                        [(value)]="repositoryLink.password"
-                        label="create-workspace-repository-link-password"
-                        xc-i18n
-                        xc-form-field-compact
-                    ></xc-form-input>
-                </div>
-            </section>
-        </xc-panel>
-    </section>
-    <ng-container footer>
-        <xc-button (click)="dismiss()" xc-i18n>create-workspace-cancel</xc-button>
-        <xc-button color="primary" (click)="create()" [busy]="loading" [disabled]="form.invalid || loading" xc-i18n>create-workspace-create</xc-button>
-    </ng-container>
+  <ng-container header><span xc-i18n>create-workspace-title</span></ng-container>
+  <section content xc-form #form="xc-form">
+    <xc-form-input
+      xc-form-validator-required
+      [(value)]="name"
+      label="create-workspace-name"
+      xc-i18n
+    ></xc-form-input>
+    <xc-form-label xc-i18n>create-workspace-repository-link</xc-form-label>
+    <xc-panel [xc-panel-collapsed]="!repositoryLinkType">
+      <header>
+        <label class="items-left">Link Type:</label>
+        <xc-form-autocomplete
+          class="items-right"
+          [(xc-form-autocomplete-option)]="repositoryLinkTypeDataWrapper.value"
+          [xc-form-autocomplete-options]="repositoryLinkTypeDataWrapper.values"
+          xc-form-autocomplete-sortdirection="asc"
+          xc-form-autocomplete-asdropdown
+          xc-form-autocomplete-fulltextsearch
+          xc-form-field-compact
+        ></xc-form-autocomplete>
+      </header>
+      @if (repositoryLinkType === SVNRepositoryAccess) {
+        <section content>
+          <div class="items-row">
+            <xc-form-input
+              [(value)]="repositoryLink.sVNServerNameIP"
+              label="create-workspace-repository-link-svnservernameip"
+              xc-i18n
+              xc-form-field-compact
+            ></xc-form-input>
+            <xc-form-input
+              [(value)]="repositoryLink.hookManagerPort"
+              label="create-workspace-repository-link-hookmanagerport"
+              xc-i18n
+              xc-form-field-compact
+            ></xc-form-input>
+          </div>
+          <div class="items-row">
+            <xc-form-input
+              [(value)]="repositoryLink.pathInSVN"
+              label="create-workspace-repository-link-pathinsvn"
+              xc-i18n
+              xc-form-field-compact
+            ></xc-form-input>
+            <xc-form-input
+              [(value)]="repositoryLink.baseDirectoryForBranches"
+              label="create-workspace-repository-link-basedirectoryforbranches"
+              xc-i18n
+              xc-form-field-compact
+            ></xc-form-input>
+          </div>
+          <div class="items-row">
+            <xc-form-input
+              [(value)]="repositoryLink.username"
+              label="create-workspace-repository-link-username"
+              xc-i18n
+              xc-form-field-compact
+            ></xc-form-input>
+            <xc-form-input
+              [(value)]="repositoryLink.password"
+              label="create-workspace-repository-link-password"
+              xc-i18n
+              xc-form-field-compact
+            ></xc-form-input>
+          </div>
+        </section>
+      }
+    </xc-panel>
+  </section>
+  <ng-container footer>
+    <xc-button (click)="dismiss()" xc-i18n>create-workspace-cancel</xc-button>
+    <xc-button color="primary" (click)="create()" [busy]="loading" [disabled]="form.invalid || loading" xc-i18n>create-workspace-create</xc-button>
+  </ng-container>
 </xc-dialog-wrapper>

@@ -1,59 +1,61 @@
-<div xc-form content *ngIf="!loading && timeControlledOrder">
+@if (!loading && timeControlledOrder) {
+  <div xc-form content>
     <div class="items-row">
-        <xc-form-input xc-form-validator-required class="half-width" label="label-name" [(value)]="timeControlledOrder.name" xc-i18n></xc-form-input>
-        <xc-checkbox [(checked)]="timeControlledOrder.enabled" label="label-is-active" xc-i18n></xc-checkbox>
+      <xc-form-input xc-form-validator-required class="half-width" label="label-name" [(value)]="timeControlledOrder.name" xc-i18n></xc-form-input>
+      <xc-checkbox [(checked)]="timeControlledOrder.enabled" label="label-is-active" xc-i18n></xc-checkbox>
     </div>
     <order-type-form
-        xc-i18n-context="order-type-form"
-        [(selectedRuntimeContext)]="timeControlledOrder.orderDestination.runtimeContext"
-        [(selectedOrderType)]="timeControlledOrder.orderDestination.orderType"
-        [masterWorkflowInfoText]="true"
-        (validationChange)="orderTypeValid = $event"
-        (selectedOrderTypeChange)="orderTypeChange()"
+      xc-i18n-context="order-type-form"
+      [(selectedRuntimeContext)]="timeControlledOrder.orderDestination.runtimeContext"
+      [(selectedOrderType)]="timeControlledOrder.orderDestination.orderType"
+      [masterWorkflowInfoText]="true"
+      (validationChange)="orderTypeValid = $event"
+      (selectedOrderTypeChange)="orderTypeChange()"
     ></order-type-form>
     <br />
     <storable-input-parameter
-        xc-i18n-context="storable-input-parameter"
-        [storableFqn]="timeControlledOrder.storableFqn"
-        [payload]="timeControlledOrder.inputPayload"
-        [(destination)]="orderDestination"
-        (querySelectionChange)="querySelection = $event"
+      xc-i18n-context="storable-input-parameter"
+      [storableFqn]="timeControlledOrder.storableFqn"
+      [payload]="timeControlledOrder.inputPayload"
+      [(destination)]="orderDestination"
+      (querySelectionChange)="querySelection = $event"
     ></storable-input-parameter>
-    <ng-container *ngIf="querySelection">
-        <br />
-        <xc-panel>
-            <header><h3 xc-i18n>header-query-storable-for-input</h3></header>
-            <section>
-                <xc-form-input
-                    xc-form-field-compact
-                    label="input-query-filter"
-                    xc-i18n
-                    [(value)]="timeControlledOrder.filterCriteria"
-                ></xc-form-input>
-                <xc-form-input
-                    xc-form-field-compact
-                    label="input-sorting"
-                    xc-i18n
-                    [(value)]="timeControlledOrder.sortCriteria"
-                ></xc-form-input>
-            </section>
-        </xc-panel>
-    </ng-container>
+    @if (querySelection) {
+      <br />
+      <xc-panel>
+        <header><h3 xc-i18n>header-query-storable-for-input</h3></header>
+        <section>
+          <xc-form-input
+            xc-form-field-compact
+            label="input-query-filter"
+            xc-i18n
+            [(value)]="timeControlledOrder.filterCriteria"
+          ></xc-form-input>
+          <xc-form-input
+            xc-form-field-compact
+            label="input-sorting"
+            xc-i18n
+            [(value)]="timeControlledOrder.sortCriteria"
+          ></xc-form-input>
+        </section>
+      </xc-panel>
+    }
     <br />
     <execution-time
-        xc-i18n-context="execution-time"
-        (invalidChange)="executionTimeValid = !$event"
-        [hasTimeWindow]="true"
-        header="{{'planning-horizon' | xcI18n}}"
-        [(executionTime)]="timeControlledOrder.planningHorizon"
+      xc-i18n-context="execution-time"
+      (invalidChange)="executionTimeValid = !$event"
+      [hasTimeWindow]="true"
+      header="{{'planning-horizon' | xcI18n}}"
+      [(executionTime)]="timeControlledOrder.planningHorizon"
     ></execution-time>
     <br />
     <tco-execution-restriction
-        xc-i18n-context="tco-execution-restriction"
-        [(executionRestriction)]="timeControlledOrder.tCOExecutionRestriction"
-        (validationChange)="executionRestrictionValid = $event"
-        [hasTooltip]="true"
+      xc-i18n-context="tco-execution-restriction"
+      [(executionRestriction)]="timeControlledOrder.tCOExecutionRestriction"
+      (validationChange)="executionRestrictionValid = $event"
+      [hasTooltip]="true"
     ></tco-execution-restriction>
     <br />
     <custom-information-form xc-i18n-context="custom-information-form" [(customFields)]="timeControlledOrder.orderCustoms"></custom-information-form>
-</div>
+  </div>
+}

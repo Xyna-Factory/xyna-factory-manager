@@ -1,24 +1,32 @@
 <div class="header" #header>
-    <div>
-        <tile-button
-            *ngFor="let item of dataSource.leftItems"
-            [item]="item"
-            [selected]="dataSource.isSelected(item)"
-            (select-item)="select($event)">
-        </tile-button>
-    </div>
-    <div class="label"><span *ngIf="hasLabel()" xc-i18n>{{label}}</span></div>
-    <div class="aside">
-        <tile-button
-            *ngFor="let item of dataSource.rightItems"
-            [item]="item"
-            [selected]="dataSource.isSelected(item)"
-            (select-item)="select($event)">
-        </tile-button>
-        <xc-icon-button *ngIf="actionButton" (click)="action()" [xc-icon-name]="actionButton.iconName" xc-i18n [xc-tooltip]="actionButton.tooltip"></xc-icon-button>
-    </div>
+  <div>
+    @for (item of dataSource.leftItems; track item) {
+      <tile-button
+        [item]="item"
+        [selected]="dataSource.isSelected(item)"
+        (select-item)="select($event)">
+      </tile-button>
+    }
+  </div>
+  <div class="label">@if (hasLabel()) {
+    <span xc-i18n>{{label}}</span>
+  }</div>
+  <div class="aside">
+    @for (item of dataSource.rightItems; track item) {
+      <tile-button
+        [item]="item"
+        [selected]="dataSource.isSelected(item)"
+        (select-item)="select($event)">
+      </tile-button>
+    }
+    @if (actionButton) {
+      <xc-icon-button (click)="action()" [xc-icon-name]="actionButton.iconName" xc-i18n [xc-tooltip]="actionButton.tooltip"></xc-icon-button>
+    }
+  </div>
 </div>
-<div class="detail" *ngIf="hasDetails">
+@if (hasDetails) {
+  <div class="detail">
     <xc-template [xc-template-instance]="dataSource.detailItem.getDetailTemplate()">
     </xc-template>
-</div>
+  </div>
+}

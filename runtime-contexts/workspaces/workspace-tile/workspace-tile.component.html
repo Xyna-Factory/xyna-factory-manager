@@ -1,118 +1,142 @@
 <div class="header" #header>
-    <runtime-context-button [runtimeContext]="workspace" [selected]="isSelected(workspace)" (select)="select($event)"></runtime-context-button>
-    <div class="active"><span *ngIf="isActive()" xc-i18n>active-workspace</span></div>
-    <div class="aside">
-        <runtime-context-button
-            *ngFor="let applicationDefinition of workspace.applicationDefinitions.data"
-            [runtimeContext]="applicationDefinition"
-            [selected]="isSelected(applicationDefinition)"
-            (select)="select($event)"
-        ></runtime-context-button>
-        <xc-icon-button (click)="createApplicationDefinition()" xc-icon-name="add" xc-i18n xc-tooltip="create-application-definition"></xc-icon-button>
-    </div>
+  <runtime-context-button [runtimeContext]="workspace" [selected]="isSelected(workspace)" (select)="select($event)"></runtime-context-button>
+  <div class="active">@if (isActive()) {
+    <span xc-i18n>active-workspace</span>
+  }</div>
+  <div class="aside">
+    @for (applicationDefinition of workspace.applicationDefinitions.data; track applicationDefinition) {
+      <runtime-context-button
+        [runtimeContext]="applicationDefinition"
+        [selected]="isSelected(applicationDefinition)"
+        (select)="select($event)"
+      ></runtime-context-button>
+    }
+    <xc-icon-button (click)="createApplicationDefinition()" xc-icon-name="add" xc-i18n xc-tooltip="create-application-definition"></xc-icon-button>
+  </div>
 </div>
-<div class="detail" *ngIf="hasWorkspaceDetails || hasApplicationDefinitionDetails">
-    <ng-container *ngIf="hasWorkspaceDetails">
-        <div class="row">
-            <div class="title"><span>workspace</span><span>{{details.label}}</span><span class="additional-span" *ngIf="details.revision" xc-i18n xc-tooltip="revision">({{details.revision}})</span></div>
-            <div class="actions">
-                <xc-button (click)="setAsActive()" [disabled]="isActive()" xc-tooltip="{{'tooltip-set-as-active' | xcI18n:details.name}}">{{'set-as-active' | xcI18n:details.name}}</xc-button>
-                <xc-button (click)="startMigration()" xc-i18n color="normal" xc-tooltip="tooltip-migrate">migrate</xc-button>
-                <xc-button (click)="loadRuntimeApplication()" xc-tooltip="{{'tooltip-load-runtime-application-into-workspace' | xcI18n:details.name}}">{{'load-runtime-application' | xcI18n:details.name}}</xc-button>
-                <xc-button (click)="clearWorkspace()" xc-i18n xc-tooltip="clear-workspace">clear-workspace</xc-button>
-                <xc-button (click)="deleteWorkspace()" xc-i18n xc-tooltip="delete-workspace"><xc-icon [xc-icon-name]="XDSIconName.DELETE" xc-i18n>delete-workspace</xc-icon></xc-button>
-            </div>
+@if (hasWorkspaceDetails || hasApplicationDefinitionDetails) {
+  <div class="detail">
+    @if (hasWorkspaceDetails) {
+      <div class="row">
+        <div class="title"><span>workspace</span><span>{{details.label}}</span>@if (details.revision) {
+        <span class="additional-span" xc-i18n xc-tooltip="revision">({{details.revision}})</span>
+      }</div>
+      <div class="actions">
+        <xc-button (click)="setAsActive()" [disabled]="isActive()" xc-tooltip="{{'tooltip-set-as-active' | xcI18n:details.name}}">{{'set-as-active' | xcI18n:details.name}}</xc-button>
+        <xc-button (click)="startMigration()" xc-i18n color="normal" xc-tooltip="tooltip-migrate">migrate</xc-button>
+        <xc-button (click)="loadRuntimeApplication()" xc-tooltip="{{'tooltip-load-runtime-application-into-workspace' | xcI18n:details.name}}">{{'load-runtime-application' | xcI18n:details.name}}</xc-button>
+        <xc-button (click)="clearWorkspace()" xc-i18n xc-tooltip="clear-workspace">clear-workspace</xc-button>
+        <xc-button (click)="deleteWorkspace()" xc-i18n xc-tooltip="delete-workspace"><xc-icon [xc-icon-name]="XDSIconName.DELETE" xc-i18n>delete-workspace</xc-icon></xc-button>
+      </div>
+    </div>
+    @if (details.repositoryLink) {
+      <div class="row">
+        <div class="repository-link" *xc-var="details.repositoryLink; let link">
+          <xc-form-label xc-i18n>repository-link</xc-form-label>
+          <label>{{link.linkType}}</label>
+          <span>svn://{{link.username}}:{{link.password}}&#64;{{link.sVNServerNameIP}}:{{link.hookManagerPort}}/{{link.pathInSVN}}</span>
+          <label xc-i18n>branch-directory</label>
+          <span>{{link.baseDirectoryForBranches}}</span>
         </div>
-        <div class="row" *ngIf="details.repositoryLink">
-            <div class="repository-link" *xc-var="details.repositoryLink; let link">
-                <xc-form-label xc-i18n>repository-link</xc-form-label>
-                <label>{{link.linkType}}</label>
-                <span>svn://{{link.username}}:{{link.password}}&#64;{{link.sVNServerNameIP}}:{{link.hookManagerPort}}/{{link.pathInSVN}}</span>
-                <label xc-i18n>branch-directory</label>
-                <span>{{link.baseDirectoryForBranches}}</span>
-            </div>
-        </div>
-    </ng-container>
-    <ng-container *ngIf="hasApplicationDefinitionDetails">
-        <div class="row">
-            <div class="title"><span xc-i18n>application-definition</span><span>{{details.label}}</span></div>
-            <div class="actions">
-                <xc-button (click)="buildNewVersion()" xc-i18n xc-tooltip="tooltip-build-new-version">build-new-version</xc-button>
-                <xc-button (click)="startMigration()" color="normal" xc-i18n xc-tooltip="tooltip-migrate">migrate</xc-button>
-                <xc-button (click)="deleteApplicationDefinition()" xc-i18n xc-tooltip="tooltip-delete-application-definition"><xc-icon xc-i18n [xc-icon-name]="XDSIconName.DELETE">delete-application-definition</xc-icon></xc-button>
-            </div>
-        </div>
-        <div class="row">
-            <xc-form-input
-                xc-i18n
-                #documentation
-                label="documentation"
-                [value]="details.documentation"
-                (blur)="changeDocumentation(documentation.value)"
-                [disabled]="documentationPending"
-                xc-form-field-compact
-            ></xc-form-input>
-            <xc-form-input
-                xc-i18n
-                label="source-version"
-                [value]="details.sourceVersion"
-                disabled
-                xc-form-field-compact
-            ></xc-form-input>
-        </div>
-    </ng-container>
+      </div>
+    }
+  }
+  @if (hasApplicationDefinitionDetails) {
     <div class="row">
-        <div class="dependencies">
-            <div class="requires">
-                <div class="row">
-                    <xc-form-label xc-i18n>requires</xc-form-label>
-                    <xc-button (click)="manageDependencies()" xc-tooltip="{{'tooltip-manage-dependencies-of-runtime-context' | xcI18n:details.name}}">{{ 'manage-dependencies' | xcI18n }}</xc-button>
-                </div>
-                <xc-table [xc-table-datasource]="requiresDataSource" xc-table-allowsort xc-table-allowfilter xc-table-lazyupdate></xc-table>
-            </div>
-            <div class="required-by">
-                <xc-form-label xc-i18n>required-by</xc-form-label>
-                <xc-table [xc-table-datasource]="requiredByDataSource" xc-table-allowsort xc-table-allowfilter xc-table-lazyupdate></xc-table>
-            </div>
-        </div>
+      <div class="title"><span xc-i18n>application-definition</span><span>{{details.label}}</span></div>
+      <div class="actions">
+        <xc-button (click)="buildNewVersion()" xc-i18n xc-tooltip="tooltip-build-new-version">build-new-version</xc-button>
+        <xc-button (click)="startMigration()" color="normal" xc-i18n xc-tooltip="tooltip-migrate">migrate</xc-button>
+        <xc-button (click)="deleteApplicationDefinition()" xc-i18n xc-tooltip="tooltip-delete-application-definition"><xc-icon xc-i18n [xc-icon-name]="XDSIconName.DELETE">delete-application-definition</xc-icon></xc-button>
+      </div>
     </div>
     <div class="row">
-        <div class="application">
-            <div class="content">
-                <div class="row">
-                    <xc-form-label xc-i18n>content</xc-form-label>
-                    <xc-button *ngIf="hasApplicationDefinitionDetails"
-                        xc-tooltip="{{'tooltip-manage-content-of-runtime-context' | xcI18n:details.name}}"
-                        (click)="manageContent()"
-                    >{{ 'manage-content' | xcI18n }}</xc-button>
-                    <xc-button *ngIf="!hasApplicationDefinitionDetails"
-                        xc-tooltip="{{'tooltip-show-content-of-runtime-context' | xcI18n:details.name}}"
-                        (click)="showWorkspaceContent()"
-                    >{{ 'show-content' | xcI18n }}</xc-button>
-                </div>
-                <xc-table [xc-table-datasource]="contentDataSource" xc-table-allowsort xc-table-allowfilter xc-table-lazyupdate></xc-table>
-            </div>
-        </div>
+      <xc-form-input
+        xc-i18n
+        #documentation
+        label="documentation"
+        [value]="details.documentation"
+        (blur)="changeDocumentation(documentation.value)"
+        [disabled]="documentationPending"
+        xc-form-field-compact
+      ></xc-form-input>
+      <xc-form-input
+        xc-i18n
+        label="source-version"
+        [value]="details.sourceVersion"
+        disabled
+        xc-form-field-compact
+      ></xc-form-input>
     </div>
-
-    <div class="row">
-        <div *ngIf="issues.length > 0" class="issues">
-            <div class="row">
-                <xc-form-label xc-i18n>issues</xc-form-label>
-                <xc-button *ngIf="hasDuplicateElements" (click)="deleteDuplicates()" xc-tooltip="{{'tooltip-delete-duplicates' | xcI18n:details.name}}">{{ 'delete-duplicates' | xcI18n }}</xc-button>
-            </div>
-            <div *ngFor="let issue of issues; let i = index">
-                <div *ngIf="!truncateIssues || i < 20" class="issue-row">
-                    <span class="issue-identifier">{{issue.identifier}}</span>
-                    <div class="issue-entries">
-                        <div *ngFor="let entry of issue.entries" class="issue-entry">
-                            <span class="issue-entry-key">{{entry.key}}</span>
-                            <span class="issue-entry-value">{{entry.value}}</span>
-                        </div>
+  }
+  <div class="row">
+    <div class="dependencies">
+      <div class="requires">
+        <div class="row">
+          <xc-form-label xc-i18n>requires</xc-form-label>
+          <xc-button (click)="manageDependencies()" xc-tooltip="{{'tooltip-manage-dependencies-of-runtime-context' | xcI18n:details.name}}">{{ 'manage-dependencies' | xcI18n }}</xc-button>
+        </div>
+        <xc-table [xc-table-datasource]="requiresDataSource" xc-table-allowsort xc-table-allowfilter xc-table-lazyupdate></xc-table>
+      </div>
+      <div class="required-by">
+        <xc-form-label xc-i18n>required-by</xc-form-label>
+        <xc-table [xc-table-datasource]="requiredByDataSource" xc-table-allowsort xc-table-allowfilter xc-table-lazyupdate></xc-table>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="application">
+      <div class="content">
+        <div class="row">
+          <xc-form-label xc-i18n>content</xc-form-label>
+          @if (hasApplicationDefinitionDetails) {
+            <xc-button
+              xc-tooltip="{{'tooltip-manage-content-of-runtime-context' | xcI18n:details.name}}"
+              (click)="manageContent()"
+            >{{ 'manage-content' | xcI18n }}</xc-button>
+          }
+          @if (!hasApplicationDefinitionDetails) {
+            <xc-button
+              xc-tooltip="{{'tooltip-show-content-of-runtime-context' | xcI18n:details.name}}"
+              (click)="showWorkspaceContent()"
+            >{{ 'show-content' | xcI18n }}</xc-button>
+          }
+        </div>
+        <xc-table [xc-table-datasource]="contentDataSource" xc-table-allowsort xc-table-allowfilter xc-table-lazyupdate></xc-table>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    @if (issues.length > 0) {
+      <div class="issues">
+        <div class="row">
+          <xc-form-label xc-i18n>issues</xc-form-label>
+          @if (hasDuplicateElements) {
+            <xc-button (click)="deleteDuplicates()" xc-tooltip="{{'tooltip-delete-duplicates' | xcI18n:details.name}}">{{ 'delete-duplicates' | xcI18n }}</xc-button>
+          }
+        </div>
+        @for (issue of issues; track issue; let i = $index) {
+          <div>
+            @if (!truncateIssues || i < 20) {
+              <div class="issue-row">
+                <span class="issue-identifier">{{issue.identifier}}</span>
+                <div class="issue-entries">
+                  @for (entry of issue.entries; track entry) {
+                    <div class="issue-entry">
+                      <span class="issue-entry-key">{{entry.key}}</span>
+                      <span class="issue-entry-value">{{entry.value}}</span>
                     </div>
+                  }
                 </div>
-            </div>
-            <xc-button *ngIf="issues.length > 20" (click)="truncateIssues = !truncateIssues">{{truncateIssues ? ('show-all-issues' | xcI18n) : ('hide-issues' | xcI18n)}}</xc-button>
-        </div>
-    </div>
+              </div>
+            }
+          </div>
+        }
+        @if (issues.length > 20) {
+          <xc-button (click)="truncateIssues = !truncateIssues">{{truncateIssues ? ('show-all-issues' | xcI18n) : ('hide-issues' | xcI18n)}}</xc-button>
+        }
+      </div>
+    }
+  </div>
 </div>
+}

@@ -33,7 +33,8 @@ export interface CapacityTableInuseTemplateData {
                 <div>{{isValue}} / {{maxValue}}<div>
             </div>
         </div>`,
-    styleUrls: ['./capacity-table-inuse-template.model.scss']
+    styleUrls: ['./capacity-table-inuse-template.model.scss'],
+    standalone: false
 })
 export class CapacityTableInuseTemplateComponent extends XcDynamicComponent<CapacityTableInuseTemplateData> {
 

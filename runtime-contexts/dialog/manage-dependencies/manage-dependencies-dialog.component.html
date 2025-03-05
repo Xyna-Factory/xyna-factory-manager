@@ -1,22 +1,26 @@
 <xc-dialog-wrapper xc-i18n-context="fman.manage-dependencies">
-    <ng-container header><span>{{titleKey | xcI18n:injectedData.label}}</span></ng-container>
-    <ng-container aside *ngIf="dataSource.columns.length">
-        <xc-checkbox [(checked)]="includeIndependent" xc-i18n (checkedChange)="updateDataSource()" label="manage-dependencies-include-independent" xc-tooltip="manage-dependencies-include-independent-tooltip"></xc-checkbox>
-        <xc-checkbox [(checked)]="includeImplicit" xc-i18n (checkedChange)="updateDataSource()" label="manage-dependencies-include-implicit" xc-tooltip="manage-dependencies-include-implicit-tooltip" style="margin-left: 16px;"></xc-checkbox>
+  <ng-container header><span>{{titleKey | xcI18n:injectedData.label}}</span></ng-container>
+  @if (dataSource.columns.length) {
+    <ng-container aside>
+      <xc-checkbox [(checked)]="includeIndependent" xc-i18n (checkedChange)="updateDataSource()" label="manage-dependencies-include-independent" xc-tooltip="manage-dependencies-include-independent-tooltip"></xc-checkbox>
+      <xc-checkbox [(checked)]="includeImplicit" xc-i18n (checkedChange)="updateDataSource()" label="manage-dependencies-include-implicit" xc-tooltip="manage-dependencies-include-implicit-tooltip" style="margin-left: 16px;"></xc-checkbox>
     </ng-container>
-    <section content class="content" [ngClass]="{'two-items': !!changedDependencies.size}">
-        <xc-table class="zeta-scrollbar scroll" [xc-table-datasource]="dataSource" xc-table-allowsort xc-table-allowfilter xc-table-lazyupdate></xc-table>
-        <div *ngIf="!!changedDependencies.size">
-            <span class="row" xc-i18n><xc-icon xc-icon-name="msginfo"></xc-icon>manage-dependencies-apply-info</span>
-            <xc-table
-                class="zeta-scrollbar scroll"
-                [xc-table-datasource]="changedDependencyTable"
-                xc-table-allowsort>
-            </xc-table>
-        </div>
-    </section>
-    <ng-container footer>
-        <xc-button (click)="dismiss()" xc-i18n>manage-dependencies-cancel</xc-button>
-        <xc-button (click)="apply().subscribe()" color="primary" [busy]="loading" [disabled]="loading" xc-i18n>manage-dependencies-apply</xc-button>
-    </ng-container>
+  }
+  <section content class="content" [ngClass]="{'two-items': !!changedDependencies.size}">
+    <xc-table class="zeta-scrollbar scroll" [xc-table-datasource]="dataSource" xc-table-allowsort xc-table-allowfilter xc-table-lazyupdate></xc-table>
+    @if (!!changedDependencies.size) {
+      <div>
+        <span class="row" xc-i18n><xc-icon xc-icon-name="msginfo"></xc-icon>manage-dependencies-apply-info</span>
+        <xc-table
+          class="zeta-scrollbar scroll"
+          [xc-table-datasource]="changedDependencyTable"
+          xc-table-allowsort>
+        </xc-table>
+      </div>
+    }
+  </section>
+  <ng-container footer>
+    <xc-button (click)="dismiss()" xc-i18n>manage-dependencies-cancel</xc-button>
+    <xc-button (click)="apply().subscribe()" color="primary" [busy]="loading" [disabled]="loading" xc-i18n>manage-dependencies-apply</xc-button>
+  </ng-container>
 </xc-dialog-wrapper>

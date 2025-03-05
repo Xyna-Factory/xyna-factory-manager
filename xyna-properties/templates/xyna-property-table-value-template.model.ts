@@ -26,8 +26,9 @@ export interface XynaPropertyTableValueTemplateData {
 }
 
 @Component({
-    template: '<ng-container *ngIf="!isBold">{{value}}</ng-container><b *ngIf="isBold">{{value}}</b>',
-    styles: []
+    template: '@if (!isBold) {{{value}}}@if (isBold) {<b>{{value}}</b>}',
+    styles: [],
+    standalone: false
 })
 export class XynaPropertyTableValueTemplateComponent extends XcDynamicComponent<XynaPropertyTableValueTemplateData> {
 

@@ -46,7 +46,8 @@ export interface InputDataTypesTreeData {
 
 @Component({
     templateUrl: './order-input-sources.component.html',
-    styleUrls: ['./order-input-sources.component.scss']
+    styleUrls: ['./order-input-sources.component.scss'],
+    standalone: false
 })
 export class OrderInputSourcesComponent extends RestorableOrderInputSourcesComponent {
 
@@ -180,10 +181,10 @@ export class OrderInputSourcesComponent extends RestorableOrderInputSourcesCompo
             i18nService: this.i18nService,
             rtc: FM_RTC,
             duplicate: duplicated,
-            // eslint-disable-next-line @typescript-eslint/unbound-method
+             
             GET_GENERATING_ORDER_TYPES_EMPTY_LIST_ERROR: this.GET_GENERATING_ORDER_TYPES_EMPTY_LIST_ERROR,
             GET_GENERATING_ORDER_TYPES_ERROR: this.GET_GENERATING_ORDER_TYPES_ERROR,
-            // eslint-disable-next-line @typescript-eslint/unbound-method
+             
             GET_ORDER_TYPES_EMPTY_LIST_ERROR: this.GET_ORDER_TYPES_EMPTY_LIST_ERROR,
             UNSPECIFIED_GET_ORDER_TYPES_ERROR: this.UNSPECIFIED_GET_ORDER_TYPES_ERROR,
             UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR: this.UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR

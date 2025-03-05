@@ -1,20 +1,22 @@
 <xc-dialog-wrapper xc-form xc-i18n-context="fman.add-new-administrative-veto-modal">
-    <ng-container header><span xc-i18n>header</span></ng-container>
+  <ng-container header><span xc-i18n>header</span></ng-container>
 
-    <section content>
-        <div *ngIf="error" class="error-box">
-            <div [fm-focus-candidate]="errorBoxFocusCandidateRef" fm-focus-candidate-focus-onload class="error-msg">
-                <div class="icon-div"><xc-icon xc-icon-name="msgwarning"></xc-icon></div><div>{{error}}</div>
-            </div>
+  <section content>
+    @if (error) {
+      <div class="error-box">
+        <div [fm-focus-candidate]="errorBoxFocusCandidateRef" fm-focus-candidate-focus-onload class="error-msg">
+          <div class="icon-div"><xc-icon xc-icon-name="msgwarning"></xc-icon></div><div>{{error}}</div>
         </div>
-        <xc-form-input label="label-name" xc-i18n [(value)]="administrativeVeto.name" xc-form-validator-required></xc-form-input>
-        <xc-form-textarea label="label-description" xc-i18n [(value)]="administrativeVeto.documentation">
-        </xc-form-textarea>
-    </section>
+      </div>
+    }
+    <xc-form-input label="label-name" xc-i18n [(value)]="administrativeVeto.name" xc-form-validator-required></xc-form-input>
+    <xc-form-textarea label="label-description" xc-i18n [(value)]="administrativeVeto.documentation">
+    </xc-form-textarea>
+  </section>
 
-    <ng-container footer>
-        <xc-button (click)="dismiss()" xc-i18n>button-cancel</xc-button>
-        <xc-button (click)="add()" color="primary" [disabled]="invalid" xc-i18n>button-add</xc-button>
-    </ng-container>
+  <ng-container footer>
+    <xc-button (click)="dismiss()" xc-i18n>button-cancel</xc-button>
+    <xc-button (click)="add()" color="primary" [disabled]="invalid" xc-i18n>button-add</xc-button>
+  </ng-container>
 
 </xc-dialog-wrapper>

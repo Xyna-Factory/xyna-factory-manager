@@ -31,7 +31,8 @@ import { storableInstanceCreation_translations_en_US } from './locale/storable-i
 @Component({
     selector: 'storable-instance-creation',
     templateUrl: './storable-instance-creation.component.html',
-    styleUrls: ['./storable-instance-creation.component.scss']
+    styleUrls: ['./storable-instance-creation.component.scss'],
+    standalone: false
 })
 export class StorableInstanceCreationComponent extends XcDialogComponent<any, any> {
     error = false;

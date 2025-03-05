@@ -250,7 +250,8 @@ class StorableTableDataSource extends XcLocalTableDataSource<XoObject> {
 @Component({
     selector: 'storable-instances',
     templateUrl: './storable-instances.component.html',
-    styleUrls: ['./storable-instances.component.scss']
+    styleUrls: ['./storable-instances.component.scss'],
+    standalone: false
 })
 export class StorableInstancesComponent implements OnInit {
     rtcDataWrapper: XcAutocompleteDataWrapper<XoRuntimeContext>;
@@ -280,7 +281,7 @@ export class StorableInstancesComponent implements OnInit {
         private readonly settings: FactoryManagerSettingsService
     ) {
         // prevent XoSelectionMask from being pruned
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+         
         const mask = new XoSelectionMask();
 
         this.i18nService.setTranslations(LocaleService.DE_DE, storable_instances_translations_de_DE);

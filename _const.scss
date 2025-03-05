@@ -15,29 +15,30 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-@import 'zeta/const';
+@forward "../../const";
+@use "../../const" as *;
+
 
 
 /****************************************************
  * Factory Manager Variables
  ****************************************************/
+$application-tile-border: 1px solid #000;
+$application-tile-header-background-color: #555;
+$application-tile-header-color: $color-invert;
+$application-tile-selected-header-background-color: #555;
+$application-tile-details-background-color: #fff;
+$application-tile-details-button-row-background-color: #fff;
+$application-tile-details-button-row-border-bottom: 1px solid #000;
+$application-tile-details-button-row-border-top: 1px solid #000;
 
 @if $theme == xyna {
     $application-tile-border: none;
     $application-tile-header-background-color: $color-gray-1;
-    $application-tile-header-color: $color-white;
+    $application-tile-header-color: $color-normal;
     $application-tile-selected-header-background-color: $color-invert;
     $application-tile-details-background-color: $color-gray-0;
     $application-tile-details-button-row-background-color: $color-gray-0;
     $application-tile-details-button-row-border-bottom: 2px solid $color-invert;
     $application-tile-details-button-row-border-top: unset;
-} @else {
-    $application-tile-border: 1px solid #000;
-    $application-tile-header-background-color: #555;
-    $application-tile-header-color: $color-invert;
-    $application-tile-selected-header-background-color: #555;
-    $application-tile-details-background-color: #fff;
-    $application-tile-details-button-row-background-color: #fff;
-    $application-tile-details-button-row-border-bottom: 1px solid #000;
-    $application-tile-details-button-row-border-top: 1px solid #000;
 }

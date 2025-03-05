@@ -1,167 +1,174 @@
 <xc-dialog-wrapper xc-form xc-i18n-context="fman.add-new-order-input-source-modal">
-    <ng-container header><span xc-i18n>header</span></ng-container>
+  <ng-container header><span xc-i18n>header</span></ng-container>
 
-    <section content class="zeta-scrollbar">
-        <div *ngIf="error" class="error-box">
-            <div [fm-focus-candidate]="errorBoxFocusCandidateRef" fm-focus-candidate-focus-onload class="error-msg">
-                <div class="icon-div"><xc-icon xc-icon-name="msgwarning"></xc-icon></div>
-                <div>{{error}}</div>
-            </div>
+  <section content class="zeta-scrollbar">
+    @if (error) {
+      <div class="error-box">
+        <div [fm-focus-candidate]="errorBoxFocusCandidateRef" fm-focus-candidate-focus-onload class="error-msg">
+          <div class="icon-div"><xc-icon xc-icon-name="msgwarning"></xc-icon></div>
+          <div>{{error}}</div>
         </div>
+      </div>
+    }
 
-        <xc-form-input
-            label="label-name" 
-            xc-i18n
-            [(value)]="orderInputSource.name"
-            xc-form-validator-required
-        ></xc-form-input>
+    <xc-form-input
+      label="label-name"
+      xc-i18n
+      [(value)]="orderInputSource.name"
+      xc-form-validator-required
+    ></xc-form-input>
 
-        <xc-form-autocomplete
-            xc-i18n
-            label="label-workspace-application"
-            placeholder="tooltip-select"
-            [(xc-form-autocomplete-option)]="runtimeContextsDataWrapper.value"
-            [xc-form-autocomplete-options]="runtimeContextsDataWrapper.values"
-            xc-form-autocomplete-fulltextsearch
-            xc-form-validator-required
-            xc-form-field-suffix="clear"
-        ></xc-form-autocomplete>
+    <xc-form-autocomplete
+      xc-i18n
+      label="label-workspace-application"
+      placeholder="tooltip-select"
+      [(xc-form-autocomplete-option)]="runtimeContextsDataWrapper.value"
+      [xc-form-autocomplete-options]="runtimeContextsDataWrapper.values"
+      xc-form-autocomplete-fulltextsearch
+      xc-form-validator-required
+      xc-form-field-suffix="clear"
+    ></xc-form-autocomplete>
 
-        <xc-form-autocomplete
-            *ngIf="!noOrderTypes"
-            xc-i18n
-            label="label-order-type"
-            placeholder="tooltip-select"
-            [(xc-form-autocomplete-option)]="orderTypeDataWrapper.value"
-            [xc-form-autocomplete-options]="orderTypeDataWrapper.values"
-            xc-form-autocomplete-fulltextsearch
-            xc-form-validator-required
-            xc-form-field-suffix="clear"
-        ></xc-form-autocomplete>
+    @if (!noOrderTypes) {
+      <xc-form-autocomplete
+        xc-i18n
+        label="label-order-type"
+        placeholder="tooltip-select"
+        [(xc-form-autocomplete-option)]="orderTypeDataWrapper.value"
+        [xc-form-autocomplete-options]="orderTypeDataWrapper.values"
+        xc-form-autocomplete-fulltextsearch
+        xc-form-validator-required
+        xc-form-field-suffix="clear"
+      ></xc-form-autocomplete>
+    }
 
-        <xc-form-input
-            *ngIf="noOrderTypes"
-            xc-i18n
-            label="label-order-type"
-            value="{{'value-no-order-types-found' | xcI18n }}"
-            readonly
-        ></xc-form-input>
+    @if (noOrderTypes) {
+      <xc-form-input
+        xc-i18n
+        label="label-order-type"
+        value="{{'value-no-order-types-found' | xcI18n }}"
+        readonly
+      ></xc-form-input>
+    }
 
-        <xc-form-autocomplete
-            *ngIf="!noSourceTypes"
-            label="label-source-type"
-            placeholder="tooltip-select"
-            xc-i18n
-            [disabled]="!sourceTypeDataWrapper.values?.length"
-            [(xc-form-autocomplete-option)]="sourceTypeDataWrapper.value"
-            [xc-form-autocomplete-options]="sourceTypeDataWrapper.values"
-            xc-form-autocomplete-fulltextsearch
-            xc-form-autocomplete-asdropdown
-            xc-form-validator-required
-            xc-form-field-suffix="clear"
-        ></xc-form-autocomplete>
+    @if (!noSourceTypes) {
+      <xc-form-autocomplete
+        label="label-source-type"
+        placeholder="tooltip-select"
+        xc-i18n
+        [disabled]="!sourceTypeDataWrapper.values?.length"
+        [(xc-form-autocomplete-option)]="sourceTypeDataWrapper.value"
+        [xc-form-autocomplete-options]="sourceTypeDataWrapper.values"
+        xc-form-autocomplete-fulltextsearch
+        xc-form-autocomplete-asdropdown
+        xc-form-validator-required
+        xc-form-field-suffix="clear"
+      ></xc-form-autocomplete>
+    }
 
-        <xc-form-input
-            *ngIf="noSourceTypes"
-            label="label-source-type"
-            value="{{'value-no-source-types-found' | xcI18n}}"
-            xc-i18n
-            readonly
-        ></xc-form-input>
+    @if (noSourceTypes) {
+      <xc-form-input
+        label="label-source-type"
+        value="{{'value-no-source-types-found' | xcI18n}}"
+        xc-i18n
+        readonly
+      ></xc-form-input>
+    }
 
-        <!-- CONSTANT SOURCE -->
-        <ng-container *ngIf="isSourceTypeConstantSelected">
-            <input-parameter xc-i18n-context="input-parameter" [ref]="inputParameterRef"></input-parameter>
-            <br>
-            <xc-panel class="compact">
-                <header>
-                    <h2 xc-i18n>header-custom-fields</h2>
-                </header>
-                <section>
-                    <div class="items-row">
-                        <xc-form-input class="compact" label="label-custom-field-1" [(value)]="customField0" xc-i18n></xc-form-input>
-                        <xc-form-input class="compact" label="label-custom-field-2" [(value)]="customField1" xc-i18n></xc-form-input>
-                    </div>
-                    <div class="items-row">
-                        <xc-form-input class="compact" label="label-custom-field-3" [(value)]="customField2" xc-i18n></xc-form-input>
-                        <xc-form-input class="compact" label="label-custom-field-4" [(value)]="customField3" xc-i18n></xc-form-input>
-                    </div>
-                </section>
-            </xc-panel>
-            <br>
-            <div class="custom-items-row">
-                <xc-form-input
-                    label="label-riority"
-                    xc-i18n
-                    [(value)]="priority"
-                    xc-form-validator-required
-                    xc-form-validator-number
-                    xc-form-validator-minvalue="0"
-                    xc-form-validator-maxvalue="10"
-                ></xc-form-input>
-
-                <xc-form-autocomplete
-                    label="label-monitoring-level"
-                    placeholder="tooltip-select"
-                    xc-i18n
-                    [(xc-form-autocomplete-option)]="monitoringLevelDataWrapper.value"
-                    [xc-form-autocomplete-options]="monitoringLevelDataWrapper.values"
-                    xc-form-autocomplete-fulltextsearch
-                    xc-form-autocomplete-asdropdown
-                    xc-form-field-suffix="clear"
-                ></xc-form-autocomplete>
+    <!-- CONSTANT SOURCE -->
+    @if (isSourceTypeConstantSelected) {
+      <input-parameter xc-i18n-context="input-parameter" [ref]="inputParameterRef"></input-parameter>
+      <br>
+        <xc-panel class="compact">
+          <header>
+            <h2 xc-i18n>header-custom-fields</h2>
+          </header>
+          <section>
+            <div class="items-row">
+              <xc-form-input class="compact" label="label-custom-field-1" [(value)]="customField0" xc-i18n></xc-form-input>
+              <xc-form-input class="compact" label="label-custom-field-2" [(value)]="customField1" xc-i18n></xc-form-input>
             </div>
-        </ng-container>
+            <div class="items-row">
+              <xc-form-input class="compact" label="label-custom-field-3" [(value)]="customField2" xc-i18n></xc-form-input>
+              <xc-form-input class="compact" label="label-custom-field-4" [(value)]="customField3" xc-i18n></xc-form-input>
+            </div>
+          </section>
+        </xc-panel>
+        <br>
+          <div class="custom-items-row">
+            <xc-form-input
+              label="label-riority"
+              xc-i18n
+              [(value)]="priority"
+              xc-form-validator-required
+              xc-form-validator-number
+              xc-form-validator-minvalue="0"
+              xc-form-validator-maxvalue="10"
+            ></xc-form-input>
+            <xc-form-autocomplete
+              label="label-monitoring-level"
+              placeholder="tooltip-select"
+              xc-i18n
+              [(xc-form-autocomplete-option)]="monitoringLevelDataWrapper.value"
+              [xc-form-autocomplete-options]="monitoringLevelDataWrapper.values"
+              xc-form-autocomplete-fulltextsearch
+              xc-form-autocomplete-asdropdown
+              xc-form-field-suffix="clear"
+            ></xc-form-autocomplete>
+          </div>
+        }
 
         <!-- WORKFLOW OR XTF SOURCE -->
-        <ng-container *ngIf="isSourceTypeWorkflowSelected || isSourceTypeXTFSelected">
-            <xc-panel>
-                <header>
-                    <h2 xc-i18n>label-generating-order-type</h2>
-                </header>
-                <section>
-                    <xc-form-autocomplete
-                        label="label-generating-order-type"
-                        placeholder="tooltip-select"
-                        xc-i18n
-                        [(xc-form-autocomplete-option)]="generatingOrderTypeDataWrapper.value"
-                        [xc-form-autocomplete-options]="generatingOrderTypeDataWrapper.values"
-                        xc-form-autocomplete-fulltextsearch
-                        xc-form-validator-required
-                        xc-form-field-suffix="clear"
-                    ></xc-form-autocomplete>
-                    <xc-form-input
-                        *ngIf="isSourceTypeXTFSelected"
-                        label="label-test-case-id"
-                        xc-i18n
-                        [(value)]="xTFTestCaseID"
-                        xc-form-validator-required
-                        readonly
-                    ></xc-form-input>
-                    <xc-form-input
-                        *ngIf="isSourceTypeXTFSelected"
-                        label="label-test-case-name" 
-                        xc-i18n
-                        [(value)]="xTFTestCaseName"
-                        xc-form-validator-required
-                        readonly
-                    ></xc-form-input>
-                </section>
-            </xc-panel>
-            <br>
-        </ng-container>
+        @if (isSourceTypeWorkflowSelected || isSourceTypeXTFSelected) {
+          <xc-panel>
+            <header>
+              <h2 xc-i18n>label-generating-order-type</h2>
+            </header>
+            <section>
+              <xc-form-autocomplete
+                label="label-generating-order-type"
+                placeholder="tooltip-select"
+                xc-i18n
+                [(xc-form-autocomplete-option)]="generatingOrderTypeDataWrapper.value"
+                [xc-form-autocomplete-options]="generatingOrderTypeDataWrapper.values"
+                xc-form-autocomplete-fulltextsearch
+                xc-form-validator-required
+                xc-form-field-suffix="clear"
+              ></xc-form-autocomplete>
+              @if (isSourceTypeXTFSelected) {
+                <xc-form-input
+                  label="label-test-case-id"
+                  xc-i18n
+                  [(value)]="xTFTestCaseID"
+                  xc-form-validator-required
+                  readonly
+                ></xc-form-input>
+              }
+              @if (isSourceTypeXTFSelected) {
+                <xc-form-input
+                  label="label-test-case-name"
+                  xc-i18n
+                  [(value)]="xTFTestCaseName"
+                  xc-form-validator-required
+                  readonly
+                ></xc-form-input>
+              }
+            </section>
+          </xc-panel>
+          <br>
+          }
 
-        <xc-form-textarea
-            label="label-documentation" 
+          <xc-form-textarea
+            label="label-documentation"
             xc-i18n
             [(value)]="orderInputSource.documentation"
             xc-form-field-compact
-        ></xc-form-textarea>
-    </section>
+          ></xc-form-textarea>
+        </section>
 
-    <ng-container footer>
-        <xc-button (click)="dismiss(false)" xc-i18n>button-cancel</xc-button>
-        <xc-button (click)="add()" [busy]="busy" [disabled]="invalid" color="primary" xc-i18n>button-add</xc-button>
-    </ng-container>
+        <ng-container footer>
+          <xc-button (click)="dismiss(false)" xc-i18n>button-cancel</xc-button>
+          <xc-button (click)="add()" [busy]="busy" [disabled]="invalid" color="primary" xc-i18n>button-add</xc-button>
+        </ng-container>
 
-</xc-dialog-wrapper>
+      </xc-dialog-wrapper>

@@ -22,7 +22,8 @@ import { XoOrderCustoms } from '../../../xo/xo-ordercustoms.model';
 
 @Component({
     selector: 'custom-information-form',
-    templateUrl: './custom-information-form.component.html'
+    templateUrl: './custom-information-form.component.html',
+    standalone: false
 })
 export class CustomInformationFormComponent {
     _customFields: XoOrderCustoms;

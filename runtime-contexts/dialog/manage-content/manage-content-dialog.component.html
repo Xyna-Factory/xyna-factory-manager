@@ -1,28 +1,34 @@
 <xc-dialog-wrapper xc-i18n-context="fman.manage-content">
-    <ng-container header>{{titleKey | xcI18n:injectedData.label}}</ng-container>
-    <ng-container aside *ngIf="dataSource.columns.length">
-        <xc-checkbox *ngIf="!readonly" [(checked)]="includeIndependent" (checkedChange)="updateDataSource()" xc-i18n label="manage-content-include-independent" xc-tooltip="manage-content-include-independent-tooltip"></xc-checkbox>
-        <xc-checkbox [(checked)]="includeImplicit" (checkedChange)="updateDataSource()" xc-i18n label="manage-content-include-implicit" xc-tooltip="manage-content-include-implicit-tooltip" style="margin-left: 16px;"></xc-checkbox>
-        <xc-checkbox [(checked)]="includeIndirect" (checkedChange)="updateDataSource()" xc-i18n label="manage-content-include-indirect" xc-tooltip="manage-content-include-indirect-tooltip" style="margin-left: 16px;"></xc-checkbox>
+  <ng-container header>{{titleKey | xcI18n:injectedData.label}}</ng-container>
+  @if (dataSource.columns.length) {
+    <ng-container aside>
+      @if (!readonly) {
+        <xc-checkbox [(checked)]="includeIndependent" (checkedChange)="updateDataSource()" xc-i18n label="manage-content-include-independent" xc-tooltip="manage-content-include-independent-tooltip"></xc-checkbox>
+      }
+      <xc-checkbox [(checked)]="includeImplicit" (checkedChange)="updateDataSource()" xc-i18n label="manage-content-include-implicit" xc-tooltip="manage-content-include-implicit-tooltip" style="margin-left: 16px;"></xc-checkbox>
+      <xc-checkbox [(checked)]="includeIndirect" (checkedChange)="updateDataSource()" xc-i18n label="manage-content-include-indirect" xc-tooltip="manage-content-include-indirect-tooltip" style="margin-left: 16px;"></xc-checkbox>
     </ng-container>
-    <section content [ngClass]="{'two-items': !!changedApplicationElements.size}">
-        <xc-table class="zeta-scrollbar scroll" [xc-table-datasource]="dataSource" xc-table-allowsort xc-table-allowfilter xc-table-lazyupdate></xc-table>
-        <div *ngIf="!!changedApplicationElements.size">
-            <span class="row" xc-i18n><xc-icon xc-icon-name="msginfo"></xc-icon>manage-content-apply-info</span>
-            <xc-table
-                class="zeta-scrollbar scroll"
-                [xc-table-datasource]="changedContentTable"
-                xc-table-allowsort>
-            </xc-table>
-        </div>
-    </section>
-    <ng-container footer>
-        <ng-container *ngIf="readonly">
-            <xc-button (click)="dismiss()" xc-i18n>view-content-ok</xc-button>
-        </ng-container>
-        <ng-container *ngIf="!readonly">
-            <xc-button (click)="dismiss()" xc-i18n>manage-content-cancel</xc-button>
-            <xc-button (click)="apply()" color="primary" [busy]="loading" [disabled]="loading" xc-i18n>manage-content-apply</xc-button>
-        </ng-container>
-    </ng-container>
+  }
+  <section content [ngClass]="{'two-items': !!changedApplicationElements.size}">
+    <xc-table class="zeta-scrollbar scroll" [xc-table-datasource]="dataSource" xc-table-allowsort xc-table-allowfilter xc-table-lazyupdate></xc-table>
+    @if (!!changedApplicationElements.size) {
+      <div>
+        <span class="row" xc-i18n><xc-icon xc-icon-name="msginfo"></xc-icon>manage-content-apply-info</span>
+        <xc-table
+          class="zeta-scrollbar scroll"
+          [xc-table-datasource]="changedContentTable"
+          xc-table-allowsort>
+        </xc-table>
+      </div>
+    }
+  </section>
+  <ng-container footer>
+    @if (readonly) {
+      <xc-button (click)="dismiss()" xc-i18n>view-content-ok</xc-button>
+    }
+    @if (!readonly) {
+      <xc-button (click)="dismiss()" xc-i18n>manage-content-cancel</xc-button>
+      <xc-button (click)="apply()" color="primary" [busy]="loading" [disabled]="loading" xc-i18n>manage-content-apply</xc-button>
+    }
+  </ng-container>
 </xc-dialog-wrapper>

@@ -26,8 +26,9 @@ export interface DeploymentItemAttentionTemplateData {
 }
 
 @Component({
-    template: '<span>{{injectedData.value}}</span><xc-icon *ngIf="injectedData.attention" xc-icon-style="modeller" xc-icon-name="mini-catch"></xc-icon>',
-    styleUrls: ['./deployment-item-attention-template.component.scss']
+    template: '<span>{{injectedData.value}}</span>@if (injectedData.attention) {<xc-icon xc-icon-style="modeller" xc-icon-name="mini-catch"></xc-icon>}',
+    styleUrls: ['./deployment-item-attention-template.component.scss'],
+    standalone: false
 })
 export class DeploymentItemAttentionTemplateComponent extends XcDynamicComponent<DeploymentItemAttentionTemplateData> {
 

@@ -37,7 +37,8 @@ export interface AddNewCapacityModalComponentData {
 
 @Component({
     templateUrl: './add-new-capacity-modal.component.html',
-    styleUrls: ['./add-new-capacity-modal.component.scss']
+    styleUrls: ['./add-new-capacity-modal.component.scss'],
+    standalone: false
 })
 export class AddNewCapacityModalComponent extends XcDialogComponent<boolean, AddNewCapacityModalComponentData> {
 

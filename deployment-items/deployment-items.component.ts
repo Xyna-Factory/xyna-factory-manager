@@ -45,7 +45,8 @@ const ISWP = DEPLOYMENT_ITEMS_ISWP;
 
 @Component({
     templateUrl: './deployment-items.component.html',
-    styleUrls: ['./deployment-items.component.scss']
+    styleUrls: ['./deployment-items.component.scss'],
+    standalone: false
 })
 export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent {
 

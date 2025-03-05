@@ -40,7 +40,8 @@ import { manageContent_translations_en_US } from './locale/manage-content-transl
 
 @Component({
     templateUrl: './manage-content-dialog.component.html',
-    styleUrls: ['./manage-content-dialog.component.scss']
+    styleUrls: ['./manage-content-dialog.component.scss'],
+    standalone: false
 })
 export class ManageContentDialogComponent extends XcDialogComponent<boolean, XoRuntimeContext> implements OnDestroy {
 

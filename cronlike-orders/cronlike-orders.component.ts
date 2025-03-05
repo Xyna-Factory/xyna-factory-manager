@@ -38,7 +38,8 @@ const ISWP = CRONLIKE_ORDERS_ISWP;
 
 @Component({
     templateUrl: './cronlike-orders.component.html',
-    styleUrls: ['./cronlike-orders.component.scss']
+    styleUrls: ['./cronlike-orders.component.scss'],
+    standalone: false
 })
 export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
 
@@ -266,7 +267,7 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
             i18nService: this.i18nService,
             rtc: FM_RTC,
             duplicate: duplicated,
-            // eslint-disable-next-line @typescript-eslint/unbound-method
+             
             GET_ORDER_TYPES_EMPTY_LIST_ERROR: this.GET_ORDER_TYPES_EMPTY_LIST_ERROR,
             UNSPECIFIED_GET_ORDER_TYPES_ERROR: this.UNSPECIFIED_GET_ORDER_TYPES_ERROR,
             UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR: this.UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR

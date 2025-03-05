@@ -1,14 +1,17 @@
 <ng-container>
-    <xc-panel [xc-panel-collapsable]="collapsable">
-        <header>
-            <h3 xc-i18n>header</h3>
-        </header>
-        <section>
-            <div *ngIf="noInputData" xc-i18n>no-input-parameters</div>
-            <xc-tree
-                *ngIf="inputParamterTreeDataSource && !noInputData"
-                [xc-tree-datasource]="inputParamterTreeDataSource"
-            ></xc-tree>
-        </section>
-    </xc-panel>
+  <xc-panel [xc-panel-collapsable]="collapsable">
+    <header>
+      <h3 xc-i18n>header</h3>
+    </header>
+    <section>
+      @if (noInputData) {
+        <div xc-i18n>no-input-parameters</div>
+      }
+      @if (inputParamterTreeDataSource && !noInputData) {
+        <xc-tree
+          [xc-tree-datasource]="inputParamterTreeDataSource"
+        ></xc-tree>
+      }
+    </section>
+  </xc-panel>
 </ng-container>

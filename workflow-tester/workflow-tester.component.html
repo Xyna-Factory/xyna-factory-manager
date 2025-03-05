@@ -1,73 +1,82 @@
 <ng-container *xc-var="inputTree.container.length > 0; let hasInput">
-    <xc-panel xc-panel-collapsable [xc-panel-collapsed]="!hasInput">
-        <header><label xc-i18n>header-input</label></header>
-        <section>
-            <ng-template #noInput><span xc-i18n>label-no-input</span></ng-template>
-            <xc-tree
-                *ngIf="hasInput; else noInput"
-                class="input-tree zeta-scrollbar"
-                [xc-tree-datasource]="inputTree"
-                xc-tree-autoexpand="first"
-            ></xc-tree>
-        </section>
-    </xc-panel>
+  <xc-panel xc-panel-collapsable [xc-panel-collapsed]="!hasInput">
+    <header><label xc-i18n>header-input</label></header>
+    <section>
+      @if (hasInput) {
+        <xc-tree
+          class="input-tree zeta-scrollbar"
+          [xc-tree-datasource]="inputTree"
+          xc-tree-autoexpand="first"
+        ></xc-tree>
+      } @else {
+        <span xc-i18n>label-no-input</span>
+      }
+    </section>
+  </xc-panel>
 </ng-container>
 <xc-panel xc-panel-collapsable xc-panel-collapsed>
-    <header><label xc-i18n>header-execution</label></header>
-    <section>
-        <div class="items-row">
-            <xc-form-input xc-i18n label="label-custom-field-1" [(value)]="customField1" xc-form-field-compact></xc-form-input>
-            <xc-form-input xc-i18n label="label-custom-field-2" [(value)]="customField2" xc-form-field-compact></xc-form-input>
-        </div>
-        <div class="items-row">
-            <xc-form-input xc-i18n label="label-custom-field-3" [(value)]="customField3" xc-form-field-compact></xc-form-input>
-            <xc-form-input xc-i18n label="label-custom-field-4" [(value)]="customField4" xc-form-field-compact></xc-form-input>
-        </div>
-        <div class="items-row">
-            <xc-form-autocomplete label="{{'label-monitoring-level' | xcI18n }}" placeholder="{{'placeholder-monitoring-level' | xcI18n }}"
-                [(xc-form-autocomplete-option)]="monitoringLevelDataWrapper.value"
-                [xc-form-autocomplete-options]="monitoringLevelDataWrapper.values"
-                xc-form-autocomplete-asdropdown
-                xc-form-field-compact
-            ></xc-form-autocomplete>
-            <xc-form-autocomplete label="{{'label-priority' | xcI18n }}" placeholder="{{'placeholder-priority' | xcI18n }}"
-                [(xc-form-autocomplete-option)]="priorityDataWrapper.value"
-                [xc-form-autocomplete-options]="priorityDataWrapper.values"
-                xc-form-autocomplete-asdropdown
-                xc-form-field-compact
-            ></xc-form-autocomplete>
-        </div>
-    </section>
+  <header><label xc-i18n>header-execution</label></header>
+  <section>
+    <div class="items-row">
+      <xc-form-input xc-i18n label="label-custom-field-1" [(value)]="customField1" xc-form-field-compact></xc-form-input>
+      <xc-form-input xc-i18n label="label-custom-field-2" [(value)]="customField2" xc-form-field-compact></xc-form-input>
+    </div>
+    <div class="items-row">
+      <xc-form-input xc-i18n label="label-custom-field-3" [(value)]="customField3" xc-form-field-compact></xc-form-input>
+      <xc-form-input xc-i18n label="label-custom-field-4" [(value)]="customField4" xc-form-field-compact></xc-form-input>
+    </div>
+    <div class="items-row">
+      <xc-form-autocomplete label="{{'label-monitoring-level' | xcI18n }}" placeholder="{{'placeholder-monitoring-level' | xcI18n }}"
+        [(xc-form-autocomplete-option)]="monitoringLevelDataWrapper.value"
+        [xc-form-autocomplete-options]="monitoringLevelDataWrapper.values"
+        xc-form-autocomplete-asdropdown
+        xc-form-field-compact
+      ></xc-form-autocomplete>
+      <xc-form-autocomplete label="{{'label-priority' | xcI18n }}" placeholder="{{'placeholder-priority' | xcI18n }}"
+        [(xc-form-autocomplete-option)]="priorityDataWrapper.value"
+        [xc-form-autocomplete-options]="priorityDataWrapper.values"
+        xc-form-autocomplete-asdropdown
+        xc-form-field-compact
+      ></xc-form-autocomplete>
+    </div>
+  </section>
 </xc-panel>
 <xc-panel [xc-panel-collapsable]="showOutputPanel" [xc-panel-collapsed]="!showOutputPanel">
-    <header>
-        <label xc-i18n>label-output</label>
-        <div class="items-right">
-            <xc-button (click)="launch(false)">
-                <xc-icon xc-icon-name="settings" xc-i18n>icon-launch</xc-icon>
-            </xc-button>
-            <xc-button [busy]="launching" [disabled]="launching" (click)="launch(true)">
-                <xc-icon xc-icon-name="settings" xc-i18n>icon-launch-and-wait</xc-icon>
-            </xc-button>
+  <header>
+    <label xc-i18n>label-output</label>
+    <div class="items-right">
+      <xc-button (click)="launch(false)">
+        <xc-icon xc-icon-name="settings" xc-i18n>icon-launch</xc-icon>
+      </xc-button>
+      <xc-button [busy]="launching" [disabled]="launching" (click)="launch(true)">
+        <xc-icon xc-icon-name="settings" xc-i18n>icon-launch-and-wait</xc-icon>
+      </xc-button>
+    </div>
+  </header>
+  <section>
+    @if (showOutputPanel) {
+      @if (test?.orderId) {
+        <div class="container">
+          <span xc-i18n>span-order-id</span>
+          <span class="order-id" (click)="openAudit()">{{test.orderId}}</span>
         </div>
-    </header>
-    <section>
-        <ng-container *ngIf="showOutputPanel">
-            <div *ngIf="test?.orderId" class="container">
-                <span xc-i18n>span-order-id</span>
-                <span class="order-id" (click)="openAudit()">{{test.orderId}}</span>
-            </div>
-            <div *ngIf="test?.error" class="container">
-                <span xc-i18n>span-error</span>
-                <span class="error">{{test.error}}</span>
-            </div>
-            <div *ngIf="test?.stack" class="stack zeta-scrollbar">{{test.stack}}</div>
-            <xc-tree
-                *ngIf="outputTree.container.length > 0"
-                class="output-tree zeta-scrollbar"
-                [xc-tree-datasource]="outputTree"
-                xc-tree-autoexpand="first"
-            ></xc-tree>
-        </ng-container>
-    </section>
+      }
+      @if (test?.error) {
+        <div class="container">
+          <span xc-i18n>span-error</span>
+          <span class="error">{{test.error}}</span>
+        </div>
+      }
+      @if (test?.stack) {
+        <div class="stack zeta-scrollbar">{{test.stack}}</div>
+      }
+      @if (outputTree.container.length > 0) {
+        <xc-tree
+          class="output-tree zeta-scrollbar"
+          [xc-tree-datasource]="outputTree"
+          xc-tree-autoexpand="first"
+        ></xc-tree>
+      }
+    }
+  </section>
 </xc-panel>

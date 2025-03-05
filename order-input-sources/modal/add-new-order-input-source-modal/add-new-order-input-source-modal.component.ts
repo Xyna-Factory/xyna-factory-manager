@@ -53,7 +53,8 @@ export interface AddNewOrderInputSourceModalComponentData {
 
 @Component({
     templateUrl: './add-new-order-input-source-modal.component.html',
-    styleUrls: ['./add-new-order-input-source-modal.component.scss']
+    styleUrls: ['./add-new-order-input-source-modal.component.scss'],
+    standalone: false
 })
 export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<boolean, AddNewOrderInputSourceModalComponentData> {
 

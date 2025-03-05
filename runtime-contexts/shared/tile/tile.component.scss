@@ -15,9 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
- @import 'const';
-
- $application-tile-details-background-color: unset !default; // $color-gray-0;
+ @use '../../../const' as *;
 
  :host {
      display: flex;

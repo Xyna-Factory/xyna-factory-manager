@@ -1,13 +1,19 @@
 <xc-panel class="panel">
-    <header>
-        <h1 *ngIf="detail" class="items-left" xc-i18n>{{name}}</h1>
-    </header>
-    <section *ngIf="detail">
-        <dl>
-            <dt xc-i18n>{{runtimeContextTitle}}</dt>
-            <dd>{{runtimeContextLabel}}</dd>
-            <dt *ngIf="description" xc-i18n>description</dt>
-            <dd>{{description}}</dd>
-        </dl>
+  <header>
+    @if (detail) {
+      <h1 class="items-left" xc-i18n>{{name}}</h1>
+    }
+  </header>
+  @if (detail) {
+    <section>
+      <dl>
+        <dt xc-i18n>{{runtimeContextTitle}}</dt>
+        <dd>{{runtimeContextLabel}}</dd>
+        @if (description) {
+          <dt xc-i18n>description</dt>
+        }
+        <dd>{{description}}</dd>
+      </dl>
     </section>
+  }
 </xc-panel>

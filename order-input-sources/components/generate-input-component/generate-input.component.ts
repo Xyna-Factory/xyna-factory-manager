@@ -37,7 +37,8 @@ interface InputDataTypesTreeData {
 @Component({
     selector: 'generate-input-component',
     templateUrl: './generate-input.component.html',
-    styleUrls: ['./generate-input.component.scss']
+    styleUrls: ['./generate-input.component.scss'],
+    standalone: false
 })
 export class GenerateInputComponent {
 

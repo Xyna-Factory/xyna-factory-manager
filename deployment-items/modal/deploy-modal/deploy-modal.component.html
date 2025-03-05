@@ -1,24 +1,28 @@
 <xc-dialog-wrapper xc-form xc-i18n-context="fman.deploy-modal">
-    <ng-container header><span xc-i18n>header</span></ng-container>
+  <ng-container header><span xc-i18n>header</span></ng-container>
 
-    <section content>
-        <div *ngIf="error" class="error-box">
-            <div
-                [fm-focus-candidate]="errorBoxFocusCandidateRef"
-                fm-focus-candidate-focus-onload
-                class="error-msg"
-            ><div class="icon-div"><xc-icon xc-icon-name="msgwarning"></xc-icon></div><div>{{error}}</div></div>
+  <section content>
+    @if (error) {
+      <div class="error-box">
+        <div
+          [fm-focus-candidate]="errorBoxFocusCandidateRef"
+          fm-focus-candidate-focus-onload
+          class="error-msg"
+          ><div class="icon-div"><xc-icon xc-icon-name="msgwarning"></xc-icon></div><div>{{error}}</div></div>
         </div>
+      }
 
-        <div *ngFor="let item of injectedData.items.data">
-            {{item.id.name}}
+      @for (item of injectedData.items.data; track item) {
+        <div>
+          {{item.id.name}}
         </div>
+      }
 
     </section>
 
     <ng-container footer>
-        <xc-button (click)="dismiss(false)" xc-i18n>button-cancel</xc-button>
-        <xc-button (click)="deploy()" [busy]="busy" color="primary" xc-i18n>{{injectedData.applyButton}}</xc-button>
+      <xc-button (click)="dismiss(false)" xc-i18n>button-cancel</xc-button>
+      <xc-button (click)="deploy()" [busy]="busy" color="primary" xc-i18n>{{injectedData.applyButton}}</xc-button>
     </ng-container>
 
-</xc-dialog-wrapper>
+  </xc-dialog-wrapper>

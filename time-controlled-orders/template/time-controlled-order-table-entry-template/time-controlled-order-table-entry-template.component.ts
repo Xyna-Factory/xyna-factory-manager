@@ -28,10 +28,14 @@ import { TimeControlledOrderTableEntryTemplateData } from '../../xo/xo-time-cont
 @Component({
     selector: 'time-controlled-order-table-entry-template',
     template: `
-        <i *ngIf="archived;else normal" xc-i18n xc-tooltip="tooltip-archived"><xc-icon color="normal" xc-icon-name="folder" xc-icon-material></xc-icon>{{id}}</i>
-        <ng-template #normal>{{id}}</ng-template>
-    `,
-    styleUrls: ['./time-controlled-order-table-entry-template.component.scss']
+        @if (archived) {
+          <i xc-i18n xc-tooltip="tooltip-archived"><xc-icon color="normal" xc-icon-name="folder" xc-icon-material></xc-icon>{{id}}</i>
+        } @else {
+          {{id}}
+        }
+        `,
+    styleUrls: ['./time-controlled-order-table-entry-template.component.scss'],
+    standalone: false
 })
 export class TimeControlledOrderTableEntryTemplateComponent extends XcDynamicComponent<TimeControlledOrderTableEntryTemplateData> {
     get id(): string {

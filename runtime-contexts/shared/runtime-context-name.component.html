@@ -1,4 +1,4 @@
-<ng-container *ngIf="internalHierarchyLevel > 0">
-    <span>{{indentation}}</span>
-</ng-container>
+@if (internalHierarchyLevel > 0) {
+  <span>{{indentation}}</span>
+}
 <span>{{label}}</span>

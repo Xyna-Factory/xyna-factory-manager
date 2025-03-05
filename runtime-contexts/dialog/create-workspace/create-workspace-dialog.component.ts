@@ -38,7 +38,8 @@ type WorkspaceName = string;
 
 @Component({
     templateUrl: './create-workspace-dialog.component.html',
-    styleUrls: ['./create-workspace-dialog.component.scss']
+    styleUrls: ['./create-workspace-dialog.component.scss'],
+    standalone: false
 })
 export class CreateWorkspaceDialogComponent extends XcDialogComponent<WorkspaceName, void> {
 
