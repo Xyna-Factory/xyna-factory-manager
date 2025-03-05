@@ -1,17 +1,22 @@
-<xc-table *ngIf="!legacy" [xc-table-datasource]="tableDataSource" xc-table-allowselect xc-table-lazyupdate></xc-table>
-
-<xc-panel *ngIf="legacy && startParameter.length > 0">
+@if(!legacy) {
+<xc-table [xc-table-datasource]="tableDataSource" xc-table-allowselect xc-table-lazyupdate></xc-table>
+}
+@if (legacy && startParameter.length > 0) {
+<xc-panel>
     <header>
         <h1 class="items-left">{{'Possible start parameter combinations' | xcI18n}}</h1>
     </header>
-    <section class="legacy" *ngIf="legacy">
+    @if (legacy) {
+    <section class="legacy">
         @for (param of startParameter; track param.name) {
-            <label>{{'Combination' | xcI18n}} {{$index + 1}}</label>
-            <ul>
-                @for (legacyParam of param.lagacyParameterCombination; track $index) {
-                    <li>{{legacyParam}}</li>
-                }
-            </ul>
+        <label>{{'Combination' | xcI18n}} {{$index + 1}}</label>
+        <ul>
+            @for (legacyParam of param.lagacyParameterCombination; track $index) {
+            <li>{{legacyParam}}</li>
+            }
+        </ul>
         }
     </section>
+    }
 </xc-panel>
+}

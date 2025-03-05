@@ -16,10 +16,12 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { Component, inject, Input } from '@angular/core';
+
 import { XoStartParameterDetails } from '@fman/trigger-and-filter/xo/xo-start-parameter-details.model';
 import { coerceBoolean, Comparable } from '@zeta/base';
 import { I18nService } from '@zeta/i18n';
 import { XcLocalTableDataSource } from '@zeta/xc';
+
 
 interface ParameterTableRow extends Comparable {
     name: string;
@@ -31,7 +33,8 @@ interface ParameterTableRow extends Comparable {
 @Component({
     selector: 'start-parameter-detail',
     templateUrl: './start-parameter-detail.component.html',
-    styleUrls: ['./start-parameter-detail.component.scss']
+    styleUrls: ['./start-parameter-detail.component.scss'],
+    standalone: false
 })
 export class StartParameterDetailComponent {
 
