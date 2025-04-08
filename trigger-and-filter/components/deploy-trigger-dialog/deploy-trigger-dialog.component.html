@@ -22,11 +22,13 @@
             xc-i18n
             label="documentation"
         ></xc-form-input>
-        <xc-form-input *ngIf="legacy"
-            [(value)]="parameter"
-            xc-i18n
-            label="parameter"
-        ></xc-form-input>
+        @if(legacy) {
+            <xc-form-input
+                [(value)]="parameter"
+                xc-i18n
+                label="parameter"
+            ></xc-form-input>
+        }
         @if (!legacy) {
             <div class="startparameter">
                 <label class="item">Startparameter</label>
@@ -35,28 +37,30 @@
                     [xc-icon-name]="XDSIconName.ADD"
                 ></xc-icon-button>
             </div>
-            <div *ngFor="let para of startparameter" class="startparameter">
-                <xc-form-autocomplete
-                    class="item"
-                    [(xc-form-autocomplete-option)]="para.wrapper.value"
-                    [xc-form-autocomplete-options]="para.wrapper.values"
-                    xc-form-field-suffix="clear"
-                    xc-form-autocomplete-fulltextsearch
-                    xc-i18n
-                    label="Parameter"
-                ></xc-form-autocomplete>
-                <xc-form-input
-                    class="item"
-                    [(value)]="para.parameter.value"
-                    xc-i18n
-                    label="Value"
-                ></xc-form-input>
-                <xc-icon-button
-                    class="icon"
-                    (click)="deleteStartParameter($index)"
-                    [xc-icon-name]="XDSIconName.DELETE"
-                ></xc-icon-button>
-            </div>
+            @for(para of startparameter; track para) {
+                <div class="startparameter">
+                    <xc-form-autocomplete
+                        class="item"
+                        [(xc-form-autocomplete-option)]="para.wrapper.value"
+                        [xc-form-autocomplete-options]="para.wrapper.values"
+                        xc-form-field-suffix="clear"
+                        xc-form-autocomplete-fulltextsearch
+                        xc-i18n
+                        label="Parameter"
+                    ></xc-form-autocomplete>
+                    <xc-form-input
+                        class="item"
+                        [(value)]="para.parameter.value"
+                        xc-i18n
+                        label="Value"
+                    ></xc-form-input>
+                    <xc-icon-button
+                        class="icon"
+                        (click)="deleteStartParameter($index)"
+                        [xc-icon-name]="XDSIconName.DELETE"
+                    ></xc-icon-button>
+                </div>
+            }
         }
         <start-parameter-detail [start-parameter]="startParameter"></start-parameter-detail>
     </section>
