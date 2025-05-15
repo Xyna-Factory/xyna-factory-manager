@@ -103,7 +103,7 @@ export class TcoDetailSectionComponent implements OnInit, OnDestroy {
         this._timeControlledOrder = value;
     }
 
-    constructor(private readonly apiService: ApiService, private readonly dialogService: XcDialogService) {}
+    constructor(private readonly apiService: ApiService, private readonly dialogService: XcDialogService) { }
 
     ngOnInit() {
         this.selectionSubscription = this.selectionObservable.subscribe(selectionModel => {
@@ -130,40 +130,35 @@ export class TcoDetailSectionComponent implements OnInit, OnDestroy {
 
     getDetailsAboutTableEntry(id: XoTimeControlledOrderId) {
         this.loading = true;
-        this.apiService
-            .startOrder(FM_RTC, this.WFP_GET_TCO_DETAILS, id, XoTimeControlledOrder, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
-            .pipe(
-                finalize(() => {
-                    this.loading = false;
-                })
-            )
-            .subscribe(
-                result => {
-                    if (result.errorMessage) {
-                        this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n'));
-                        this.timeControlledOrder = null;
-                    } else {
-                        this.hasQueryInput = !!(result.output[0] as XoTimeControlledOrder).storableFqn;
-                        this.timeControlledOrder = result.output[0] as XoTimeControlledOrder;
-                    }
-                },
-                error => this.dialogService.error(error)
-            );
+        this.apiService.startOrder(FM_RTC, this.WFP_GET_TCO_DETAILS, id, XoTimeControlledOrder, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+            finalize(() => this.loading = false)
+        ).subscribe({
+            next: result => {
+                if (result.errorMessage) {
+                    this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n'));
+                    this.timeControlledOrder = null;
+                } else {
+                    this.hasQueryInput = !!(result.output[0] as XoTimeControlledOrder).storableFqn;
+                    this.timeControlledOrder = result.output[0] as XoTimeControlledOrder;
+                }
+            },
+            error: error => this.dialogService.error(error)
+        });
     }
 
     saveChanges() {
         this.timeControlledOrder.inputPayload = this.storableInputComponent.getPayload();
         this.apiService
             .startOrder(FM_RTC, this.WFP_UPDATE_TCO, this.timeControlledOrder, [], StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
-            .subscribe(
-                result => {
+            .subscribe({
+                next: result => {
                     if (result.errorMessage) {
                         this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n'));
                     } else {
                         this.refresh.emit();
                     }
                 },
-                error => this.dialogService.error(error)
-            );
+                error: error => this.dialogService.error(error)
+            });
     }
 }

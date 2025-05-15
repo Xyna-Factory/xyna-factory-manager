@@ -190,8 +190,8 @@ export class WorkflowTesterComponent {
                     this.test.monitoringLevel = this.monitoringLevel;
                     this.test.priority = this.priority;
                 })
-            ).subscribe(
-                result => {
+            ).subscribe({
+                next: result => {
                     this.test.orderId = result.orderId;
                     this.test.error = result.errorMessage;
                     this.test.stack = result.stackTrace?.join('\n');
@@ -203,8 +203,8 @@ export class WorkflowTesterComponent {
                     }
                     this.updateOutputTree();
                 },
-                error => this.dialogService.error(error?.message ?? error)
-            );
+                error: error => this.dialogService.error(error?.message ?? error)
+            });
         }
     }
 

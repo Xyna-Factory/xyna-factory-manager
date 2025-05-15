@@ -250,16 +250,17 @@ export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, Ad
 
     private _getRuntimeContexts() {
 
-        this.apiService.getRuntimeContexts(false).subscribe(
-            rtcArr => {
+        this.apiService.getRuntimeContexts(false).subscribe({
+            next: rtcArr => {
                 if (rtcArr && rtcArr.length) {
                     this.runtimeContextsDataWrapper.values = rtcArr.map(rtc => ({value: rtc, name: rtc.toString()}));
                     this.error = '';
                 } else {
                     this.error = this.injectedData.UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR;
                 }
-            }, error => this.error = error
-        );
+            }, 
+            error: error => this.error = error
+        });
     }
 
     private _getDestinations() {
@@ -275,8 +276,8 @@ export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, Ad
             XoDestinationTypeArray,
             StartOrderOptionsBuilder.defaultOptionsWithErrorMessage
         );
-        obs.subscribe(
-            result => {
+        obs.subscribe({
+            next: result => {
                 if (result && !result.errorMessage) {
                     const dtArr = (result.output[0] || { data: []}) as XoDestinationTypeArray;
                     this.planningDestinationDataWrapper.values = dtArr.data.map(dt => ({name: dt.name, value: dt}));
@@ -284,8 +285,9 @@ export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, Ad
                 } else {
                     // console.log('_getDestinations\' result error: ', result);
                 }
-            }, error => console.log('_getDestinations error: ', error)
-        );
+            }, 
+            error: error => console.log('_getDestinations error: ', error)
+        });
     }
 
     addChildOrderInheritanceRule() {
@@ -408,17 +410,17 @@ export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, Ad
         }
 
         this.busy = true;
-        this.apiService.startOrder(this.injectedData.rtc, this.injectedData.addWorkflow, [this.orderType], null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).subscribe(
-            result => {
+        this.apiService.startOrder(this.injectedData.rtc, this.injectedData.addWorkflow, [this.orderType], null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).subscribe({
+            next: result => {
                 if (result && result.errorMessage) {
                     this.error = this.injectedData.i18nService.translateErrorCode(result.errorMessage);
                 } else {
                     this.dismiss(true);
                 }
             },
-            error => console.log('Add error: ', error),
-            () => this.busy = false
-        );
+            error: error => console.log('Add error: ', error),
+            complete: () => this.busy = false
+        });
     }
 
 }

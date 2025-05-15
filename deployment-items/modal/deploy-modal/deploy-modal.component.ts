@@ -81,17 +81,17 @@ export class DeployModalComponent extends XcDialogComponent<boolean, DeployModal
             [ids, this.injectedData.runtimeContext],
             null,
             StartOrderOptionsBuilder.defaultOptionsWithErrorMessage
-        ).subscribe(
-            result => {
+        ).subscribe({
+            next: result => {
                 if (result && !result.errorMessage) {
                     this.dismiss(true);
                 } else {
                     this.error = this.injectedData.i18nService.translateErrorCode(result.errorMessage);
                 }
             },
-            () => this.error = this.injectedData.UNSPECIFIED_DEPLOY_ERROR,
-            () => this.busy = false
-        );
+            error: () => this.error = this.injectedData.UNSPECIFIED_DEPLOY_ERROR,
+            complete: () => this.busy = false
+        });
     }
 
 }

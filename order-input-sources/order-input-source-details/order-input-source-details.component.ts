@@ -17,6 +17,7 @@
  */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Injector, Input, Output, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+
 import { FM_RTC } from '@fman/const';
 import { InputParameterRef } from '@fman/misc/components/input-parameter/input-parameter-ref.class';
 import { FactoryManagerSettingsService } from '@fman/misc/services/factory-manager-settings.service';
@@ -25,7 +26,8 @@ import { ApiService, RuntimeContext, StartOrderOptionsBuilder, XoApplication, Xo
 import { isNumber } from '@zeta/base';
 import { I18nService } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcDialogService, XcFormDirective, XcIntegerStringDataWrapper, XcStringFloatDataWrapper, XcStringIntegerDataWrapper } from '@zeta/xc';
-import { OrderInputSourceParameterKey, ORDER_INPUT_SOURCE_ISWP, ORDER_INPUT_SOURCE_TYPE_CONSTANT_NAME_PREFIX, ORDER_INPUT_SOURCE_TYPE_WORKFLOW_NAME_PREFIX, ORDER_INPUT_SOURCE_TYPE_XTF_NAME_PREFIX, RestorableOrderInputSourcesComponent } from '../restorable-order-input-sources.component';
+
+import { ORDER_INPUT_SOURCE_ISWP, ORDER_INPUT_SOURCE_TYPE_CONSTANT_NAME_PREFIX, ORDER_INPUT_SOURCE_TYPE_WORKFLOW_NAME_PREFIX, ORDER_INPUT_SOURCE_TYPE_XTF_NAME_PREFIX, OrderInputSourceParameterKey, RestorableOrderInputSourcesComponent } from '../restorable-order-input-sources.component';
 import { XoFrequencyControlledTaskId } from '../xo/xo-frequency-controlled-task-id.model';
 import { XoGetOrderInputSourceRequest } from '../xo/xo-get-order-input-source-request.model';
 import { XoOrderInputSource } from '../xo/xo-order-input-source.model';
@@ -413,12 +415,12 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
 
 
     private _getRuntimeContexts() {
-        this.apiService.getRuntimeContexts(false).subscribe(
-            rtcArr => {
+        this.apiService.getRuntimeContexts(false).subscribe({
+            next: rtcArr => {
                 this.runtimeContextsDataWrapper.values = rtcArr.map(rtc => ({value: rtc, name: rtc.toString()}));
             },
-            error => this.dialogService.error(error)
-        );
+            error: error => this.dialogService.error(error)
+        });
     }
 
 

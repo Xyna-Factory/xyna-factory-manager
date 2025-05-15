@@ -18,10 +18,10 @@
 import { Component, Injector } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { QueryParameterService } from '@zeta/nav/query-parameter.service';
 import { ApiService, RuntimeContext, RuntimeContextType, StartOrderOptionsBuilder, XoRuntimeContext } from '@zeta/api';
 import { dateTimeString } from '@zeta/base';
 import { I18nService } from '@zeta/i18n';
+import { QueryParameterService } from '@zeta/nav/query-parameter.service';
 import { XcAutocompleteDataWrapper, XcDialogService, XcOptionItem, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
 
 import { filter, map } from 'rxjs/operators';
@@ -147,14 +147,14 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
 
         // fetch runtime contexts for auto complete
         this.runtimeContextsLoading = true;
-        this.apiService.getRuntimeContexts().subscribe(
-            rtcs  => {
+        this.apiService.getRuntimeContexts().subscribe({
+            next: rtcs  => {
                 this.runtimeContextsDataWrapper.values = rtcs.map(rtc => (<XcOptionItem>{value: rtc, name: rtc.toString()}));
                 this.setDefaultRTC();
             },
-            error => this.dialogService.error(error),
-            ()    => this.runtimeContextsLoading = false
-        );
+            error: error => this.dialogService.error(error),
+            complete: () => this.runtimeContextsLoading = false
+        });
     }
 
 

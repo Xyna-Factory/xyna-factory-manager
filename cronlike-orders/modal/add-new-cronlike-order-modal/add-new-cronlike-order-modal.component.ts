@@ -201,8 +201,8 @@ export class AddNewCronlikeOrderModalComponent extends XcDialogComponent<boolean
             }
         }
 
-        this.apiService.startOrder(this.injectedData.rtc, this.injectedData.addWorkflow, this.cronlikeOrder, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).subscribe(
-            result => {
+        this.apiService.startOrder(this.injectedData.rtc, this.injectedData.addWorkflow, this.cronlikeOrder, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).subscribe({
+            next: result => {
                 this.busy = false;
                 if (result && result.errorMessage) {
                     this.error = this.injectedData.i18nService.translateErrorCode(result.errorMessage);
@@ -210,10 +210,10 @@ export class AddNewCronlikeOrderModalComponent extends XcDialogComponent<boolean
                     this.dismiss(true);
                 }
             },
-            error => {
+            error: error => {
                 this.error = isString(error) ? error : error.message;
             }
-        );
+        });
     }
 
     killError() {

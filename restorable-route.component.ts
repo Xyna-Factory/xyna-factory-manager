@@ -178,8 +178,8 @@ export class RestorableRouteComponent<T extends XoObject = XoObject, D = T> exte
         finalizer?: () => void,
         onError?: (msg: string) => any
     ) {
-        resObs.subscribe(
-            result => {
+        resObs.subscribe({
+            next: result => {
                 if (result && !result.errorMessage) {
                     handler(result.output);
                 } else {
@@ -190,17 +190,17 @@ export class RestorableRouteComponent<T extends XoObject = XoObject, D = T> exte
                     console.error(result);
                 }
             },
-            error => {
+            error: error => {
                 this.dialogService.error(this.i18nService.translate(undefinedErrorMessage));
                 if (onError) {
                     onError(undefinedErrorMessage);
                 }
                 console.error(error);
             },
-            () => {
+            complete: () => {
                 finalizer?.();
             }
-        );
+        });
     }
 
 

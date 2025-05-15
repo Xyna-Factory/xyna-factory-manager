@@ -97,15 +97,15 @@ export class AddNewAdministrativeVetoModalComponent extends XcDialogComponent<bo
             request,
             null,
             StartOrderOptionsBuilder.defaultOptionsWithErrorMessage
-        ).subscribe(
-            result => {
+        ).subscribe({
+            next: result => {
                 if (result && result.errorMessage) {
                     this.error = this.injectedData.i18nService.translateErrorCode(result.errorMessage);
                 } else {
                     this.dismiss(true);
                 }
             },
-            error => console.log('Add error: ', error)
-        );
+            error: error => console.log('Add error: ', error)
+        });
     }
 }

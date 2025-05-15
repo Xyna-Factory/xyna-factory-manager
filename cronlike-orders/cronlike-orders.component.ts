@@ -200,12 +200,12 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
     }
 
     private _getRuntimeContexts() {
-        this.apiService.getRuntimeContexts(false).subscribe(
-            rtcArr => {
+        this.apiService.getRuntimeContexts(false).subscribe({
+            next: rtcArr => {
                 this.runtimeContextsDataWrapper.values = rtcArr.map(rtc => ({value: rtc, name: rtc.toString()}));
             },
-            error => this.dialogService.error(error)
-        );
+            error: error => this.dialogService.error(error)
+        });
     }
 
     private _getOrderTypes() {

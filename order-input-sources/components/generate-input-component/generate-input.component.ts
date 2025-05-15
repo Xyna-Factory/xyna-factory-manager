@@ -130,8 +130,8 @@ export class GenerateInputComponent {
 
                 this.apiService.generateInput(this.rtc, paramCaseName.value, {withErrorMessage: true}).pipe(
                     finalize(() => this.cdr.markForCheck())
-                ).subscribe(
-                    result => {
+                ).subscribe({
+                    next: result => {
                         if (result && !result.error) {
                             this.lastInputSourceId = result.inputSourceId;
 
@@ -153,10 +153,10 @@ export class GenerateInputComponent {
                             this.generatingErrorEmitter.emit(result);
                         }
                     },
-                    error => {
+                    error: error => {
                         this.generatingErrorEmitter.emit(error);
                     }
-                );
+                });
             }
         }
     }
@@ -187,18 +187,18 @@ export class GenerateInputComponent {
                 this.startOrderBusy = false;
                 this.cdr.markForCheck();
             })
-        ).subscribe(
-            result => {
+        ).subscribe({
+            next: result => {
                 this.processOrderId = result.orderId;
                 if (result && result.errorMessage) {
                     this.processError = result.errorMessage;
                 }
             },
-            error => {
+            error: error => {
                 this.processError = isString(error) ? error : error.message;
             },
-            () => this.startOrderBusy = false
-        );
+            complete: () => this.startOrderBusy = false
+        });
     }
 
     jumpToOrder() {
@@ -269,8 +269,8 @@ export class GenerateInputComponent {
     startGeneratingOrderAndBuildTree(rtc: RuntimeContext, ordertype: string, cf0?: string, cf1?: string) {
 
         // getting the parameter signature of the generating ordertype
-        this.apiService.getSignature(rtc, ordertype).subscribe(
-            sig => {
+        this.apiService.getSignature(rtc, ordertype).subscribe({
+            next: sig => {
                 // if the generating ordertype has no input parameter
                 // then
                 // do startOrder and add its result output to the tree
@@ -308,11 +308,10 @@ export class GenerateInputComponent {
                     this._buildTree(rtc, dataContainer, dataContainer.data);
                 }
             },
-            error => {
+            error: error => {
                 this.generatingErrorEmitter.emit(error);
             }
-        );
-
+        });
     }
 
     _buildTree(rtc: RuntimeContext, dataContainer: XoArray, descContainer: XoDescriber[]) {
