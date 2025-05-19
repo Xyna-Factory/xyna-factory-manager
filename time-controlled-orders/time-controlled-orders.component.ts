@@ -170,30 +170,28 @@ export class TimeControlledOrdersComponent extends RestorableTimeControlledOrder
     }
 
     duplicate(timeControlledOrderTableEntry: XoTimeControlledOrderTableEntry): void {
-        this.apiService
-            .startOrder(
-                FM_RTC,
-                this.WFP_GET_TCO_DETAILS,
-                timeControlledOrderTableEntry.id,
-                XoTimeControlledOrder,
-                StartOrderOptionsBuilder.defaultOptionsWithErrorMessage
-            )
-            .subscribe(
-                startOrderResult => {
-                    if (startOrderResult.errorMessage) {
-                        this.dialogService.error(startOrderResult.errorMessage, null, startOrderResult.stackTrace.join('\r\n'));
-                    } else {
-                        this.dialogService
-                            .custom(CreateTimeControlledOrderComponent, { default: startOrderResult.output[0] as XoTimeControlledOrder })
-                            .afterDismissResult()
-                            .subscribe(result => {
-                                if (result) {
-                                    this.refresh();
-                                }
-                            });
-                    }
-                },
-                error => this.dialogService.error(error)
-            );
+        this.apiService.startOrder(
+            FM_RTC,
+            this.WFP_GET_TCO_DETAILS,
+            timeControlledOrderTableEntry.id,
+            XoTimeControlledOrder,
+            StartOrderOptionsBuilder.defaultOptionsWithErrorMessage
+        ).subscribe({
+            next: startOrderResult => {
+                if (startOrderResult.errorMessage) {
+                    this.dialogService.error(startOrderResult.errorMessage, null, startOrderResult.stackTrace.join('\r\n'));
+                } else {
+                    this.dialogService
+                        .custom(CreateTimeControlledOrderComponent, { default: startOrderResult.output[0] as XoTimeControlledOrder })
+                        .afterDismissResult()
+                        .subscribe(result => {
+                            if (result) {
+                                this.refresh();
+                            }
+                        });
+                }
+            },
+            error: error => this.dialogService.error(error)
+        });
     }
 }

@@ -22,13 +22,14 @@ import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
 import { XcDialogService } from '@zeta/xc';
 
+import { filter } from 'rxjs';
+
 import { FM_RTC } from '../const';
 import { FactoryManagerSettingsService } from '../misc/services/factory-manager-settings.service';
 import { AddNewAdministrativeVetoModalComponent, AddNewAdministrativeVetoModalData } from './modal/add-new-administrative-veto-modal/add-new-administrative-veto-modal.component';
 import { ADMINISTRATIVE_VETOES_ISWP, RestorableAdministrativeVetoComponent } from './restorable-administrative-vetoes.component';
 import { XoAdministrativeVetoName } from './xo/xo-administrative-veto-name.mode';
 import { XoAdministrativeVeto, XoAdministrativeVetoArray } from './xo/xo-administrative-veto.model';
-import { filter } from 'rxjs';
 
 
 const ISWP = ADMINISTRATIVE_VETOES_ISWP;

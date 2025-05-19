@@ -96,8 +96,8 @@ export class OrderTypeFormComponent {
     }
 
     private getRuntimeContexts() {
-        this.apiService.getRuntimeContexts(false).subscribe(
-            rtcArr => {
+        this.apiService.getRuntimeContexts(false).subscribe({
+            next: rtcArr => {
                 if (rtcArr && rtcArr.length) {
                     this.runtimeContextsDataWrapper.values = rtcArr.map(rtc => ({ value: rtc, name: rtc.toString() }));
                     this.error = '';
@@ -105,18 +105,18 @@ export class OrderTypeFormComponent {
                     this.error = 'unexpectedError';
                 }
             },
-            error => {
+            error: error => {
                 this.error = error;
             }
-        );
+        });
     }
 
     private getOrderTypes() {
         if (!this.selectedRuntimeContext) {
             return false;
         }
-        this.apiService.startOrder(this.runtimeContext, FM_WF_GET_ORDER_TYPES, this.selectedRuntimeContext, XoOrderTypeArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).subscribe(
-            result => {
+        this.apiService.startOrder(this.runtimeContext, FM_WF_GET_ORDER_TYPES, this.selectedRuntimeContext, XoOrderTypeArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).subscribe({
+            next: result => {
                 if (result && !result.errorMessage) {
                     const orderTypeArray = result.output[0] as XoOrderTypeArray;
                     if (orderTypeArray instanceof XoArray) {
@@ -129,12 +129,12 @@ export class OrderTypeFormComponent {
                     this.error = 'unexpectedError';
                 }
             },
-            error => {
+            error: error => {
                 this.error = 'unexpectedError';
                 this.orderTypeStringDataWrapper.values = [];
                 console.error(error);
             }
-        );
+        });
     }
 
     isValid(): boolean {

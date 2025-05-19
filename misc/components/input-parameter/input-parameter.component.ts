@@ -200,8 +200,8 @@ export class InputParameterComponent implements OnInit {
             this.markForChange.emit();
 
         } else if (this.orderType && this.runtimeContext) {
-            this.apiService.getSignature(this.runtimeContext, this.orderType).subscribe(
-                signature => {
+            this.apiService.getSignature(this.runtimeContext, this.orderType).subscribe({
+                next: signature => {
                     if (signature && signature.inputs) {
 
                         signature.inputs.forEach(variable => {
@@ -220,10 +220,11 @@ export class InputParameterComponent implements OnInit {
                         this._inputString = this.getInputParameterString();
                         this.markForChange.emit();
                     }
-                }, error => {
+                }, 
+                error: () => {
                     // console.log(error);
                 }
-            );
+            });
         }
     }
 

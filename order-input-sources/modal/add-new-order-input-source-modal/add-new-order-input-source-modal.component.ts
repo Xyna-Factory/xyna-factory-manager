@@ -290,8 +290,8 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
 
 
     private _getRuntimeContexts() {
-        this.apiService.getRuntimeContexts(false).subscribe(
-            runtimeContexts => {
+        this.apiService.getRuntimeContexts(false).subscribe({
+            next: runtimeContexts => {
                 if (runtimeContexts.length > 0) {
                     this.runtimeContextsDataWrapper.values = runtimeContexts.map(rtc => ({value: rtc, name: rtc.toString()}));
                     this.error = '';
@@ -299,8 +299,8 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
                     this.error = this.injectedData.UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR;
                 }
             },
-            error => this.error = error
-        );
+            error: error => this.error = error
+        });
     }
 
 

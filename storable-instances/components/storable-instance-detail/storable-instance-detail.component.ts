@@ -85,8 +85,8 @@ export class StorableInstanceDetailComponent implements OnDestroy {
                         }
                     })
                 )
-                .subscribe(
-                    result => {
+                .subscribe({
+                    next: result => {
                         if (!result.errorMessage) {
                             isSucceeded = true;
                             this.valueChange.emit();
@@ -94,8 +94,8 @@ export class StorableInstanceDetailComponent implements OnDestroy {
                             this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n'));
                         }
                     },
-                    error => this.dialogService.error(error)
-                );
+                    error: error => this.dialogService.error(error)
+            });
         });
     }
 

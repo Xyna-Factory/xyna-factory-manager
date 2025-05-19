@@ -338,14 +338,15 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
         XoCapacityInformation.requiredUniqueKeysAddModal.clear();
 
         this.dialogService.custom<boolean, AddNewOrderTypeModalComponentData>(AddNewOrderTypeModalComponent, data).afterDismissResult()
-            .subscribe(
-                result => {
+            .subscribe({
+                next: result => {
                     if (result) {
                         this.refresh();
                     }
-                }, error => console.log('AddNewOrderTypeModalComponent error = ', error),
-                () => XoCapacityInformation.isInModalFlag = false
-            );
+                }, 
+                error: error => console.log('AddNewOrderTypeModalComponent error = ', error),
+                complete: () => XoCapacityInformation.isInModalFlag = false
+        });
 
         // this.dialogService.error('not implemented yet');
     }
