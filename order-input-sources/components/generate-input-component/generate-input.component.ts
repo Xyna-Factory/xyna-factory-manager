@@ -21,7 +21,9 @@ import { Router } from '@angular/router';
 import { ApiService, FullQualifiedName, RuntimeContext, StartOrderOptions, XoArray, XoClassInterfaceFrom, XoDescriber, XoJson, XoObject } from '@zeta/api';
 import { AuthService } from '@zeta/auth';
 import { isArray, isString } from '@zeta/base';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcDialogService, XcStructureTreeDataSource } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { finalize } from 'rxjs/operators';
 
@@ -38,7 +40,7 @@ interface InputDataTypesTreeData {
     selector: 'generate-input-component',
     templateUrl: './generate-input.component.html',
     styleUrls: ['./generate-input.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule]
 })
 export class GenerateInputComponent {
 

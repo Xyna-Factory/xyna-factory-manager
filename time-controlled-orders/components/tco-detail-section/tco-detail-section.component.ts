@@ -18,24 +18,30 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcDialogService, XcFormDirective, XcSelectionModel } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { Observable, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
 import { FM_RTC } from '../../../const';
+import { ExecutionTimeComponent } from '../../../cronlike-orders/components/execution-time/execution-time.component';
+import { CustomInformationFormComponent } from '../../../reuseable-components/forms/custom-information-form/custom-information-form.component';
+import { OrderTypeFormComponent } from '../../../reuseable-components/forms/order-type-form/order-type-form.component';
 import { XoOrderDestination } from '../../../xo/xo-orderdestination.model';
 import { XoTimeControlledOrderId } from '../../xo/xo-time-controlled-order-id.model';
 import { XoTimeControlledOrderTableEntry } from '../../xo/xo-time-controlled-order-table-entry.model';
 import { XoTimeControlledOrder } from '../../xo/xo-time-controlled-order.model';
 import { InputParameter, StorableInputParameterComponent } from '../storable-input-parameter/storable-input-parameter.component';
+import { TcoExecutionRestrictionComponent } from '../tco-execution-restriction/tco-execution-restriction.component';
 
 
 @Component({
     selector: 'tco-detail-section',
     templateUrl: './tco-detail-section.component.html',
     styleUrls: ['./tco-detail-section.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule, OrderTypeFormComponent, StorableInputParameterComponent, ExecutionTimeComponent, TcoExecutionRestrictionComponent, CustomInformationFormComponent]
 })
 export class TcoDetailSectionComponent implements OnInit, OnDestroy {
     @ViewChild(XcFormDirective, { static: false })

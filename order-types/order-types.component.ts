@@ -22,8 +22,10 @@ import { XmomObjectType } from '@pmod/api/xmom-types';
 import { XoRuntimeContext } from '@pmod/xo/runtime-context.model';
 import { ApiService, FullQualifiedName, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { QueryParameterService } from '@zeta/nav/query-parameter.service';
 import { XcAutocompleteDataWrapper, XcDialogService, XcFormDirective, XcRemoteTableDataSource, XcRichListItem, XcStringIntegerDataWrapper } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { Subscription } from 'rxjs';
 
@@ -53,7 +55,7 @@ const ISWP = ORDER_TYPE_ISWP;
 @Component({
     templateUrl: './order-types.component.html',
     styleUrls: ['./order-types.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule]
 })
 export class OrderTypesComponent extends RestorableOrderTypesComponent implements OnDestroy {
 

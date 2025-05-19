@@ -20,8 +20,10 @@ import { AfterViewInit, Component, OnDestroy, QueryList, ViewChildren } from '@a
 import { FactoryManagerSettingsService } from '@fman/misc/services/factory-manager-settings.service';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { RouteComponent } from '@zeta/nav';
 import { XcDialogService } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { Subscription } from 'rxjs';
 
@@ -41,7 +43,7 @@ import { ApplicationTileComponent } from './application-tile/application-tile.co
 @Component({
     templateUrl: './applications.component.html',
     styleUrls: ['./applications.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule, ApplicationTileComponent]
 })
 export class ApplicationsComponent extends RouteComponent implements OnDestroy, AfterViewInit {
 

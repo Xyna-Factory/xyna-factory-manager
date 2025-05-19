@@ -17,7 +17,9 @@
  */
 import { Component, HostBinding, HostListener, Injector } from '@angular/core';
 
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcAutocompleteDataWrapper, XcRichListItemComponent } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { Subject } from 'rxjs';
 
@@ -35,7 +37,7 @@ export interface UndeployReportItemComponentData {
 @Component({
     templateUrl: './undeploy-report-item.component.html',
     styleUrls: ['./undeploy-report-item.component.scss'],
-    standalone: false
+    imports: [I18nModule, XcModule]
 })
 export class UndeployReportItemComponent extends XcRichListItemComponent<void, UndeployReportItemComponentData> {
 

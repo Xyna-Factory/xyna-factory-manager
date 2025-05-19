@@ -112,9 +112,7 @@ import { StartParameterDetailComponent } from './trigger-and-filter/components/s
     imports: [
         ZetaModule,
         RouterModule,
-        CommonModule
-    ],
-    declarations: [
+        CommonModule,
         AddNewAdministrativeVetoModalComponent,
         AddNewCapacityModalComponent,
         AddNewCronlikeOrderModalComponent,

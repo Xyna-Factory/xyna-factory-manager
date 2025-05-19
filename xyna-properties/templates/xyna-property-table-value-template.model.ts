@@ -27,8 +27,7 @@ export interface XynaPropertyTableValueTemplateData {
 
 @Component({
     template: '@if (!isBold) {{{value}}}@if (isBold) {<b>{{value}}</b>}',
-    styles: [],
-    standalone: false
+    styles: []
 })
 export class XynaPropertyTableValueTemplateComponent extends XcDynamicComponent<XynaPropertyTableValueTemplateData> {
 

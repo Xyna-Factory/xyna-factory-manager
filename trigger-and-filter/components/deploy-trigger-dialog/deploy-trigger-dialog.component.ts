@@ -17,16 +17,20 @@
  */
 import { Component, Injector } from '@angular/core';
 
+import { XoRuntimeContext, XoRuntimeContextArray } from '@fman/runtime-contexts/xo/xo-runtime-context.model';
+import { XoDeployTriggerRequest } from '@fman/trigger-and-filter/xo/xo-deploy-trigger-request.model';
+import { XoStartParameterDetails, XoStartParameterDetailsArray } from '@fman/trigger-and-filter/xo/xo-start-parameter-details.model';
+import { XoTriggerInstance } from '@fman/trigger-and-filter/xo/xo-trigger-instance.model';
+import { XoTrigger } from '@fman/trigger-and-filter/xo/xo-trigger.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcAutocompleteDataWrapper, XcDialogComponent, XcDialogService, XcOptionItem, XDSIconName } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { FM_RTC } from '../../../const';
 import { ORDER_TYPES } from '../../order-types';
-import { XoTrigger } from '@fman/trigger-and-filter/xo/xo-trigger.model';
-import { XoTriggerInstance } from '@fman/trigger-and-filter/xo/xo-trigger-instance.model';
-import { XoDeployTriggerRequest } from '@fman/trigger-and-filter/xo/xo-deploy-trigger-request.model';
-import { XoRuntimeContext, XoRuntimeContextArray } from '@fman/runtime-contexts/xo/xo-runtime-context.model';
-import { XoStartParameterDetails, XoStartParameterDetailsArray } from '@fman/trigger-and-filter/xo/xo-start-parameter-details.model';
+import { StartParameterDetailComponent } from '../start-parameter-deatil/start-parameter-detail.component';
+
 
 interface StartParameter {
     key: string;
@@ -37,7 +41,7 @@ interface StartParameter {
 @Component({
     templateUrl: './deploy-trigger-dialog.component.html',
     styleUrls: ['./deploy-trigger-dialog.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule, StartParameterDetailComponent]
 })
 export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerInstance, XoTrigger> {
 

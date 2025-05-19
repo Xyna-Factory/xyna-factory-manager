@@ -18,6 +18,7 @@
 import { Component, InjectionToken } from '@angular/core';
 
 import { XC_COMPONENT_DATA, XcDynamicComponent } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 
 export interface DeploymentItemAttentionTemplateData {
@@ -28,7 +29,7 @@ export interface DeploymentItemAttentionTemplateData {
 @Component({
     template: '<span>{{injectedData.value}}</span>@if (injectedData.attention) {<xc-icon xc-icon-style="modeller" xc-icon-name="mini-catch"></xc-icon>}',
     styleUrls: ['./deployment-item-attention-template.component.scss'],
-    standalone: false
+    imports: [XcModule]
 })
 export class DeploymentItemAttentionTemplateComponent extends XcDynamicComponent<DeploymentItemAttentionTemplateData> {
 

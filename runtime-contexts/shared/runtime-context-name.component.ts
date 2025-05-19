@@ -24,8 +24,7 @@ import { XC_COMPONENT_DATA, XcDynamicComponent } from '@zeta/xc';
 @Component({
     selector: 'runtime-context-name',
     templateUrl: './runtime-context-name.component.html',
-    styleUrls: ['./runtime-context-name.component.scss'],
-    standalone: false
+    styleUrls: ['./runtime-context-name.component.scss']
 })
 export class RuntimeContextNameComponent extends XcDynamicComponent<{ name: string; hierarchyLevel: number }> {
 

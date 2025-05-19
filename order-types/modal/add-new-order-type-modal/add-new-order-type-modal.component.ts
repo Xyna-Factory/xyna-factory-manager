@@ -19,11 +19,13 @@ import { Component, Injector, ViewChild } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder, XoRuntimeContext } from '@zeta/api';
 import { I18nService, LocaleService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcAutocompleteDataWrapper, XcDialogComponent, XcFormDirective, XcRemoteTableDataSource, XcRichListItem, XcStringIntegerDataWrapper } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { XoCapacityInformation, XoCapacityInformationArray } from '../../../capacities/xo/xo-capacity-information.model';
 import { FM_RTC } from '../../../const';
-import { FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
+import { FMFocusCandidateDirective, FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
 import { FactoryManagerSettingsService } from '../../../misc/services/factory-manager-settings.service';
 import { XoDestinationTypeArray } from '../../../xo/xo-destination-type.model';
 import { XoParameterInheritanceRule } from '../../../xo/xo-parameter-inheritance-rule.model';
@@ -49,7 +51,7 @@ export interface AddNewOrderTypeModalComponentData {
 @Component({
     templateUrl: './add-new-order-type-modal.component.html',
     styleUrls: ['./add-new-order-type-modal.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule, FMFocusCandidateDirective]
 })
 export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, AddNewOrderTypeModalComponentData> {
 

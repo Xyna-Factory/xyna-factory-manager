@@ -17,13 +17,16 @@
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
+import { I18nModule } from '@zeta/i18n/i18n.module';
+import { XcModule } from '@zeta/xc/xc.module';
+
 import { XoOrderCustoms } from '../../../xo/xo-ordercustoms.model';
 
 
 @Component({
     selector: 'custom-information-form',
     templateUrl: './custom-information-form.component.html',
-    standalone: false
+    imports: [XcModule, I18nModule]
 })
 export class CustomInformationFormComponent {
     _customFields: XoOrderCustoms;

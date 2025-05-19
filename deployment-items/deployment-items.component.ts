@@ -21,14 +21,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService, RuntimeContext, RuntimeContextType, StartOrderOptionsBuilder, XoRuntimeContext } from '@zeta/api';
 import { dateTimeString } from '@zeta/base';
 import { I18nService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { QueryParameterService } from '@zeta/nav/query-parameter.service';
 import { XcAutocompleteDataWrapper, XcDialogService, XcOptionItem, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { filter, map } from 'rxjs/operators';
 
 import { FM_RTC, PROCESS_MODELLER_TAB_URL } from '../const';
 import { FactoryManagerSettingsService } from '../misc/services/factory-manager-settings.service';
 import { WorkflowTesterDialogComponent } from '../workflow-tester/workflow-tester-dialog.component';
+import { DeploymentStateDetailComponent } from './components/deployment-state-detail/deployment-state-detail.component';
 import { DeleteReportComponent, DeleteReportComponentData } from './modal/delete-report/delete-report.component';
 import { DeployModalComponent, DeployModalComponentData } from './modal/deploy-modal/deploy-modal.component';
 import { UndeployReportComponent, UndeployReportComponentData } from './modal/undeploy-report/undeploy-report.component';
@@ -46,7 +49,7 @@ const ISWP = DEPLOYMENT_ITEMS_ISWP;
 @Component({
     templateUrl: './deployment-items.component.html',
     styleUrls: ['./deployment-items.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule, DeploymentStateDetailComponent]
 })
 export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent {
 

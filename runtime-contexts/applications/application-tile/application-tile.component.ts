@@ -21,7 +21,9 @@ import { ExportApplicationDialogComponent } from '@fman/runtime-contexts/dialog/
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcDialogService, XcRemoteTableDataSource, XDSIconName } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { debounceTime, filter, first, skip } from 'rxjs/operators';
 
@@ -35,6 +37,7 @@ import { ManageContentDialogComponent } from '../../dialog/manage-content/manage
 import { ManageDependenciesDialogComponent } from '../../dialog/manage-dependencies/manage-dependencies-dialog.component';
 import { MigrateWizardComponent, MigrationWizardData } from '../../dialog/migrate-wizard/migrate-wizard.component';
 import { ORDER_TYPES } from '../../order-types';
+import { RuntimeContextButtonComponent } from '../../shared/runtime-context-button.component';
 import { XoApplicationElementArray } from '../../xo/xo-application-element.model';
 import { XoDependency, XoDependencyArray } from '../../xo/xo-dependency.model';
 import { XoIssue, XoIssueArray } from '../../xo/xo-issue.model';
@@ -52,7 +55,7 @@ import { Application } from '../application-data-source';
     selector: 'application-tile',
     templateUrl: './application-tile.component.html',
     styleUrls: ['./application-tile.component.scss'],
-    standalone: false
+    imports: [RuntimeContextButtonComponent, I18nModule, XcModule]
 })
 export class ApplicationTileComponent implements OnInit {
     @ViewChild('header', {static: false})

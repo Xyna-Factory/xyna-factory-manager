@@ -18,17 +18,19 @@
 import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 
 import { XcColor } from '@zeta/xc/shared/xc-themeable.component';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { XoApplicationDefinition } from '../xo/xo-application-definition.model';
 import { XoRuntimeContextState } from '../xo/xo-runtime-context-state.model';
 import { XoRuntimeContext } from '../xo/xo-runtime-context.model';
+import { RuntimeContextIconComponent } from './runtime-context-icon.component';
 
 
 @Component({
     selector: 'runtime-context-button',
     templateUrl: './runtime-context-button.component.html',
     styleUrls: ['./runtime-context-button.component.scss'],
-    standalone: false
+    imports: [XcModule, RuntimeContextIconComponent]
 })
 export class RuntimeContextButtonComponent {
 

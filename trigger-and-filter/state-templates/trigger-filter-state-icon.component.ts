@@ -19,6 +19,7 @@ import { Component, InjectionToken, Input } from '@angular/core';
 
 import { XC_COMPONENT_DATA, XcDynamicComponent } from '@zeta/xc';
 import { XcColor } from '@zeta/xc/shared/xc-themeable.component';
+import { XcModule } from '@zeta/xc/xc.module';
 
 
 export const TriggerFilterState = {
@@ -34,7 +35,7 @@ export const TriggerFilterState = {
     selector: 'trigger-filter-state-icon',
     templateUrl: './trigger-filter-state-icon.component.html',
     styleUrls: ['./trigger-filter-state-icon.component.scss'],
-    standalone: false
+    imports: [XcModule]
 })
 export class TriggerFilterStateIconComponent extends XcDynamicComponent<{ state: string }> {
 

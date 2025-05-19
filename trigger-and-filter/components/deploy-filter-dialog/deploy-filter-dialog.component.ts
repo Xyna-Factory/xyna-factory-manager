@@ -17,24 +17,25 @@
  */
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 
+import { XoRuntimeContext, XoRuntimeContextArray } from '@fman/runtime-contexts/xo/xo-runtime-context.model';
+import { XoDeployFilterRequest } from '@fman/trigger-and-filter/xo/xo-deploy-filter-request.model';
+import { XoFilterInstance } from '@fman/trigger-and-filter/xo/xo-filter-instance.model';
+import { XoFilter } from '@fman/trigger-and-filter/xo/xo-filter.model';
+import { XoTriggerInstance, XoTriggerInstanceArray } from '@fman/trigger-and-filter/xo/xo-trigger-instance.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcAutocompleteDataWrapper, XcDialogComponent, XcDialogService, XcOptionItem, XcOptionItemString } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { FM_RTC } from '../../../const';
 import { ORDER_TYPES } from '../../order-types';
-import { XoFilterInstance } from '@fman/trigger-and-filter/xo/xo-filter-instance.model';
-import { XoDeployFilterRequest } from '@fman/trigger-and-filter/xo/xo-deploy-filter-request.model';
-import { XoFilter } from '@fman/trigger-and-filter/xo/xo-filter.model';
-import { XoRuntimeContext, XoRuntimeContextArray } from '@fman/runtime-contexts/xo/xo-runtime-context.model';
-import { XoTriggerInstance, XoTriggerInstanceArray } from '@fman/trigger-and-filter/xo/xo-trigger-instance.model';
-
 
 
 @Component({
     templateUrl: './deploy-filter-dialog.component.html',
     styleUrls: ['./deploy-filter-dialog.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [XcModule, I18nModule]
 })
 export class DeployFilterDialogComponent extends XcDialogComponent<XoFilterInstance, XoFilter> {
 

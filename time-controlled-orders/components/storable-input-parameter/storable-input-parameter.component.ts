@@ -20,7 +20,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ApiService, FullQualifiedName, OrderTypeVariable, RuntimeContext, Xo, XoArray, XoClassInterfaceFrom, XoJson, XoObject, XoRuntimeContext, XoStorable, XoStructureType } from '@zeta/api';
 import { isArray } from '@zeta/base';
 import { I18nService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcStructureTreeDataSource } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { Observable } from 'rxjs';
 import { finalize, tap } from 'rxjs/operators';
@@ -42,7 +44,7 @@ export interface InputParameter {
     selector: 'storable-input-parameter',
     templateUrl: './storable-input-parameter.component.html',
     styleUrls: ['./storable-input-parameter.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule]
 })
 export class StorableInputParameterComponent {
     @Output()

@@ -25,8 +25,13 @@ import { XoOrderType, XoOrderTypeArray } from '@fman/xo/xo-order-type.model';
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoArray, XoRuntimeContext, XoWorkspace } from '@zeta/api';
 import { isNumber } from '@zeta/base';
 import { I18nService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcAutocompleteDataWrapper, XcDialogService, XcFormDirective, XcIntegerStringDataWrapper, XcStringFloatDataWrapper, XcStringIntegerDataWrapper } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
+import { DateSelectorComponent } from '../../misc/components/date-selector/date-selector.component';
+import { InputParameterComponent } from '../../misc/components/input-parameter/input-parameter.component';
+import { GenerateInputComponent } from '../components/generate-input-component/generate-input.component';
 import { ORDER_INPUT_SOURCE_ISWP, ORDER_INPUT_SOURCE_TYPE_CONSTANT_NAME_PREFIX, ORDER_INPUT_SOURCE_TYPE_WORKFLOW_NAME_PREFIX, ORDER_INPUT_SOURCE_TYPE_XTF_NAME_PREFIX, OrderInputSourceParameterKey, RestorableOrderInputSourcesComponent } from '../restorable-order-input-sources.component';
 import { XoFrequencyControlledTaskId } from '../xo/xo-frequency-controlled-task-id.model';
 import { XoGetOrderInputSourceRequest } from '../xo/xo-get-order-input-source-request.model';
@@ -99,7 +104,7 @@ export class FrequencyControlledTaskLoadPreset extends FrequencyControlledTaskPr
     templateUrl: './order-input-source-details.component.html',
     styleUrls: ['./order-input-source-details.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [XcModule, I18nModule, InputParameterComponent, GenerateInputComponent, DateSelectorComponent]
 })
 export class OrderInputSourceDetailsComponent extends RestorableOrderInputSourcesComponent {
 

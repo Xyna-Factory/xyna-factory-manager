@@ -19,12 +19,15 @@ import { ChangeDetectorRef, Component, Injector, ViewChild } from '@angular/core
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoRuntimeContext, XoWorkspace } from '@zeta/api';
 import { I18nService, LocaleService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcAutocompleteDataWrapper, XcDialogComponent, XcFormDirective, XcOptionItemString } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { finalize } from 'rxjs/operators';
 
 import { InputParameterRef } from '../../../misc/components/input-parameter/input-parameter-ref.class';
-import { FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
+import { InputParameterComponent } from '../../../misc/components/input-parameter/input-parameter.component';
+import { FMFocusCandidateDirective, FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
 import { XoOrderType, XoOrderTypeArray } from '../../../xo/xo-order-type.model';
 import { ORDER_INPUT_SOURCE_TYPE_CONSTANT_NAME_PREFIX, ORDER_INPUT_SOURCE_TYPE_WORKFLOW_NAME_PREFIX, ORDER_INPUT_SOURCE_TYPE_XTF_NAME_PREFIX, OrderInputSourceParameterKey } from '../../restorable-order-input-sources.component';
 import { XoCreateOrderInputSourceRequest } from '../../xo/xo-create-order-input-source-request.model';
@@ -54,7 +57,7 @@ export interface AddNewOrderInputSourceModalComponentData {
 @Component({
     templateUrl: './add-new-order-input-source-modal.component.html',
     styleUrls: ['./add-new-order-input-source-modal.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule, FMFocusCandidateDirective, InputParameterComponent]
 })
 export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<boolean, AddNewOrderInputSourceModalComponentData> {
 

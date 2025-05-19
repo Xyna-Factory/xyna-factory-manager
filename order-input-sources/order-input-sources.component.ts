@@ -20,7 +20,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { ApiService, StartOrderOptionsBuilder, XoApplication, XoArray, XoDescriber } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcDialogService } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { Subject } from 'rxjs';
 import { filter, skip } from 'rxjs/operators';
@@ -28,7 +30,7 @@ import { filter, skip } from 'rxjs/operators';
 import { FM_RTC } from '../const';
 import { FactoryManagerSettingsService } from '../misc/services/factory-manager-settings.service';
 import { AddNewOrderInputSourceModalComponent, AddNewOrderInputSourceModalComponentData } from './modal/add-new-order-input-source-modal/add-new-order-input-source-modal.component';
-import { OrderInputSourceCloseEvent } from './order-input-source-details/order-input-source-details.component';
+import { OrderInputSourceCloseEvent, OrderInputSourceDetailsComponent } from './order-input-source-details/order-input-source-details.component';
 import { ORDER_INPUT_SOURCE_ISWP, RestorableOrderInputSourcesComponent } from './restorable-order-input-sources.component';
 import { XoGetOrderInputSourceRequest } from './xo/xo-get-order-input-source-request.model';
 import { XoOrderInputSourceId } from './xo/xo-order-input-source-id.model';
@@ -47,7 +49,7 @@ export interface InputDataTypesTreeData {
 @Component({
     templateUrl: './order-input-sources.component.html',
     styleUrls: ['./order-input-sources.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule, OrderInputSourceDetailsComponent]
 })
 export class OrderInputSourcesComponent extends RestorableOrderInputSourcesComponent {
 

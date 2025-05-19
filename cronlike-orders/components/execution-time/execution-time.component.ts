@@ -19,9 +19,12 @@ import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcAutocompleteDataWrapper, XcDialogService, XcFormDirective, XcIdentityDataWrapper, XcStringIntegerDataWrapper } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { FM_RTC, FM_WF_GET_TIMEZONES, GET_TIMEZONE_EMPTY_ERROR, UNSPECIFIED_GET_TIMEZONE_ERROR } from '../../../const';
+import { DateSelectorComponent } from '../../../misc/components/date-selector/date-selector.component';
 import { XoOrderExecutionTime } from '../../../xo/xo-orderexecutiontime.model';
 import { XoTimeUnit, XoTimeUnitArray } from '../../../xo/xo-timeunit.model';
 import { XoRestrictionBasedTimeWindow } from '../../../xo/xo-timewindow.model';
@@ -33,7 +36,7 @@ import { ExecutionTimeInterval, ExecutionTimeMonth, ExecutionTimeMonthlyAtWhichD
     selector: 'execution-time',
     templateUrl: './execution-time.component.html',
     styleUrls: ['./execution-time.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule, DateSelectorComponent]
 })
 export class ExecutionTimeComponent {
     @ViewChild(XcFormDirective, { static: false })

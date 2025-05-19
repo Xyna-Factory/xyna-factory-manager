@@ -26,7 +26,11 @@ import { XoStartParameterDetails, XoStartParameterDetailsArray } from '@fman/tri
 import { XoTriggerDetail } from '@fman/trigger-and-filter/xo/xo-trigger-detail.model';
 import { XoTrigger } from '@fman/trigger-and-filter/xo/xo-trigger.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XC_COMPONENT_DATA, XcDialogService, XcDynamicComponent } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
+
+import { StartParameterDetailComponent } from '../start-parameter-deatil/start-parameter-detail.component';
 
 
 @Component({
@@ -34,7 +38,7 @@ import { XC_COMPONENT_DATA, XcDialogService, XcDynamicComponent } from '@zeta/xc
     templateUrl: './trigger-detail.component.html',
     styleUrls: ['./trigger-detail.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [XcModule, I18nModule, StartParameterDetailComponent]
 })
 export class TriggerDetailComponent extends XcDynamicComponent<XoTrigger> {
 

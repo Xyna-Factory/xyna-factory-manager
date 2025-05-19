@@ -18,13 +18,16 @@
 import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 
 import { XcColor } from '@zeta/xc/shared/xc-themeable.component';
+import { XcModule } from '@zeta/xc/xc.module';
+
 import { TileItem } from '../tile-data-source';
+
 
 @Component({
     selector: 'tile-button',
     templateUrl: './tile-button.component.html',
     styleUrls: ['./tile-button.component.scss'],
-    standalone: false
+    imports: [XcModule]
 })
 export class TileButtonComponent {
 
