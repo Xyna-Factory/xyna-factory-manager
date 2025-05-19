@@ -2,8 +2,8 @@
   <ng-container header><span>{{titleKey | xcI18n:injectedData.label}}</span></ng-container>
   @if (dataSource.columns.length) {
     <ng-container aside>
-      <xc-checkbox [(checked)]="includeIndependent" xc-i18n (checkedChange)="updateDataSource()" label="manage-dependencies-include-independent" xc-tooltip="manage-dependencies-include-independent-tooltip"></xc-checkbox>
-      <xc-checkbox [(checked)]="includeImplicit" xc-i18n (checkedChange)="updateDataSource()" label="manage-dependencies-include-implicit" xc-tooltip="manage-dependencies-include-implicit-tooltip" style="margin-left: 16px;"></xc-checkbox>
+      <xc-checkbox [(checked)]="includeIndependent" xc-i18n (checkedChange)="updateDataSource()" label="manage-dependencies-include-independent" xc-tooltip="manage-dependencies-include-independent-tooltip" />
+      <xc-checkbox [(checked)]="includeImplicit" xc-i18n (checkedChange)="updateDataSource()" label="manage-dependencies-include-implicit" xc-tooltip="manage-dependencies-include-implicit-tooltip" style="margin-left: 16px;" />
     </ng-container>
   }
   <section content class="content" [ngClass]="{'two-items': !!changedDependencies.size}">

@@ -26,7 +26,7 @@ export interface DeploymentItemAttentionTemplateData {
 }
 
 @Component({
-    template: '<span>{{injectedData.value}}</span>@if (injectedData.attention) {<xc-icon xc-icon-style="modeller" xc-icon-name="mini-catch"></xc-icon>}',
+    template: '<span>{{injectedData.value}}</span>@if (injectedData.attention) {<xc-icon xc-icon-style="modeller" xc-icon-name="mini-catch" />}',
     styleUrls: ['./deployment-item-attention-template.component.scss'],
     standalone: false
 })
