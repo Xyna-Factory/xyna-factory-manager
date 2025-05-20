@@ -3,10 +3,10 @@
   @if (dataSource.columns.length) {
     <ng-container aside>
       @if (!readonly) {
-        <xc-checkbox [(checked)]="includeIndependent" (checkedChange)="updateDataSource()" xc-i18n label="manage-content-include-independent" xc-tooltip="manage-content-include-independent-tooltip"></xc-checkbox>
+        <xc-checkbox [(checked)]="includeIndependent" (checkedChange)="updateDataSource()" xc-i18n label="manage-content-include-independent" xc-tooltip="manage-content-include-independent-tooltip" />
       }
-      <xc-checkbox [(checked)]="includeImplicit" (checkedChange)="updateDataSource()" xc-i18n label="manage-content-include-implicit" xc-tooltip="manage-content-include-implicit-tooltip" style="margin-left: 16px;"></xc-checkbox>
-      <xc-checkbox [(checked)]="includeIndirect" (checkedChange)="updateDataSource()" xc-i18n label="manage-content-include-indirect" xc-tooltip="manage-content-include-indirect-tooltip" style="margin-left: 16px;"></xc-checkbox>
+      <xc-checkbox [(checked)]="includeImplicit" (checkedChange)="updateDataSource()" xc-i18n label="manage-content-include-implicit" xc-tooltip="manage-content-include-implicit-tooltip" style="margin-left: 16px;" />
+      <xc-checkbox [(checked)]="includeIndirect" (checkedChange)="updateDataSource()" xc-i18n label="manage-content-include-indirect" xc-tooltip="manage-content-include-indirect-tooltip" style="margin-left: 16px;" />
     </ng-container>
   }
   <section content [ngClass]="{'two-items': !!changedApplicationElements.size}">
