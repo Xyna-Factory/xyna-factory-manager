@@ -17,14 +17,19 @@
  */
 
 import { Injectable } from '@angular/core';
+
 import { environment } from '@environments/environment';
 import { FACTORY_MANAGER } from '@fman/const';
 import { ApiService, StartOrderOptionsBuilder, StartOrderResult, Xo } from '@zeta/api';
 import { XoPlugin, XoPluginArray } from '@zeta/xc';
 import { XoPluginPath, XoPluginPathArray } from '@zeta/xc/xc-form/definitions/xo/plugin-path.model';
+
 import { BehaviorSubject, catchError, filter, finalize, map, Observable, of } from 'rxjs';
 
-@Injectable()
+
+@Injectable({    
+    providedIn: 'root'
+})
 export class PluginService {
 
     private readonly _plugins = new BehaviorSubject<Map<string, XoPlugin>>(null);
