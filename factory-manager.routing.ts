@@ -170,6 +170,13 @@ export const FactoryManagerRoutes: XynaRoutes = [
                 data : {right: RIGHT_FACTORY_MANAGER_XYNA_PROPERTIES, reuse: FACTORY_MANAGER.XYNA_PROPERTIES + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.XYNA_PROPERTIES}
             },
             {
+                path: 'plugin/:rtc/:name',
+                component: PluginComponent,
+                canDeactivate: [redirectGuardCanDeactivate],
+                pathMatch: 'full',
+                data : {reuse: 'plugin' + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.PLUGIN_00}
+            },
+            {
                 path: FACTORY_MANAGER.PLUGIN_00,
                 component: PluginComponent,
                 canDeactivate: [redirectGuardCanDeactivate],
