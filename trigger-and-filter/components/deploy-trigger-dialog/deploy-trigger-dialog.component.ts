@@ -51,7 +51,7 @@ export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerIns
     legacy: boolean;
     startparameter: {parameter: StartParameter; wrapper: XcAutocompleteDataWrapper<string>}[] = [];
 
-    context: XoRuntimeContext = this.injectedData.runtimeContext;
+    context: XoRuntimeContext;
 
     runtimeContextDataWrapper: XcAutocompleteDataWrapper<XoRuntimeContext> = new XcAutocompleteDataWrapper<XoRuntimeContext>(
         () => this.context,
