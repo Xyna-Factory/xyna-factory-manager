@@ -34,7 +34,7 @@
         <div class="repository-link" *xc-var="details.repositoryLink; let link">
           <xc-form-label xc-i18n>repository-link</xc-form-label>
           <label>{{link.linkType}}</label>
-          <span>svn://{{link.username}}:{{link.password}}&#64;{{link.sVNServerNameIP}}:{{link.hookManagerPort}}/{{link.pathInSVN}}</span>
+          <span>svn://{{link.username}}&#64;{{link.sVNServerNameIP}}:{{link.hookManagerPort}}/{{link.pathInSVN}}</span>
           <label xc-i18n>branch-directory</label>
           <span>{{link.baseDirectoryForBranches}}</span>
         </div>
