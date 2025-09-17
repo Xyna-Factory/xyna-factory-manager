@@ -52,9 +52,10 @@ export class CreateWorkspaceDialogComponent extends XcDialogComponent<WorkspaceN
     repositoryLink: XoRepositoryLink;
     loading: boolean;
     name = '';
+    plainPassword = '';
 
 
-    constructor(injector: Injector, private readonly apiService: ApiService, private readonly dialogService: XcDialogService, private readonly i18n: I18nService) {
+    constructor(injector: Injector, private readonly apiService: ApiService, private readonly dialogService: XcDialogService, private readonly i18n: I18nService, private readonly api: ApiService) {
         super(injector);
 
         this.i18n.setTranslations(LocaleService.DE_DE, createWorkspace_translations_de_DE);
@@ -67,6 +68,7 @@ export class CreateWorkspaceDialogComponent extends XcDialogComponent<WorkspaceN
                 switch (this.repositoryLinkType) {
                     case this.SVNRepositoryAccess: {
                         const svnRepositoryLink = new XoSVNRepositoryLink();
+                        svnRepositoryLink.name = this.name;
                         svnRepositoryLink.linkType = this.SVNRepositoryAccess;
                         svnRepositoryLink.hookManagerPort = '3690';
                         this.repositoryLink = svnRepositoryLink;
@@ -85,8 +87,21 @@ export class CreateWorkspaceDialogComponent extends XcDialogComponent<WorkspaceN
         );
     }
 
-
     create() {
+        if (this.repositoryLink instanceof XoSVNRepositoryLink) {
+            // encode password before sending
+            const svnRepositoryLink = this.repositoryLink as XoSVNRepositoryLink;
+            this.api.encode([this.plainPassword]).subscribe(encodedValues => {
+                const encodedPw = encodedValues[0];
+                svnRepositoryLink.password = encodedPw;
+                this.sendCreateRequest();
+            });
+        } else {
+            this.sendCreateRequest();
+        }
+    }
+
+    sendCreateRequest() {
         const request = new XoCreateWorkspaceRequest();
         request.name = this.name;
         request.repositoryLink = this.repositoryLink;

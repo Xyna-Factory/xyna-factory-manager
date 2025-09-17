@@ -59,10 +59,12 @@
               xc-form-field-compact
             ></xc-form-input>
             <xc-form-input
-              [(value)]="repositoryLink.password"
+              [(value)]="plainPassword"
               label="create-workspace-repository-link-password"
               xc-i18n
               xc-form-field-compact
+              type="password"
+              xc-form-field-suffix="password"
             ></xc-form-input>
           </div>
         </section>

@@ -45,7 +45,7 @@ export class DeployFilterDialogComponent extends XcDialogComponent<XoFilterInsta
     optional: boolean;
     busy: boolean;
 
-    context: XoRuntimeContext = this.injectedData.runtimeContext;
+    context: XoRuntimeContext;
     triggerInstance: string;
 
     runtimeContextDataWrapper: XcAutocompleteDataWrapper<XoRuntimeContext> = new XcAutocompleteDataWrapper<XoRuntimeContext>(
@@ -83,15 +83,19 @@ export class DeployFilterDialogComponent extends XcDialogComponent<XoFilterInsta
     }
 
     fillTriggerInstanceWrapper() {
-        this.apiService.startOrderAssertFlat<XoTriggerInstance>(FM_RTC, ORDER_TYPES.POSSIBLE_TRIGGER_INSTANCES, [this.injectedData, this.context], XoTriggerInstanceArray)
-            .subscribe({
-                next: result => {
-                    this.triggerInstanceDataWrapper.values = result.map(triggerInstance => XcOptionItemString(triggerInstance.triggerInstance));
-                },
-                error: err => {
-                    this.dialogService.error(err);
-                }
-            });
+        if (this.context) {
+            this.apiService.startOrderAssertFlat<XoTriggerInstance>(FM_RTC, ORDER_TYPES.POSSIBLE_TRIGGER_INSTANCES, [this.injectedData, this.context], XoTriggerInstanceArray)
+                .subscribe({
+                    next: result => {
+                        this.triggerInstanceDataWrapper.values = result.map(triggerInstance => XcOptionItemString(triggerInstance.triggerInstance));
+                    },
+                    error: err => {
+                        this.dialogService.error(err);
+                    }
+                });
+        } else {
+            this.triggerInstanceDataWrapper.values = [];
+        }
     }
 
     deploy() {

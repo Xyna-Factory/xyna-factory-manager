@@ -2,7 +2,7 @@
   <ng-container header>{{'title' | xcI18n:injectedData.label}}</ng-container>
   @if (dataSource.columns.length) {
     <ng-container aside>
-      <xc-checkbox [(checked)]="onlyUnassigned" (checkedChange)="updateDataSource()" xc-i18n label="only-unassigned" xc-tooltip="only-unassigned-tooltip"></xc-checkbox>
+      <xc-checkbox [(checked)]="onlyUnassigned" (checkedChange)="updateDataSource()" xc-i18n label="only-unassigned" xc-tooltip="only-unassigned-tooltip" />
     </ng-container>
   }
   <section content>
