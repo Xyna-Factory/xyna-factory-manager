@@ -59,8 +59,6 @@ const ISWP = ORDER_TYPE_ISWP;
 })
 export class OrderTypesComponent extends RestorableOrderTypesComponent implements OnDestroy {
 
-    private readonly queryParamService: QueryParameterService;
-
     @ViewChild(XcFormDirective, { static: false })
     xcFormDirective: XcFormDirective;
 

@@ -189,7 +189,7 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
             this.detailsRuntimeContext  = this.selectedRuntimeContext.clone();
             this.detailsLastStateChange = dateTimeString(this.detailsObject.lastStateChange, false);
             this.detailsLastModified    = dateTimeString(this.detailsObject.lastModified, false);
-        }, this.UNSPECIFIED_DETAILS_ERROR, null, error => {
+        }, this.UNSPECIFIED_DETAILS_ERROR, null, () => {
             this.detailsRuntimeContext = null;
             this.dismiss();
         });
@@ -245,7 +245,7 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
                     // console.log('Undeploying was successful');
                     this.remoteTableDataSource.refresh();
                 }
-            }, this.UNSPECIFIED_DELETE_ERROR, () => { }, msg => { });
+            }, this.UNSPECIFIED_DELETE_ERROR, () => { }, () => { });
         };
 
         if (confirmFirst) {
@@ -363,7 +363,7 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
                 // console.log('Undeploying was successful');
                 this.remoteTableDataSource.refresh();
             }
-        }, this.UNSPECIFIED_UNDEPLOY_ERROR, () => {}, msg => {});
+        }, this.UNSPECIFIED_UNDEPLOY_ERROR, () => {}, () => {});
     }
 
 
