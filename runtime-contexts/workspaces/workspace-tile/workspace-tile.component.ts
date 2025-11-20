@@ -16,13 +16,15 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, Input, NgZone, OnInit, Output, ViewChild } from '@angular/core';
+
 import { ShowWorkspaceContentDialogComponent } from '@fman/runtime-contexts/dialog/show-workspace-content/show-workspace-content-dialog.component';
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
 import { XoGetWorkspaceContentRequest } from '@fman/runtime-contexts/xo/xo-get-workspace-content-request.model';
-
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcDialogService, XcRemoteTableDataSource, XDSIconName } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { debounceTime, filter, finalize, first, skip } from 'rxjs/operators';
 
@@ -40,6 +42,7 @@ import { ManageContentDialogComponent } from '../../dialog/manage-content/manage
 import { ManageDependenciesDialogComponent } from '../../dialog/manage-dependencies/manage-dependencies-dialog.component';
 import { MigrateWizardComponent, MigrationWizardData } from '../../dialog/migrate-wizard/migrate-wizard.component';
 import { ORDER_TYPES } from '../../order-types';
+import { RuntimeContextButtonComponent } from '../../shared/runtime-context-button.component';
 import { XoApplicationDefinitionDetails } from '../../xo/xo-application-definition-details.model';
 import { XoApplicationDefinition } from '../../xo/xo-application-definition.model';
 import { XoApplicationElementArray } from '../../xo/xo-application-element.model';
@@ -59,7 +62,7 @@ export const DUPLICATE_ELEMENT_IDENTIFIER = 'duplicate element';
     selector: 'workspace-tile',
     templateUrl: './workspace-tile.component.html',
     styleUrls: ['./workspace-tile.component.scss'],
-    standalone: false
+    imports: [RuntimeContextButtonComponent, I18nModule, XcModule]
 })
 export class WorkspaceTileComponent implements OnInit {
     @ViewChild('header', { static: false })

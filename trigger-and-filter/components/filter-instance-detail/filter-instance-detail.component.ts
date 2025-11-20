@@ -23,7 +23,9 @@ import { XoFilterInstanceDetails } from '@fman/trigger-and-filter/xo/xo-filter-i
 import { XoFilterInstance } from '@fman/trigger-and-filter/xo/xo-filter-instance.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XC_COMPONENT_DATA, XcDialogService, XcDynamicComponent, XDSIconName } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { filter } from 'rxjs';
 
@@ -37,7 +39,7 @@ export interface FilterInstanceDetailsData {
     templateUrl: './filter-instance-detail.component.html',
     styleUrls: ['./filter-instance-detail.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [XcModule, I18nModule]
 })
 export class FilterInstanceDetailComponent extends XcDynamicComponent<FilterInstanceDetailsData> {
 

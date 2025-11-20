@@ -17,12 +17,17 @@
  */
 import { ChangeDetectorRef, Component, ElementRef, HostBinding, Input, NgZone, OnInit, ViewChild } from '@angular/core';
 
-import { I18nService } from '@zeta/i18n';
-
-import { XDSIconName, XcDialogService } from '@zeta/xc';
 import { ApiService } from '@zeta/api';
-import { TileDataSource, TileItem } from './tile-data-source';
+import { I18nService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
+import { XcDialogService, XDSIconName } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
+
 import { debounceTime, first, skip } from 'rxjs';
+
+import { TileButtonComponent } from './tile-button/tile-button.component';
+import { TileDataSource, TileItem } from './tile-data-source';
+
 
 export interface ActionButtonData {
     iconName: string;
@@ -33,7 +38,7 @@ export interface ActionButtonData {
     selector: 'tile',
     templateUrl: './tile.component.html',
     styleUrls: ['./tile.component.scss'],
-    standalone: false
+    imports: [TileButtonComponent, I18nModule, XcModule]
 })
 export class TileComponent  implements OnInit {
     @ViewChild('header', { static: false })

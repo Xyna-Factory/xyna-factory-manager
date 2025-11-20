@@ -19,7 +19,9 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { ApiService, FullQualifiedName, RuntimeContext, XoArray, XoClassInterfaceFrom, XoDescriber, XoJson, XoObject } from '@zeta/api';
 import { coerceBoolean, isArray } from '@zeta/base';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcStructureTreeDataSource } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { InputParameterRef } from './input-parameter-ref.class';
 
@@ -45,7 +47,7 @@ export interface InputDataTypesTreeData {
     selector: 'input-parameter',
     templateUrl: './input-parameter.component.html',
     styleUrls: ['./input-parameter.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule]
 })
 export class InputParameterComponent implements OnInit {
 

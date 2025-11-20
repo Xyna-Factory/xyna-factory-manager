@@ -19,10 +19,13 @@ import { Component, Injector } from '@angular/core';
 
 import { RuntimeContext, Xo } from '@zeta/api';
 import { I18nService, LocaleService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcDialogComponent } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { workflowTester_translations_de_DE } from './locale/workflow-tester-translations.de-DE';
 import { workflowTester_translations_en_US } from './locale/workflow-tester-translations.en-US';
+import { WorkflowTesterComponent } from './workflow-tester.component';
 
 
 export interface WorkflowTesterData {
@@ -35,7 +38,7 @@ export interface WorkflowTesterData {
 @Component({
     templateUrl: './workflow-tester-dialog.component.html',
     styleUrls: ['./workflow-tester-dialog.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule, WorkflowTesterComponent]
 })
 export class WorkflowTesterDialogComponent extends XcDialogComponent<void, WorkflowTesterData> {
 

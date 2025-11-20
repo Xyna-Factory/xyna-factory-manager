@@ -22,7 +22,9 @@ import { XoImportRTARequest } from '@fman/runtime-contexts/xo/xo-import-rta-requ
 import { XoManagedFileId } from '@fman/runtime-contexts/xo/xo-managed-file-id.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcDialogComponent, XcDialogService } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { throwError } from 'rxjs';
 import { catchError, filter, finalize, tap } from 'rxjs/operators';
@@ -42,7 +44,7 @@ class NodeWrapper {
     templateUrl: './import-runtime-application-dialog.component.html',
     styleUrls: ['./import-runtime-application-dialog.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [XcModule, I18nModule]
 })
 export class ImportRuntimeApplicationDialogComponent extends XcDialogComponent<boolean, void> {
 

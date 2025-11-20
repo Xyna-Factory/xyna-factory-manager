@@ -19,7 +19,9 @@ import { Component, Injector } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcDialogComponent, XcDialogService } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { throwError } from 'rxjs';
 import { catchError, filter, finalize, tap } from 'rxjs/operators';
@@ -35,7 +37,7 @@ import { deleteWorkspace_translations_en_US } from './locale/delete-workspace-tr
 @Component({
     templateUrl: './delete-workspace-dialog.component.html',
     styleUrls: ['./delete-workspace-dialog.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule]
 })
 export class DeleteWorkspaceDialogComponent extends XcDialogComponent<boolean, XoWorkspace> {
 

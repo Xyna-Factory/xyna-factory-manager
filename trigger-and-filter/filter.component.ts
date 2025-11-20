@@ -16,24 +16,30 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
-import { TileDataSource, TileItem } from '@fman/runtime-contexts/shared/tile/tile-data-source';
 
-import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { XcComponentTemplate, XcDialogService, XcSelectionModel, XcTemplate } from '@zeta/xc';
-import { Comparable } from '@zeta/base';
-import { ORDER_TYPES } from './order-types';
 import { FM_RTC } from '@fman/const';
-import { XoFilter, XoFilterArray } from './xo/xo-filter.model';
+import { TileDataSource, TileItem } from '@fman/runtime-contexts/shared/tile/tile-data-source';
+import { ActionButtonData } from '@fman/runtime-contexts/shared/tile/tile.component';
+import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
+import { Comparable } from '@zeta/base';
+import { I18nService, LocaleService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
+import { RouteComponent } from '@zeta/nav';
+import { XcComponentTemplate, XcDialogService, XcSelectionModel, XcTemplate } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
+
+import { Subscription } from 'rxjs';
+
+import { TileComponent } from '../runtime-contexts/shared/tile/tile.component';
+import { DeployFilterDialogComponent } from './components/deploy-filter-dialog/deploy-filter-dialog.component';
 import { FilterDetailComponent } from './components/filter-detail/filter-detail.component';
 import { FilterInstanceDetailComponent } from './components/filter-instance-detail/filter-instance-detail.component';
-import { XoFilterInstance } from './xo/xo-filter-instance.model';
-import { Subscription } from 'rxjs';
-import { ActionButtonData } from '@fman/runtime-contexts/shared/tile/tile.component';
-import { DeployFilterDialogComponent } from './components/deploy-filter-dialog/deploy-filter-dialog.component';
 import { trigger_and_filter_translations_de_DE } from './locale/trigger-and-filter-translations.de-DE';
 import { trigger_and_filter_translations_en_US } from './locale/trigger-and-filter-translations.en-US';
-import { RouteComponent } from '@zeta/nav';
+import { ORDER_TYPES } from './order-types';
+import { XoFilterInstance } from './xo/xo-filter-instance.model';
+import { XoFilter, XoFilterArray } from './xo/xo-filter.model';
+
 
 class FilterTile extends Comparable implements TileItem {
 
@@ -95,7 +101,7 @@ class FilterInstanceTile extends Comparable implements TileItem {
     templateUrl: './filter.component.html',
     styleUrls: ['./filter.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [XcModule, I18nModule, TileComponent]
 })
 export class FilterComponent extends RouteComponent {
 

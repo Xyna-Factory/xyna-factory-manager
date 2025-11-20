@@ -19,9 +19,11 @@ import { Component, Injector } from '@angular/core';
 
 import { XoRuntimeContext } from '@zeta/api';
 import { I18nService, LocaleService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcAutocompleteDataWrapper, XcDialogComponent } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
-import { FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
+import { FMFocusCandidateDirective, FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
 import { FactoryManagerSettingsService } from '../../../misc/services/factory-manager-settings.service';
 import { selectRuntimeContext_translations_de_DE } from './locale/select-runtime-context-translations.de-DE';
 import { selectRuntimeContext_translations_en_US } from './locale/select-runtime-context-translations.en-US';
@@ -37,7 +39,7 @@ export interface SelectRuntimeContextComponentData {
 @Component({
     templateUrl: './select-runtime-context.component.html',
     styleUrls: ['./select-runtime-context.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule, FMFocusCandidateDirective]
 })
 export class SelectRuntimeContextComponent extends XcDialogComponent<boolean, SelectRuntimeContextComponentData> {
 

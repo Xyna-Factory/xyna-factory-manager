@@ -18,6 +18,7 @@
 import { Component, InjectionToken } from '@angular/core';
 
 import { XC_COMPONENT_DATA, XcDynamicComponent } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 
 @Component({
@@ -29,7 +30,7 @@ import { XC_COMPONENT_DATA, XcDynamicComponent } from '@zeta/xc';
         </div>
     `,
     styleUrls: ['change-template.component.scss'],
-    standalone: false
+    imports: [XcModule]
 })
 export class ChangeTemplateComponent extends XcDynamicComponent<{ dependency; XoDependencyType }> {
 

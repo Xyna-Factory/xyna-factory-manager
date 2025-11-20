@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -19,16 +20,22 @@ import { Component, ElementRef, Injector, ViewChild } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder, XoRuntimeContext } from '@zeta/api';
 import { I18nService, LocaleService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcDialogComponent, XcFormDirective } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { finalize } from 'rxjs/operators';
 
 import { FM_RTC } from '../../../const';
+import { ExecutionTimeComponent } from '../../../cronlike-orders/components/execution-time/execution-time.component';
 import { ExecutionTimeBehaviorOnError } from '../../../cronlike-orders/components/execution-time/execution-time.constant';
+import { CustomInformationFormComponent } from '../../../reuseable-components/forms/custom-information-form/custom-information-form.component';
+import { OrderTypeFormComponent } from '../../../reuseable-components/forms/order-type-form/order-type-form.component';
 import { XoOrderCustoms } from '../../../xo/xo-ordercustoms.model';
 import { XoOrderDestination } from '../../../xo/xo-orderdestination.model';
 import { XoOrderExecutionTime } from '../../../xo/xo-orderexecutiontime.model';
 import { InputParameter, StorableInputParameterComponent } from '../../components/storable-input-parameter/storable-input-parameter.component';
+import { TcoExecutionRestrictionComponent } from '../../components/tco-execution-restriction/tco-execution-restriction.component';
 import { XoTCOExecutionRestriction } from '../../xo/xo-tcoexecution-restriction.model';
 import { XoTimeControlledOrderId } from '../../xo/xo-time-controlled-order-id.model';
 import { XoTimeControlledOrder } from '../../xo/xo-time-controlled-order.model';
@@ -43,7 +50,7 @@ export interface TCODefaultData {
     selector: 'create-time-controlled-order',
     templateUrl: './create-time-controlled-order.component.html',
     styleUrls: ['./create-time-controlled-order.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule, NgClass, OrderTypeFormComponent, StorableInputParameterComponent, ExecutionTimeComponent, TcoExecutionRestrictionComponent, CustomInformationFormComponent]
 })
 export class CreateTimeControlledOrderComponent extends XcDialogComponent<boolean, TCODefaultData> {
     @ViewChild(XcFormDirective, { static: false })

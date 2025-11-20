@@ -19,9 +19,11 @@ import { Component, Injector } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder, XoRuntimeContext } from '@zeta/api';
 import { I18nService, LocaleService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcDialogComponent } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
-import { FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
+import { FMFocusCandidateDirective, FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
 import { XoDeploymentItemIdArray } from '../../xo/xo-deployment-item-id.model';
 import { XoDeploymentItemArray } from '../../xo/xo-deployment-item.model';
 import { deployModal_translations_de_DE } from './locale/deploy-modal-translations.de-DE';
@@ -42,7 +44,7 @@ export interface DeployModalComponentData {
 @Component({
     templateUrl: './deploy-modal.component.html',
     styleUrls: ['./deploy-modal.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule, FMFocusCandidateDirective]
 })
 export class DeployModalComponent extends XcDialogComponent<boolean, DeployModalComponentData> {
 

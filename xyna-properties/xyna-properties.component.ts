@@ -21,14 +21,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { XoDocumentation, XoDocumentationLanguage, XoXynaProperty, XoXynaPropertyArray, XoXynaPropertyKey } from '@zeta/auth/xo/xyna-property.model';
 import { I18nService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcComponentTemplate, XcDialogService, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
+
+import { filter } from 'rxjs';
 
 import { FM_RTC } from '../const';
 import { FactoryManagerSettingsService } from '../misc/services/factory-manager-settings.service';
 import { AddNewXynaPropertyModalComponent, AddNewXynaPropertyModalComponentData } from './modal/add-new-xyna-property-modal/add-new-xyna-property-modal.component';
 import { RestorableXynaPropertiesComponent, XYNA_PROPERTY_ISWP } from './restorable-xyna-properties.component';
 import { XynaPropertyTableValueTemplateComponent, XynaPropertyTableValueTemplateData } from './templates/xyna-property-table-value-template.model';
-import { filter } from 'rxjs';
 
 
 const ISWP = XYNA_PROPERTY_ISWP;
@@ -37,7 +40,7 @@ const ISWP = XYNA_PROPERTY_ISWP;
 @Component({
     templateUrl: './xyna-properties.component.html',
     styleUrls: ['./xyna-properties.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule]
 })
 export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
 

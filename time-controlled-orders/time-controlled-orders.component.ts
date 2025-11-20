@@ -20,13 +20,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcDialogService, XcOptionItem, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { of } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
 import { FM_RTC } from '../const';
 import { FactoryManagerSettingsService } from '../misc/services/factory-manager-settings.service';
+import { TcoDetailSectionComponent } from './components/tco-detail-section/tco-detail-section.component';
 import { CreateTimeControlledOrderComponent } from './modal/create-time-controlled-order/create-time-controlled-order.component';
 import { RestorableTimeControlledOrderComponent } from './restorable-time-controlled-order.component';
 import { XoTCOTableFilter } from './xo/xo-tcotable-filter.model';
@@ -38,7 +41,7 @@ import { XoTimeControlledOrder } from './xo/xo-time-controlled-order.model';
     selector: 'selector-name',
     templateUrl: './time-controlled-orders.component.html',
     styleUrls: ['./time-controlled-orders.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule, TcoDetailSectionComponent]
 })
 export class TimeControlledOrdersComponent extends RestorableTimeControlledOrderComponent implements OnInit {
     selection: XoTimeControlledOrderTableEntry;

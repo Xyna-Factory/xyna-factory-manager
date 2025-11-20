@@ -18,6 +18,7 @@
 import { Component, InjectionToken } from '@angular/core';
 
 import { XC_COMPONENT_DATA, XcDynamicComponent } from '@zeta/xc';
+import { NgStyle } from '@angular/common';
 
 
 export interface CapacityTableInuseTemplateData {
@@ -34,7 +35,7 @@ export interface CapacityTableInuseTemplateData {
             </div>
         </div>`,
     styleUrls: ['./capacity-table-inuse-template.model.scss'],
-    standalone: false
+    imports: [NgStyle]
 })
 export class CapacityTableInuseTemplateComponent extends XcDynamicComponent<CapacityTableInuseTemplateData> {
 

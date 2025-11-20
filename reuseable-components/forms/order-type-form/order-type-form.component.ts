@@ -18,7 +18,9 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder, XoArray, XoRuntimeContext } from '@zeta/api';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcAutocompleteDataWrapper, XcFormDirective } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { FM_RTC, FM_WF_GET_ORDER_TYPES } from '../../../const';
 import { XoOrderTypeArray } from '../../../xo/xo-order-type.model';
@@ -28,7 +30,7 @@ import { XoOrderTypeArray } from '../../../xo/xo-order-type.model';
     selector: 'order-type-form',
     templateUrl: './order-type-form.component.html',
     styleUrls: ['./order-type-form.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule]
 })
 export class OrderTypeFormComponent {
     @ViewChild(XcFormDirective, { static: false })
