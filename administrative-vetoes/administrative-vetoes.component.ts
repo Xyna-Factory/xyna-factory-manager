@@ -20,7 +20,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcDialogService } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { filter } from 'rxjs';
 
@@ -37,7 +39,7 @@ const ISWP = ADMINISTRATIVE_VETOES_ISWP;
 @Component({
     templateUrl: './administrative-vetoes.component.html',
     styleUrls: ['./administrative-vetoes.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule]
 })
 export class AdministrativeVetoesComponent extends RestorableAdministrativeVetoComponent {
 

@@ -20,11 +20,16 @@ import { Component, Injector, ViewChild } from '@angular/core';
 import { ApiService, FullQualifiedName, RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoRuntimeContext, XoWorkspace } from '@zeta/api';
 import { isString } from '@zeta/base';
 import { I18nService, LocaleService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcAutocompleteDataWrapper, XcDialogComponent, XcFormDirective } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { InputParameterRef } from '../../../misc/components/input-parameter/input-parameter-ref.class';
-import { FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
+import { InputParameterComponent } from '../../../misc/components/input-parameter/input-parameter.component';
+import { FMFocusCandidateDirective, FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
+import { OrderTypeFormComponent } from '../../../reuseable-components/forms/order-type-form/order-type-form.component';
 import { XoRestrictionBasedTimeWindow } from '../../../xo/xo-timewindow.model';
+import { ExecutionTimeComponent } from '../../components/execution-time/execution-time.component';
 import { ExecutionTimeBehaviorOnError } from '../../components/execution-time/execution-time.constant';
 import { XoCronLikeOrder } from '../../xo/xo-cronlike-order.model';
 import { addNewCronlikeOrderModal_translations_de_DE } from './locale/add-new-cronlike-order-modal-translations.de-DE';
@@ -46,7 +51,7 @@ export interface AddNewCronLikeOrderModalComponentData {
     selector: 'app-add-new-cronlike-order-modal',
     templateUrl: './add-new-cronlike-order-modal.component.html',
     styleUrls: ['./add-new-cronlike-order-modal.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule, FMFocusCandidateDirective, OrderTypeFormComponent, InputParameterComponent, ExecutionTimeComponent]
 })
 export class AddNewCronlikeOrderModalComponent extends XcDialogComponent<boolean, AddNewCronLikeOrderModalComponentData> {
     @ViewChild(XcFormDirective, { static: false })

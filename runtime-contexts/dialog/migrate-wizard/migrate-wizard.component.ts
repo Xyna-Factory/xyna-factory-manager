@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -23,7 +24,9 @@ import { XoRuntimeContextTableEntry, XoRuntimeContextTableEntryArray } from '@fm
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder, Xo, XoObject } from '@zeta/api';
 import { Comparable } from '@zeta/base';
 import { I18nService, LocaleService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcDialogComponent, XcLocalTableDataSource, XcRemoteTableDataSource, XcTableDataSource, XDSIconName, XoRemappingTableInfoClass, XoTableColumn, XoTableInfo } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { filter, finalize } from 'rxjs/operators';
 
@@ -121,7 +124,7 @@ export class RuntimeContextTableInfo extends XoTableInfo {
     selector: 'migrate-wizard',
     templateUrl: './migrate-wizard.component.html',
     styleUrls: ['./migrate-wizard.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule, NgClass]
 })
 export class MigrateWizardComponent extends XcDialogComponent<boolean, MigrationWizardData> {
     /** Current state of wizard (can be set via injected data to skip a step) */

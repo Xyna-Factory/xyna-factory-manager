@@ -19,9 +19,11 @@ import { Component, Injector, ViewChild } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcDialogComponent, XcFormDirective } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
-import { FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
+import { FMFocusCandidateDirective, FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
 import { XoCapacityInformation } from '../../xo/xo-capacity-information.model';
 import { addNewCapacityModal_translations_de_DE } from './locale/add-new-capacity-modal-translations.de-DE';
 import { addNewCapacityModal_translations_en_US } from './locale/add-new-capacity-modal-translations.en-US';
@@ -38,7 +40,7 @@ export interface AddNewCapacityModalComponentData {
 @Component({
     templateUrl: './add-new-capacity-modal.component.html',
     styleUrls: ['./add-new-capacity-modal.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule, FMFocusCandidateDirective]
 })
 export class AddNewCapacityModalComponent extends XcDialogComponent<boolean, AddNewCapacityModalComponentData> {
 

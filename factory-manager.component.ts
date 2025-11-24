@@ -16,11 +16,14 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 import { AuthService } from '@zeta/auth';
 import { I18nService, LocaleService } from '@zeta/i18n';
 import { RouteComponent } from '@zeta/nav';
 import { XcNavListItem, XcNavListOrientation } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
+
 import { filter } from 'rxjs';
 
 import { RIGHT_FACTORY_MANAGER_ADMINISTRATIVE_VETOES, RIGHT_FACTORY_MANAGER_CAPACITIES, RIGHT_FACTORY_MANAGER_DEPLOYMENT_ITEMS, RIGHT_FACTORY_MANAGER_FILTER, RIGHT_FACTORY_MANAGER_ORDER_INPUT_SOURCES, RIGHT_FACTORY_MANAGER_ORDER_TYPES, RIGHT_FACTORY_MANAGER_STORABLE_INSTANCES, RIGHT_FACTORY_MANAGER_TIME_CONTROLLED_ORDERS, RIGHT_FACTORY_MANAGER_TRIGGER, RIGHT_FACTORY_MANAGER_WORKSPACES_AND_APPLICATIONS, RIGHT_FACTORY_MANAGER_XYNA_PROPERTIES } from './const';
@@ -39,7 +42,7 @@ interface XcRighteousNavListItem extends XcNavListItem {
 @Component({
     templateUrl: './factory-manager.component.html',
     styleUrls: ['./factory-manager.component.scss'],
-    standalone: false
+    imports: [XcModule, RouterOutlet]
 })
 export class FactoryManagerComponent extends RouteComponent {
 

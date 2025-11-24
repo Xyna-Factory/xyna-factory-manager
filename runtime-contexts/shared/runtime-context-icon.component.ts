@@ -19,6 +19,7 @@ import { Component, InjectionToken, Input } from '@angular/core';
 
 import { XC_COMPONENT_DATA, XcDynamicComponent } from '@zeta/xc';
 import { XcColor } from '@zeta/xc/shared/xc-themeable.component';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { XoRuntimeContextState } from '../xo/xo-runtime-context-state.model';
 
@@ -27,7 +28,7 @@ import { XoRuntimeContextState } from '../xo/xo-runtime-context-state.model';
     selector: 'runtime-context-icon',
     templateUrl: './runtime-context-icon.component.html',
     styleUrls: ['./runtime-context-icon.component.scss'],
-    standalone: false
+    imports: [XcModule]
 })
 export class RuntimeContextIconComponent extends XcDynamicComponent<{ state: string }> {
 

@@ -17,11 +17,13 @@
  */
 import { Component, OnInit } from '@angular/core';
 
-import { ApiService, FullQualifiedName, RuntimeContext, RuntimeContextType, StartOrderResult, XoDescriber, XoObject, XoRuntimeContext, Xo, XoStructureMethod, XoWorkspace, StartOrderOptionsBuilder, XoStorable } from '@zeta/api';
+import { ApiService, FullQualifiedName, RuntimeContext, RuntimeContextType, StartOrderOptionsBuilder, StartOrderResult, Xo, XoDescriber, XoObject, XoRuntimeContext, XoStorable, XoStructureMethod, XoWorkspace } from '@zeta/api';
 import { XoXynaProperty, XoXynaPropertyKey } from '@zeta/auth/xo/xyna-property.model';
 import { Comparable, isObject } from '@zeta/base';
 import { I18nService, LocaleService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcAutocompleteDataWrapper, XcDialogService, XcLocalTableDataSource, XcOptionItem, XcSelectionModel, XcSortDirection, XcStructureTreeDataSource, XcTableColumn, XoTableColumn, XoTableColumnArray, XoTableInfo } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { Observable, of, Subject } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
@@ -29,6 +31,7 @@ import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 import { FM_RTC } from '../const';
 import { FactoryManagerSettingsService } from '../misc/services/factory-manager-settings.service';
 import { XYNA_PROPERTY_ISWP } from '../xyna-properties/restorable-xyna-properties.component';
+import { StorableInstanceDetailComponent } from './components/storable-instance-detail/storable-instance-detail.component';
 import { storable_instances_translations_de_DE } from './locale/storable-instances-translations.de-DE';
 import { storable_instances_translations_en_US } from './locale/storable-instances-translations.en-US';
 import { StorableInstanceCreationComponent } from './modal/storable-instance-creation/storable-instance-creation.component';
@@ -38,7 +41,6 @@ import { XoFilterCondition } from './xo/xo-filtercondition.model';
 import { XoQueryParameter } from './xo/xo-queryparamterer.model';
 import { XoSelectionMask } from './xo/xo-selectionmask.model';
 import { XoStoreParameter } from './xo/xo-storeparameter.model';
-
 
 
 interface QueryInput {
@@ -251,7 +253,7 @@ class StorableTableDataSource extends XcLocalTableDataSource<XoObject> {
     selector: 'storable-instances',
     templateUrl: './storable-instances.component.html',
     styleUrls: ['./storable-instances.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule, StorableInstanceDetailComponent]
 })
 export class StorableInstancesComponent implements OnInit {
     rtcDataWrapper: XcAutocompleteDataWrapper<XoRuntimeContext>;

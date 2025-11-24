@@ -20,10 +20,9 @@ import { Directive, ElementRef, Host, Input, OnDestroy, OnInit, Optional } from 
 import { coerceBoolean } from '@zeta/base';
 
 
-@Directive({
+@Directive({ 
     // tslint:disable-next-line: directive-selector
-    selector: '[fm-focus-candidate]',
-    standalone: false
+    selector: '[fm-focus-candidate]' 
 })
 export class FMFocusCandidateDirective implements OnInit, OnDestroy {
 

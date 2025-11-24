@@ -18,7 +18,9 @@
 import { Component, Injector } from '@angular/core';
 
 import { I18nService, LocaleService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcDialogComponent, XcRichListItem } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { Subject } from 'rxjs';
 
@@ -38,7 +40,7 @@ export interface UndeployReportComponentData {
 @Component({
     templateUrl: './undeploy-report.component.html',
     styleUrls: ['./undeploy-report.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule]
 })
 export class UndeployReportComponent extends XcDialogComponent<XoUndeployDeploymentItemParamArray, UndeployReportComponentData> {
 

@@ -20,6 +20,7 @@ import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core
 import { ApiService, FullQualifiedName, RuntimeContext, StartOrderOptionsBuilder, XoArray, XoObject, XoRuntimeContext } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
 import { XcDialogService, XcStructureTreeDataSource } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { Subject, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
@@ -31,7 +32,7 @@ import { XoStoreParameter } from '../../xo/xo-storeparameter.model';
     selector: 'storable-instance-detail',
     templateUrl: './storable-instance-detail.component.html',
     styleUrls: ['./storable-instance-detail.component.scss'],
-    standalone: false
+    imports: [XcModule]
 })
 export class StorableInstanceDetailComponent implements OnDestroy {
     @Output()

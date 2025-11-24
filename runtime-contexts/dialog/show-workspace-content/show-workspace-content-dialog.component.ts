@@ -20,7 +20,9 @@ import { Component, Injector } from '@angular/core';
 import { XoGetWorkspaceContentRequest } from '@fman/runtime-contexts/xo/xo-get-workspace-content-request.model';
 import { ApiService } from '@zeta/api';
 import { I18nService, LocaleService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcDialogComponent, XcRemoteTableDataSource } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { FM_RTC } from '../../../const';
 import { FactoryManagerSettingsService } from '../../../misc/services/factory-manager-settings.service';
@@ -35,7 +37,7 @@ import { showWorkspaceContent_translations_en_US } from './locale/show-workspace
 @Component({
     templateUrl: './show-workspace-content-dialog.component.html',
     styleUrls: ['./show-workspace-content-dialog.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule]
 })
 export class ShowWorkspaceContentDialogComponent extends XcDialogComponent<boolean, XoRuntimeContext> {
 

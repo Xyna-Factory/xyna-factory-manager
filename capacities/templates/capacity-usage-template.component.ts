@@ -19,6 +19,7 @@ import { Component, InjectionToken, Injector } from '@angular/core';
 
 import { I18nParam, I18nService, LocaleService } from '@zeta/i18n';
 import { XC_COMPONENT_DATA, XcDynamicComponent, XcStringIntegerDataWrapper } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { capacities_translations_de_DE } from '../locale/capacities-translations.de-DE';
 import { capacities_translations_en_US } from '../locale/capacities-translations.en-US';
@@ -34,7 +35,7 @@ export interface CapacityUsageTemplateData {
     selector: 'capacity-usage-template',
     templateUrl: './capacity-usage-template.component.html',
     styleUrls: ['./capacity-usage-template.component.scss'],
-    standalone: false
+    imports: [XcModule]
 })
 export class CapacityUsageTemplateComponent extends XcDynamicComponent<CapacityUsageTemplateData> {
 

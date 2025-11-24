@@ -19,7 +19,9 @@ import { Component, Injector } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcAutocompleteDataWrapper, XcDialogComponent, XcDialogService, XcOptionItem } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { throwError } from 'rxjs';
 import { catchError, filter, finalize, map, tap } from 'rxjs/operators';
@@ -39,7 +41,7 @@ type RuntimeApplicationVersion = string;
 @Component({
     templateUrl: './create-runtime-application-dialog.component.html',
     styleUrls: ['./create-runtime-application-dialog.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule]
 })
 export class CreateRuntimeApplicationDialogComponent extends XcDialogComponent<RuntimeApplicationVersion, { workspaceName: string; applicationDefinitionName: string }> {
 

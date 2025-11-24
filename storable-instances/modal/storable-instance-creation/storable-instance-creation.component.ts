@@ -19,7 +19,9 @@ import { Component, Injector } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder, StartOrderResult } from '@zeta/api';
 import { I18nService, LocaleService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcDialogComponent, XcStructureTreeDataSource } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { finalize } from 'rxjs/operators';
 
@@ -32,7 +34,7 @@ import { storableInstanceCreation_translations_en_US } from './locale/storable-i
     selector: 'storable-instance-creation',
     templateUrl: './storable-instance-creation.component.html',
     styleUrls: ['./storable-instance-creation.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule]
 })
 export class StorableInstanceCreationComponent extends XcDialogComponent<any, any> {
     error = false;

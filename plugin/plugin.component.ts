@@ -24,6 +24,7 @@ import { DefinitionStackItemComponentData, XcComponentTemplate, XcDefinitionStac
 import { XoFormDefinition } from '@zeta/xc/xc-form/definitions/xo/containers.model';
 import { XcStackDataSource } from '@zeta/xc/xc-stack/xc-stack-data-source';
 import { XcStackItem } from '@zeta/xc/xc-stack/xc-stack-item/xc-stack-item';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { filter, Subscription, take } from 'rxjs';
 
@@ -34,7 +35,7 @@ import { PluginService } from './plugin.service';
     selector: 'plugin',
     templateUrl: './plugin.component.html',
     styleUrls: ['./plugin.component.scss'],
-    standalone: false
+    imports: [XcModule]
 })
 export class PluginComponent extends RouteComponent implements OnDestroy {
 

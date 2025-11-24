@@ -19,9 +19,11 @@ import { Component, Injector, ViewChild } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcDialogComponent, XcFormDirective } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
-import { FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
+import { FMFocusCandidateDirective, FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
 import { XoAdministrativeVeto } from '../../xo/xo-administrative-veto.model';
 import { addNewAdministrativeVetoModal_translations_de_DE } from './locale/add-new-administrative-veto-modal-translations.de-DE';
 import { addNewAdministrativeVetoModal_translations_en_US } from './locale/add-new-administrative-veto-modal-translations.en-US';
@@ -39,7 +41,7 @@ export interface AddNewAdministrativeVetoModalData {
     selector: 'app-add-new-administrative-veto-modal',
     templateUrl: './add-new-administrative-veto-modal.component.html',
     styleUrls: ['./add-new-administrative-veto-modal.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule, FMFocusCandidateDirective]
 })
 export class AddNewAdministrativeVetoModalComponent extends XcDialogComponent<boolean, AddNewAdministrativeVetoModalData> {
 

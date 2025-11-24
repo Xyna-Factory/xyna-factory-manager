@@ -20,12 +20,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { ApiService, FullQualifiedName, RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoArray, XoRuntimeContext, XoWorkspace } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
+import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcAutocompleteDataWrapper, XcDialogService, XcFormDirective } from '@zeta/xc';
+import { XcModule } from '@zeta/xc/xc.module';
 
 import { FM_RTC } from '../const';
 import { InputParameterRef } from '../misc/components/input-parameter/input-parameter-ref.class';
+import { InputParameterComponent } from '../misc/components/input-parameter/input-parameter.component';
 import { FactoryManagerSettingsService } from '../misc/services/factory-manager-settings.service';
 import { XoOrderTypeArray } from '../xo/xo-order-type.model';
+import { ExecutionTimeComponent } from './components/execution-time/execution-time.component';
 import { ExecutionTimeBehaviorOnError } from './components/execution-time/execution-time.constant';
 import { AddNewCronlikeOrderModalComponent, AddNewCronLikeOrderModalComponentData } from './modal/add-new-cronlike-order-modal/add-new-cronlike-order-modal.component';
 import { CRONLIKE_ORDERS_ISWP, RestorableCronlikeOrdersComponent } from './restorable-cronlike-orders.component';
@@ -39,7 +43,7 @@ const ISWP = CRONLIKE_ORDERS_ISWP;
 @Component({
     templateUrl: './cronlike-orders.component.html',
     styleUrls: ['./cronlike-orders.component.scss'],
-    standalone: false
+    imports: [XcModule, I18nModule, InputParameterComponent, ExecutionTimeComponent]
 })
 export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
 
