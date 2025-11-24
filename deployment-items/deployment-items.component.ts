@@ -26,7 +26,8 @@ import { QueryParameterService } from '@zeta/nav/query-parameter.service';
 import { XcAutocompleteDataWrapper, XcDialogService, XcOptionItem, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
-import { filter, map } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { filter, map, takeUntil } from 'rxjs/operators';
 
 import { FM_RTC, PROCESS_MODELLER_TAB_URL } from '../const';
 import { FactoryManagerSettingsService } from '../misc/services/factory-manager-settings.service';
@@ -62,6 +63,7 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
     selectedRuntimeContext: XoRuntimeContext;
     detailsRuntimeContext: XoRuntimeContext;
 
+    private destroy$ = new Subject<void>();
 
     constructor(
         apiService: ApiService,
@@ -132,32 +134,48 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
             []
         );
 
+        // fetch runtime contexts for auto complete
+        this.runtimeContextsLoading = true;
+        this.apiService.getRuntimeContexts().subscribe({
+            next: rtcs => {
+                this.runtimeContextsDataWrapper.values = rtcs.map(rtc => (<XcOptionItem>{ value: rtc, name: rtc.toString() }));
+                this.setDefaultRTC();
+            },
+            error: error => this.dialogService.error(error),
+            complete: () => this.runtimeContextsLoading = false
+        });
+    }
+
+    override onShow(): void {
+        super.onShow();
+
+        // destroy$ neu erzeugen
+        this.destroy$ = new Subject<void>();
+
+        // Subscription nur aktiv, wenn die Komponente tatsächlich "sichtbar" ist
         this.apiService.runtimeContextChange.pipe(
-            // current runtime context must be set
             filter(rtc => rtc && this.runtimeContextsDataWrapper.values.length > 0),
-            // map to option with xo runtime context that equals current runtime context
-            map(rtc => this.runtimeContextsDataWrapper.values.filter(option => rtc.equals(option.value.toRuntimeContext()))[0]),
-            // option must be set
+            map(rtc =>
+                this.runtimeContextsDataWrapper.values.find(option =>
+                    rtc.equals(option.value.toRuntimeContext())
+                )
+            ),
             filter(option => !!option),
-            // map to xo runtime context
-            map(option => option.value)
+            map(option => option.value),
+            takeUntil(this.destroy$)
         ).subscribe(rtc => {
             this.selectedRuntimeContext = rtc;
             this.runtimeContextsDataWrapper.update();
             this.remoteTableDataSource.input = rtc;
             this.refresh();
         });
+    }
 
-        // fetch runtime contexts for auto complete
-        this.runtimeContextsLoading = true;
-        this.apiService.getRuntimeContexts().subscribe({
-            next: rtcs  => {
-                this.runtimeContextsDataWrapper.values = rtcs.map(rtc => (<XcOptionItem>{value: rtc, name: rtc.toString()}));
-                this.setDefaultRTC();
-            },
-            error: error => this.dialogService.error(error),
-            complete: () => this.runtimeContextsLoading = false
-        });
+    override onHide(): void {
+        super.onHide();
+
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 
 
@@ -166,11 +184,10 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
      */
     private setDefaultRTC() {
         // Because you can only choose workspaces this can be used to find the XoRuntimeContext in the datawrapper
-        const uniqueKey = `${RuntimeContextType.Workspace},${
-            this.apiService.runtimeContext && this.apiService.runtimeContext.ws && this.apiService.runtimeContext.ws.workspace
-                ? this.apiService.runtimeContext.ws.workspace
-                : XoRuntimeContext.fromType('Workspace', RuntimeContext.defaultWorkspace.ws.workspace, -1).uniqueKey
-        }`;
+        const uniqueKey = `${RuntimeContextType.Workspace},${this.apiService.runtimeContext && this.apiService.runtimeContext.ws && this.apiService.runtimeContext.ws.workspace
+            ? this.apiService.runtimeContext.ws.workspace
+            : XoRuntimeContext.fromType('Workspace', RuntimeContext.defaultWorkspace.ws.workspace, -1).uniqueKey
+            }`;
         const optionItem = this.runtimeContextsDataWrapper.values
             .find(item => item.value?.uniqueKey === uniqueKey);
         if (optionItem) {
@@ -186,9 +203,9 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
         const obs = this.apiService.startOrder(FM_RTC, ISWP.Details, [entry.id, this.selectedRuntimeContext], XoDeploymentItem, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             this.detailsObject = (output[0] || null) as XoDeploymentItem;
-            this.detailsRuntimeContext  = this.selectedRuntimeContext.clone();
+            this.detailsRuntimeContext = this.selectedRuntimeContext.clone();
             this.detailsLastStateChange = dateTimeString(this.detailsObject.lastStateChange, false);
-            this.detailsLastModified    = dateTimeString(this.detailsObject.lastModified, false);
+            this.detailsLastModified = dateTimeString(this.detailsObject.lastModified, false);
         }, this.UNSPECIFIED_DETAILS_ERROR, null, () => {
             this.detailsRuntimeContext = null;
             this.dismiss();
@@ -234,7 +251,7 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
 
                     this.dialogService.custom<XoDeleteDeploymentItemParamArray, DeleteReportComponentData>(
                         DeleteReportComponent,
-                        {results: resInputArr, i18nService: this.i18nService}
+                        { results: resInputArr, i18nService: this.i18nService }
                     ).afterDismissResult().subscribe(paramArr => {
                         if (paramArr) {
                             this.delete(paramArr, false);
@@ -351,19 +368,19 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
                 // console.log('Undeploying was (partially/completely) unsuccessful - starting "Undeploy Report"');
 
                 this.dialogService.custom<XoUndeployDeploymentItemParamArray, UndeployReportComponentData>
-                (UndeployReportComponent, {results: resInputArr, i18nService: this.i18nService}).afterDismissResult().subscribe(
-                    paramArr => {
-                        if (paramArr) {
-                            this.undeploy(paramArr);
+                    (UndeployReportComponent, { results: resInputArr, i18nService: this.i18nService }).afterDismissResult().subscribe(
+                        paramArr => {
+                            if (paramArr) {
+                                this.undeploy(paramArr);
+                            }
                         }
-                    }
-                );
+                    );
 
             } else {
                 // console.log('Undeploying was successful');
                 this.remoteTableDataSource.refresh();
             }
-        }, this.UNSPECIFIED_UNDEPLOY_ERROR, () => {}, () => {});
+        }, this.UNSPECIFIED_UNDEPLOY_ERROR, () => { }, () => { });
     }
 
 
