@@ -16,20 +16,20 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 
+@use '../../../const' as *;
 
- :host {
-     display: flex;
-     flex: 1 1 auto;
-     overflow: hidden;
+:host {
+    display: flex;
+    flex: 1 1 auto;
+    overflow: hidden;
 
-     border-left: 4px solid #000;
 
-     header xc-icon {
-         margin-right: 8px;
-     }
+    header xc-icon {
+        margin-right: 8px;
+    }
 
-     section {
-         position: relative;
-         flex: 1 1 auto;
-     }
- }
+    section {
+        position: relative;
+        flex: 1 1 auto;
+    }
+}
