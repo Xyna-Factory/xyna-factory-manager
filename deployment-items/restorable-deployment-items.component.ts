@@ -65,8 +65,7 @@ export enum DeleteDeploymentItemResolution {
 
 @Component({
     selector: 'restorable-deployment-items',
-    template: '',
-    standalone: false
+    template: ''
 })
 export class RestorableDeploymentItemsComponent extends RestorableRouteComponent<XoDeploymentItem> implements OnInit {
 

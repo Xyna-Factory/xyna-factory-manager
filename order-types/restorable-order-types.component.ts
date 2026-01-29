@@ -47,8 +47,7 @@ export const ORDER_TYPE_ISWP: OrderTypeInputScreenWorkflowPackage = {
 
 
 @Component({
-    template: '',
-    standalone: false
+    template: ''
 })
 export class RestorableOrderTypesComponent extends RestorableRouteComponent<XoOrderType> implements OnInit {
 
