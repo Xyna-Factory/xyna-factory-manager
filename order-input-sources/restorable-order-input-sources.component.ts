@@ -30,8 +30,7 @@ import { XoOrderInputSource } from './xo/xo-order-input-source.model';
 
 
 @Component({
-    template: '',
-    standalone: false
+    template: ''
 })
 export class RestorableOrderInputSourcesComponent extends RestorableRouteComponent<XoOrderInputSource> implements OnInit {
 

@@ -32,8 +32,7 @@ import { XoCronLikeOrder } from './xo/xo-cronlike-order.model';
 
 
 @Component({
-    template: '',
-    standalone: false
+    template: ''
 })
 export class RestorableCronlikeOrdersComponent extends RestorableRouteComponent<XoCronLikeOrder> implements OnInit {
     protected UNSPECIFIED_DETAILS_ERROR = 'fman.restorable-cronlike-orders.unspecified-details-error';

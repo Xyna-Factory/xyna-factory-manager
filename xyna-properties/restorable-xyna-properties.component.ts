@@ -44,8 +44,7 @@ export const XYNA_PROPERTY_ISWP: XynaPropertiesInputScreenWorkflowPackage = {
 
 
 @Component({
-    template: '',
-    standalone: false
+    template: ''
 })
 export class RestorableXynaPropertiesComponent extends RestorableRouteComponent<XoXynaProperty> implements OnInit {
 
