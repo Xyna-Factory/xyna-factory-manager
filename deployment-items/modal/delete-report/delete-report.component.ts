@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { I18nService, LocaleService } from '@zeta/i18n';
 import { I18nModule } from '@zeta/i18n/i18n.module';
@@ -43,6 +43,8 @@ export interface DeleteReportComponentData {
     imports: [XcModule, I18nModule]
 })
 export class DeleteReportComponent extends XcDialogComponent<XoDeleteDeploymentItemParamArray, DeleteReportComponentData> {
+    private readonly i18n = inject(I18nService);
+
 
     resultListItems: XcRichListItem<DeleteReportItemComponentData>[] = [];
 
@@ -53,8 +55,8 @@ export class DeleteReportComponent extends XcDialogComponent<XoDeleteDeploymentI
         return this.selectedResult ? this.selectedResult.exceptionInformation.stacktrace : '';
     }
 
-    constructor(injector: Injector, private readonly i18n: I18nService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.i18n.setTranslations(LocaleService.DE_DE, deleteReport_translations_de_DE);
         this.i18n.setTranslations(LocaleService.EN_US, deleteReport_translations_en_US);

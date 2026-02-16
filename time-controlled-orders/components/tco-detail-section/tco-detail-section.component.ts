@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, inject } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nModule } from '@zeta/i18n/i18n.module';
@@ -44,6 +44,9 @@ import { TcoExecutionRestrictionComponent } from '../tco-execution-restriction/t
     imports: [XcModule, I18nModule, OrderTypeFormComponent, StorableInputParameterComponent, ExecutionTimeComponent, TcoExecutionRestrictionComponent, CustomInformationFormComponent]
 })
 export class TcoDetailSectionComponent implements OnInit, OnDestroy {
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+
     @ViewChild(XcFormDirective, { static: false })
     xcFormDirective: XcFormDirective;
 
@@ -108,8 +111,6 @@ export class TcoDetailSectionComponent implements OnInit, OnDestroy {
     set timeControlledOrder(value: XoTimeControlledOrder) {
         this._timeControlledOrder = value;
     }
-
-    constructor(private readonly apiService: ApiService, private readonly dialogService: XcDialogService) { }
 
     ngOnInit() {
         this.selectionSubscription = this.selectionObservable.subscribe(selectionModel => {

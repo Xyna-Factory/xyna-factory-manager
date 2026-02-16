@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, InjectionToken, Injector } from '@angular/core';
+import { Component, inject, InjectionToken } from '@angular/core';
 
 import { XoOrderExecutionTime } from '@fman/xo/xo-orderexecutiontime.model';
 import { XoRestrictionBasedTimeWindow } from '@fman/xo/xo-timewindow.model';
@@ -37,6 +37,8 @@ export interface CronlikeOrderIntervalTemplateData {
     styleUrls: ['./cronlike-order-interval-template.component.scss']
 })
 export class CronlikeOrderIntervalTemplateComponent extends XcDynamicComponent<CronlikeOrderIntervalTemplateData> {
+    readonly i18n = inject(I18nService);
+
 
     interval: string;
 
@@ -48,8 +50,8 @@ export class CronlikeOrderIntervalTemplateComponent extends XcDynamicComponent<C
         return XC_COMPONENT_DATA;
     }
 
-    constructor(readonly injector: Injector, readonly i18n: I18nService) {
-        super(injector);
+    constructor() {
+        super();
 
         const intervalObject = this._readIntervalAndItsValuesFromObject();
         this.interval = this.i18n.translate(intervalObject.message, ...intervalObject.values);

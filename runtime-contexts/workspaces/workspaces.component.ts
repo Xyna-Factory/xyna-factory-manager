@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { AfterViewInit, Component, OnDestroy, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, QueryList, ViewChildren, inject } from '@angular/core';
 
 import { FactoryManagerSettingsService } from '@fman/misc/services/factory-manager-settings.service';
 import { ApiService } from '@zeta/api';
@@ -47,6 +47,11 @@ import { WorkspaceTileComponent } from './workspace-tile/workspace-tile.componen
     imports: [XcModule, I18nModule, WorkspaceTileComponent]
 })
 export class WorkspacesComponent extends RouteComponent implements AfterViewInit, OnDestroy {
+    private readonly i18n = inject(I18nService);
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly settings = inject(FactoryManagerSettingsService);
+
 
     private readonly remoteDataSource: XcRemoteDataSource<XoWorkspace>;
     private detailsObject: XoWorkspaceDetails | XoApplicationDefinitionDetails;
@@ -60,12 +65,7 @@ export class WorkspacesComponent extends RouteComponent implements AfterViewInit
     workspaceTiles: QueryList<any>;
 
 
-    constructor(
-        private readonly i18n: I18nService,
-        private readonly apiService: ApiService,
-        private readonly dialogService: XcDialogService,
-        private readonly settings: FactoryManagerSettingsService
-    ) {
+    constructor() {
         super();
 
         this.remoteDataSource = new XcRemoteDataSource(this.apiService, FM_RTC, ORDER_TYPES.GET_WORKSPACES, undefined, XoWorkspaceArray);

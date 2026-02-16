@@ -15,23 +15,20 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector, OnDestroy, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 
 import { XmomObjectType } from '@pmod/api/xmom-types';
 import { XoRuntimeContext } from '@pmod/xo/runtime-context.model';
-import { ApiService, FullQualifiedName, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nService } from '@zeta/i18n';
+import { FullQualifiedName, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nModule } from '@zeta/i18n/i18n.module';
 import { QueryParameterService } from '@zeta/nav/query-parameter.service';
-import { XcAutocompleteDataWrapper, XcDialogService, XcFormDirective, XcRemoteTableDataSource, XcRichListItem, XcStringIntegerDataWrapper } from '@zeta/xc';
+import { XcAutocompleteDataWrapper, XcFormDirective, XcRemoteTableDataSource, XcRichListItem, XcStringIntegerDataWrapper } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
 import { Subscription } from 'rxjs';
 
 import { XoCapacityInformation, XoCapacityInformationArray } from '../capacities/xo/xo-capacity-information.model';
 import { FM_RTC, PROCESS_MODELLER_TAB_URL } from '../const';
-import { FactoryManagerSettingsService } from '../misc/services/factory-manager-settings.service';
 import { XoDestinationTypeArray } from '../xo/xo-destination-type.model';
 import { XoParameterInheritanceRule } from '../xo/xo-parameter-inheritance-rule.model';
 import { ChildOrderInheritanceRuleComponent, ChildOrderInheritanceRuleComponentData } from './items/child-order-inheritance-rule/child-order-inheritance-rule.component';
@@ -130,16 +127,8 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
 
     orderTypeTableFilter = new XoOrderTypeTableFilter();
 
-    constructor(
-        apiService: ApiService,
-        dialogService: XcDialogService,
-        route: ActivatedRoute,
-        router: Router,
-        i18nService: I18nService,
-        settings: FactoryManagerSettingsService,
-        injector: Injector
-    ) {
-        super(apiService, dialogService, route, router, i18nService, injector, settings);
+    constructor() {
+        super();
 
         this.orderTypeTableFilter.showPath = false;
 
@@ -210,7 +199,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
         );
 
         // filter with query params that are set when jumping from workflow in PMOD to order type overview
-        route.queryParams.subscribe(queryParams => {
+        this.route.queryParams.subscribe(queryParams => {
             if (!queryParams.executionDestinationFilter) {
                 // console.log('queryParams.executionDestinationFilter === undefined -> nothing to do');
                 return;

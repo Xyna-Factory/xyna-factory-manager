@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ApiService, FullQualifiedName, RuntimeContext, StartOrderOptions, XoArray, XoClassInterfaceFrom, XoDescriber, XoJson, XoObject } from '@zeta/api';
@@ -43,6 +43,12 @@ interface InputDataTypesTreeData {
     imports: [XcModule, I18nModule]
 })
 export class GenerateInputComponent {
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly authService = inject(AuthService);
+    private readonly router = inject(Router);
+    private readonly cdr = inject(ChangeDetectorRef);
+
 
     startOrderBusy: boolean;
     rtc: RuntimeContext;
@@ -88,10 +94,6 @@ export class GenerateInputComponent {
 
     errorMsg: string;
     inputParamterTreeDataSource: XcStructureTreeDataSource;
-
-
-    constructor(private readonly apiService: ApiService, private readonly dialogService: XcDialogService, private readonly authService: AuthService, private readonly router: Router, private readonly cdr: ChangeDetectorRef) {
-    }
 
 
     generateInputHandler() {

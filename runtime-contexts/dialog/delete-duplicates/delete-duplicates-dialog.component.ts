@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { XoDeleteDuplicatesResponse } from '@fman/runtime-contexts/xo/xo-delete-duplicates-response.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
@@ -40,11 +40,15 @@ import { deleteDuplicates_translations_en_US } from './locale/delete-duplicates-
     imports: [XcModule, I18nModule]
 })
 export class DeleteDuplicatesDialogComponent extends XcDialogComponent<boolean, XoWorkspace> {
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly i18n = inject(I18nService);
+
 
     isLoading = false;
 
-    constructor(injector: Injector, private readonly apiService: ApiService, private readonly dialogService: XcDialogService, private readonly i18n: I18nService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.i18n.setTranslations(LocaleService.DE_DE, deleteDuplicates_translations_de_DE);
         this.i18n.setTranslations(LocaleService.EN_US, deleteDuplicates_translations_en_US);

@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { environment } from '@environments/environment';
 import { XoManagedFileId } from '@fman/runtime-contexts/xo/xo-managed-file-id.model';
@@ -40,12 +40,16 @@ import { exportapplication_translations_en_US } from './locale/export-applicatio
     imports: [XcModule, I18nModule]
 })
 export class ExportApplicationDialogComponent extends XcDialogComponent<boolean, XoRuntimeApplication> {
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly i18n = inject(I18nService);
+
 
     application: XoRuntimeApplication;
     pending = false;
 
-    constructor(injector: Injector, private readonly apiService: ApiService, private readonly dialogService: XcDialogService, private readonly i18n: I18nService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.application = this.injectedData.proxy();
 

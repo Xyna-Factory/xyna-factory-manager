@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, InjectionToken, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, InjectionToken, Injector } from '@angular/core';
 
 import { FM_RTC } from '@fman/const';
 import { ORDER_TYPES } from '@fman/trigger-and-filter/order-types';
@@ -55,6 +55,11 @@ class FilterInstanceData extends Comparable {
     imports: [XcModule, I18nModule]
 })
 export class TriggerInstanceDetailComponent extends XcDynamicComponent<TriggerInstanceDetailsData> {
+    private readonly apiService = inject(ApiService);
+    private readonly i18nService = inject(I18nService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly cdr = inject(ChangeDetectorRef);
+
 
     readonly XDSIconName = XDSIconName;
 
@@ -66,12 +71,8 @@ export class TriggerInstanceDetailComponent extends XcDynamicComponent<TriggerIn
     datasource: XcLocalTableDataSource<FilterInstanceData> = new XcLocalTableDataSource<FilterInstanceData>(this.i18nService);
     busy = false;
 
-    constructor(injector: Injector,
-        private readonly apiService: ApiService,
-        private readonly i18nService: I18nService,
-        private readonly dialogService: XcDialogService,
-        private readonly cdr: ChangeDetectorRef) {
-        super(injector);
+    constructor() {
+        super();
         this.refresh();
     }
 

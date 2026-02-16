@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 
 import { dateTimeString } from '@zeta/base';
 import { I18nModule } from '@zeta/i18n/i18n.module';
@@ -32,10 +32,9 @@ import { XoDeploymentItem } from '../../xo/xo-deployment-item.model';
     imports: [I18nModule, XcModule]
 })
 export class DeploymentStateDetailComponent {
-    private _deploymentItem: XoDeploymentItem;
+    private readonly dialogService = inject(XcDialogService);
 
-    constructor(private readonly dialogService: XcDialogService) {
-    }
+    private _deploymentItem: XoDeploymentItem;
 
 
     @Input()

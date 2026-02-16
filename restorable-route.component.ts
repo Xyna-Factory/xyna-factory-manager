@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, inject, Injector, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, NavigationExtras, Router } from '@angular/router';
 
 import { ApiService, RuntimeContext, StartOrderResult, Xo, XoArray, XoArrayClassInterface, XoObject, XoObjectClassInterface } from '@zeta/api';
@@ -41,6 +41,14 @@ export interface InputScreenWorkflowPackage {
     template: ''
 })
 export class RestorableRouteComponent<T extends XoObject = XoObject, D = T> extends RouteComponent implements OnInit {
+    protected readonly apiService = inject(ApiService);
+    protected readonly dialogService = inject(XcDialogService);
+    protected readonly route = inject(ActivatedRoute);
+    protected readonly router = inject(Router);
+    protected readonly i18nService = inject(I18nService);
+    protected readonly injector = inject(Injector);
+    protected readonly settings = inject(FactoryManagerSettingsService);
+
 
     private readonly _selectedEntryChange: Subject<T[]> = new Subject();
     private selectedEntry: T;
@@ -58,18 +66,10 @@ export class RestorableRouteComponent<T extends XoObject = XoObject, D = T> exte
     //#endregion
 
 
-    constructor(
-        protected readonly apiService: ApiService,
-        protected readonly dialogService: XcDialogService,
-        protected readonly route: ActivatedRoute,
-        protected readonly router: Router,
-        protected readonly i18nService: I18nService,
-        protected readonly injector: Injector,
-        protected readonly settings: FactoryManagerSettingsService
-    ) {
+    constructor() {
         super();
 
-        router.events.subscribe(e => {
+        this.router.events.subscribe(e => {
             // if selected table entry is not that inside the URL, reselect from URL
             if (e instanceof NavigationEnd) {
                 const urlKey = this.readUniqueValue();

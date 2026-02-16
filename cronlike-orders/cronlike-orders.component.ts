@@ -15,19 +15,16 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, ViewChild } from '@angular/core';
 
-import { ApiService, FullQualifiedName, RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoArray, XoRuntimeContext, XoWorkspace } from '@zeta/api';
-import { I18nService } from '@zeta/i18n';
+import { FullQualifiedName, RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoArray, XoRuntimeContext, XoWorkspace } from '@zeta/api';
 import { I18nModule } from '@zeta/i18n/i18n.module';
-import { XcAutocompleteDataWrapper, XcDialogService, XcFormDirective } from '@zeta/xc';
+import { XcAutocompleteDataWrapper, XcFormDirective } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
 import { FM_RTC } from '../const';
 import { InputParameterRef } from '../misc/components/input-parameter/input-parameter-ref.class';
 import { InputParameterComponent } from '../misc/components/input-parameter/input-parameter.component';
-import { FactoryManagerSettingsService } from '../misc/services/factory-manager-settings.service';
 import { XoOrderTypeArray } from '../xo/xo-order-type.model';
 import { ExecutionTimeComponent } from './components/execution-time/execution-time.component';
 import { ExecutionTimeBehaviorOnError } from './components/execution-time/execution-time.constant';
@@ -140,16 +137,8 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
         }
     }
 
-    constructor(
-        apiService: ApiService,
-        dialogService: XcDialogService,
-        route: ActivatedRoute,
-        router: Router,
-        i18nService: I18nService,
-        settings: FactoryManagerSettingsService,
-        injector: Injector
-    ) {
-        super(apiService, dialogService, route, router, i18nService, injector, settings);
+    constructor() {
+        super();
 
         this.initRemoteTableDataSource(XoCronLikeOrder, XoCronLikeOrderArray, FM_RTC, ISWP.List);
 

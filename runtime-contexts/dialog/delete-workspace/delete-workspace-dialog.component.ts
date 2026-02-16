@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService } from '@zeta/i18n';
@@ -40,13 +40,17 @@ import { deleteWorkspace_translations_en_US } from './locale/delete-workspace-tr
     imports: [XcModule, I18nModule]
 })
 export class DeleteWorkspaceDialogComponent extends XcDialogComponent<boolean, XoWorkspace> {
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly i18n = inject(I18nService);
+
 
     stopRunningOrders = false;
     insurancePolicy = false;
     loading = false;
 
-    constructor(injector: Injector, private readonly apiService: ApiService, private readonly dialogService: XcDialogService, private readonly i18n: I18nService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.i18n.setTranslations(LocaleService.DE_DE, deleteWorkspace_translations_de_DE);
         this.i18n.setTranslations(LocaleService.EN_US, deleteWorkspace_translations_en_US);

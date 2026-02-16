@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 
 import { XoFactoryNode, XoFactoryNodeArray } from '@fman/runtime-contexts/xo/xo-factory-node.model';
 import { XoImportRTARequest } from '@fman/runtime-contexts/xo/xo-import-rta-request.model';
@@ -47,6 +47,11 @@ class NodeWrapper {
     imports: [XcModule, I18nModule]
 })
 export class ImportRuntimeApplicationDialogComponent extends XcDialogComponent<boolean, void> {
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly i18n = inject(I18nService);
+    private readonly cdr = inject(ChangeDetectorRef);
+
 
     nodes: NodeWrapper[] = [];
 
@@ -58,8 +63,9 @@ export class ImportRuntimeApplicationDialogComponent extends XcDialogComponent<b
     importing = false;
 
 
-    constructor(injector: Injector, private readonly apiService: ApiService, private readonly dialogService: XcDialogService, private readonly i18n: I18nService, private readonly cdr: ChangeDetectorRef) {
-        super(injector);
+    constructor() {
+        super();
+
 
         this.i18n.setTranslations(LocaleService.DE_DE, importRuntimeApplication_translations_de_DE);
         this.i18n.setTranslations(LocaleService.EN_US, importRuntimeApplication_translations_en_US);
@@ -67,7 +73,7 @@ export class ImportRuntimeApplicationDialogComponent extends XcDialogComponent<b
         this.apiService.startOrderAssert<XoFactoryNodeArray>(FM_RTC, ORDER_TYPES.GET_FACTORY_NODES, [], XoFactoryNodeArray).subscribe(
             nodes => {
                 this.nodes = nodes.data.map(node => new NodeWrapper(node, true));
-                cdr.markForCheck();
+                this.cdr.markForCheck();
             }
         );
     }

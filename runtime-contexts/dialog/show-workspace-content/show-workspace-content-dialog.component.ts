@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { XoGetWorkspaceContentRequest } from '@fman/runtime-contexts/xo/xo-get-workspace-content-request.model';
 import { ApiService } from '@zeta/api';
@@ -40,13 +40,17 @@ import { showWorkspaceContent_translations_en_US } from './locale/show-workspace
     imports: [XcModule, I18nModule]
 })
 export class ShowWorkspaceContentDialogComponent extends XcDialogComponent<boolean, XoRuntimeContext> {
+    private readonly apiService = inject(ApiService);
+    private readonly i18n = inject(I18nService);
+    private readonly settings = inject(FactoryManagerSettingsService);
+
 
     dataSource: XcRemoteTableDataSource<XoApplicationElement>;
     onlyUnassigned = false;
 
 
-    constructor(injector: Injector, private readonly apiService: ApiService, private readonly i18n: I18nService, private readonly settings: FactoryManagerSettingsService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.i18n.setTranslations(LocaleService.EN_US, showWorkspaceContent_translations_en_US);
         this.i18n.setTranslations(LocaleService.DE_DE, showWorkspaceContent_translations_de_DE);

@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 
 import { ApiService, FullQualifiedName, RuntimeContext, XoArray, XoClassInterfaceFrom, XoDescriber, XoJson, XoObject } from '@zeta/api';
 import { coerceBoolean, isArray } from '@zeta/base';
@@ -50,6 +50,8 @@ export interface InputDataTypesTreeData {
     imports: [XcModule, I18nModule]
 })
 export class InputParameterComponent implements OnInit {
+    private readonly apiService = inject(ApiService);
+
 
     private _collapsable = false;
     get collapsable(): boolean {
@@ -115,7 +117,7 @@ export class InputParameterComponent implements OnInit {
 
     inputParamterTreeDataSource: XcStructureTreeDataSource;
 
-    constructor(private readonly apiService: ApiService) {
+    constructor() {
 
         this.inputParamterTreeDataSource = new XcStructureTreeDataSource(this.apiService, undefined, this.runtimeContext, null, null);
         this.inputParamterTreeDataSource.markForChange.subscribe(() => {

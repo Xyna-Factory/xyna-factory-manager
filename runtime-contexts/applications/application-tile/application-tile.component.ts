@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, ElementRef, EventEmitter, HostBinding, Input, NgZone, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostBinding, Input, NgZone, OnInit, Output, ViewChild, inject } from '@angular/core';
 
 import { ExportApplicationDialogComponent } from '@fman/runtime-contexts/dialog/export-application/export-application-dialog.component';
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
@@ -58,6 +58,12 @@ import { Application } from '../application-data-source';
     imports: [RuntimeContextButtonComponent, I18nModule, XcModule]
 })
 export class ApplicationTileComponent implements OnInit {
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly i18n = inject(I18nService);
+    private readonly zone = inject(NgZone);
+    private readonly settings = inject(FactoryManagerSettingsService);
+
     @ViewChild('header', {static: false})
     headerRef: ElementRef;
 
@@ -102,15 +108,6 @@ export class ApplicationTileComponent implements OnInit {
 
     issues = new Array<XoIssue>();
     truncateIssues = true;
-
-    constructor(
-        private readonly apiService: ApiService,
-        private readonly dialogService: XcDialogService,
-        private readonly i18n: I18nService,
-        private readonly zone: NgZone,
-        private readonly settings: FactoryManagerSettingsService
-    ) {
-    }
 
 
     ngOnInit() {

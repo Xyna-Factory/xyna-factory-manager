@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService } from '@zeta/i18n';
@@ -43,6 +43,8 @@ export interface AddNewCapacityModalComponentData {
     imports: [XcModule, I18nModule, FMFocusCandidateDirective]
 })
 export class AddNewCapacityModalComponent extends XcDialogComponent<boolean, AddNewCapacityModalComponentData> {
+    private readonly i18n = inject(I18nService);
+
 
     @ViewChild(XcFormDirective, {static: false})
     xcFormDirective: XcFormDirective;
@@ -75,8 +77,8 @@ export class AddNewCapacityModalComponent extends XcDialogComponent<boolean, Add
 
     capacity: XoCapacityInformation;
 
-    constructor(injector: Injector, private readonly i18n: I18nService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.i18n.setTranslations(LocaleService.DE_DE, addNewCapacityModal_translations_de_DE);
         this.i18n.setTranslations(LocaleService.EN_US, addNewCapacityModal_translations_en_US);

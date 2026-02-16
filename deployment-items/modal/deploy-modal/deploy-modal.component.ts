@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder, XoRuntimeContext } from '@zeta/api';
 import { I18nService, LocaleService } from '@zeta/i18n';
@@ -63,8 +63,8 @@ export class DeployModalComponent extends XcDialogComponent<boolean, DeployModal
 
     errorBoxFocusCandidateRef = FMFocusCandidateRef.getInstance();
 
-    constructor(injector: Injector) {
-        super(injector);
+    constructor() {
+        super();
 
         this.injectedData.i18nService.setTranslations(LocaleService.DE_DE, deployModal_translations_de_DE);
         this.injectedData.i18nService.setTranslations(LocaleService.EN_US, deployModal_translations_en_US);

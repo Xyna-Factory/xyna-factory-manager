@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { AfterViewInit, Component, OnDestroy, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, QueryList, ViewChildren, inject } from '@angular/core';
 
 import { FactoryManagerSettingsService } from '@fman/misc/services/factory-manager-settings.service';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
@@ -46,6 +46,11 @@ import { ApplicationTileComponent } from './application-tile/application-tile.co
     imports: [XcModule, I18nModule, ApplicationTileComponent]
 })
 export class ApplicationsComponent extends RouteComponent implements OnDestroy, AfterViewInit {
+    private readonly i18n = inject(I18nService);
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly settings = inject(FactoryManagerSettingsService);
+
 
     private readonly dataSource: ApplicationDataSource;
     private detailsObject: XoRuntimeApplicationDetails;
@@ -59,12 +64,7 @@ export class ApplicationsComponent extends RouteComponent implements OnDestroy, 
     applicationTiles: QueryList<any>;
 
 
-    constructor(
-        private readonly i18n: I18nService,
-        private readonly apiService: ApiService,
-        private readonly dialogService: XcDialogService,
-        private readonly settings: FactoryManagerSettingsService
-    ) {
+    constructor() {
         super();
 
         this.dataSource = new ApplicationDataSource(this.apiService, FM_RTC, ORDER_TYPES.GET_RUNTIME_APPLICATIONS, undefined, XoRuntimeApplicationArray);

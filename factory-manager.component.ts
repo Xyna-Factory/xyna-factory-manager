@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import { AuthService } from '@zeta/auth';
@@ -45,6 +45,10 @@ interface XcRighteousNavListItem extends XcNavListItem {
     imports: [XcModule, RouterOutlet]
 })
 export class FactoryManagerComponent extends RouteComponent {
+    private readonly i18n = inject(I18nService);
+    private readonly authService = inject(AuthService);
+    private readonly pluginService = inject(PluginService);
+
 
     private readonly _fmNames = {
         WORKSPACES: 'Workspaces',
@@ -82,8 +86,9 @@ export class FactoryManagerComponent extends RouteComponent {
 
     navListOrientation = XcNavListOrientation.LEFT;
 
-    constructor(private readonly i18n: I18nService, authService: AuthService, pluginService: PluginService) {
+    constructor() {
         super();
+
 
         this.i18n.contextDismantlingSearch = true;
         this.i18n.setTranslations(LocaleService.DE_DE, fman_translations_de_DE);
@@ -93,13 +98,13 @@ export class FactoryManagerComponent extends RouteComponent {
 
 
         this.navListItems.forEach(item => {
-            item.disabled = item.disabled || !!item.right && !authService.hasRight(item.right);
-            item.name = i18n.translate(item.name);
+            item.disabled = item.disabled || !!item.right && !this.authService.hasRight(item.right);
+            item.name = this.i18n.translate(item.name);
         });
 
 
         // add items for plugins
-        pluginService.plugins.pipe(filter(plugins => !!plugins)).subscribe(plugins => {
+        this.pluginService.plugins.pipe(filter(plugins => !!plugins)).subscribe(plugins => {
 
             for (const [link, plugin] of plugins) {
                 this.navListItems.push(

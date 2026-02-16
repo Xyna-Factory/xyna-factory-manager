@@ -15,20 +15,17 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 
-import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nService } from '@zeta/i18n';
+import { StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nModule } from '@zeta/i18n/i18n.module';
-import { XcDialogService, XcOptionItem, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
+import { XcOptionItem, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
 import { of } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
 import { FM_RTC } from '../const';
-import { FactoryManagerSettingsService } from '../misc/services/factory-manager-settings.service';
 import { TcoDetailSectionComponent } from './components/tco-detail-section/tco-detail-section.component';
 import { CreateTimeControlledOrderComponent } from './modal/create-time-controlled-order/create-time-controlled-order.component';
 import { RestorableTimeControlledOrderComponent } from './restorable-time-controlled-order.component';
@@ -57,16 +54,8 @@ export class TimeControlledOrdersComponent extends RestorableTimeControlledOrder
         this.remoteTableDataSource.refresh();
     }
 
-    constructor(
-        apiService: ApiService,
-        dialogService: XcDialogService,
-        route: ActivatedRoute,
-        router: Router,
-        i18nService: I18nService,
-        injector: Injector,
-        settings: FactoryManagerSettingsService
-    ) {
-        super(apiService, dialogService, route, router, i18nService, injector, settings);
+    constructor() {
+        super();
         this.initRemoteTableDataSource(XoTimeControlledOrderTableEntry, XoTimeControlledOrderTableEntryArray, FM_RTC, this.WFP_GETTCOS);
 
         // Adding input and output
