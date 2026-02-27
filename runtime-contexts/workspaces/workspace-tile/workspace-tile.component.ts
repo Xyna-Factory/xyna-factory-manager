@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, Input, NgZone, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, Input, NgZone, OnInit, Output, ViewChild, inject } from '@angular/core';
 
 import { ShowWorkspaceContentDialogComponent } from '@fman/runtime-contexts/dialog/show-workspace-content/show-workspace-content-dialog.component';
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
@@ -65,6 +65,13 @@ export const DUPLICATE_ELEMENT_IDENTIFIER = 'duplicate element';
     imports: [RuntimeContextButtonComponent, I18nModule, XcModule]
 })
 export class WorkspaceTileComponent implements OnInit {
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly i18n = inject(I18nService);
+    private readonly cdref = inject(ChangeDetectorRef);
+    private readonly zone = inject(NgZone);
+    private readonly settings = inject(FactoryManagerSettingsService);
+
     @ViewChild('header', { static: false })
     headerRef: ElementRef;
 
@@ -116,17 +123,6 @@ export class WorkspaceTileComponent implements OnInit {
     issues = new Array<XoIssue>();
     hasDuplicateElements = false;
     truncateIssues = true;
-
-
-    constructor(
-        private readonly apiService: ApiService,
-        private readonly dialogService: XcDialogService,
-        private readonly i18n: I18nService,
-        private readonly cdref: ChangeDetectorRef,
-        private readonly zone: NgZone,
-        private readonly settings: FactoryManagerSettingsService
-    ) {
-    }
 
 
     ngOnInit() {

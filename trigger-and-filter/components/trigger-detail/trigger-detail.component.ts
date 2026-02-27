@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, InjectionToken, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, InjectionToken } from '@angular/core';
 
 import { FM_RTC } from '@fman/const';
 import { XoRuntimeApplication } from '@fman/runtime-contexts/xo/xo-runtime-application.model';
@@ -41,6 +41,10 @@ import { StartParameterDetailComponent } from '../start-parameter-deatil/start-p
     imports: [XcModule, I18nModule, StartParameterDetailComponent]
 })
 export class TriggerDetailComponent extends XcDynamicComponent<XoTrigger> {
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly cdr = inject(ChangeDetectorRef);
+
 
     startParameter: XoStartParameterDetails[];
 
@@ -51,11 +55,8 @@ export class TriggerDetailComponent extends XcDynamicComponent<XoTrigger> {
     detail: XoTriggerDetail;
     busy = false;
 
-    constructor(injector: Injector,
-        private readonly apiService: ApiService,
-        private readonly dialogService: XcDialogService,
-        private readonly cdr: ChangeDetectorRef) {
-        super(injector);
+    constructor() {
+        super();
         this.getStartParameter();
         this.refresh();
     }

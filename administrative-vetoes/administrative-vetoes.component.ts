@@ -15,19 +15,15 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component } from '@angular/core';
 
-import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nService } from '@zeta/i18n';
+import { StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nModule } from '@zeta/i18n/i18n.module';
-import { XcDialogService } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
 import { filter } from 'rxjs';
 
 import { FM_RTC } from '../const';
-import { FactoryManagerSettingsService } from '../misc/services/factory-manager-settings.service';
 import { AddNewAdministrativeVetoModalComponent, AddNewAdministrativeVetoModalData } from './modal/add-new-administrative-veto-modal/add-new-administrative-veto-modal.component';
 import { ADMINISTRATIVE_VETOES_ISWP, RestorableAdministrativeVetoComponent } from './restorable-administrative-vetoes.component';
 import { XoAdministrativeVetoName } from './xo/xo-administrative-veto-name.mode';
@@ -45,16 +41,8 @@ export class AdministrativeVetoesComponent extends RestorableAdministrativeVetoC
 
     runtimeContextsDataWrapper: any;
 
-    constructor(
-        apiService: ApiService,
-        dialogService: XcDialogService,
-        route: ActivatedRoute,
-        router: Router,
-        i18nService: I18nService,
-        injector: Injector,
-        settings: FactoryManagerSettingsService
-    ) {
-        super(apiService, dialogService, route, router, i18nService, injector, settings);
+    constructor() {
+        super();
         this.initRemoteTableDataSource(XoAdministrativeVeto, XoAdministrativeVetoArray, FM_RTC, ISWP.List);
 
         this.selectedEntryChange.subscribe(

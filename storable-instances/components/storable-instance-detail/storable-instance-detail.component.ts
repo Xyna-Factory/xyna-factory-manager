@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output, inject } from '@angular/core';
 
 import { ApiService, FullQualifiedName, RuntimeContext, StartOrderOptionsBuilder, XoArray, XoObject, XoRuntimeContext } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
@@ -35,6 +35,10 @@ import { XoStoreParameter } from '../../xo/xo-storeparameter.model';
     imports: [XcModule]
 })
 export class StorableInstanceDetailComponent implements OnDestroy {
+    private readonly i18n = inject(I18nService);
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+
     @Output()
     readonly valueChange = new EventEmitter<void>();
 
@@ -108,14 +112,6 @@ export class StorableInstanceDetailComponent implements OnDestroy {
     structureTreeDataSource: XcStructureTreeDataSource = new XcStructureTreeDataSource(this.apiService, this.i18n, null, []);
 
     ERROR_MESSAGE = 'fman.storable-instances.storable-instances-details.error-message';
-
-
-    constructor(
-        private readonly i18n: I18nService,
-        private readonly apiService: ApiService,
-        private readonly dialogService: XcDialogService
-    ) {
-    }
 
 
     ngOnDestroy() {

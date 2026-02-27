@@ -15,18 +15,15 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Injector, Input, Output, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, inject, Input, Output, ViewChild } from '@angular/core';
 
 import { FM_RTC } from '@fman/const';
 import { InputParameterRef } from '@fman/misc/components/input-parameter/input-parameter-ref.class';
-import { FactoryManagerSettingsService } from '@fman/misc/services/factory-manager-settings.service';
 import { XoOrderType, XoOrderTypeArray } from '@fman/xo/xo-order-type.model';
-import { ApiService, RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoArray, XoRuntimeContext, XoWorkspace } from '@zeta/api';
+import { RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoArray, XoRuntimeContext, XoWorkspace } from '@zeta/api';
 import { isNumber } from '@zeta/base';
-import { I18nService } from '@zeta/i18n';
 import { I18nModule } from '@zeta/i18n/i18n.module';
-import { XcAutocompleteDataWrapper, XcDialogService, XcFormDirective, XcIntegerStringDataWrapper, XcStringFloatDataWrapper, XcStringIntegerDataWrapper } from '@zeta/xc';
+import { XcAutocompleteDataWrapper, XcFormDirective, XcIntegerStringDataWrapper, XcStringFloatDataWrapper, XcStringIntegerDataWrapper } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
 import { DateSelectorComponent } from '../../misc/components/date-selector/date-selector.component';
@@ -60,6 +57,7 @@ export class FrequencyControlledTaskRatePreset extends FrequencyControlledTaskPr
 
     constructor(rate: number, duration: number) {
         super();
+        
         this.rate = rate;
         this.duration = duration;
     }
@@ -107,6 +105,8 @@ export class FrequencyControlledTaskLoadPreset extends FrequencyControlledTaskPr
     imports: [XcModule, I18nModule, InputParameterComponent, GenerateInputComponent, DateSelectorComponent]
 })
 export class OrderInputSourceDetailsComponent extends RestorableOrderInputSourcesComponent {
+    private readonly cdr = inject(ChangeDetectorRef);
+
 
     // FIXME: USE CODE FROM ADD NEW ORDER INPUT SOURCE MODAL !!!!!
 
@@ -309,17 +309,8 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
         value => this.fctParameters.dataPointDistance = value
     );
 
-    constructor(
-        apiService: ApiService,
-        dialogService: XcDialogService,
-        route: ActivatedRoute,
-        router: Router,
-        i18nService: I18nService,
-        settings: FactoryManagerSettingsService,
-        injector: Injector,
-        private readonly cdr: ChangeDetectorRef
-    ) {
-        super(apiService, dialogService, route, router, i18nService, injector, settings);
+    constructor() {
+        super();
 
         this.runtimeContextsDataWrapper = new XcAutocompleteDataWrapper(
             () => this.selectedServerRuntimeContext,

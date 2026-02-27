@@ -15,20 +15,17 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component } from '@angular/core';
 
-import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
+import { StartOrderOptionsBuilder } from '@zeta/api';
 import { XoDocumentation, XoDocumentationLanguage, XoXynaProperty, XoXynaPropertyArray, XoXynaPropertyKey } from '@zeta/auth/xo/xyna-property.model';
-import { I18nService } from '@zeta/i18n';
 import { I18nModule } from '@zeta/i18n/i18n.module';
-import { XcComponentTemplate, XcDialogService, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
+import { XcComponentTemplate, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
 import { filter } from 'rxjs';
 
 import { FM_RTC } from '../const';
-import { FactoryManagerSettingsService } from '../misc/services/factory-manager-settings.service';
 import { AddNewXynaPropertyModalComponent, AddNewXynaPropertyModalComponentData } from './modal/add-new-xyna-property-modal/add-new-xyna-property-modal.component';
 import { RestorableXynaPropertiesComponent, XYNA_PROPERTY_ISWP } from './restorable-xyna-properties.component';
 import { XynaPropertyTableValueTemplateComponent, XynaPropertyTableValueTemplateData } from './templates/xyna-property-table-value-template.model';
@@ -73,16 +70,8 @@ export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
         );
     }
 
-    constructor(
-        apiService: ApiService,
-        dialogService: XcDialogService,
-        route: ActivatedRoute,
-        router: Router,
-        i18nService: I18nService,
-        injector: Injector,
-        settings: FactoryManagerSettingsService
-    ) {
-        super(apiService, dialogService, route, router, i18nService, injector, settings);
+    constructor() {
+        super();
 
         XoXynaProperty.createTemplatesFn = (property: XoXynaProperty) => {
             const data: XynaPropertyTableValueTemplateData = {
@@ -94,7 +83,7 @@ export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
 
         this.initRemoteTableDataSource(XoXynaProperty, XoXynaPropertyArray, FM_RTC, ISWP.List);
         const lang = new XoDocumentationLanguage();
-        lang.languageTag = i18nService.language;
+        lang.languageTag = this.i18nService.language;
         this.remoteTableDataSource.input = lang;
 
 

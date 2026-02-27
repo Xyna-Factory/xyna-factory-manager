@@ -15,19 +15,16 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, ViewChild } from '@angular/core';
 
-import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nService } from '@zeta/i18n';
+import { StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nModule } from '@zeta/i18n/i18n.module';
-import { XcDialogService, XcFormDirective, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
+import { XcFormDirective, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
 import { filter } from 'rxjs';
 
 import { FM_RTC } from '../const';
-import { FactoryManagerSettingsService } from '../misc/services/factory-manager-settings.service';
 import { AddNewCapacityModalComponent, AddNewCapacityModalComponentData } from './modal/add-new-capacity-modal/add-new-capacity-modal.component';
 import { CAPACITY_ISWP, RestorableCapacitiesComponent } from './restorable-capacities.component';
 import { XoCapacityInformation, XoCapacityInformationArray } from './xo/xo-capacity-information.model';
@@ -59,16 +56,8 @@ export class CapacitiesComponent extends RestorableCapacitiesComponent {
         this.detailsObject.state = value ? 'ACTIVE' : 'DISABLED';
     }
 
-    constructor(
-        apiService: ApiService,
-        dialogService: XcDialogService,
-        route: ActivatedRoute,
-        router: Router,
-        i18nService: I18nService,
-        injector: Injector,
-        settings: FactoryManagerSettingsService
-    ) {
-        super(apiService, dialogService, route, router, i18nService, injector, settings);
+    constructor() {
+        super();
         this.initRemoteTableDataSource(XoCapacityInformation, XoCapacityInformationArray, FM_RTC, ISWP.List);
 
         this.remoteTableDataSource.tableInfoClass = XoRemappingTableInfoClass(

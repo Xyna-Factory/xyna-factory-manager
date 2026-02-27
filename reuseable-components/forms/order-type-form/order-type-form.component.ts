@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild, inject } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder, XoArray, XoRuntimeContext } from '@zeta/api';
 import { I18nModule } from '@zeta/i18n/i18n.module';
@@ -33,6 +33,8 @@ import { XoOrderTypeArray } from '../../../xo/xo-order-type.model';
     imports: [XcModule, I18nModule]
 })
 export class OrderTypeFormComponent {
+    private readonly apiService = inject(ApiService);
+
     @ViewChild(XcFormDirective, { static: false })
     xcFormDirective: XcFormDirective;
 
@@ -77,7 +79,7 @@ export class OrderTypeFormComponent {
         this.validationChange.emit(this.isValid());
     }
 
-    constructor(private readonly apiService: ApiService) {
+    constructor() {
         this.runtimeContextsDataWrapper = new XcAutocompleteDataWrapper(
             () => this.selectedRuntimeContext,
             (value: XoRuntimeContext) => {

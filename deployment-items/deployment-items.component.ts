@@ -15,22 +15,19 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component } from '@angular/core';
 
-import { ApiService, RuntimeContext, RuntimeContextType, StartOrderOptionsBuilder, XoRuntimeContext } from '@zeta/api';
+import { RuntimeContext, RuntimeContextType, StartOrderOptionsBuilder, XoRuntimeContext } from '@zeta/api';
 import { dateTimeString } from '@zeta/base';
-import { I18nService } from '@zeta/i18n';
 import { I18nModule } from '@zeta/i18n/i18n.module';
 import { QueryParameterService } from '@zeta/nav/query-parameter.service';
-import { XcAutocompleteDataWrapper, XcDialogService, XcOptionItem, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
+import { XcAutocompleteDataWrapper, XcOptionItem, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
 import { Subject } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 
 import { FM_RTC, PROCESS_MODELLER_TAB_URL } from '../const';
-import { FactoryManagerSettingsService } from '../misc/services/factory-manager-settings.service';
 import { WorkflowTesterDialogComponent } from '../workflow-tester/workflow-tester-dialog.component';
 import { DeploymentStateDetailComponent } from './components/deployment-state-detail/deployment-state-detail.component';
 import { DeleteReportComponent, DeleteReportComponentData } from './modal/delete-report/delete-report.component';
@@ -65,16 +62,9 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
 
     private destroy$ = new Subject<void>();
 
-    constructor(
-        apiService: ApiService,
-        dialogService: XcDialogService,
-        route: ActivatedRoute,
-        router: Router,
-        i18nService: I18nService,
-        settings: FactoryManagerSettingsService,
-        injector: Injector
-    ) {
-        super(apiService, dialogService, route, router, i18nService, injector, settings);
+    constructor() {
+        super();
+        
         this.initRemoteTableDataSource(XoDeploymentItem, XoDeploymentItemArray, FM_RTC, ISWP.List);
 
         // const deploymentItemStates: XcOptionItem[] = [

@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -16,7 +15,8 @@ import { NgClass } from '@angular/common';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, ElementRef, Injector, ViewChild } from '@angular/core';
+import { NgClass } from '@angular/common';
+import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder, XoRuntimeContext } from '@zeta/api';
 import { I18nService, LocaleService } from '@zeta/i18n';
@@ -53,6 +53,9 @@ export interface TCODefaultData {
     imports: [XcModule, I18nModule, NgClass, OrderTypeFormComponent, StorableInputParameterComponent, ExecutionTimeComponent, TcoExecutionRestrictionComponent, CustomInformationFormComponent]
 })
 export class CreateTimeControlledOrderComponent extends XcDialogComponent<boolean, TCODefaultData> {
+    private readonly i18nService = inject(I18nService);
+    private readonly apiService = inject(ApiService);
+
     @ViewChild(XcFormDirective, { static: false })
     xcFormDirective: XcFormDirective;
 
@@ -82,7 +85,6 @@ export class CreateTimeControlledOrderComponent extends XcDialogComponent<boolea
     loading: boolean;
 
     private readonly CREATE_TCO_WP = 'xmcp.factorymanager.timecontrolledorders.CreateTCO';
-    private readonly apiService: ApiService;
 
     private _querySelection: InputParameter;
 
@@ -99,9 +101,8 @@ export class CreateTimeControlledOrderComponent extends XcDialogComponent<boolea
         return this._querySelection;
     }
 
-    constructor(injector: Injector, private readonly i18nService: I18nService) {
-        super(injector);
-        this.apiService = injector.get(ApiService);
+    constructor() {
+        super();
 
         this.i18nService.setTranslations(LocaleService.DE_DE, createTimeControlledOrder_translations_de_DE);
         this.i18nService.setTranslations(LocaleService.EN_US, createTimeControlledOrder_translations_en_US);

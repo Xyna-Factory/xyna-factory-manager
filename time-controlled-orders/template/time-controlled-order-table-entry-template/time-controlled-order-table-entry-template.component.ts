@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, InjectionToken, Injector } from '@angular/core';
+import { Component, inject, InjectionToken } from '@angular/core';
 
 import { tco_translations_de_DE } from '@fman/time-controlled-orders/locale/tco-translations.de-DE';
 import { I18nService, LocaleService } from '@zeta/i18n';
@@ -40,6 +40,8 @@ import { TimeControlledOrderTableEntryTemplateData } from '../../xo/xo-time-cont
     imports: [I18nModule, XcModule]
 })
 export class TimeControlledOrderTableEntryTemplateComponent extends XcDynamicComponent<TimeControlledOrderTableEntryTemplateData> {
+    readonly i18n = inject(I18nService);
+
     get id(): string {
         return this.injectedData.id;
     }
@@ -48,8 +50,8 @@ export class TimeControlledOrderTableEntryTemplateComponent extends XcDynamicCom
         return this.injectedData.archived;
     }
 
-    constructor(readonly injector: Injector, readonly i18n: I18nService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.i18n.setTranslations(LocaleService.DE_DE, tco_translations_de_DE);
         this.i18n.setTranslations(LocaleService.EN_US, tco_translations_en_US);

@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ApiService, OrderTypeSignature, OrderTypeVariable, RuntimeContext, StartOrderOptionsBuilder, Xo, XoArray, XoObject, XoStartOrderExceptionResponse, XoStartOrderSuccessResponse, XoStructureArray, XoStructureObject, XynaMonitoringLevel, XynaPriority } from '@zeta/api';
@@ -52,6 +52,11 @@ interface WorkflowTest {
     imports: [XcModule, I18nModule]
 })
 export class WorkflowTesterComponent {
+    private readonly router = inject(Router);
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly i18n = inject(I18nService);
+
     private static readonly history = new Map<string, WorkflowTest>();
     test: WorkflowTest;
 
@@ -94,17 +99,12 @@ export class WorkflowTesterComponent {
     readonly navigate = new EventEmitter<void>();
 
 
-    constructor(
-        private readonly router: Router,
-        private readonly apiService: ApiService,
-        private readonly dialogService: XcDialogService,
-        private readonly i18n: I18nService
-    ) {
+    constructor() {
         // create input tree
-        this.inputTree = new XcStructureTreeDataSource(apiService, i18n, undefined, []);
+        this.inputTree = new XcStructureTreeDataSource(this.apiService, this.i18n, undefined, []);
         this.inputTree.structureFallbackFunction = idx => this.inputTypes[idx];
         // create output tree
-        this.outputTree = new XcStructureTreeDataSource(apiService, i18n, undefined, []);
+        this.outputTree = new XcStructureTreeDataSource(this.apiService, this.i18n, undefined, []);
         this.outputTree.readonlyMode = true;
         this.outputTree.arrayTypesLimit = 20;
     }

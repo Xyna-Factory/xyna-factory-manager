@@ -16,7 +16,7 @@ import { NgClass } from '@angular/common';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 
 import { XoForce } from '@yggdrasil/force.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
@@ -48,6 +48,11 @@ import { manageDependencies_translations_en_US } from './locale/manage-dependenc
     imports: [XcModule, I18nModule, NgClass]
 })
 export class ManageDependenciesDialogComponent extends XcDialogComponent<boolean, XoRuntimeContext> implements OnDestroy {
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly i18n = inject(I18nService);
+    private readonly settings = inject(FactoryManagerSettingsService);
+
 
     dataSource: XcRemoteTableDataSource<XoDependency>;
     changedDependencyTable: XcLocalTableDataSource;
@@ -59,8 +64,8 @@ export class ManageDependenciesDialogComponent extends XcDialogComponent<boolean
     readonly subscriptions = new Array<Subscription>();
 
 
-    constructor(injector: Injector, private readonly apiService: ApiService, private readonly dialogService: XcDialogService, private readonly i18n: I18nService, private readonly settings: FactoryManagerSettingsService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.i18n.setTranslations(LocaleService.DE_DE, manageDependencies_translations_de_DE);
         this.i18n.setTranslations(LocaleService.EN_US, manageDependencies_translations_en_US);

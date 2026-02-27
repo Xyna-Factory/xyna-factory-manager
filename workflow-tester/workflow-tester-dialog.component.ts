@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { RuntimeContext, Xo } from '@zeta/api';
 import { I18nService, LocaleService } from '@zeta/i18n';
@@ -41,9 +41,11 @@ export interface WorkflowTesterData {
     imports: [XcModule, I18nModule, WorkflowTesterComponent]
 })
 export class WorkflowTesterDialogComponent extends XcDialogComponent<void, WorkflowTesterData> {
+    private readonly i18nService = inject(I18nService);
 
-    constructor(injector: Injector, private readonly i18nService: I18nService) {
-        super(injector);
+
+    constructor() {
+        super();
 
         this.i18nService.setTranslations(LocaleService.DE_DE, workflowTester_translations_de_DE);
         this.i18nService.setTranslations(LocaleService.EN_US, workflowTester_translations_en_US);

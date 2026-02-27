@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
@@ -38,6 +38,10 @@ import { PluginService } from './plugin.service';
     imports: [XcModule]
 })
 export class PluginComponent extends RouteComponent implements OnDestroy {
+    protected cdr = inject(ChangeDetectorRef);
+    protected api = inject(ApiService);
+    protected pluginService = inject(PluginService);
+    protected route = inject(ActivatedRoute);
 
     readonly stackDataSource = new XcStackDataSource();
     private readonly subscription: Subscription;
@@ -45,24 +49,19 @@ export class PluginComponent extends RouteComponent implements OnDestroy {
     active = false;
 
 
-    constructor(
-        api: ApiService,
-        pluginService: PluginService,
-        protected cdr: ChangeDetectorRef,
-        route: ActivatedRoute
-    ) {
+    constructor() {
         super();
 
         // get plugin for route
-        route.data.pipe(
+        this.route.data.pipe(
             take(1),
             filter(data => data.title)
         ).subscribe(data => {
-            pluginService.plugins.pipe(filter(plugins => !!plugins)).subscribe(plugins => {
+            this.pluginService.plugins.pipe(filter(plugins => !!plugins)).subscribe(plugins => {
                 const plugin = plugins.get(data.title);
 
                 // get definition
-                api.startOrder(
+                this.api.startOrder(
                     plugin.pluginRTC.toRuntimeContext(),
                     plugin.definitionWorkflowFQN,
                     null,
@@ -84,7 +83,7 @@ export class PluginComponent extends RouteComponent implements OnDestroy {
         });
 
         this.subscription = this.stackDataSource.stackItemsChange.subscribe(() =>
-            cdr.markForCheck()
+            this.cdr.markForCheck()
         );
     }
 

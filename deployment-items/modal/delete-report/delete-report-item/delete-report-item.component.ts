@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, HostBinding, HostListener, Injector } from '@angular/core';
+import { Component, HostBinding, HostListener, Injector, inject } from '@angular/core';
 
 import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcAutocompleteDataWrapper, XcRichListItemComponent } from '@zeta/xc';
@@ -43,7 +43,9 @@ export class DeleteReportItemComponent extends XcRichListItemComponent<void, Del
 
     resolutionDataWrapper: XcAutocompleteDataWrapper;
 
-    constructor(injector: Injector) {
+    constructor() {
+        const injector = inject(Injector);
+
         super(injector);
         this.resolutionDataWrapper = new XcAutocompleteDataWrapper(
             () => this.injectedData.resolution,

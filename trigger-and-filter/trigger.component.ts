@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 
 import { FM_RTC } from '@fman/const';
 import { TileDataSource, TileItem } from '@fman/runtime-contexts/shared/tile/tile-data-source';
@@ -104,6 +104,11 @@ class TriggerInstanceTile extends Comparable implements TileItem {
     imports: [XcModule, I18nModule, TileComponent]
 })
 export class TriggerComponent extends RouteComponent {
+    private readonly apiService = inject(ApiService);
+    private readonly cdr = inject(ChangeDetectorRef);
+    private readonly i18nService = inject(I18nService);
+    private readonly dialogService = inject(XcDialogService);
+
 
     refreshing = false;
     datasources: TileDataSource[];
@@ -111,11 +116,7 @@ export class TriggerComponent extends RouteComponent {
     deployButton: ActionButtonData = {  iconName: 'add', tooltip: 'deploy'  };
     selectionModel: XcSelectionModel<TileItem> = new XcSelectionModel<TileItem>();
 
-    constructor(
-        private readonly apiService: ApiService,
-        private readonly cdr: ChangeDetectorRef,
-        private readonly i18nService: I18nService,
-        private readonly dialogService: XcDialogService) {
+    constructor() {
         super();
 
         this.i18nService.setTranslations(LocaleService.DE_DE, trigger_and_filter_translations_de_DE);

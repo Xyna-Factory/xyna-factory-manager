@@ -15,20 +15,16 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectorRef, Component, Injector } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 
-import { ApiService, StartOrderOptionsBuilder, XoApplication, XoArray, XoDescriber } from '@zeta/api';
-import { I18nService } from '@zeta/i18n';
+import { StartOrderOptionsBuilder, XoApplication, XoArray, XoDescriber } from '@zeta/api';
 import { I18nModule } from '@zeta/i18n/i18n.module';
-import { XcDialogService } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
 import { Subject } from 'rxjs';
 import { filter, skip } from 'rxjs/operators';
 
 import { FM_RTC } from '../const';
-import { FactoryManagerSettingsService } from '../misc/services/factory-manager-settings.service';
 import { AddNewOrderInputSourceModalComponent, AddNewOrderInputSourceModalComponentData } from './modal/add-new-order-input-source-modal/add-new-order-input-source-modal.component';
 import { OrderInputSourceCloseEvent, OrderInputSourceDetailsComponent } from './order-input-source-details/order-input-source-details.component';
 import { ORDER_INPUT_SOURCE_ISWP, RestorableOrderInputSourcesComponent } from './restorable-order-input-sources.component';
@@ -52,20 +48,14 @@ export interface InputDataTypesTreeData {
     imports: [XcModule, I18nModule, OrderInputSourceDetailsComponent]
 })
 export class OrderInputSourcesComponent extends RestorableOrderInputSourcesComponent {
+    private readonly cdr = inject(ChangeDetectorRef);
+
 
     // FIXME: USE CODE FROM ADD NEW ORDER INPUT SOURCE MODAL !!!!!
 
-    constructor(
-        apiService: ApiService,
-        dialogService: XcDialogService,
-        route: ActivatedRoute,
-        router: Router,
-        i18nService: I18nService,
-        settings: FactoryManagerSettingsService,
-        injector: Injector,
-        private readonly cdr: ChangeDetectorRef
-    ) {
-        super(apiService, dialogService, route, router, i18nService, injector, settings);
+    constructor() {
+        super();
+        
         this.initRemoteTableDataSource(XoOrderInputSource, XoOrderInputSourceArray, FM_RTC, ISWP.List);
 
         this.refresh();

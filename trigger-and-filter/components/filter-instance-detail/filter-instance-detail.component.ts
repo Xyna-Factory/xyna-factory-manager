@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, InjectionToken, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, InjectionToken } from '@angular/core';
 
 import { FM_RTC } from '@fman/const';
 import { ORDER_TYPES } from '@fman/trigger-and-filter/order-types';
@@ -42,6 +42,11 @@ export interface FilterInstanceDetailsData {
     imports: [XcModule, I18nModule]
 })
 export class FilterInstanceDetailComponent extends XcDynamicComponent<FilterInstanceDetailsData> {
+    private readonly apiService = inject(ApiService);
+    private readonly i18nService = inject(I18nService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly cdr = inject(ChangeDetectorRef);
+
 
     readonly XDSIconName = XDSIconName;
 
@@ -52,12 +57,8 @@ export class FilterInstanceDetailComponent extends XcDynamicComponent<FilterInst
     detail: XoFilterInstanceDetails = new XoFilterInstanceDetails();
     busy = false;
 
-    constructor(injector: Injector,
-        private readonly apiService: ApiService,
-        private readonly i18nService: I18nService,
-        private readonly dialogService: XcDialogService,
-        private readonly cdr: ChangeDetectorRef) {
-        super(injector);
+    constructor() {
+        super();
         this.refresh();
     }
 

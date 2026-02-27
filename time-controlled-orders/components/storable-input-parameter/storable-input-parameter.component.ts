@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 
 import { ApiService, FullQualifiedName, OrderTypeVariable, RuntimeContext, Xo, XoArray, XoClassInterfaceFrom, XoJson, XoObject, XoRuntimeContext, XoStorable, XoStructureType } from '@zeta/api';
 import { isArray } from '@zeta/base';
@@ -47,6 +47,9 @@ export interface InputParameter {
     imports: [XcModule, I18nModule]
 })
 export class StorableInputParameterComponent {
+    private readonly apiService = inject(ApiService);
+    private readonly i18n = inject(I18nService);
+
     @Output()
     private readonly querySelectionChange = new EventEmitter<InputParameter>();
     @Output()
@@ -114,8 +117,6 @@ export class StorableInputParameterComponent {
         this._querySelection = value;
         this.querySelectionChange.emit(value);
     }
-
-    constructor(private readonly apiService: ApiService, private readonly i18n: I18nService) {}
 
     /**
      * @description For a OrderTypeVariable found for the selected workflow it will add a InputParameter to the inputParameters Array.

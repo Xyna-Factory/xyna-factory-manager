@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectorRef, Component, ElementRef, HostBinding, Input, NgZone, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostBinding, Input, NgZone, OnInit, ViewChild, inject } from '@angular/core';
 
 import { ApiService } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
@@ -41,6 +41,12 @@ export interface ActionButtonData {
     imports: [TileButtonComponent, I18nModule, XcModule]
 })
 export class TileComponent  implements OnInit {
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly i18n = inject(I18nService);
+    private readonly cdref = inject(ChangeDetectorRef);
+    private readonly zone = inject(NgZone);
+
     @ViewChild('header', { static: false })
     headerRef: ElementRef;
 
@@ -65,15 +71,6 @@ export class TileComponent  implements OnInit {
 
     get actionButton(): ActionButtonData {
         return this._actionButton;
-    }
-
-    constructor(
-        private readonly apiService: ApiService,
-        private readonly dialogService: XcDialogService,
-        private readonly i18n: I18nService,
-        private readonly cdref: ChangeDetectorRef,
-        private readonly zone: NgZone
-    ) {
     }
     ngOnInit(): void {
         this.cdref.markForCheck();

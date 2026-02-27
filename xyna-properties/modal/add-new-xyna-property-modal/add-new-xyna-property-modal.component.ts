@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { XoDocumentation, XoDocumentationLanguage, XoXynaProperty } from '@zeta/auth/xo/xyna-property.model';
@@ -43,6 +43,8 @@ export interface AddNewXynaPropertyModalComponentData {
     imports: [XcModule, I18nModule, FMFocusCandidateDirective]
 })
 export class AddNewXynaPropertyModalComponent extends XcDialogComponent<boolean, AddNewXynaPropertyModalComponentData> {
+    private readonly i18n = inject(I18nService);
+
 
     @ViewChild(XcFormDirective, {static: false})
     xcFormDirective: XcFormDirective;
@@ -81,8 +83,8 @@ export class AddNewXynaPropertyModalComponent extends XcDialogComponent<boolean,
         return this.i18n.translate('Documentation for $0', {key: '$0', value: this.i18n.translate(this._languageTag)});
     }
 
-    constructor(injector: Injector, private readonly i18n: I18nService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.i18n.setTranslations(LocaleService.DE_DE, addNewXynaProperty_translations_de_DE);
         this.i18n.setTranslations(LocaleService.EN_US, addNewXynaProperty_translations_en_US);

@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { XoRuntimeContext } from '@zeta/api';
 import { I18nService, LocaleService } from '@zeta/i18n';
@@ -60,8 +60,8 @@ export class SelectRuntimeContextComponent extends XcDialogComponent<boolean, Se
     runtimeContextsDataWrapper: XcAutocompleteDataWrapper;
     selectedServerRuntimeContext: XoRuntimeContext;
 
-    constructor(injector: Injector, private readonly i18n: I18nService) {
-        super(injector);
+    constructor(private readonly i18n: I18nService) {
+        super();
 
         this.i18n.setTranslations(LocaleService.DE_DE, selectRuntimeContext_translations_de_DE);
         this.i18n.setTranslations(LocaleService.EN_US, selectRuntimeContext_translations_en_US);

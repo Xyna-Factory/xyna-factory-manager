@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 
 import { ApiService, FullQualifiedName, RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoRuntimeContext, XoWorkspace } from '@zeta/api';
 import { isString } from '@zeta/base';
@@ -54,6 +54,9 @@ export interface AddNewCronLikeOrderModalComponentData {
     imports: [XcModule, I18nModule, FMFocusCandidateDirective, OrderTypeFormComponent, InputParameterComponent, ExecutionTimeComponent]
 })
 export class AddNewCronlikeOrderModalComponent extends XcDialogComponent<boolean, AddNewCronLikeOrderModalComponentData> {
+    private readonly apiService = inject(ApiService);
+    private readonly i18n = inject(I18nService);
+
     @ViewChild(XcFormDirective, { static: false })
     xcFormDirective: XcFormDirective;
 
@@ -164,8 +167,8 @@ export class AddNewCronlikeOrderModalComponent extends XcDialogComponent<boolean
         }
     }
 
-    constructor(injector: Injector, private readonly apiService: ApiService, private readonly i18n: I18nService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.i18n.setTranslations(LocaleService.DE_DE, addNewCronlikeOrderModal_translations_de_DE);
         this.i18n.setTranslations(LocaleService.EN_US, addNewCronlikeOrderModal_translations_en_US);

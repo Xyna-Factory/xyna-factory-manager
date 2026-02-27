@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder, StartOrderResult } from '@zeta/api';
 import { I18nService, LocaleService } from '@zeta/i18n';
@@ -65,8 +65,8 @@ export class StorableInstanceCreationComponent extends XcDialogComponent<any, an
         return this.injectedData.i18nService;
     }
 
-    constructor(injector: Injector) {
-        super(injector);
+    constructor() {
+        super();
 
         this.i18nService.setTranslations(LocaleService.DE_DE, storableInstanceCreation_translations_de_DE);
         this.i18nService.setTranslations(LocaleService.EN_US, storableInstanceCreation_translations_en_US);

@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService } from '@zeta/i18n';
@@ -44,6 +44,10 @@ type RuntimeApplicationVersion = string;
     imports: [XcModule, I18nModule]
 })
 export class CreateRuntimeApplicationDialogComponent extends XcDialogComponent<RuntimeApplicationVersion, { workspaceName: string; applicationDefinitionName: string }> {
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly i18n = inject(I18nService);
+
 
     workspaceDataWrapper: XcAutocompleteDataWrapper<XoWorkspace>;
     workspace: XoWorkspace;
@@ -55,8 +59,8 @@ export class CreateRuntimeApplicationDialogComponent extends XcDialogComponent<R
     documentation = '';
     loading: boolean;
 
-    constructor(injector: Injector, private readonly apiService: ApiService, private readonly dialogService: XcDialogService, private readonly i18n: I18nService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.i18n.setTranslations(LocaleService.DE_DE, createRuntimeApplication_translations_de_DE);
         this.i18n.setTranslations(LocaleService.EN_US, createRuntimeApplication_translations_en_US);

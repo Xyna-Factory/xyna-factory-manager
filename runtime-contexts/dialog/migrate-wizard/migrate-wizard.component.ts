@@ -16,7 +16,7 @@ import { NgClass } from '@angular/common';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { XoRTCMigrationResultArray } from '@fman/runtime-contexts/xo/xo-rtcmigration-result.model';
 import { XoRTCName } from '@fman/runtime-contexts/xo/xo-rtcname.model';
@@ -127,6 +127,8 @@ export class RuntimeContextTableInfo extends XoTableInfo {
     imports: [XcModule, I18nModule, NgClass]
 })
 export class MigrateWizardComponent extends XcDialogComponent<boolean, MigrationWizardData> {
+    private readonly settings = inject(FactoryManagerSettingsService);
+
     /** Current state of wizard (can be set via injected data to skip a step) */
     private migrateWizardState: MigrateWizardStateEnum = this.injectedData.presetState || MigrateWizardStateEnum.CHOOSENODE;
 
@@ -221,8 +223,8 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
         return null;
     }
 
-    constructor(injector: Injector, private readonly settings: FactoryManagerSettingsService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.injectedData.i18n.setTranslations(LocaleService.DE_DE, migrateWizard_translations_de_DE);
         this.injectedData.i18n.setTranslations(LocaleService.EN_US, migrateWizard_translations_en_US);

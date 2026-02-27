@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectorRef, Component, Injector, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoRuntimeContext, XoWorkspace } from '@zeta/api';
 import { I18nService, LocaleService } from '@zeta/i18n';
@@ -60,6 +60,10 @@ export interface AddNewOrderInputSourceModalComponentData {
     imports: [XcModule, I18nModule, FMFocusCandidateDirective, InputParameterComponent]
 })
 export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<boolean, AddNewOrderInputSourceModalComponentData> {
+    private readonly i18n = inject(I18nService);
+    private readonly cdr = inject(ChangeDetectorRef);
+    private readonly apiService = inject(ApiService);
+
 
     @ViewChild(XcFormDirective, {static: false})
     xcFormDirective: XcFormDirective;
@@ -221,8 +225,8 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
     xTFTestCaseName: string;
 
 
-    constructor(injector: Injector, private readonly i18n: I18nService, private readonly cdr: ChangeDetectorRef, private readonly apiService: ApiService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.i18n.setTranslations(LocaleService.DE_DE, addNewOrderInputSourceModal_translations_de_DE);
         this.i18n.setTranslations(LocaleService.EN_US, addNewOrderInputSourceModal_translations_en_US);

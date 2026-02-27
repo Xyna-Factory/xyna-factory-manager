@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild, inject } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
@@ -39,6 +39,10 @@ import { ExecutionTimeInterval, ExecutionTimeMonth, ExecutionTimeMonthlyAtWhichD
     imports: [XcModule, I18nModule, DateSelectorComponent]
 })
 export class ExecutionTimeComponent {
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly i18nService = inject(I18nService);
+
     @ViewChild(XcFormDirective, { static: false })
     xcFormDirective: XcFormDirective;
 
@@ -375,7 +379,7 @@ export class ExecutionTimeComponent {
         this._updateBoundObject();
     }
 
-    constructor(private readonly apiService: ApiService, private readonly dialogService: XcDialogService, private readonly i18nService: I18nService) {
+    constructor() {
         this.timeZoneDataWrapper = new XcAutocompleteDataWrapper(
             () => (this.executionTime ? this.executionTime.timezone : ''),
             (value: string) => {

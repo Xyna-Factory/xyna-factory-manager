@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { XoRuntimeContext, XoRuntimeContextArray } from '@fman/runtime-contexts/xo/xo-runtime-context.model';
 import { XoDeployTriggerRequest } from '@fman/trigger-and-filter/xo/xo-deploy-trigger-request.model';
@@ -44,6 +44,9 @@ interface StartParameter {
     imports: [XcModule, I18nModule, StartParameterDetailComponent]
 })
 export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerInstance, XoTrigger> {
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+
 
     readonly XDSIconName = XDSIconName;
 
@@ -63,10 +66,8 @@ export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerIns
             this.context = value;
         });
 
-    constructor(injector: Injector,
-        private readonly apiService: ApiService,
-        private readonly dialogService: XcDialogService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.fillContextWrapper();
         this.getStartParameter();

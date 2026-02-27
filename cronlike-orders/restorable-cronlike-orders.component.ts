@@ -15,13 +15,10 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 
-import { FactoryManagerSettingsService } from '@fman/misc/services/factory-manager-settings.service';
-import { ApiService, XoRuntimeContext } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { XcDialogService } from '@zeta/xc';
+import { XoRuntimeContext } from '@zeta/api';
+import { LocaleService } from '@zeta/i18n';
 
 import { FM_WF_GET_ORDER_TYPES, UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR } from '../const';
 import { InputScreenWorkflowPackage, RestorableRouteComponent } from '../restorable-route.component';
@@ -50,16 +47,8 @@ export class RestorableCronlikeOrdersComponent extends RestorableRouteComponent<
         });
     }
 
-    constructor(
-        apiService: ApiService,
-        dialogService: XcDialogService,
-        route: ActivatedRoute,
-        router: Router,
-        i18nService: I18nService,
-        injector: Injector,
-        settings: FactoryManagerSettingsService
-    ) {
-        super(apiService, dialogService, route, router, i18nService, injector, settings);
+    constructor() {
+        super();
 
         this.i18nService.setTranslations(LocaleService.DE_DE, cronlike_orders_translations_de_DE);
         this.i18nService.setTranslations(LocaleService.EN_US, cronlike_orders_translations_en_US);

@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 
 import { ApiService, FullQualifiedName, RuntimeContext, RuntimeContextType, StartOrderOptionsBuilder, StartOrderResult, Xo, XoDescriber, XoObject, XoRuntimeContext, XoStorable, XoStructureMethod, XoWorkspace } from '@zeta/api';
 import { XoXynaProperty, XoXynaPropertyKey } from '@zeta/auth/xo/xyna-property.model';
@@ -256,6 +256,11 @@ class StorableTableDataSource extends XcLocalTableDataSource<XoObject> {
     imports: [XcModule, I18nModule, StorableInstanceDetailComponent]
 })
 export class StorableInstancesComponent implements OnInit {
+    private readonly apiService = inject(ApiService);
+    private readonly i18nService = inject(I18nService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly settings = inject(FactoryManagerSettingsService);
+
     rtcDataWrapper: XcAutocompleteDataWrapper<XoRuntimeContext>;
     fqnDataWrapper: XcAutocompleteDataWrapper<FullQualifiedName>;
 
@@ -276,12 +281,7 @@ export class StorableInstancesComponent implements OnInit {
     readonly SELECT_STORABLE_PLACEHOLDER = 'fman.storable-instances.storable-selection-placeholder';
 
 
-    constructor(
-        private readonly apiService: ApiService,
-        private readonly i18nService: I18nService,
-        private readonly dialogService: XcDialogService,
-        private readonly settings: FactoryManagerSettingsService
-    ) {
+    constructor() {
         // prevent XoSelectionMask from being pruned
          
         const mask = new XoSelectionMask();
@@ -289,9 +289,9 @@ export class StorableInstancesComponent implements OnInit {
         this.i18nService.setTranslations(LocaleService.DE_DE, storable_instances_translations_de_DE);
         this.i18nService.setTranslations(LocaleService.EN_US, storable_instances_translations_en_US);
 
-        this.storableTableSource = new StorableTableDataSource(i18nService);
-        this.storableTableSource.apiService = apiService;
-        this.storableTableSource.dialogs = dialogService;
+        this.storableTableSource = new StorableTableDataSource(this.i18nService);
+        this.storableTableSource.apiService = this.apiService;
+        this.storableTableSource.dialogs = this.dialogService;
         this.storableTableSource.selectionModel.selectionChange.subscribe((model: XcSelectionModel<Comparable>) => {
             this.selectedRow = this.canEditTable() ? (model.selection[0] as XoObject) : null;
             this.selectedStorable = this.selectedRow;

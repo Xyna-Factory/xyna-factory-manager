@@ -16,7 +16,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { environment } from '@environments/environment';
 import { FACTORY_MANAGER } from '@fman/const';
@@ -31,6 +31,8 @@ import { BehaviorSubject, catchError, filter, finalize, map, Observable, of } fr
     providedIn: 'root'
 })
 export class PluginService {
+    private readonly api = inject(ApiService);
+
 
     private readonly _plugins = new BehaviorSubject<Map<string, XoPlugin>>(null);
     private pending = false;
@@ -40,9 +42,6 @@ export class PluginService {
         FACTORY_MANAGER.PLUGIN_04, FACTORY_MANAGER.PLUGIN_05, FACTORY_MANAGER.PLUGIN_06, FACTORY_MANAGER.PLUGIN_07,
         FACTORY_MANAGER.PLUGIN_08, FACTORY_MANAGER.PLUGIN_09
     ];
-
-    constructor(private readonly api: ApiService) {
-    }
 
 
     get plugins(): Observable<Map<string, XoPlugin>> {

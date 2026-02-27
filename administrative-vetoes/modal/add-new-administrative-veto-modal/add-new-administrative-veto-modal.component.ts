@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService } from '@zeta/i18n';
@@ -44,6 +44,8 @@ export interface AddNewAdministrativeVetoModalData {
     imports: [XcModule, I18nModule, FMFocusCandidateDirective]
 })
 export class AddNewAdministrativeVetoModalComponent extends XcDialogComponent<boolean, AddNewAdministrativeVetoModalData> {
+    private readonly i18nService = inject(I18nService);
+
 
     @ViewChild(XcFormDirective, {static: false})
     xcFormDirective: XcFormDirective;
@@ -67,11 +69,11 @@ export class AddNewAdministrativeVetoModalComponent extends XcDialogComponent<bo
 
     administrativeVeto: XoAdministrativeVeto;
 
-    constructor(injector: Injector, i18nService: I18nService) {
-        super(injector);
+    constructor() {
+        super();
 
-        i18nService.setTranslations(LocaleService.DE_DE, addNewAdministrativeVetoModal_translations_de_DE);
-        i18nService.setTranslations(LocaleService.EN_US, addNewAdministrativeVetoModal_translations_en_US);
+        this.i18nService.setTranslations(LocaleService.DE_DE, addNewAdministrativeVetoModal_translations_de_DE);
+        this.i18nService.setTranslations(LocaleService.EN_US, addNewAdministrativeVetoModal_translations_en_US);
 
         this.administrativeVeto = new XoAdministrativeVeto();
 

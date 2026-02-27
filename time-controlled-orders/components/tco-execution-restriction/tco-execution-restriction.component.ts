@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, inject } from '@angular/core';
 
 import { I18nService } from '@zeta/i18n';
 import { I18nModule } from '@zeta/i18n/i18n.module';
@@ -52,6 +52,8 @@ export const TimeConversion = {
     imports: [XcModule, I18nModule]
 })
 export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, AfterViewInit {
+    private readonly i18n = inject(I18nService);
+
     @ViewChild(XcFormDirective, { static: false })
     xcFormDirective: XcFormDirective;
 
@@ -138,7 +140,7 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
         this.executionRestrictionChange.emit(this.executionRestriction);
     }
 
-    constructor(private readonly i18n: I18nService) {
+    constructor() {
         this.behaviorOnErrorDataWrapper = new XcAutocompleteDataWrapper(
             () => this.selectedBehaviorOnError,
             (value: ExecutionTimeBehaviorOnError) => {

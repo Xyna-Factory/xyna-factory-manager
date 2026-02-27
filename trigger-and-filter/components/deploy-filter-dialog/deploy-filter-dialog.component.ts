@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { XoRuntimeContext, XoRuntimeContextArray } from '@fman/runtime-contexts/xo/xo-runtime-context.model';
 import { XoDeployFilterRequest } from '@fman/trigger-and-filter/xo/xo-deploy-filter-request.model';
@@ -38,6 +38,9 @@ import { ORDER_TYPES } from '../../order-types';
     imports: [XcModule, I18nModule]
 })
 export class DeployFilterDialogComponent extends XcDialogComponent<XoFilterInstance, XoFilter> {
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+
 
     instance: string;
     parameter: string;
@@ -61,10 +64,8 @@ export class DeployFilterDialogComponent extends XcDialogComponent<XoFilterInsta
             this.triggerInstance = value;
         });
 
-    constructor(injector: Injector,
-        private readonly apiService: ApiService,
-        private readonly dialogService: XcDialogService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.fillContextWrapper();
         this.fillTriggerInstanceWrapper();

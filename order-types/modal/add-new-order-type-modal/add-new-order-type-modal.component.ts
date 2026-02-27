@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder, XoRuntimeContext } from '@zeta/api';
 import { I18nService, LocaleService } from '@zeta/i18n';
@@ -54,6 +54,10 @@ export interface AddNewOrderTypeModalComponentData {
     imports: [XcModule, I18nModule, FMFocusCandidateDirective]
 })
 export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, AddNewOrderTypeModalComponentData> {
+    private readonly i18n = inject(I18nService);
+    private readonly apiService = inject(ApiService);
+    private readonly settings = inject(FactoryManagerSettingsService);
+
 
     @ViewChild(XcFormDirective, {static: false})
     xcFormDirective: XcFormDirective;
@@ -153,8 +157,8 @@ export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, Ad
 
     dsOrderTypeCapacitiesDataSource: XcRemoteTableDataSource<XoCapacityInformation>;
 
-    constructor(injector: Injector, private readonly i18n: I18nService, private readonly apiService: ApiService, private readonly settings: FactoryManagerSettingsService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.i18n.setTranslations(LocaleService.DE_DE, addNewOrderTypeModal_translations_de_DE);
         this.i18n.setTranslations(LocaleService.EN_US, addNewOrderTypeModal_translations_en_US);

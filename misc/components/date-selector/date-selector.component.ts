@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output, ViewChild, inject } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
@@ -35,6 +35,10 @@ import { XoTimezoneArray } from '../../../xo/xo-timezone.model';
     imports: [XcModule, I18nModule]
 })
 export class DateSelectorComponent implements AfterViewInit, OnDestroy {
+    private readonly apiService = inject(ApiService);
+    private readonly i18n = inject(I18nService);
+    private readonly dialogService = inject(XcDialogService);
+
 
     private static readonly FM_WF_GET_TIMEZONES = 'xmcp.factorymanager.shared.GetTimezones';
 
@@ -172,10 +176,6 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
             this.updateDatetime();
         }
     );
-
-
-    constructor(private readonly apiService: ApiService, private readonly i18n: I18nService, private readonly dialogService: XcDialogService) {
-    }
 
 
     ngAfterViewInit() {

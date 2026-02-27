@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectorRef, Component, InjectionToken, Injector } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, InjectionToken } from '@angular/core';
 
 import { FM_RTC } from '@fman/const';
 import { XoRuntimeApplication } from '@fman/runtime-contexts/xo/xo-runtime-application.model';
@@ -25,7 +25,6 @@ import { XoFilterDetails } from '@fman/trigger-and-filter/xo/xo-filter-details.m
 import { XoFilter } from '@fman/trigger-and-filter/xo/xo-filter.model';
 import { XoGetFilterDetailRequest } from '@fman/trigger-and-filter/xo/xo-get-filter-detail-request.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nService } from '@zeta/i18n';
 import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XC_COMPONENT_DATA, XcDialogService, XcDynamicComponent } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
@@ -38,6 +37,10 @@ import { XcModule } from '@zeta/xc/xc.module';
     imports: [XcModule, I18nModule]
 })
 export class FilterDetailComponent extends XcDynamicComponent<XoFilter> {
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly cdr = inject(ChangeDetectorRef);
+
 
 
     protected getToken(): InjectionToken<string> {
@@ -47,8 +50,8 @@ export class FilterDetailComponent extends XcDynamicComponent<XoFilter> {
     detail: XoFilterDetails;
     busy = false;
 
-    constructor(injector: Injector, private readonly apiService: ApiService, private readonly i18nService: I18nService, private readonly dialogService: XcDialogService, private readonly cdr: ChangeDetectorRef) {
-        super(injector);
+    constructor() {
+        super();
         this.refresh();
     }
 
