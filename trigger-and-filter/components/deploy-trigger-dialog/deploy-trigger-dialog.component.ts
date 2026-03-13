@@ -93,11 +93,10 @@ export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerIns
         });
     }
 
-    private buildStartparameterRequest(): string {
+    private buildStartparameterRequest(): string[] {
         return this.startparameter.
             filter(para => !!para.parameter.key).
-            map(para => para.parameter.key + '=' + para.parameter.value).
-            reduce((pre, cur) => pre + ',' + cur);
+            map(para => para.parameter.key + '=' + para.parameter.value);
     }
 
     fillContextWrapper() {
@@ -132,7 +131,11 @@ export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerIns
         request.triggerName = this.injectedData.name;
         request.triggerInstanceName = this.instance;
         request.runtimeContext = this.context;
-        request.startParameter = this.legacy ? this.parameter : this.buildStartparameterRequest();
+        if (this.legacy) {
+            request.startParameter = this.parameter;
+        } else {
+            request.startParameterArray = this.buildStartparameterRequest();
+        }
         request.documentation = this.documentation;
 
         this.apiService.startOrder(FM_RTC, ORDER_TYPES.DEPLOY_TRIGGER, request, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
