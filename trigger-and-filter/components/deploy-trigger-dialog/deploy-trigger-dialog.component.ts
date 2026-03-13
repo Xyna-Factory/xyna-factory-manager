@@ -97,7 +97,7 @@ export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerIns
         return this.startparameter.
             filter(para => !!para.parameter.key).
             map(para => para.parameter.key + '=' + para.parameter.value).
-            reduce((pre, cur) => pre + ' ' + cur);
+            reduce((pre, cur) => pre + ',' + cur);
     }
 
     fillContextWrapper() {
