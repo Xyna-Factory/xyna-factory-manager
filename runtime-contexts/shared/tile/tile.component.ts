@@ -19,7 +19,7 @@ import { ChangeDetectorRef, Component, ElementRef, HostBinding, Input, NgZone, O
 
 import { ApiService } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcDialogService, XDSIconName } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -38,7 +38,7 @@ export interface ActionButtonData {
     selector: 'tile',
     templateUrl: './tile.component.html',
     styleUrls: ['./tile.component.scss'],
-    imports: [TileButtonComponent, I18nModule, XcModule]
+    imports: [TileButtonComponent, XcI18nTranslateDirective, XcModule]
 })
 export class TileComponent  implements OnInit {
     private readonly apiService = inject(ApiService);

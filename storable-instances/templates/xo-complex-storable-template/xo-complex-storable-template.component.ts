@@ -18,7 +18,7 @@
 import { Component, InjectionToken } from '@angular/core';
 
 import { XoArray, XoObject } from '@zeta/api';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { XcI18nPipe } from '@zeta/i18n';
 import { XC_COMPONENT_DATA, XcDynamicComponent } from '@zeta/xc';
 
 import { XoComplexStorableTemplateData } from '../../xo/xo-complex-storable.model';
@@ -30,7 +30,7 @@ import { XoComplexStorableTemplateData } from '../../xo/xo-complex-storable.mode
     selector: 'xo-complex-storable-template',
     templateUrl: './xo-complex-storable-template.component.html',
     styleUrls: ['./xo-complex-storable-template.component.scss'],
-    imports: [I18nModule]
+    imports: [XcI18nPipe]
 })
 export class XoComplexStorableTemplateComponent extends XcDynamicComponent<XoComplexStorableTemplateData> {
     get obj(): XoObject | XoArray | Array<any> {

@@ -21,8 +21,7 @@ import { Component, inject, OnDestroy } from '@angular/core';
 import { XoDependencyType } from '@fman/runtime-contexts/xo/xo-dependency.model';
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcDialogComponent, XcDialogService, XcLocalTableDataSource, XcRemoteTableDataSource } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -44,7 +43,7 @@ import { manageContent_translations_en_US } from './locale/manage-content-transl
 @Component({
     templateUrl: './manage-content-dialog.component.html',
     styleUrls: ['./manage-content-dialog.component.scss'],
-    imports: [XcModule, I18nModule, NgClass]
+    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe, NgClass]
 })
 export class ManageContentDialogComponent extends XcDialogComponent<boolean, XoRuntimeContext> implements OnDestroy {
     private readonly apiService = inject(ApiService);

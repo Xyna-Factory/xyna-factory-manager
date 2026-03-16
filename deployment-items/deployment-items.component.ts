@@ -19,7 +19,7 @@ import { Component } from '@angular/core';
 
 import { RuntimeContext, RuntimeContextType, StartOrderOptionsBuilder, XoRuntimeContext } from '@zeta/api';
 import { dateTimeString } from '@zeta/base';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { QueryParameterService } from '@zeta/nav/query-parameter.service';
 import { XcAutocompleteDataWrapper, XcOptionItem, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
@@ -47,7 +47,7 @@ const ISWP = DEPLOYMENT_ITEMS_ISWP;
 @Component({
     templateUrl: './deployment-items.component.html',
     styleUrls: ['./deployment-items.component.scss'],
-    imports: [XcModule, I18nModule, DeploymentStateDetailComponent]
+    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, DeploymentStateDetailComponent]
 })
 export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent {
 

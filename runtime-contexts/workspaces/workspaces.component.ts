@@ -19,8 +19,7 @@ import { AfterViewInit, Component, OnDestroy, QueryList, ViewChildren, inject } 
 
 import { FactoryManagerSettingsService } from '@fman/misc/services/factory-manager-settings.service';
 import { ApiService } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { RouteComponent } from '@zeta/nav';
 import { XcDialogService, XcRemoteDataSource, XcSortDirection, XcSortPredicate } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
@@ -44,7 +43,7 @@ import { WorkspaceTileComponent } from './workspace-tile/workspace-tile.componen
 @Component({
     templateUrl: './workspaces.component.html',
     styleUrls: ['./workspaces.component.scss'],
-    imports: [XcModule, I18nModule, WorkspaceTileComponent]
+    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, WorkspaceTileComponent]
 })
 export class WorkspacesComponent extends RouteComponent implements AfterViewInit, OnDestroy {
     private readonly i18n = inject(I18nService);

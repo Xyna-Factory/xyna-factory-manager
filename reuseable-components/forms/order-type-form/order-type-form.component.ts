@@ -18,7 +18,7 @@
 import { Component, EventEmitter, Input, Output, ViewChild, inject } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder, XoArray, XoRuntimeContext } from '@zeta/api';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcFormDirective } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -30,7 +30,7 @@ import { XoOrderTypeArray } from '../../../xo/xo-order-type.model';
     selector: 'order-type-form',
     templateUrl: './order-type-form.component.html',
     styleUrls: ['./order-type-form.component.scss'],
-    imports: [XcModule, I18nModule]
+    imports: [XcModule, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class OrderTypeFormComponent {
     private readonly apiService = inject(ApiService);

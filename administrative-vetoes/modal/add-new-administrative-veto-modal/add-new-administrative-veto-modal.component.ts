@@ -18,8 +18,7 @@
 import { Component, inject, ViewChild } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcDialogComponent, XcFormDirective } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -41,7 +40,7 @@ export interface AddNewAdministrativeVetoModalData {
     selector: 'app-add-new-administrative-veto-modal',
     templateUrl: './add-new-administrative-veto-modal.component.html',
     styleUrls: ['./add-new-administrative-veto-modal.component.scss'],
-    imports: [XcModule, I18nModule, FMFocusCandidateDirective]
+    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, FMFocusCandidateDirective]
 })
 export class AddNewAdministrativeVetoModalComponent extends XcDialogComponent<boolean, AddNewAdministrativeVetoModalData> {
     private readonly i18nService = inject(I18nService);

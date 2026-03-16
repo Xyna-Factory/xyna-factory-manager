@@ -23,7 +23,7 @@ import { XoFilterInstance } from '@fman/trigger-and-filter/xo/xo-filter-instance
 import { XoFilter } from '@fman/trigger-and-filter/xo/xo-filter.model';
 import { XoTriggerInstance, XoTriggerInstanceArray } from '@fman/trigger-and-filter/xo/xo-trigger-instance.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcDialogComponent, XcDialogService, XcOptionItem, XcOptionItemString } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -35,7 +35,7 @@ import { ORDER_TYPES } from '../../order-types';
     templateUrl: './deploy-filter-dialog.component.html',
     styleUrls: ['./deploy-filter-dialog.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [XcModule, I18nModule]
+    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class DeployFilterDialogComponent extends XcDialogComponent<XoFilterInstance, XoFilter> {
     private readonly apiService = inject(ApiService);

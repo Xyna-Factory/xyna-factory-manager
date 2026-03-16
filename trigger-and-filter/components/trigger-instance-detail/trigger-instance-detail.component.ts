@@ -25,7 +25,7 @@ import { XoTriggerInstance } from '@fman/trigger-and-filter/xo/xo-trigger-instan
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { Comparable } from '@zeta/base';
 import { I18nService } from '@zeta/i18n';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { XcI18nTranslateDirective } from '@zeta/i18n';
 import { XC_COMPONENT_DATA, XcDialogService, XcDynamicComponent, XcLocalTableDataSource, XDSIconName } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -52,7 +52,7 @@ class FilterInstanceData extends Comparable {
     templateUrl: './trigger-instance-detail.component.html',
     styleUrls: ['./trigger-instance-detail.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [XcModule, I18nModule]
+    imports: [XcModule, XcI18nTranslateDirective]
 })
 export class TriggerInstanceDetailComponent extends XcDynamicComponent<TriggerInstanceDetailsData> {
     private readonly apiService = inject(ApiService);

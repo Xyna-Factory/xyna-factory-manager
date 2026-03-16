@@ -20,7 +20,7 @@ import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { ApiService, FullQualifiedName, OrderTypeVariable, RuntimeContext, Xo, XoArray, XoClassInterfaceFrom, XoJson, XoObject, XoRuntimeContext, XoStorable, XoStructureType } from '@zeta/api';
 import { isArray } from '@zeta/base';
 import { I18nService } from '@zeta/i18n';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcStructureTreeDataSource } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -44,7 +44,7 @@ export interface InputParameter {
     selector: 'storable-input-parameter',
     templateUrl: './storable-input-parameter.component.html',
     styleUrls: ['./storable-input-parameter.component.scss'],
-    imports: [XcModule, I18nModule]
+    imports: [XcModule, XcI18nTranslateDirective]
 })
 export class StorableInputParameterComponent {
     private readonly apiService = inject(ApiService);

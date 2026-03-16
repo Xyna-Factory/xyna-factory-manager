@@ -18,7 +18,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, inject } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcDialogService, XcFormDirective, XcSelectionModel } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -41,7 +41,7 @@ import { TcoExecutionRestrictionComponent } from '../tco-execution-restriction/t
     selector: 'tco-detail-section',
     templateUrl: './tco-detail-section.component.html',
     styleUrls: ['./tco-detail-section.component.scss'],
-    imports: [XcModule, I18nModule, OrderTypeFormComponent, StorableInputParameterComponent, ExecutionTimeComponent, TcoExecutionRestrictionComponent, CustomInformationFormComponent]
+    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe, OrderTypeFormComponent, StorableInputParameterComponent, ExecutionTimeComponent, TcoExecutionRestrictionComponent, CustomInformationFormComponent]
 })
 export class TcoDetailSectionComponent implements OnInit, OnDestroy {
     private readonly apiService = inject(ApiService);

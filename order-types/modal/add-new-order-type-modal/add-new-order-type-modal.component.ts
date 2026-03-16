@@ -18,8 +18,7 @@
 import { Component, inject, ViewChild } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder, XoRuntimeContext } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcDialogComponent, XcFormDirective, XcRemoteTableDataSource, XcRichListItem, XcStringIntegerDataWrapper } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -51,7 +50,7 @@ export interface AddNewOrderTypeModalComponentData {
 @Component({
     templateUrl: './add-new-order-type-modal.component.html',
     styleUrls: ['./add-new-order-type-modal.component.scss'],
-    imports: [XcModule, I18nModule, FMFocusCandidateDirective]
+    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe, FMFocusCandidateDirective]
 })
 export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, AddNewOrderTypeModalComponentData> {
     private readonly i18n = inject(I18nService);

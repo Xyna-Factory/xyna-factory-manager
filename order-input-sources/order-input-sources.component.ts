@@ -18,7 +18,7 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 
 import { StartOrderOptionsBuilder, XoApplication, XoArray, XoDescriber } from '@zeta/api';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcModule } from '@zeta/xc/xc.module';
 
 import { Subject } from 'rxjs';
@@ -45,7 +45,7 @@ export interface InputDataTypesTreeData {
 @Component({
     templateUrl: './order-input-sources.component.html',
     styleUrls: ['./order-input-sources.component.scss'],
-    imports: [XcModule, I18nModule, OrderInputSourceDetailsComponent]
+    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, OrderInputSourceDetailsComponent]
 })
 export class OrderInputSourcesComponent extends RestorableOrderInputSourcesComponent {
     private readonly cdr = inject(ChangeDetectorRef);

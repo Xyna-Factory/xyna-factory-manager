@@ -17,8 +17,7 @@
  */
 import { Component, inject } from '@angular/core';
 
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcDialogComponent, XcRichListItem } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -40,7 +39,7 @@ export interface DeleteReportComponentData {
 @Component({
     templateUrl: './delete-report.component.html',
     styleUrls: ['./delete-report.component.scss'],
-    imports: [XcModule, I18nModule]
+    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class DeleteReportComponent extends XcDialogComponent<XoDeleteDeploymentItemParamArray, DeleteReportComponentData> {
     private readonly i18n = inject(I18nService);

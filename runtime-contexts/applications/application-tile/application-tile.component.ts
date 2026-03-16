@@ -21,7 +21,7 @@ import { ExportApplicationDialogComponent } from '@fman/runtime-contexts/dialog/
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcDialogService, XcRemoteTableDataSource, XDSIconName } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -55,7 +55,7 @@ import { Application } from '../application-data-source';
     selector: 'application-tile',
     templateUrl: './application-tile.component.html',
     styleUrls: ['./application-tile.component.scss'],
-    imports: [RuntimeContextButtonComponent, I18nModule, XcModule]
+    imports: [RuntimeContextButtonComponent, XcI18nTranslateDirective, XcI18nPipe, XcModule]
 })
 export class ApplicationTileComponent implements OnInit {
     private readonly apiService = inject(ApiService);

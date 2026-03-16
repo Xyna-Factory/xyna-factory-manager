@@ -18,8 +18,7 @@
 import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoRuntimeContext, XoWorkspace } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcDialogComponent, XcFormDirective, XcOptionItemString } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -57,7 +56,7 @@ export interface AddNewOrderInputSourceModalComponentData {
 @Component({
     templateUrl: './add-new-order-input-source-modal.component.html',
     styleUrls: ['./add-new-order-input-source-modal.component.scss'],
-    imports: [XcModule, I18nModule, FMFocusCandidateDirective, InputParameterComponent]
+    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe, FMFocusCandidateDirective, InputParameterComponent]
 })
 export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<boolean, AddNewOrderInputSourceModalComponentData> {
     private readonly i18n = inject(I18nService);

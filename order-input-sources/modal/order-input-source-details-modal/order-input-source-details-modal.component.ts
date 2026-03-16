@@ -17,7 +17,7 @@
  */
 import { Component } from '@angular/core';
 
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { XcI18nContextDirective } from '@zeta/i18n';
 import { XcDialogComponent } from '@zeta/xc';
 
 import { FrequencyControlledTaskPreset, OrderInputSourceCloseEvent, OrderInputSourceDetailsComponent } from '../../order-input-source-details/order-input-source-details.component';
@@ -33,7 +33,7 @@ export interface OrderInputSourceDetailsModalComponentData {
 @Component({
     templateUrl: './order-input-source-details-modal.component.html',
     styleUrls: ['./order-input-source-details-modal.component.scss'],
-    imports: [I18nModule, OrderInputSourceDetailsComponent]
+    imports: [XcI18nContextDirective, OrderInputSourceDetailsComponent]
 })
 export class OrderInputSourceDetailsModalComponent extends XcDialogComponent<boolean, OrderInputSourceDetailsModalComponentData> {
     close(event?: OrderInputSourceCloseEvent) {

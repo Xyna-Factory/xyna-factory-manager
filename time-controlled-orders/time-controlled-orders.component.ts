@@ -18,7 +18,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcOptionItem, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -38,7 +38,7 @@ import { XoTimeControlledOrder } from './xo/xo-time-controlled-order.model';
     selector: 'selector-name',
     templateUrl: './time-controlled-orders.component.html',
     styleUrls: ['./time-controlled-orders.component.scss'],
-    imports: [XcModule, I18nModule, TcoDetailSectionComponent]
+    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, TcoDetailSectionComponent]
 })
 export class TimeControlledOrdersComponent extends RestorableTimeControlledOrderComponent implements OnInit {
     selection: XoTimeControlledOrderTableEntry;

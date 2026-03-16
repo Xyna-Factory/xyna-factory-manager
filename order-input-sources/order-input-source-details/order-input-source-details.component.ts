@@ -22,7 +22,7 @@ import { InputParameterRef } from '@fman/misc/components/input-parameter/input-p
 import { XoOrderType, XoOrderTypeArray } from '@fman/xo/xo-order-type.model';
 import { RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoArray, XoRuntimeContext, XoWorkspace } from '@zeta/api';
 import { isNumber } from '@zeta/base';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcFormDirective, XcIntegerStringDataWrapper, XcStringFloatDataWrapper, XcStringIntegerDataWrapper } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -102,7 +102,7 @@ export class FrequencyControlledTaskLoadPreset extends FrequencyControlledTaskPr
     templateUrl: './order-input-source-details.component.html',
     styleUrls: ['./order-input-source-details.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [XcModule, I18nModule, InputParameterComponent, GenerateInputComponent, DateSelectorComponent]
+    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe, InputParameterComponent, GenerateInputComponent, DateSelectorComponent]
 })
 export class OrderInputSourceDetailsComponent extends RestorableOrderInputSourcesComponent {
     private readonly cdr = inject(ChangeDetectorRef);

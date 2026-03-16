@@ -19,7 +19,7 @@ import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output, ViewC
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcDialogService, XcFormDirective, XcOptionItem, XcStringIntegerDataWrapper } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -32,7 +32,7 @@ import { XoTimezoneArray } from '../../../xo/xo-timezone.model';
     selector: 'date-selector',
     templateUrl: './date-selector.component.html',
     styleUrls: ['./date-selector.component.scss'],
-    imports: [XcModule, I18nModule]
+    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class DateSelectorComponent implements AfterViewInit, OnDestroy {
     private readonly apiService = inject(ApiService);

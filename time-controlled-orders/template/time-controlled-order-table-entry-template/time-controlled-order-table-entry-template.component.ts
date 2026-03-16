@@ -18,8 +18,7 @@
 import { Component, inject, InjectionToken } from '@angular/core';
 
 import { tco_translations_de_DE } from '@fman/time-controlled-orders/locale/tco-translations.de-DE';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { I18nService, LocaleService, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XC_COMPONENT_DATA, XcDynamicComponent } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -37,7 +36,7 @@ import { TimeControlledOrderTableEntryTemplateData } from '../../xo/xo-time-cont
         }
         `,
     styleUrls: ['./time-controlled-order-table-entry-template.component.scss'],
-    imports: [I18nModule, XcModule]
+    imports: [XcI18nTranslateDirective, XcModule]
 })
 export class TimeControlledOrderTableEntryTemplateComponent extends XcDynamicComponent<TimeControlledOrderTableEntryTemplateData> {
     readonly i18n = inject(I18nService);

@@ -18,7 +18,6 @@
 import { Component, ViewChild } from '@angular/core';
 
 import { FullQualifiedName, RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoArray, XoRuntimeContext, XoWorkspace } from '@zeta/api';
-import { I18nModule } from '@zeta/i18n/i18n.module';
 import { XcAutocompleteDataWrapper, XcFormDirective } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -32,6 +31,7 @@ import { AddNewCronlikeOrderModalComponent, AddNewCronLikeOrderModalComponentDat
 import { CRONLIKE_ORDERS_ISWP, RestorableCronlikeOrdersComponent } from './restorable-cronlike-orders.component';
 import { XoCronLikeOrderId } from './xo/xo-cronlike-order-id.model';
 import { CronlikeOrderTableInfo, XoCronLikeOrder, XoCronLikeOrderArray } from './xo/xo-cronlike-order.model';
+import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 
 
 const ISWP = CRONLIKE_ORDERS_ISWP;
@@ -40,7 +40,7 @@ const ISWP = CRONLIKE_ORDERS_ISWP;
 @Component({
     templateUrl: './cronlike-orders.component.html',
     styleUrls: ['./cronlike-orders.component.scss'],
-    imports: [XcModule, I18nModule, InputParameterComponent, ExecutionTimeComponent]
+    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, InputParameterComponent, ExecutionTimeComponent]
 })
 export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
 

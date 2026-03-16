@@ -19,8 +19,7 @@ import { NgClass } from '@angular/common';
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder, XoRuntimeContext } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcDialogComponent, XcFormDirective } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -50,7 +49,7 @@ export interface TCODefaultData {
     selector: 'create-time-controlled-order',
     templateUrl: './create-time-controlled-order.component.html',
     styleUrls: ['./create-time-controlled-order.component.scss'],
-    imports: [XcModule, I18nModule, NgClass, OrderTypeFormComponent, StorableInputParameterComponent, ExecutionTimeComponent, TcoExecutionRestrictionComponent, CustomInformationFormComponent]
+    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, NgClass, OrderTypeFormComponent, StorableInputParameterComponent, ExecutionTimeComponent, TcoExecutionRestrictionComponent, CustomInformationFormComponent]
 })
 export class CreateTimeControlledOrderComponent extends XcDialogComponent<boolean, TCODefaultData> {
     private readonly i18nService = inject(I18nService);
