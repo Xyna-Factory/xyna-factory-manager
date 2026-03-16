@@ -80,10 +80,10 @@ export const trigger_and_filter_translations_en_US: I18nTranslation[] = [
     { key: 'fman.deploy-trigger-dialog.documentation', value: 'Description' },
     { key: 'fman.deploy-trigger-dialog.cancel', value: 'Cancel' },
     { key: 'fman.deploy-trigger-dialog.deploy', value: 'Deploy Trigger' },
-    { key: 'fman.deploy-trigger-dialog..Possible start parameter combinations', value: 'Possible start parameter combinations' },
-    { key: 'fman.deploy-trigger-dialog..Combination', value: 'Combination' },
+    { key: 'fman.deploy-trigger-dialog.Possible start parameter combinations', value: 'Possible start parameter combinations' },
+    { key: 'fman.deploy-trigger-dialog.Combination', value: 'Combination' },
     { key: 'Necessity', value: 'Necessity' },
-    { key: 'fman.deploy-trigger-dialog.Parameter', value: 'Parameter' },
+    { key: 'fman.deploy-trigger-dialog.Value', value: 'Value' },
 
 
 
