@@ -23,7 +23,7 @@ import { XoStartParameterDetails, XoStartParameterDetailsArray } from '@fman/tri
 import { XoTriggerInstance } from '@fman/trigger-and-filter/xo/xo-trigger-instance.model';
 import { XoTrigger } from '@fman/trigger-and-filter/xo/xo-trigger.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcDialogComponent, XcDialogService, XcOptionItem, XDSIconName } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -41,7 +41,7 @@ interface StartParameter {
 @Component({
     templateUrl: './deploy-trigger-dialog.component.html',
     styleUrls: ['./deploy-trigger-dialog.component.scss'],
-    imports: [XcModule, I18nModule, StartParameterDetailComponent]
+    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, StartParameterDetailComponent]
 })
 export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerInstance, XoTrigger> {
     private readonly apiService = inject(ApiService);

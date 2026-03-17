@@ -18,8 +18,7 @@
 import { Component, inject } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcDialogComponent, XcDialogService, XcOptionItem } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -41,7 +40,7 @@ type WorkspaceName = string;
 @Component({
     templateUrl: './create-application-definition-dialog.component.html',
     styleUrls: ['./create-application-definition-dialog.component.scss'],
-    imports: [XcModule, I18nModule]
+    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class CreateApplicationDefinitionDialogComponent extends XcDialogComponent<ApplicationDefinitionName, WorkspaceName> {
     private readonly apiService = inject(ApiService);

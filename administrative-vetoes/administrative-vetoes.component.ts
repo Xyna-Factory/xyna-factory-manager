@@ -18,7 +18,7 @@
 import { Component } from '@angular/core';
 
 import { StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcModule } from '@zeta/xc/xc.module';
 
 import { filter } from 'rxjs';
@@ -35,7 +35,7 @@ const ISWP = ADMINISTRATIVE_VETOES_ISWP;
 @Component({
     templateUrl: './administrative-vetoes.component.html',
     styleUrls: ['./administrative-vetoes.component.scss'],
-    imports: [XcModule, I18nModule]
+    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class AdministrativeVetoesComponent extends RestorableAdministrativeVetoComponent {
 

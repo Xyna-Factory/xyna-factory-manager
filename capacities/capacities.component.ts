@@ -18,7 +18,7 @@
 import { Component, ViewChild } from '@angular/core';
 
 import { StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcFormDirective, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -37,7 +37,7 @@ const ISWP = CAPACITY_ISWP;
 @Component({
     templateUrl: './capacities.component.html',
     styleUrls: ['./capacities.component.scss'],
-    imports: [XcModule, I18nModule]
+    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class CapacitiesComponent extends RestorableCapacitiesComponent {
 

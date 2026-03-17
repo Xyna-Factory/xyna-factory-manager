@@ -22,8 +22,7 @@ import { TileDataSource, TileItem } from '@fman/runtime-contexts/shared/tile/til
 import { ActionButtonData } from '@fman/runtime-contexts/shared/tile/tile.component';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { Comparable } from '@zeta/base';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { RouteComponent } from '@zeta/nav';
 import { XcComponentTemplate, XcDialogService, XcSelectionModel, XcTemplate } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
@@ -101,7 +100,7 @@ class TriggerInstanceTile extends Comparable implements TileItem {
     templateUrl: './trigger.component.html',
     styleUrls: ['./trigger.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [XcModule, I18nModule, TileComponent]
+    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, TileComponent]
 })
 export class TriggerComponent extends RouteComponent {
     private readonly apiService = inject(ApiService);

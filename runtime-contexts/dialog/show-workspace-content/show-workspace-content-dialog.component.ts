@@ -19,8 +19,7 @@ import { Component, inject } from '@angular/core';
 
 import { XoGetWorkspaceContentRequest } from '@fman/runtime-contexts/xo/xo-get-workspace-content-request.model';
 import { ApiService } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcDialogComponent, XcRemoteTableDataSource } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -37,7 +36,7 @@ import { showWorkspaceContent_translations_en_US } from './locale/show-workspace
 @Component({
     templateUrl: './show-workspace-content-dialog.component.html',
     styleUrls: ['./show-workspace-content-dialog.component.scss'],
-    imports: [XcModule, I18nModule]
+    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class ShowWorkspaceContentDialogComponent extends XcDialogComponent<boolean, XoRuntimeContext> {
     private readonly apiService = inject(ApiService);

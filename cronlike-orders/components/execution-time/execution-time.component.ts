@@ -19,7 +19,7 @@ import { Component, EventEmitter, Input, Output, ViewChild, inject } from '@angu
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcDialogService, XcFormDirective, XcIdentityDataWrapper, XcStringIntegerDataWrapper } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -36,7 +36,7 @@ import { ExecutionTimeInterval, ExecutionTimeMonth, ExecutionTimeMonthlyAtWhichD
     selector: 'execution-time',
     templateUrl: './execution-time.component.html',
     styleUrls: ['./execution-time.component.scss'],
-    imports: [XcModule, I18nModule, DateSelectorComponent]
+    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe, DateSelectorComponent]
 })
 export class ExecutionTimeComponent {
     private readonly apiService = inject(ApiService);

@@ -18,7 +18,7 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, inject } from '@angular/core';
 
 import { I18nService } from '@zeta/i18n';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcFormDirective } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -49,7 +49,7 @@ export const TimeConversion = {
     selector: 'tco-execution-restriction',
     templateUrl: './tco-execution-restriction.component.html',
     styleUrls: ['./tco-execution-restriction.component.scss'],
-    imports: [XcModule, I18nModule]
+    imports: [XcModule, XcI18nTranslateDirective]
 })
 export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, AfterViewInit {
     private readonly i18n = inject(I18nService);

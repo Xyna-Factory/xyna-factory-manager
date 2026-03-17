@@ -25,7 +25,7 @@ import { XoFilterDetails } from '@fman/trigger-and-filter/xo/xo-filter-details.m
 import { XoFilter } from '@fman/trigger-and-filter/xo/xo-filter.model';
 import { XoGetFilterDetailRequest } from '@fman/trigger-and-filter/xo/xo-get-filter-detail-request.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { XcI18nTranslateDirective } from '@zeta/i18n';
 import { XC_COMPONENT_DATA, XcDialogService, XcDynamicComponent } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -34,7 +34,7 @@ import { XcModule } from '@zeta/xc/xc.module';
     selector: 'filter-detail',
     templateUrl: './filter-detail.component.html',
     styleUrls: ['./filter-detail.component.scss'],
-    imports: [XcModule, I18nModule]
+    imports: [XcModule, XcI18nTranslateDirective]
 })
 export class FilterDetailComponent extends XcDynamicComponent<XoFilter> {
     private readonly apiService = inject(ApiService);

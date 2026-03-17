@@ -20,7 +20,7 @@ import { Router } from '@angular/router';
 
 import { ApiService, OrderTypeSignature, OrderTypeVariable, RuntimeContext, StartOrderOptionsBuilder, Xo, XoArray, XoObject, XoStartOrderExceptionResponse, XoStartOrderSuccessResponse, XoStructureArray, XoStructureObject, XynaMonitoringLevel, XynaPriority } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcDialogService, XcOptionItem, XcOptionItemUndefined, XcStructureTreeDataSource } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -49,7 +49,7 @@ interface WorkflowTest {
     selector: 'xfm-fman-workflow-tester',
     templateUrl: './workflow-tester.component.html',
     styleUrls: ['./workflow-tester.component.scss'],
-    imports: [XcModule, I18nModule]
+    imports: [XcModule, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class WorkflowTesterComponent {
     private readonly router = inject(Router);

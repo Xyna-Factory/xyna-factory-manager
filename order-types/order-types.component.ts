@@ -20,7 +20,7 @@ import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { XmomObjectType } from '@pmod/api/xmom-types';
 import { XoRuntimeContext } from '@pmod/xo/runtime-context.model';
 import { FullQualifiedName, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { QueryParameterService } from '@zeta/nav/query-parameter.service';
 import { XcAutocompleteDataWrapper, XcFormDirective, XcRemoteTableDataSource, XcRichListItem, XcStringIntegerDataWrapper } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
@@ -52,7 +52,7 @@ const ISWP = ORDER_TYPE_ISWP;
 @Component({
     templateUrl: './order-types.component.html',
     styleUrls: ['./order-types.component.scss'],
-    imports: [XcModule, I18nModule]
+    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class OrderTypesComponent extends RestorableOrderTypesComponent implements OnDestroy {
 

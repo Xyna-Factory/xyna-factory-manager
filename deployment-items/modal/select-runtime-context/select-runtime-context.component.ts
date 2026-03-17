@@ -18,8 +18,7 @@
 import { Component } from '@angular/core';
 
 import { XoRuntimeContext } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcDialogComponent } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -39,7 +38,7 @@ export interface SelectRuntimeContextComponentData {
 @Component({
     templateUrl: './select-runtime-context.component.html',
     styleUrls: ['./select-runtime-context.component.scss'],
-    imports: [XcModule, I18nModule, FMFocusCandidateDirective]
+    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, FMFocusCandidateDirective]
 })
 export class SelectRuntimeContextComponent extends XcDialogComponent<boolean, SelectRuntimeContextComponentData> {
 

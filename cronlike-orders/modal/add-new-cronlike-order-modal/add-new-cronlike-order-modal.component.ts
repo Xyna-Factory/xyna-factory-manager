@@ -19,8 +19,7 @@ import { Component, inject, ViewChild } from '@angular/core';
 
 import { ApiService, FullQualifiedName, RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoRuntimeContext, XoWorkspace } from '@zeta/api';
 import { isString } from '@zeta/base';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcDialogComponent, XcFormDirective } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -51,7 +50,7 @@ export interface AddNewCronLikeOrderModalComponentData {
     selector: 'app-add-new-cronlike-order-modal',
     templateUrl: './add-new-cronlike-order-modal.component.html',
     styleUrls: ['./add-new-cronlike-order-modal.component.scss'],
-    imports: [XcModule, I18nModule, FMFocusCandidateDirective, OrderTypeFormComponent, InputParameterComponent, ExecutionTimeComponent]
+    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, FMFocusCandidateDirective, OrderTypeFormComponent, InputParameterComponent, ExecutionTimeComponent]
 })
 export class AddNewCronlikeOrderModalComponent extends XcDialogComponent<boolean, AddNewCronLikeOrderModalComponentData> {
     private readonly apiService = inject(ApiService);

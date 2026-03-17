@@ -17,7 +17,7 @@
  */
 import { Component, HostBinding, HostListener, Injector, inject } from '@angular/core';
 
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcRichListItemComponent } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -37,7 +37,7 @@ export interface DeleteReportItemComponentData {
 @Component({
     templateUrl: './delete-report-item.component.html',
     styleUrls: ['./delete-report-item.component.scss'],
-    imports: [I18nModule, XcModule]
+    imports: [XcI18nTranslateDirective, XcModule]
 })
 export class DeleteReportItemComponent extends XcRichListItemComponent<void, DeleteReportItemComponentData> {
 

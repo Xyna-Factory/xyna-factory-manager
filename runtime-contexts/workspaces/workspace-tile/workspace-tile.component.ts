@@ -22,7 +22,7 @@ import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get
 import { XoGetWorkspaceContentRequest } from '@fman/runtime-contexts/xo/xo-get-workspace-content-request.model';
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcDialogService, XcRemoteTableDataSource, XDSIconName } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -62,7 +62,7 @@ export const DUPLICATE_ELEMENT_IDENTIFIER = 'duplicate element';
     selector: 'workspace-tile',
     templateUrl: './workspace-tile.component.html',
     styleUrls: ['./workspace-tile.component.scss'],
-    imports: [RuntimeContextButtonComponent, I18nModule, XcModule]
+    imports: [RuntimeContextButtonComponent, XcI18nTranslateDirective, XcI18nPipe, XcModule]
 })
 export class WorkspaceTileComponent implements OnInit {
     private readonly apiService = inject(ApiService);

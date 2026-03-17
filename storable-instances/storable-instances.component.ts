@@ -20,8 +20,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ApiService, FullQualifiedName, RuntimeContext, RuntimeContextType, StartOrderOptionsBuilder, StartOrderResult, Xo, XoDescriber, XoObject, XoRuntimeContext, XoStorable, XoStructureMethod, XoWorkspace } from '@zeta/api';
 import { XoXynaProperty, XoXynaPropertyKey } from '@zeta/auth/xo/xyna-property.model';
 import { Comparable, isObject } from '@zeta/base';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcDialogService, XcLocalTableDataSource, XcOptionItem, XcSelectionModel, XcSortDirection, XcStructureTreeDataSource, XcTableColumn, XoTableColumn, XoTableColumnArray, XoTableInfo } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -253,7 +252,7 @@ class StorableTableDataSource extends XcLocalTableDataSource<XoObject> {
     selector: 'storable-instances',
     templateUrl: './storable-instances.component.html',
     styleUrls: ['./storable-instances.component.scss'],
-    imports: [XcModule, I18nModule, StorableInstanceDetailComponent]
+    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, StorableInstanceDetailComponent]
 })
 export class StorableInstancesComponent implements OnInit {
     private readonly apiService = inject(ApiService);

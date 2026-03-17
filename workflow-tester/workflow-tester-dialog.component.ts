@@ -18,8 +18,7 @@
 import { Component, inject } from '@angular/core';
 
 import { RuntimeContext, Xo } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcDialogComponent } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -38,7 +37,7 @@ export interface WorkflowTesterData {
 @Component({
     templateUrl: './workflow-tester-dialog.component.html',
     styleUrls: ['./workflow-tester-dialog.component.scss'],
-    imports: [XcModule, I18nModule, WorkflowTesterComponent]
+    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, WorkflowTesterComponent]
 })
 export class WorkflowTesterDialogComponent extends XcDialogComponent<void, WorkflowTesterData> {
     private readonly i18nService = inject(I18nService);

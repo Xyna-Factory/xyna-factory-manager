@@ -18,7 +18,7 @@
 import { Component, Input, inject } from '@angular/core';
 
 import { dateTimeString } from '@zeta/base';
-import { I18nModule } from '@zeta/i18n/i18n.module';
+import { XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcDialogService } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
@@ -29,7 +29,7 @@ import { XoDeploymentItem } from '../../xo/xo-deployment-item.model';
     selector: 'deployment-state-detail',
     templateUrl: './deployment-state-detail.component.html',
     styleUrls: ['./deployment-state-detail.component.scss'],
-    imports: [I18nModule, XcModule]
+    imports: [XcI18nTranslateDirective, XcModule]
 })
 export class DeploymentStateDetailComponent {
     private readonly dialogService = inject(XcDialogService);
