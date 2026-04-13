@@ -76,7 +76,7 @@ export class ApplicationTileComponent implements OnInit {
     @Input()
     details: XoRuntimeApplicationDetails;
 
-    collapsed = false;
+    collapsedRequiredRow = false;
 
     private _forceRefresh: boolean;
 
@@ -296,6 +296,6 @@ export class ApplicationTileComponent implements OnInit {
     }
 
     collapsedChange(collapsed: boolean) {
-        this.collapsed = collapsed;
+        this.collapsedRequiredRow = collapsed;
     }
 }

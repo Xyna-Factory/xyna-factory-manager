@@ -84,7 +84,7 @@ export class WorkspaceTileComponent implements OnInit {
     @Input()
     details: XoWorkspaceDetails | XoApplicationDefinitionDetails;
 
-    collapsed = false;
+    collapsedRequiredRow = false;
 
     private _forceRefresh: boolean;
 
@@ -384,6 +384,6 @@ export class WorkspaceTileComponent implements OnInit {
     }
 
     collapsedChange(collapsed: boolean) {
-        this.collapsed = collapsed;
+        this.collapsedRequiredRow = collapsed;
     }
 }
