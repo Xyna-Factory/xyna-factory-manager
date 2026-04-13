@@ -1,3 +1,5 @@
+import { debounceTime, filter, finalize, first, skip } from 'rxjs/operators';
+
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -15,18 +17,14 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, Input, NgZone, OnInit, Output, ViewChild, inject } from '@angular/core';
-
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, inject, Input, NgZone, OnInit, Output, ViewChild } from '@angular/core';
 import { ShowWorkspaceContentDialogComponent } from '@fman/runtime-contexts/dialog/show-workspace-content/show-workspace-content-dialog.component';
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
 import { XoGetWorkspaceContentRequest } from '@fman/runtime-contexts/xo/xo-get-workspace-content-request.model';
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nService } from '@zeta/i18n';
-import { XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
+import { I18nService, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcDialogService, XcRemoteTableDataSource, XDSIconName } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
-
-import { debounceTime, filter, finalize, first, skip } from 'rxjs/operators';
 
 import { FM_RTC } from '../../../const';
 import { FactoryManagerSettingsService } from '../../../misc/services/factory-manager-settings.service';
@@ -85,6 +83,8 @@ export class WorkspaceTileComponent implements OnInit {
 
     @Input()
     details: XoWorkspaceDetails | XoApplicationDefinitionDetails;
+
+    collapsedRequiredRow = false;
 
     private _forceRefresh: boolean;
 
@@ -381,5 +381,9 @@ export class WorkspaceTileComponent implements OnInit {
         this.dialogService.custom(DeleteDuplicatesDialogComponent, this.workspace).afterDismissResult().subscribe(
             () => this.validationChange.next()
         );
+    }
+
+    collapsedChange(collapsed: boolean) {
+        this.collapsedRequiredRow = collapsed;
     }
 }

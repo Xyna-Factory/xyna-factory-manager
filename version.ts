@@ -16,4 +16,4 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 export const FactoryManagerName = 'Factory Manager';
-export const FactoryManagerVersion = '1.6.1';
+export const FactoryManagerVersion = '1.6.2';

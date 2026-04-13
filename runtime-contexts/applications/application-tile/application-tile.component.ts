@@ -1,3 +1,5 @@
+import { debounceTime, filter, first, skip } from 'rxjs/operators';
+
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -15,17 +17,13 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, ElementRef, EventEmitter, HostBinding, Input, NgZone, OnInit, Output, ViewChild, inject } from '@angular/core';
-
+import { Component, ElementRef, EventEmitter, HostBinding, inject, Input, NgZone, OnInit, Output, ViewChild } from '@angular/core';
 import { ExportApplicationDialogComponent } from '@fman/runtime-contexts/dialog/export-application/export-application-dialog.component';
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nService } from '@zeta/i18n';
-import { XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
+import { I18nService, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcDialogService, XcRemoteTableDataSource, XDSIconName } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
-
-import { debounceTime, filter, first, skip } from 'rxjs/operators';
 
 import { FM_RTC } from '../../../const';
 import { FactoryManagerSettingsService } from '../../../misc/services/factory-manager-settings.service';
@@ -64,7 +62,7 @@ export class ApplicationTileComponent implements OnInit {
     private readonly zone = inject(NgZone);
     private readonly settings = inject(FactoryManagerSettingsService);
 
-    @ViewChild('header', {static: false})
+    @ViewChild('header', { static: false })
     headerRef: ElementRef;
 
     readonly XDSIconName = XDSIconName;
@@ -77,6 +75,8 @@ export class ApplicationTileComponent implements OnInit {
 
     @Input()
     details: XoRuntimeApplicationDetails;
+
+    collapsedRequiredRow = false;
 
     private _forceRefresh: boolean;
 
@@ -206,8 +206,8 @@ export class ApplicationTileComponent implements OnInit {
 
 
     loadRuntimeApplication() {
-        this.dialogService.custom(LoadRuntimeApplicationDialogComponent, {workspaceName: undefined, runtimeApplication: this.details as XoRuntimeApplication}).afterDismissResult().subscribe(
-            () => {}
+        this.dialogService.custom(LoadRuntimeApplicationDialogComponent, { workspaceName: undefined, runtimeApplication: this.details as XoRuntimeApplication }).afterDismissResult().subscribe(
+            () => { }
         );
     }
 
@@ -293,5 +293,9 @@ export class ApplicationTileComponent implements OnInit {
             const runtimeApplication = this.application.runtimeApplications.find(value => value.equals(this.details));
             this.selectionDetailsChange.emit(runtimeApplication);
         });
+    }
+
+    collapsedChange(collapsed: boolean) {
+        this.collapsedRequiredRow = collapsed;
     }
 }
