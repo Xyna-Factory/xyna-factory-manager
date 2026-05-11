@@ -1,6 +1,3 @@
-import { throwError } from 'rxjs';
-import { catchError, filter, finalize, tap } from 'rxjs/operators';
-
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -18,6 +15,9 @@ import { catchError, filter, finalize, tap } from 'rxjs/operators';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
+import { throwError } from 'rxjs';
+import { catchError, finalize, tap } from 'rxjs/operators';
+
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { XoFactoryNode, XoFactoryNodeArray } from '@fman/runtime-contexts/xo/xo-factory-node.model';
 import { XoImportRTARequest } from '@fman/runtime-contexts/xo/xo-import-rta-request.model';
@@ -119,13 +119,11 @@ export class ImportRuntimeApplicationDialogComponent extends XcDialogComponent<b
             tap(result => {
                 if (result?.errorMessage) {
                     this.dialogService.error(result.errorMessage, null, result.stackTrace?.join('\r\n'));
-                    this.dismiss(false);
-                } else {
                     this.dismiss();
                 }
             }),
             catchError((error: any) => {
-                this.dismiss(false);
+                this.dismiss();
                 return throwError(error);
             }),
             finalize(() => {
@@ -134,7 +132,7 @@ export class ImportRuntimeApplicationDialogComponent extends XcDialogComponent<b
             })
         ).subscribe(result => {
             if (!result.errorMessage) {
-                this.dismiss();
+                this.dismiss(true);
             }
         });
     }
