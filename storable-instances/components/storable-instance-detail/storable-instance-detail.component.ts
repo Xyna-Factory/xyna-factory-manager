@@ -15,15 +15,14 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, Input, OnDestroy, Output, inject } from '@angular/core';
+import { Subject, Subscription } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
+import { Component, EventEmitter, inject, Input, OnDestroy, Output } from '@angular/core';
 import { ApiService, FullQualifiedName, RuntimeContext, StartOrderOptionsBuilder, XoArray, XoObject, XoRuntimeContext } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
 import { XcDialogService, XcStructureTreeDataSource } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
-
-import { Subject, Subscription } from 'rxjs';
-import { finalize } from 'rxjs/operators';
 
 import { XoStoreParameter } from '../../xo/xo-storeparameter.model';
 
@@ -109,7 +108,7 @@ export class StorableInstanceDetailComponent implements OnDestroy {
     private _fqn: FullQualifiedName;
     private _selectedStorable: XoObject;
 
-    structureTreeDataSource: XcStructureTreeDataSource = new XcStructureTreeDataSource(this.apiService, this.i18n, null, []);
+    structureTreeDataSource: XcStructureTreeDataSource = new XcStructureTreeDataSource(this.apiService, this.i18n, null, [], undefined, false);
 
     ERROR_MESSAGE = 'fman.storable-instances.storable-instances-details.error-message';
 
@@ -121,7 +120,7 @@ export class StorableInstanceDetailComponent implements OnDestroy {
 
     private updateTree() {
         if (this._rtc && this._fqn && this._selectedStorable) {
-            this.structureTreeDataSource = new XcStructureTreeDataSource(this.apiService, this.i18n, this._rtc, [{ rtc: this._rtc, fqn: this._fqn }]);
+            this.structureTreeDataSource = new XcStructureTreeDataSource(this.apiService, this.i18n, this._rtc, [{ rtc: this._rtc, fqn: this._fqn }], undefined, false);
             this.structureTreeDataSource.container = new XoArray();
             this.structureTreeDataSource.container.append(this._selectedStorable);
             this.structureTreeDataSource.refresh();

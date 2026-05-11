@@ -1,3 +1,6 @@
+import { Observable, of, Subject } from 'rxjs';
+import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
+
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -16,16 +19,12 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { Component, inject, OnInit } from '@angular/core';
-
 import { ApiService, FullQualifiedName, RuntimeContext, RuntimeContextType, StartOrderOptionsBuilder, StartOrderResult, Xo, XoDescriber, XoObject, XoRuntimeContext, XoStorable, XoStructureMethod, XoWorkspace } from '@zeta/api';
 import { XoXynaProperty, XoXynaPropertyKey } from '@zeta/auth/xo/xyna-property.model';
 import { Comparable, isObject } from '@zeta/base';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcDialogService, XcLocalTableDataSource, XcOptionItem, XcSelectionModel, XcSortDirection, XcStructureTreeDataSource, XcTableColumn, XoTableColumn, XoTableColumnArray, XoTableInfo } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
-
-import { Observable, of, Subject } from 'rxjs';
-import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 
 import { FM_RTC } from '../const';
 import { FactoryManagerSettingsService } from '../misc/services/factory-manager-settings.service';
@@ -288,7 +287,7 @@ export class StorableInstancesComponent implements OnInit {
         this.i18nService.setTranslations(LocaleService.DE_DE, storable_instances_translations_de_DE);
         this.i18nService.setTranslations(LocaleService.EN_US, storable_instances_translations_en_US);
 
-        this.storableTableSource = new StorableTableDataSource(this.i18nService);
+        this.storableTableSource = new StorableTableDataSource(this.i18nService, false);
         this.storableTableSource.apiService = this.apiService;
         this.storableTableSource.dialogs = this.dialogService;
         this.storableTableSource.selectionModel.selectionChange.subscribe((model: XcSelectionModel<Comparable>) => {
@@ -427,7 +426,7 @@ export class StorableInstancesComponent implements OnInit {
     createStorable(): void {
         const structureTreeDataSource = new XcStructureTreeDataSource(this.apiService, this.i18nService, this.selectedRTC.toRuntimeContext(), [
             <XoDescriber>{ rtc: this.selectedRTC.toRuntimeContext(), fqn: this.selectedFQN }
-        ]);
+        ], undefined, false);
         structureTreeDataSource.refresh();
         this.dialogService
             .custom(StorableInstanceCreationComponent, {
