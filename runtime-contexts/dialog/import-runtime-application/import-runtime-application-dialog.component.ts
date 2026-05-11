@@ -15,8 +15,10 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
+import { throwError } from 'rxjs';
+import { catchError, finalize, tap } from 'rxjs/operators';
 
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { XoFactoryNode, XoFactoryNodeArray } from '@fman/runtime-contexts/xo/xo-factory-node.model';
 import { XoImportRTARequest } from '@fman/runtime-contexts/xo/xo-import-rta-request.model';
 import { XoManagedFileId } from '@fman/runtime-contexts/xo/xo-managed-file-id.model';
@@ -25,9 +27,6 @@ import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDire
 import { XcDialogComponent, XcDialogService } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
-import { throwError } from 'rxjs';
-import { catchError, filter, finalize, tap } from 'rxjs/operators';
-
 import { FM_RTC } from '../../../const';
 import { ORDER_TYPES } from '../../order-types';
 import { importRuntimeApplication_translations_de_DE } from './locale/import-runtime-application-translations.de-DE';
@@ -35,7 +34,7 @@ import { importRuntimeApplication_translations_en_US } from './locale/import-run
 
 
 class NodeWrapper {
-    constructor(public node: XoFactoryNode, public used: boolean) {}
+    constructor(public node: XoFactoryNode, public used: boolean) { }
 }
 
 
@@ -117,20 +116,23 @@ export class ImportRuntimeApplicationDialogComponent extends XcDialogComponent<b
         this.importRequest.targetNodes.data.push(...this.nodes.filter(node => node.used).map(node => node.node));
 
         this.apiService.startOrder(FM_RTC, ORDER_TYPES.IMPORT_RTA, this.importRequest, undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+            tap(result => {
+                if (result?.errorMessage) {
+                    this.dialogService.error(result.errorMessage, null, result.stackTrace?.join('\r\n'));
+                    this.dismiss();
+                }
+            }),
             catchError((error: any) => {
-                this.dismiss(false);
+                this.dismiss();
                 return throwError(error);
             }),
-            tap(result => this.dismiss(!result.errorMessage)),
-            filter(result => !!result.errorMessage),
-            tap(result => this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n'))),
             finalize(() => {
                 this.importing = false;
                 this.cdr.markForCheck();
             })
         ).subscribe(result => {
             if (!result.errorMessage) {
-                this.dismiss();
+                this.dismiss(true);
             }
         });
     }
