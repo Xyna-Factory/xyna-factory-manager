@@ -27,6 +27,8 @@ import { xyna_properties_translations_en_US } from './locale/xyna-properties-tra
 
 export interface XynaPropertiesInputScreenWorkflowPackage extends InputScreenWorkflowPackage {
     dummy?: string;
+    Import: string;
+    Export: string;
 }
 
 
@@ -35,9 +37,16 @@ export const XYNA_PROPERTY_ISWP: XynaPropertiesInputScreenWorkflowPackage = {
     Details: 'xmcp.factorymanager.xynaproperties.GetXynaPropertyDetails',
     Add: 'xmcp.factorymanager.xynaproperties.CreateXynaProperty',
     Save: 'xmcp.factorymanager.xynaproperties.ChangeXynaProperty',
-    Delete: 'xmcp.factorymanager.xynaproperties.RemoveXynaProperty'
+    Delete: 'xmcp.factorymanager.xynaproperties.RemoveXynaProperty',
+    Import: 'xmcp.factorymanager.xynaproperties.ImportXynaProperties',
+    Export: 'xmcp.factorymanager.xynaproperties.ExportPropertiesToFile'
 };
 
+
+export enum XynaPropertiesFormat {
+    CSV = 'CSV',
+    YAML = 'YAML'
+}
 
 @Component({
     template: ''
@@ -60,7 +69,9 @@ export class RestorableXynaPropertiesComponent extends RestorableRouteComponent<
     private translateConstants() {
         this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translate(this.UNSPECIFIED_DETAILS_ERROR);
         this.UNSPECIFIED_ADD_ERROR = this.i18nService.translate(this.UNSPECIFIED_ADD_ERROR);
-        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translate(this.UNSPECIFIED_SAVE_ERROR);
+        this.UNSPECIFIED_SAVE_ERROR = this.i18nService.translate(this.UNSPECIFIED_SAVE_ERROR);
+        this.CONFIRM_DELETE = this.i18nService.translate(this.CONFIRM_DELETE);
+        this.CONFIRM_RESTORE = this.i18nService.translate(this.CONFIRM_RESTORE);
     }
 
     ngOnInit() {
