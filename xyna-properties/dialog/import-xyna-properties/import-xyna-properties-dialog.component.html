@@ -1,0 +1,35 @@
+<xc-dialog-wrapper xc-i18n-context="fman.import-xyna-properties">
+  <ng-container header><span xc-i18n>import-xyna-properties-title</span></ng-container>
+  <section content xc-form #form="xc-form">
+    <span class="archive">
+      <xc-form-label xc-i18n>import-xyna-properties-archive</xc-form-label>
+      @if (filename && filename.length > 0) {
+        <label [class.error]="erroneousFilename">{{filename}}</label>
+      }
+      <xc-button (click)="chooseFile()" [busy]="loadingFile" [disabled]="importing || loadingFile" xc-i18n>import-xyna-properties-choosefile</xc-button>
+    </span>
+    <xc-form-autocomplete
+      xc-form-validator-required
+      xc-form-autocomplete-asdropdown
+      xc-form-autocomplete-fulltextsearch
+      [(xc-form-autocomplete-option)]="formatDataWrapper.value"
+      [xc-form-autocomplete-options]="formatDataWrapper.values"
+      xc-i18n
+      label="import-xyna-properties-format"
+    ></xc-form-autocomplete>
+    <xc-checkbox
+      [(checked)]="importData.exportSettings.includeDocumentation"
+      label="import-xyna-properties-include-documentation"
+      xc-i18n
+    ></xc-checkbox>
+    <xc-checkbox
+      [(checked)]="importSettings.overwriteExising"
+      label="import-xyna-properties-overwriteExisting"
+      xc-i18n
+    ></xc-checkbox>
+  </section>
+  <ng-container footer>
+    <xc-button (click)="dismiss()" xc-i18n>button-cancel</xc-button>
+    <xc-button color="primary" (click)="import()" [busy]="importing" [disabled]="importing || loadingFile || !fileReady || form.invalid" xc-i18n>button-import</xc-button>
+  </ng-container>
+</xc-dialog-wrapper>

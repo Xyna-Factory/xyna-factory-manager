@@ -15,5 +15,22 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-export const FactoryManagerName = 'Factory Manager';
-export const FactoryManagerVersion = '1.6.5';
+ :host {
+    [content] {
+        flex: 1 1 auto;
+        flex-direction: column;
+        min-width: 480px;
+
+        & > *:not(:last-child) {
+            margin-bottom: 16px;
+        }
+
+        .archive > label {
+            margin-right: 16px;
+
+            &.error {
+                text-decoration: line-through;
+            }
+        }
+    }
+}

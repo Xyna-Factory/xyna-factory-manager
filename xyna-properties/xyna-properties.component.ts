@@ -26,6 +26,8 @@ import { XcModule } from '@zeta/xc/xc.module';
 import { filter } from 'rxjs';
 
 import { FM_RTC } from '../const';
+import { ExportXynaPropertiesDialogComponent } from './dialog/export-xyna-properties/export-xyna-properties-dialog.component';
+import { ImportXynaPropertiesDialogComponent } from './dialog/import-xyna-properties/import-xyna-properties-dialog.component';
 import { AddNewXynaPropertyModalComponent, AddNewXynaPropertyModalComponentData } from './modal/add-new-xyna-property-modal/add-new-xyna-property-modal.component';
 import { RestorableXynaPropertiesComponent, XYNA_PROPERTY_ISWP } from './restorable-xyna-properties.component';
 import { XynaPropertyTableValueTemplateComponent, XynaPropertyTableValueTemplateData } from './templates/xyna-property-table-value-template.model';
@@ -240,5 +242,15 @@ export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
         } else {
             language.language.languageTag = tag;
         }
+    }
+
+    importXynaProperties() {
+        this.dialogService.custom<boolean, void>(ImportXynaPropertiesDialogComponent).afterDismissResult()
+            .pipe(filter(result => !!result))
+            .subscribe(() => this.refresh());
+    }
+
+    exportXynaProperties() {
+        this.dialogService.custom(ExportXynaPropertiesDialogComponent);
     }
 }

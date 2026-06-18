@@ -15,5 +15,22 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-export const FactoryManagerName = 'Factory Manager';
-export const FactoryManagerVersion = '1.6.5';
+import { XoObjectClass, XoArrayClass, XoProperty, XoObject, XoArray } from '@zeta/api';
+
+
+@XoObjectClass(null, 'xmcp.factorymanager.xynaproperties', 'ExportSettings')
+export class XoExportSettings extends XoObject {
+
+    @XoProperty()
+    format: string;
+
+    @XoProperty()
+    filter: string;
+
+    @XoProperty()
+    includeDocumentation: boolean = true;
+}
+
+@XoArrayClass(XoExportSettings)
+export class XoExportSettingsArray extends XoArray<XoExportSettings> {
+}

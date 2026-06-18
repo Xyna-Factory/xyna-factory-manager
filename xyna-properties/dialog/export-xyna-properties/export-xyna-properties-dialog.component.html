@@ -1,0 +1,29 @@
+<xc-dialog-wrapper xc-i18n-context="fman.export-xyna-properties">
+  <ng-container header><span xc-i18n>export-xyna-properties-title</span></ng-container>
+  <section content xc-form #form="xc-form">
+    <xc-form-autocomplete
+      xc-form-validator-required
+      xc-form-autocomplete-asdropdown
+      xc-form-autocomplete-fulltextsearch
+      [(xc-form-autocomplete-option)]="formatDataWrapper.value"
+      [xc-form-autocomplete-options]="formatDataWrapper.values"
+      xc-i18n
+      label="export-xyna-properties-format"
+    ></xc-form-autocomplete>
+    <xc-form-input
+      label="export-xyna-properties-filter"
+      [(value)]="exportSettings.filter"
+      placeholder="export-xyna-properties-filter-hint"
+      xc-i18n
+    ></xc-form-input>
+    <xc-checkbox
+      [(checked)]="exportSettings.includeDocumentation"
+      label="export-xyna-properties-include-documentation"
+      xc-i18n
+    ></xc-checkbox>
+  </section>
+  <ng-container footer>
+    <xc-button (click)="dismiss()" xc-i18n>cancel</xc-button>
+    <xc-button color="primary" (click)="export()" [busy]="pending" [disabled]="pending || form.invalid" xc-i18n>export</xc-button>
+  </ng-container>
+</xc-dialog-wrapper>

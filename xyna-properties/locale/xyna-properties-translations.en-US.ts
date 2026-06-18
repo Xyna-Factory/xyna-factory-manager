@@ -30,6 +30,14 @@ export const xyna_properties_translations_en_US: I18nTranslation[] = [
         value: 'Clear Filters'
     },
     {
+        key: 'fman.xyna-properties.import-button',
+        value: 'Import...'
+    },
+    {
+        key: 'fman.xyna-properties.export-button',
+        value: 'Export...'
+    },
+    {
         key: 'fman.xyna-properties.refresh-icon',
         value: 'Refresh'
     },
