@@ -48,6 +48,10 @@ export const importXynaProperties_translations_en_US: I18nTranslation[] = [
         value: 'Include Documentation'
     },
     {
+        key: 'fman.import-xyna-properties.import-xyna-properties-overwriteExisting',
+        value: 'Overwrte existing Properties'
+    },
+    {
         key: 'fman.import-xyna-properties.button-cancel',
         value: 'Cancel'
     },

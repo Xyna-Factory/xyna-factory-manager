@@ -22,6 +22,11 @@
       label="import-xyna-properties-include-documentation"
       xc-i18n
     ></xc-checkbox>
+    <xc-checkbox
+      [(checked)]="importSettings.overwriteExising"
+      label="import-xyna-properties-overwriteExisting"
+      xc-i18n
+    ></xc-checkbox>
   </section>
   <ng-container footer>
     <xc-button (click)="dismiss()" xc-i18n>button-cancel</xc-button>
