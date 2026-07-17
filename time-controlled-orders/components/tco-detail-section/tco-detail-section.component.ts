@@ -25,7 +25,7 @@ import { XcModule } from '@zeta/xc/xc.module';
 import { Observable, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
-import { FM_RTC } from '../../../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ExecutionTimeComponent } from '../../../cronlike-orders/components/execution-time/execution-time.component';
 import { CustomInformationFormComponent } from '../../../reuseable-components/forms/custom-information-form/custom-information-form.component';
 import { OrderTypeFormComponent } from '../../../reuseable-components/forms/order-type-form/order-type-form.component';
@@ -137,7 +137,7 @@ export class TcoDetailSectionComponent implements OnInit, OnDestroy {
 
     getDetailsAboutTableEntry(id: XoTimeControlledOrderId) {
         this.loading = true;
-        this.apiService.startOrder(FM_RTC, this.WFP_GET_TCO_DETAILS, id, XoTimeControlledOrder, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, this.WFP_GET_TCO_DETAILS, id, XoTimeControlledOrder, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             finalize(() => this.loading = false)
         ).subscribe({
             next: result => {
@@ -156,7 +156,7 @@ export class TcoDetailSectionComponent implements OnInit, OnDestroy {
     saveChanges() {
         this.timeControlledOrder.inputPayload = this.storableInputComponent.getPayload();
         this.apiService
-            .startOrder(FM_RTC, this.WFP_UPDATE_TCO, this.timeControlledOrder, [], StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+            .startOrder(FMAN_RTC, this.WFP_UPDATE_TCO, this.timeControlledOrder, [], StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (result.errorMessage) {

@@ -25,13 +25,13 @@ import { XcModule } from '@zeta/xc/xc.module';
 import { throwError } from 'rxjs';
 import { catchError, filter, finalize, map, tap } from 'rxjs/operators';
 
-import { FM_RTC } from '../../../const';
 import { ORDER_TYPES } from '../../order-types';
 import { XoApplicationDefinition } from '../../xo/xo-application-definition.model';
 import { XoCreateRTARequest } from '../../xo/xo-create-rtarequest.model';
 import { XoWorkspace, XoWorkspaceArray } from '../../xo/xo-workspace.model';
 import { createRuntimeApplication_translations_de_DE } from './locale/create-runtime-application-translations.de-DE';
 import { createRuntimeApplication_translations_en_US } from './locale/create-runtime-application-translations.en-US';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 type RuntimeApplicationVersion = string;
@@ -67,7 +67,7 @@ export class CreateRuntimeApplicationDialogComponent extends XcDialogComponent<R
         this.workspaceDataWrapper = new XcAutocompleteDataWrapper(
             () => this.workspace,
             () => { },
-            this.apiService.startOrderAssertFlat<XoWorkspace>(FM_RTC, ORDER_TYPES.GET_WORKSPACES, undefined, XoWorkspaceArray).pipe(
+            this.apiService.startOrderAssertFlat<XoWorkspace>(FMAN_RTC, ORDER_TYPES.GET_WORKSPACES, undefined, XoWorkspaceArray).pipe(
                 tap(workspaces => this.changeWorkspace(workspaces.find(workspace => workspace.name === this.injectedData.workspaceName))),
                 map(workspaces => workspaces.map(workspace => <XcOptionItem>{ name: workspace.name, value: workspace }))
             )
@@ -102,7 +102,7 @@ export class CreateRuntimeApplicationDialogComponent extends XcDialogComponent<R
         request.version = this.version;
         request.documentation = this.documentation;
         this.loading = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.CREATE_RUNTIME_APPLICATION, request, undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.CREATE_RUNTIME_APPLICATION, request, undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             catchError((error: any) => {
                 this.dismiss();
                 return throwError(error);

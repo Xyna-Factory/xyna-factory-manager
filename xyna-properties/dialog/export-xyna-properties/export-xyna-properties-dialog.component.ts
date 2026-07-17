@@ -17,7 +17,6 @@
  */
 import { Component, inject } from '@angular/core';
 
-import { environment } from '@environments/environment';
 import { XoManagedFileId } from '@fman/runtime-contexts/xo/xo-managed-file-id.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -26,11 +25,12 @@ import { XcModule } from '@zeta/xc/xc.module';
 
 import { filter, finalize } from 'rxjs/operators';
 
-import { FM_RTC } from '../../../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XynaPropertiesFormat, XYNA_PROPERTY_ISWP } from '../../restorable-xyna-properties.component';
 import { XoExportSettings } from '../../xo/xo-export-settings.model';
 import { exportXynaProperties_translations_de_DE } from './locale/export-xyna-properties-translations.de-DE';
 import { exportXynaProperties_translations_en_US } from './locale/export-xyna-properties-translations.en-US';
+import { ConfigService } from '@zeta/api/config.service';
 
 
 const ISWP = XYNA_PROPERTY_ISWP;
@@ -42,6 +42,7 @@ const ISWP = XYNA_PROPERTY_ISWP;
     imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class ExportXynaPropertiesDialogComponent extends XcDialogComponent<boolean, void> {
+    private readonly configService = inject(ConfigService);
     private readonly apiService = inject(ApiService);
     private readonly dialogService = inject(XcDialogService);
     private readonly i18n = inject(I18nService);
@@ -79,7 +80,7 @@ export class ExportXynaPropertiesDialogComponent extends XcDialogComponent<boole
 
     export() {
         this.pending = true;
-        this.apiService.startOrder(FM_RTC, ISWP.Export, this.exportSettings, XoManagedFileId, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, ISWP.Export, this.exportSettings, XoManagedFileId, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             filter(result => {
                 if (result.errorMessage || !(result?.output[0] as XoManagedFileId)?.id) {
                     this.dismiss(false);
@@ -95,7 +96,7 @@ export class ExportXynaPropertiesDialogComponent extends XcDialogComponent<boole
             finalize(() => this.pending = false)
         ).subscribe(result => {
             const fileId = (result.output[0] as XoManagedFileId).id;
-            window.location.href = `${environment.zeta.url}download?p0=${fileId}`;
+            window.location.href = `${this.configService.config.zeta.url}download?p0=${fileId}`;
             this.dismiss(true);
         });
     }

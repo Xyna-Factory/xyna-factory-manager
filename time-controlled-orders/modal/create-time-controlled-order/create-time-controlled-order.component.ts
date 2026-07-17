@@ -25,7 +25,7 @@ import { XcModule } from '@zeta/xc/xc.module';
 
 import { finalize } from 'rxjs/operators';
 
-import { FM_RTC } from '../../../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ExecutionTimeComponent } from '../../../cronlike-orders/components/execution-time/execution-time.component';
 import { ExecutionTimeBehaviorOnError } from '../../../cronlike-orders/components/execution-time/execution-time.constant';
 import { CustomInformationFormComponent } from '../../../reuseable-components/forms/custom-information-form/custom-information-form.component';
@@ -146,7 +146,7 @@ export class CreateTimeControlledOrderComponent extends XcDialogComponent<boolea
         tmpTCO.storableFqn = this.selectedStorableFqn;
         this.loading = true;
         this.apiService
-            .startOrder(FM_RTC, this.CREATE_TCO_WP, tmpTCO, XoTimeControlledOrderId, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+            .startOrder(FMAN_RTC, this.CREATE_TCO_WP, tmpTCO, XoTimeControlledOrderId, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .pipe(finalize(() => {
                 this.loading = false;
             }))

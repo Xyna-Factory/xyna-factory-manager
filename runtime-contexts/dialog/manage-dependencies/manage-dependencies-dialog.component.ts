@@ -27,7 +27,7 @@ import { XcModule } from '@zeta/xc/xc.module';
 import { Observable, Subscription, throwError } from 'rxjs';
 import { catchError, filter, finalize, first, map, skip, switchMap } from 'rxjs/operators';
 
-import { FM_RTC } from '../../../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { FactoryManagerSettingsService } from '../../../misc/services/factory-manager-settings.service';
 import { createDependenciesTableInfoClass, createDependenciesTableInput, createFilterEnumOfState } from '../../dependencies';
 import { ORDER_TYPES } from '../../order-types';
@@ -70,7 +70,7 @@ export class ManageDependenciesDialogComponent extends XcDialogComponent<boolean
         this.i18n.setTranslations(LocaleService.EN_US, manageDependencies_translations_en_US);
 
         // create data source
-        this.dataSource = new XcRemoteTableDataSource(this.apiService, undefined, FM_RTC, ORDER_TYPES.GET_DEPENDENT_RTCS, createDependenciesTableInfoClass(true));
+        this.dataSource = new XcRemoteTableDataSource(this.apiService, undefined, FMAN_RTC, ORDER_TYPES.GET_DEPENDENT_RTCS, createDependenciesTableInfoClass(true));
         this.dataSource.output = XoDependencyArray;
         this.dataSource.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
         this.dataSource.filterEnums.set(XoDependency.getAccessorMap().runtimeContext.stateTemplates, createFilterEnumOfState(this.i18n));
@@ -155,7 +155,7 @@ export class ManageDependenciesDialogComponent extends XcDialogComponent<boolean
         const dependencies = new XoDependencyArray();
         dependencies.data.push(...Array.from(this.changedDependencies.values()));
 
-        return this.apiService.startOrder(FM_RTC, ORDER_TYPES.SET_DEPENDENT_RTCS, [this.injectedData.proxy(), dependencies, XoForce.withForce(force)], undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        return this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.SET_DEPENDENT_RTCS, [this.injectedData.proxy(), dependencies, XoForce.withForce(force)], undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             catchError((error: any) => {
                 this.dismiss();
                 return throwError(error);

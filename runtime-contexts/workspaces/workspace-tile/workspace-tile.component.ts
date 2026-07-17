@@ -26,7 +26,7 @@ import { I18nService, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcDialogService, XcRemoteTableDataSource, XDSIconName } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
-import { FM_RTC } from '../../../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { FactoryManagerSettingsService } from '../../../misc/services/factory-manager-settings.service';
 import { createContentTableInfoClass } from '../../content';
 import { createDependenciesTableInfoClass, createDependenciesTableInput, createFilterEnumOfState } from '../../dependencies';
@@ -127,15 +127,15 @@ export class WorkspaceTileComponent implements OnInit {
 
     ngOnInit() {
         // create requires data source
-        this.requiresDataSource = new XcRemoteTableDataSource(this.apiService, undefined, FM_RTC, ORDER_TYPES.GET_DEPENDENT_RTCS, createDependenciesTableInfoClass(false));
+        this.requiresDataSource = new XcRemoteTableDataSource(this.apiService, undefined, FMAN_RTC, ORDER_TYPES.GET_DEPENDENT_RTCS, createDependenciesTableInfoClass(false));
         this.requiresDataSource.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
         this.requiresDataSource.output = XoDependencyArray;
         // create required-by data source
-        this.requiredByDataSource = new XcRemoteTableDataSource(this.apiService, undefined, FM_RTC, ORDER_TYPES.GET_DEPENDENT_RTCS, createDependenciesTableInfoClass(false));
+        this.requiredByDataSource = new XcRemoteTableDataSource(this.apiService, undefined, FMAN_RTC, ORDER_TYPES.GET_DEPENDENT_RTCS, createDependenciesTableInfoClass(false));
         this.requiredByDataSource.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
         this.requiredByDataSource.output = XoDependencyArray;
         // create content data source
-        this.contentDataSource = new XcRemoteTableDataSource(this.apiService, undefined, FM_RTC, undefined, createContentTableInfoClass(false));
+        this.contentDataSource = new XcRemoteTableDataSource(this.apiService, undefined, FMAN_RTC, undefined, createContentTableInfoClass(false));
         this.contentDataSource.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
         this.contentDataSource.output = XoApplicationElementArray;
 
@@ -179,7 +179,7 @@ export class WorkspaceTileComponent implements OnInit {
         this.contentDataSource.refresh();
         // request issues
         this.issues = [];
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.GET_ISSUES, runtimeContext, XoIssueArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.GET_ISSUES, runtimeContext, XoIssueArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe(result => {
                 if (result.errorMessage) {
                     this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n'));
@@ -267,7 +267,7 @@ export class WorkspaceTileComponent implements OnInit {
         this.dialogService.custom(MigrateWizardComponent, <MigrationWizardData>{
             apiService: this.apiService,
             i18n: this.i18n,
-            rtc: FM_RTC,
+            rtc: FMAN_RTC,
             presetSource: presetApplicationDefinition ?? this.details
         });
     }
@@ -320,7 +320,7 @@ export class WorkspaceTileComponent implements OnInit {
 
             this.dialogService.confirm(title, message).afterDismissResult().subscribe((confirm: boolean) => {
                 if (confirm) {
-                    this.apiService.startOrder(FM_RTC, ORDER_TYPES.DELETE_APPLICATION_DEFINITION, this.details.proxy(), undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+                    this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.DELETE_APPLICATION_DEFINITION, this.details.proxy(), undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
                         filter(result => result.errorMessage ? (this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n')), false) : true)
                     ).subscribe(() => {
                         this.validationChange.next();
@@ -341,7 +341,7 @@ export class WorkspaceTileComponent implements OnInit {
             const documentation = new XoDocumentation();
             documentation.value = value;
             this.documentationPending = true;
-            this.apiService.startOrder(FM_RTC, ORDER_TYPES.SET_APPLICATION_DEFINITION_DOCUMENTATION, [this.details.proxy(), documentation], null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+            this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.SET_APPLICATION_DEFINITION_DOCUMENTATION, [this.details.proxy(), documentation], null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
                 finalize(() => {
                     // trigger change detection even with an unchanged value to reset input field
                     const currentValue = applicationDefinitionDetails.documentation;

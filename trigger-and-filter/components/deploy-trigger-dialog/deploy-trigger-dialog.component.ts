@@ -27,7 +27,7 @@ import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcDialogComponent, XcDialogService, XcOptionItem, XDSIconName } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
-import { FM_RTC } from '../../../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ORDER_TYPES } from '../../order-types';
 import { StartParameterDetailComponent } from '../start-parameter-deatil/start-parameter-detail.component';
 
@@ -100,7 +100,7 @@ export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerIns
     }
 
     fillContextWrapper() {
-        this.apiService.startOrderAssertFlat<XoRuntimeContext>(FM_RTC, ORDER_TYPES.POSSIBLE_CONTEXT_TRIGGER, this.injectedData, XoRuntimeContextArray)
+        this.apiService.startOrderAssertFlat<XoRuntimeContext>(FMAN_RTC, ORDER_TYPES.POSSIBLE_CONTEXT_TRIGGER, this.injectedData, XoRuntimeContextArray)
             .subscribe({
                 next: result => {
                     this.runtimeContextDataWrapper.values = result.map(rtc => <XcOptionItem<XoRuntimeContext>>{ name: rtc.label, value: rtc });
@@ -112,7 +112,7 @@ export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerIns
     }
 
     getStartParameter() {
-        this.apiService.startOrderAssertFlat<XoStartParameterDetails>(FM_RTC, ORDER_TYPES.POSSIBLE_START_PARAMETER_TRIGGER, this.injectedData, XoStartParameterDetailsArray).subscribe({
+        this.apiService.startOrderAssertFlat<XoStartParameterDetails>(FMAN_RTC, ORDER_TYPES.POSSIBLE_START_PARAMETER_TRIGGER, this.injectedData, XoStartParameterDetailsArray).subscribe({
             next: result => {
                 this.startParameter = result;
                 this.legacy = result.length > 0 && result[0].lagacyParameterCombination?.length > 0;
@@ -138,7 +138,7 @@ export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerIns
         }
         request.documentation = this.documentation;
 
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.DEPLOY_TRIGGER, request, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.DEPLOY_TRIGGER, request, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (!result.errorMessage) {

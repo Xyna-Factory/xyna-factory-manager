@@ -24,7 +24,7 @@ import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDire
 import { XcAutocompleteDataWrapper, XcDialogComponent, XcDialogService, XcOptionItem } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
-import { FM_RTC } from '../../../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XynaPropertiesFormat, XYNA_PROPERTY_ISWP } from '../../restorable-xyna-properties.component';
 import { XoImportSettings } from '../../xo/xo-import-settings.model';
 import { XoXynaPropertyExport } from '../../xo/xo-xyna-property-export.model';
@@ -126,7 +126,7 @@ export class ImportXynaPropertiesDialogComponent extends XcDialogComponent<boole
         }
 
         this.importing = true;
-        this.apiService.startOrder(FM_RTC, ISWP.Import, [this.importData, this.importSettings], undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, ISWP.Import, [this.importData, this.importSettings], undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             tap(result => {
                 if (result?.errorMessage) {
                     this.dialogService.error(result.errorMessage, null, result.stackTrace?.join('\r\n'));

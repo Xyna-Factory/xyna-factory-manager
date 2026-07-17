@@ -28,7 +28,7 @@ import { XcModule } from '@zeta/xc/xc.module';
 import { Subscription, throwError } from 'rxjs';
 import { catchError, filter, finalize, first, skip, tap } from 'rxjs/operators';
 
-import { FM_RTC } from '../../../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { FactoryManagerSettingsService } from '../../../misc/services/factory-manager-settings.service';
 import { createContentTableInfoClass } from '../../content';
 import { ORDER_TYPES } from '../../order-types';
@@ -70,7 +70,7 @@ export class ManageContentDialogComponent extends XcDialogComponent<boolean, XoR
         this.i18n.setTranslations(LocaleService.EN_US, manageContent_translations_en_US);
 
         // create data source
-        this.dataSource = new XcRemoteTableDataSource(this.apiService, undefined, FM_RTC, ORDER_TYPES.GET_APPLICATION_CONTENT, createContentTableInfoClass(!this.readonly));
+        this.dataSource = new XcRemoteTableDataSource(this.apiService, undefined, FMAN_RTC, ORDER_TYPES.GET_APPLICATION_CONTENT, createContentTableInfoClass(!this.readonly));
         // this.dataSource.actionElements = [
         //     {
         //         class: 'delete-action-element',
@@ -175,7 +175,7 @@ export class ManageContentDialogComponent extends XcDialogComponent<boolean, XoR
         const applicationElements = new XoApplicationElementArray();
         applicationElements.data.push(...Array.from(this.changedApplicationElements.values()));
 
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.SET_AD_CONTENT, [this.injectedData.proxy(), applicationElements], undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.SET_AD_CONTENT, [this.injectedData.proxy(), applicationElements], undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             catchError((error: any) => {
                 this.dismiss();
                 return throwError(error);

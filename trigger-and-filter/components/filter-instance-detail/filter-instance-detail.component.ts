@@ -17,7 +17,7 @@
  */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, InjectionToken } from '@angular/core';
 
-import { FM_RTC } from '@fman/const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ORDER_TYPES } from '@fman/trigger-and-filter/order-types';
 import { XoFilterInstanceDetails } from '@fman/trigger-and-filter/xo/xo-filter-instance-details.model';
 import { XoFilterInstance } from '@fman/trigger-and-filter/xo/xo-filter-instance.model';
@@ -64,7 +64,7 @@ export class FilterInstanceDetailComponent extends XcDynamicComponent<FilterInst
 
     refresh() {
         this.busy = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.FILTER_INSTANCE_DETAIL, this.injectedData.filterinstance, XoFilterInstanceDetails, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.FILTER_INSTANCE_DETAIL, this.injectedData.filterinstance, XoFilterInstanceDetails, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (!result.errorMessage) {
@@ -85,7 +85,7 @@ export class FilterInstanceDetailComponent extends XcDynamicComponent<FilterInst
 
     enable() {
         this.busy = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.ENABLE_FILTER, this.injectedData.filterinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.ENABLE_FILTER, this.injectedData.filterinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (!result.errorMessage) {
@@ -106,7 +106,7 @@ export class FilterInstanceDetailComponent extends XcDynamicComponent<FilterInst
 
     disable() {
         this.busy = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.DISABLE_FILTER, this.injectedData.filterinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.DISABLE_FILTER, this.injectedData.filterinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (!result.errorMessage) {
@@ -130,7 +130,7 @@ export class FilterInstanceDetailComponent extends XcDynamicComponent<FilterInst
             .pipe(filter(res => !!res)).subscribe({
                 next: () => {
                     this.busy = true;
-                    this.apiService.startOrder(FM_RTC, ORDER_TYPES.UNDEPLOY_FILTER, this.injectedData.filterinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+                    this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.UNDEPLOY_FILTER, this.injectedData.filterinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
                         .subscribe({
                             next: result => {
                                 if (!result.errorMessage) {

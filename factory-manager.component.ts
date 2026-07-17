@@ -32,7 +32,10 @@ import { fman_error_code_translations_en_US } from './locale/fman-error-code-tra
 import { fman_translations_de_DE } from './locale/fman-translations.de-DE';
 import { fman_translations_en_US } from './locale/fman-translations.en-US';
 import { PluginService } from './plugin/plugin.service';
+import { ConfigService } from '@zeta/api/config.service';
+import { RuntimeContext } from '@zeta/api';
 
+export let FMAN_RTC = RuntimeContext.guiHttpApplication;
 
 interface XcRighteousNavListItem extends XcNavListItem {
     right?: string;
@@ -88,6 +91,20 @@ export class FactoryManagerComponent extends RouteComponent {
 
     constructor() {
         super();
+        const configService = inject(ConfigService);
+        if (configService.config['modeller']?.runtimeContext)  {
+            if (configService.config['modeller'].runtimeContext.application) {
+                FMAN_RTC = RuntimeContext.fromApplicationVersion(
+                    configService.config['modeller'].runtimeContext.application,
+                    configService.config['modeller'].runtimeContext.version
+                );
+            } else if (configService.config['modeller'].runtimeContext.workspace) {
+                FMAN_RTC = RuntimeContext.fromWorkspace(
+                    configService.config['modeller'].runtimeContext.workspace
+                );
+            }
+        }
+
 
 
         this.i18n.contextDismantlingSearch = true;

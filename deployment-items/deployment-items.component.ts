@@ -27,7 +27,7 @@ import { XcModule } from '@zeta/xc/xc.module';
 import { Subject } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 
-import { FM_RTC, PROCESS_MODELLER_TAB_URL } from '../const';
+import { PROCESS_MODELLER_TAB_URL } from '../const';
 import { WorkflowTesterDialogComponent } from '../workflow-tester/workflow-tester-dialog.component';
 import { DeploymentStateDetailComponent } from './components/deployment-state-detail/deployment-state-detail.component';
 import { DeleteReportComponent, DeleteReportComponentData } from './modal/delete-report/delete-report.component';
@@ -39,6 +39,7 @@ import { XoDeleteDeploymentItemResultArray } from './xo/xo-delete-deployment-ite
 import { XoDeploymentItem, XoDeploymentItemArray } from './xo/xo-deployment-item.model';
 import { XoUndeployDeploymentItemResultArray } from './xo/xo-undeploy-deployment-item-result.model';
 import { XoUndeployDeploymentItemParam, XoUndeployDeploymentItemParamArray } from './xo/xo-undeployment-deployment-item-param.model';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 const ISWP = DEPLOYMENT_ITEMS_ISWP;
@@ -65,7 +66,7 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
     constructor() {
         super();
         
-        this.initRemoteTableDataSource(XoDeploymentItem, XoDeploymentItemArray, FM_RTC, ISWP.List);
+        this.initRemoteTableDataSource(XoDeploymentItem, XoDeploymentItemArray, FMAN_RTC, ISWP.List);
 
         // const deploymentItemStates: XcOptionItem[] = [
         //     {icon: XDSIconName.ARROWRIGHT, name: '', value: ''},
@@ -190,7 +191,7 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
 
 
     private getDetails(entry: XoDeploymentItem) {
-        const obs = this.apiService.startOrder(FM_RTC, ISWP.Details, [entry.id, this.selectedRuntimeContext], XoDeploymentItem, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, [entry.id, this.selectedRuntimeContext], XoDeploymentItem, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             this.detailsObject = (output[0] || null) as XoDeploymentItem;
             this.detailsRuntimeContext = this.selectedRuntimeContext.clone();
@@ -220,7 +221,7 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
             }
 
             const obs = this.apiService.startOrder(
-                FM_RTC, ISWP.Delete,
+                FMAN_RTC, ISWP.Delete,
                 [params, this.selectedRuntimeContext],
                 XoDeleteDeploymentItemResultArray,
                 StartOrderOptionsBuilder.defaultOptionsWithErrorMessage
@@ -307,7 +308,7 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
         const data: DeployModalComponentData = {
             apiService: this.apiService,
             i18nService: this.i18nService,
-            rtc: FM_RTC,
+            rtc: FMAN_RTC,
             deployWorkflow: forceDeploy ? ISWP.ForceDeploy : ISWP.Deploy,
             items: items,
             runtimeContext: this.selectedRuntimeContext,
@@ -339,7 +340,7 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
         }
 
         const obs = this.apiService.startOrder(
-            FM_RTC, ISWP.Undeploy,
+            FMAN_RTC, ISWP.Undeploy,
             [params, this.selectedRuntimeContext],
             XoUndeployDeploymentItemResultArray,
             StartOrderOptionsBuilder.defaultOptionsWithErrorMessage

@@ -21,7 +21,7 @@ import { FullQualifiedName, RuntimeContext, StartOrderOptionsBuilder, XoApplicat
 import { XcAutocompleteDataWrapper, XcFormDirective } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
 
-import { FM_RTC } from '../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { InputParameterRef } from '../misc/components/input-parameter/input-parameter-ref.class';
 import { InputParameterComponent } from '../misc/components/input-parameter/input-parameter.component';
 import { XoOrderTypeArray } from '../xo/xo-order-type.model';
@@ -140,7 +140,7 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
     constructor() {
         super();
 
-        this.initRemoteTableDataSource(XoCronLikeOrder, XoCronLikeOrderArray, FM_RTC, ISWP.List);
+        this.initRemoteTableDataSource(XoCronLikeOrder, XoCronLikeOrderArray, FMAN_RTC, ISWP.List);
 
         this.remoteTableDataSource.tableInfoClass = CronlikeOrderTableInfo;
 
@@ -230,7 +230,7 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
                     if (entry instanceof XoCronLikeOrder) {
                         const id = new XoCronLikeOrderId();
                         id.id = entry.iD;
-                        const obs = this.apiService.startOrder(FM_RTC, ISWP.Delete, id, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+                        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Delete, id, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
                         this.handleStartOrderResult(obs, () => {
                             this.detailsObject = null;
                             this.clearSelection();
@@ -244,7 +244,7 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
 
     duplicate(entry: XoCronLikeOrder) {
 
-        const obs = this.apiService.startOrder(FM_RTC, ISWP.Details, entry, XoCronLikeOrder, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, entry, XoCronLikeOrder, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             const detailedEntry = (output[0] || null) as XoCronLikeOrder;
             this.add(detailedEntry);
@@ -258,7 +258,7 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
             addWorkflow: ISWP.Add,
             getOrderTypes: ISWP.GetOrderTypes,
             i18nService: this.i18nService,
-            rtc: FM_RTC,
+            rtc: FMAN_RTC,
             duplicate: duplicated,
              
             GET_ORDER_TYPES_EMPTY_LIST_ERROR: this.GET_ORDER_TYPES_EMPTY_LIST_ERROR,
@@ -286,7 +286,7 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
             }
         }
 
-        const obs = this.apiService.startOrder(FM_RTC, ISWP.Save, this.detailsObject, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Save, this.detailsObject, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, () => {
             // console.log('save was successful?', output);
             this.dismiss();
@@ -297,7 +297,7 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
 
     private getDetails(entry: XoCronLikeOrder) {
 
-        const obs = this.apiService.startOrder(FM_RTC, ISWP.Details, entry, XoCronLikeOrder, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, entry, XoCronLikeOrder, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             this.detailsObject = (output[0] || null) as XoCronLikeOrder;
             this._getRuntimeContexts();

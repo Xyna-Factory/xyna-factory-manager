@@ -21,9 +21,9 @@ import { ApiService, StartOrderOptionsBuilder, XoArray, XoRuntimeContext } from 
 import { XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcFormDirective } from '@zeta/xc';
 import { XcModule } from '@zeta/xc/xc.module';
-
-import { FM_RTC, FM_WF_GET_ORDER_TYPES } from '../../../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoOrderTypeArray } from '../../../xo/xo-order-type.model';
+import { FM_WF_GET_ORDER_TYPES } from '@fman/const';
 
 
 @Component({
@@ -46,7 +46,7 @@ export class OrderTypeFormComponent {
     /** Error key which gets translated */
     error: string;
 
-    readonly runtimeContext = FM_RTC;
+    readonly runtimeContext = FMAN_RTC;
 
     orderTypeStringDataWrapper: XcAutocompleteDataWrapper;
     runtimeContextsDataWrapper: XcAutocompleteDataWrapper;
