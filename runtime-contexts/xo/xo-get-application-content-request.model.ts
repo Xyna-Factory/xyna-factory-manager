@@ -35,13 +35,17 @@ export class XoGetApplicationContentRequest extends XoObject {
     @XoProperty()
     includeIndirect: boolean;
 
+    @XoProperty()
+    includeAssigned: boolean;
 
-    static create(application: XoRuntimeContext, includeUnassigned: boolean, includeImplicit: boolean, includeIndirect: boolean): XoGetApplicationContentRequest {
+
+    static create(application: XoRuntimeContext, includeUnassigned: boolean, includeImplicit: boolean, includeIndirect: boolean, includeAssigned: boolean): XoGetApplicationContentRequest {
         const request = new XoGetApplicationContentRequest();
         request.application = application;
         request.includeUnassigned = includeUnassigned;
         request.includeImplicit = includeImplicit;
         request.includeIndirect = includeIndirect;
+        request.includeAssigned = includeAssigned;
         return request;
     }
 }

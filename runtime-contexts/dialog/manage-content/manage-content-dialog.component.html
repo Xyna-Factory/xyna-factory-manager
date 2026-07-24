@@ -2,6 +2,7 @@
   <ng-container header>{{titleKey | xcI18n:injectedData.label}}</ng-container>
   @if (dataSource.columns.length) {
     <ng-container aside>
+      <xc-checkbox [(checked)]="includeAssigned" (checkedChange)="updateDataSource()" xc-i18n label="manage-content-include-assigned" xc-tooltip="manage-content-include-assigned-tooltip" style="margin-left: 16px;" />
       @if (!readonly) {
         <xc-checkbox [(checked)]="includeIndependent" (checkedChange)="updateDataSource()" xc-i18n label="manage-content-include-independent" xc-tooltip="manage-content-include-independent-tooltip" />
       }
