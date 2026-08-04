@@ -27,8 +27,7 @@ import { XoTriggerDetail } from '@fman/trigger-and-filter/xo/xo-trigger-detail.m
 import { XoTrigger } from '@fman/trigger-and-filter/xo/xo-trigger.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
-import { XC_COMPONENT_DATA, XcDialogService, XcDynamicComponent } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XC_COMPONENT_DATA, XcDialogService, XcDynamicComponent, XcPanelComponent } from '@zeta/xc';
 
 import { StartParameterDetailComponent } from '../start-parameter-deatil/start-parameter-detail.component';
 
@@ -38,7 +37,7 @@ import { StartParameterDetailComponent } from '../start-parameter-deatil/start-p
     templateUrl: './trigger-detail.component.html',
     styleUrls: ['./trigger-detail.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [XcModule, XcI18nTranslateDirective, StartParameterDetailComponent]
+    imports: [XcPanelComponent, XcI18nTranslateDirective, StartParameterDetailComponent]
 })
 export class TriggerDetailComponent extends XcDynamicComponent<XoTrigger> {
     private readonly apiService = inject(ApiService);

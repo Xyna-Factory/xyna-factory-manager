@@ -24,8 +24,7 @@ import { XoFilterInstance } from '@fman/trigger-and-filter/xo/xo-filter-instance
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
-import { XC_COMPONENT_DATA, XcDialogService, XcDynamicComponent, XDSIconName } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XC_COMPONENT_DATA, XcButtonComponent, XcDialogService, XcDynamicComponent, XcIconComponent, XcPanelComponent, XcSpinnerComponent, XcTooltipDirective, XDSIconName } from '@zeta/xc';
 
 import { filter } from 'rxjs';
 
@@ -39,7 +38,7 @@ export interface FilterInstanceDetailsData {
     templateUrl: './filter-instance-detail.component.html',
     styleUrls: ['./filter-instance-detail.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [XcModule, XcI18nTranslateDirective]
+    imports: [XcButtonComponent, XcIconComponent, XcPanelComponent, XcSpinnerComponent, XcTooltipDirective, XcI18nTranslateDirective]
 })
 export class FilterInstanceDetailComponent extends XcDynamicComponent<FilterInstanceDetailsData> {
     private readonly apiService = inject(ApiService);

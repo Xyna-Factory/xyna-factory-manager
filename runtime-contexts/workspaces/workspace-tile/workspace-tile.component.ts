@@ -23,8 +23,7 @@ import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get
 import { XoGetWorkspaceContentRequest } from '@fman/runtime-contexts/xo/xo-get-workspace-content-request.model';
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcDialogService, XcRemoteTableDataSource, XDSIconName } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcButtonComponent, XcDialogService, XcFormInputComponent, XcFormLabelComponent, XcIconButtonComponent, XcIconComponent, XcPanelComponent, XcRemoteTableDataSource, XcTableComponent, XcTooltipDirective, XcVarDirective, XDSIconName } from '@zeta/xc';
 
 import { FM_RTC } from '../../../const';
 import { FactoryManagerSettingsService } from '../../../misc/services/factory-manager-settings.service';
@@ -60,7 +59,7 @@ export const DUPLICATE_ELEMENT_IDENTIFIER = 'duplicate element';
     selector: 'workspace-tile',
     templateUrl: './workspace-tile.component.html',
     styleUrls: ['./workspace-tile.component.scss'],
-    imports: [RuntimeContextButtonComponent, XcI18nTranslateDirective, XcI18nPipe, XcModule]
+    imports: [RuntimeContextButtonComponent, XcI18nTranslateDirective, XcI18nPipe, XcButtonComponent, XcFormInputComponent, XcFormLabelComponent, XcIconButtonComponent, XcIconComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcVarDirective]
 })
 export class WorkspaceTileComponent implements OnInit {
     private readonly apiService = inject(ApiService);

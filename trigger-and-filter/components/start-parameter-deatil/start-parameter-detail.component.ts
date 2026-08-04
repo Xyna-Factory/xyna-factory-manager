@@ -21,8 +21,7 @@ import { XoStartParameterDetails } from '@fman/trigger-and-filter/xo/xo-start-pa
 import { coerceBoolean, Comparable } from '@zeta/base';
 import { I18nService } from '@zeta/i18n';
 import { XcI18nPipe } from '@zeta/i18n';
-import { XcLocalTableDataSource } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcLocalTableDataSource, XcPanelComponent, XcTableComponent } from '@zeta/xc';
 
 
 interface ParameterTableRow extends Comparable {
@@ -36,7 +35,7 @@ interface ParameterTableRow extends Comparable {
     selector: 'start-parameter-detail',
     templateUrl: './start-parameter-detail.component.html',
     styleUrls: ['./start-parameter-detail.component.scss'],
-    imports: [XcModule, XcI18nPipe]
+    imports: [XcPanelComponent, XcTableComponent, XcI18nPipe]
 })
 export class StartParameterDetailComponent {
 

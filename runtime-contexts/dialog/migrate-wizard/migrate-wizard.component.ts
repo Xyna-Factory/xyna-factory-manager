@@ -24,8 +24,7 @@ import { XoRuntimeContextTableEntry, XoRuntimeContextTableEntryArray } from '@fm
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder, Xo, XoObject } from '@zeta/api';
 import { Comparable } from '@zeta/base';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcDialogComponent, XcLocalTableDataSource, XcRemoteTableDataSource, XcTableDataSource, XDSIconName, XoRemappingTableInfoClass, XoTableColumn, XoTableInfo } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogWrapperComponent, XcIconComponent, XcLocalTableDataSource, XcPanelComponent, XcRemoteTableDataSource, XcSpinnerComponent, XcTableComponent, XcTableDataSource, XcTooltipDirective, XDSIconName, XoRemappingTableInfoClass, XoTableColumn, XoTableInfo } from '@zeta/xc';
 
 import { filter, finalize } from 'rxjs/operators';
 
@@ -123,7 +122,7 @@ export class RuntimeContextTableInfo extends XoTableInfo {
     selector: 'migrate-wizard',
     templateUrl: './migrate-wizard.component.html',
     styleUrls: ['./migrate-wizard.component.scss'],
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe, NgClass]
+    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcIconComponent, XcPanelComponent, XcSpinnerComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe, NgClass]
 })
 export class MigrateWizardComponent extends XcDialogComponent<boolean, MigrationWizardData> {
     private readonly settings = inject(FactoryManagerSettingsService);

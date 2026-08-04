@@ -22,8 +22,7 @@ import { XoManagedFileId } from '@fman/runtime-contexts/xo/xo-managed-file-id.mo
 import { XoRuntimeApplication } from '@fman/runtime-contexts/xo/xo-runtime-application.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcDialogComponent, XcDialogService } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent } from '@zeta/xc';
 
 import { filter, finalize } from 'rxjs/operators';
 
@@ -36,7 +35,7 @@ import { exportapplication_translations_en_US } from './locale/export-applicatio
 @Component({
     templateUrl: './export-application-dialog.component.html',
     styleUrls: ['./export-application-dialog.component.scss'],
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
+    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class ExportApplicationDialogComponent extends XcDialogComponent<boolean, XoRuntimeApplication> {
     private readonly apiService = inject(ApiService);
