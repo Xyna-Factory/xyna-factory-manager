@@ -23,8 +23,7 @@ import { XoOrderType, XoOrderTypeArray } from '@fman/xo/xo-order-type.model';
 import { RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoArray, XoRuntimeContext, XoWorkspace } from '@zeta/api';
 import { isNumber } from '@zeta/base';
 import { XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcAutocompleteDataWrapper, XcFormDirective, XcIntegerStringDataWrapper, XcStringFloatDataWrapper, XcStringIntegerDataWrapper } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcAutocompleteDataWrapper, XcButtonComponent, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIntegerStringDataWrapper, XcPanelComponent, XcStringFloatDataWrapper, XcStringIntegerDataWrapper } from '@zeta/xc';
 
 import { DateSelectorComponent } from '../../misc/components/date-selector/date-selector.component';
 import { InputParameterComponent } from '../../misc/components/input-parameter/input-parameter.component';
@@ -102,7 +101,7 @@ export class FrequencyControlledTaskLoadPreset extends FrequencyControlledTaskPr
     templateUrl: './order-input-source-details.component.html',
     styleUrls: ['./order-input-source-details.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe, InputParameterComponent, GenerateInputComponent, DateSelectorComponent]
+    imports: [XcButtonComponent, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcPanelComponent, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe, InputParameterComponent, GenerateInputComponent, DateSelectorComponent]
 })
 export class OrderInputSourceDetailsComponent extends RestorableOrderInputSourcesComponent {
     private readonly cdr = inject(ChangeDetectorRef);

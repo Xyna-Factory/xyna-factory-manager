@@ -20,8 +20,7 @@ import { Component, inject, ViewChild } from '@angular/core';
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { XoDocumentation, XoDocumentationLanguage, XoXynaProperty } from '@zeta/auth/xo/xyna-property.model';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcDialogComponent, XcFormDirective } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcButtonComponent, XcDialogComponent, XcDialogWrapperComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcFormValidatorRequiredDirective, XcIconComponent } from '@zeta/xc';
 
 import { FMFocusCandidateDirective, FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
 import { addNewXynaProperty_translations_de_DE } from './locale/add-new-xyna-property-translations.de-DE';
@@ -39,7 +38,7 @@ export interface AddNewXynaPropertyModalComponentData {
 @Component({
     templateUrl: './add-new-xyna-property-modal.component.html',
     styleUrls: ['./add-new-xyna-property-modal.component.scss'],
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, FMFocusCandidateDirective]
+    imports: [XcButtonComponent, XcDialogWrapperComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcFormValidatorRequiredDirective, XcIconComponent, XcI18nContextDirective, XcI18nTranslateDirective, FMFocusCandidateDirective]
 })
 export class AddNewXynaPropertyModalComponent extends XcDialogComponent<boolean, AddNewXynaPropertyModalComponentData> {
     private readonly i18n = inject(I18nService);

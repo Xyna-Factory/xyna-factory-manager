@@ -22,8 +22,7 @@ import { ApiService, FullQualifiedName, RuntimeContext, StartOrderOptions, XoArr
 import { AuthService } from '@zeta/auth';
 import { isArray, isString } from '@zeta/base';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcDialogService, XcStructureTreeDataSource } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcButtonComponent, XcDialogService, XcPanelComponent, XcStructureTreeDataSource, XcTreeComponent } from '@zeta/xc';
 
 import { finalize } from 'rxjs/operators';
 
@@ -40,7 +39,7 @@ interface InputDataTypesTreeData {
     selector: 'generate-input-component',
     templateUrl: './generate-input.component.html',
     styleUrls: ['./generate-input.component.scss'],
-    imports: [XcModule, XcI18nTranslateDirective]
+    imports: [XcButtonComponent, XcPanelComponent, XcTreeComponent, XcI18nTranslateDirective]
 })
 export class GenerateInputComponent {
     private readonly apiService = inject(ApiService);
