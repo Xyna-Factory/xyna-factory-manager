@@ -21,7 +21,7 @@ import { RuntimeContext, RuntimeContextType, StartOrderOptionsBuilder, XoRuntime
 import { dateTimeString } from '@zeta/base';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { QueryParameterService } from '@zeta/nav/query-parameter.service';
-import { XcAutocompleteDataWrapper, XcButtonComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcIconButtonComponent, XcMasterDetailComponent, XcOptionItem, XcPanelComponent, XcSpinnerComponent, XcTableComponent, XcTooltipDirective, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
+import { XcAutocompleteDataWrapper, XcButtonComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcIconButtonComponent, XcMasterDetailComponent, XcOptionItem, XcPanelComponent, XcTableComponent, XcTooltipDirective, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
 
 import { Subject } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
@@ -46,7 +46,7 @@ const ISWP = DEPLOYMENT_ITEMS_ISWP;
 @Component({
     templateUrl: './deployment-items.component.html',
     styleUrls: ['./deployment-items.component.scss'],
-    imports: [XcButtonComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcSpinnerComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, DeploymentStateDetailComponent]
+    imports: [XcButtonComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, DeploymentStateDetailComponent]
 })
 export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent {
 
@@ -63,7 +63,7 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
 
     constructor() {
         super();
-        
+
         this.initRemoteTableDataSource(XoDeploymentItem, XoDeploymentItemArray, FM_RTC, ISWP.List);
 
         // const deploymentItemStates: XcOptionItem[] = [
