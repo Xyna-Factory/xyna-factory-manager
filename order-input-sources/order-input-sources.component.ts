@@ -19,7 +19,6 @@ import { ChangeDetectorRef, Component, inject } from '@angular/core';
 
 import { StartOrderOptionsBuilder, XoApplication, XoArray, XoDescriber } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcModule } from '@zeta/xc/xc.module';
 
 import { Subject } from 'rxjs';
 import { filter, skip } from 'rxjs/operators';
@@ -31,6 +30,7 @@ import { ORDER_INPUT_SOURCE_ISWP, RestorableOrderInputSourcesComponent } from '.
 import { XoGetOrderInputSourceRequest } from './xo/xo-get-order-input-source-request.model';
 import { XoOrderInputSourceId } from './xo/xo-order-input-source-id.model';
 import { XoOrderInputSource, XoOrderInputSourceArray } from './xo/xo-order-input-source.model';
+import { XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective } from '@zeta/xc';
 
 
 const ISWP = ORDER_INPUT_SOURCE_ISWP;
@@ -45,7 +45,7 @@ export interface InputDataTypesTreeData {
 @Component({
     templateUrl: './order-input-sources.component.html',
     styleUrls: ['./order-input-sources.component.scss'],
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, OrderInputSourceDetailsComponent]
+    imports: [XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, OrderInputSourceDetailsComponent]
 })
 export class OrderInputSourcesComponent extends RestorableOrderInputSourcesComponent {
     private readonly cdr = inject(ChangeDetectorRef);

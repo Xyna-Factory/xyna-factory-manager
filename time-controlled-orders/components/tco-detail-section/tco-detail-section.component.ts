@@ -19,8 +19,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, i
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcDialogService, XcFormDirective, XcSelectionModel } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcCheckboxComponent, XcDialogService, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcPanelComponent, XcSelectionModel } from '@zeta/xc';
 
 import { Observable, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
@@ -41,7 +40,7 @@ import { TcoExecutionRestrictionComponent } from '../tco-execution-restriction/t
     selector: 'tco-detail-section',
     templateUrl: './tco-detail-section.component.html',
     styleUrls: ['./tco-detail-section.component.scss'],
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe, OrderTypeFormComponent, StorableInputParameterComponent, ExecutionTimeComponent, TcoExecutionRestrictionComponent, CustomInformationFormComponent]
+    imports: [XcCheckboxComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcPanelComponent, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe, OrderTypeFormComponent, StorableInputParameterComponent, ExecutionTimeComponent, TcoExecutionRestrictionComponent, CustomInformationFormComponent]
 })
 export class TcoDetailSectionComponent implements OnInit, OnDestroy {
     private readonly apiService = inject(ApiService);

@@ -20,8 +20,7 @@ import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular
 import { ApiService, FullQualifiedName, RuntimeContext, XoArray, XoClassInterfaceFrom, XoDescriber, XoJson, XoObject } from '@zeta/api';
 import { coerceBoolean, isArray } from '@zeta/base';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcStructureTreeDataSource } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcPanelComponent, XcStructureTreeDataSource, XcTreeComponent } from '@zeta/xc';
 
 import { InputParameterRef } from './input-parameter-ref.class';
 
@@ -47,7 +46,7 @@ export interface InputDataTypesTreeData {
     selector: 'input-parameter',
     templateUrl: './input-parameter.component.html',
     styleUrls: ['./input-parameter.component.scss'],
-    imports: [XcModule, XcI18nTranslateDirective]
+    imports: [XcPanelComponent, XcTreeComponent, XcI18nTranslateDirective]
 })
 export class InputParameterComponent implements OnInit {
     private readonly apiService = inject(ApiService);

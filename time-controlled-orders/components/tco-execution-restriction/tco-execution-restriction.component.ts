@@ -19,8 +19,7 @@ import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Outpu
 
 import { I18nService } from '@zeta/i18n';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcAutocompleteDataWrapper, XcFormDirective } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcAutocompleteDataWrapper, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcPanelComponent, XcTooltipDirective } from '@zeta/xc';
 
 import { Subscription } from 'rxjs';
 
@@ -49,7 +48,7 @@ export const TimeConversion = {
     selector: 'tco-execution-restriction',
     templateUrl: './tco-execution-restriction.component.html',
     styleUrls: ['./tco-execution-restriction.component.scss'],
-    imports: [XcModule, XcI18nTranslateDirective]
+    imports: [XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcPanelComponent, XcTooltipDirective, XcI18nTranslateDirective]
 })
 export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, AfterViewInit {
     private readonly i18n = inject(I18nService);

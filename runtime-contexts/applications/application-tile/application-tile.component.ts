@@ -22,8 +22,7 @@ import { ExportApplicationDialogComponent } from '@fman/runtime-contexts/dialog/
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcDialogService, XcRemoteTableDataSource, XDSIconName } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcButtonComponent, XcCheckboxComponent, XcDialogService, XcFormInputComponent, XcIconComponent, XcPanelComponent, XcRemoteTableDataSource, XcTableComponent, XcTooltipDirective, XDSIconName } from '@zeta/xc';
 
 import { FactoryManagerSettingsService } from '../../../misc/services/factory-manager-settings.service';
 import { createContentTableInfoClass } from '../../content';
@@ -53,7 +52,7 @@ import { FMAN_RTC } from '@fman/factory-manager.component';
     selector: 'application-tile',
     templateUrl: './application-tile.component.html',
     styleUrls: ['./application-tile.component.scss'],
-    imports: [RuntimeContextButtonComponent, XcI18nTranslateDirective, XcI18nPipe, XcModule]
+    imports: [RuntimeContextButtonComponent, XcI18nTranslateDirective, XcI18nPipe, XcButtonComponent, XcCheckboxComponent, XcFormInputComponent, XcIconComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective]
 })
 export class ApplicationTileComponent implements OnInit {
     private readonly apiService = inject(ApiService);

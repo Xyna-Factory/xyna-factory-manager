@@ -19,8 +19,7 @@ import { Component, inject, ViewChild } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcDialogComponent, XcFormDirective } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcButtonComponent, XcDialogComponent, XcDialogWrapperComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcFormValidatorRequiredDirective, XcIconComponent } from '@zeta/xc';
 
 import { FMFocusCandidateDirective, FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
 import { XoAdministrativeVeto } from '../../xo/xo-administrative-veto.model';
@@ -40,7 +39,7 @@ export interface AddNewAdministrativeVetoModalData {
     selector: 'app-add-new-administrative-veto-modal',
     templateUrl: './add-new-administrative-veto-modal.component.html',
     styleUrls: ['./add-new-administrative-veto-modal.component.scss'],
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, FMFocusCandidateDirective]
+    imports: [XcButtonComponent, XcDialogWrapperComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcFormValidatorRequiredDirective, XcIconComponent, XcI18nContextDirective, XcI18nTranslateDirective, FMFocusCandidateDirective]
 })
 export class AddNewAdministrativeVetoModalComponent extends XcDialogComponent<boolean, AddNewAdministrativeVetoModalData> {
     private readonly i18nService = inject(I18nService);

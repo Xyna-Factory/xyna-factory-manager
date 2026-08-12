@@ -24,8 +24,7 @@ import { XoTriggerInstance } from '@fman/trigger-and-filter/xo/xo-trigger-instan
 import { XoTrigger } from '@fman/trigger-and-filter/xo/xo-trigger.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcAutocompleteDataWrapper, XcDialogComponent, XcDialogService, XcOptionItem, XDSIconName } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcAutocompleteDataWrapper, XcButtonComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcOptionItem, XDSIconName } from '@zeta/xc';
 
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ORDER_TYPES } from '../../order-types';
@@ -41,7 +40,7 @@ interface StartParameter {
 @Component({
     templateUrl: './deploy-trigger-dialog.component.html',
     styleUrls: ['./deploy-trigger-dialog.component.scss'],
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, StartParameterDetailComponent]
+    imports: [XcButtonComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcI18nContextDirective, XcI18nTranslateDirective, StartParameterDetailComponent]
 })
 export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerInstance, XoTrigger> {
     private readonly apiService = inject(ApiService);

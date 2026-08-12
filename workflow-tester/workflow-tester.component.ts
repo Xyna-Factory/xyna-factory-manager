@@ -21,8 +21,7 @@ import { Router } from '@angular/router';
 import { ApiService, OrderTypeSignature, OrderTypeVariable, RuntimeContext, StartOrderOptionsBuilder, Xo, XoArray, XoObject, XoStartOrderExceptionResponse, XoStartOrderSuccessResponse, XoStructureArray, XoStructureObject, XynaMonitoringLevel, XynaPriority } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
 import { XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcAutocompleteDataWrapper, XcDialogService, XcOptionItem, XcOptionItemUndefined, XcStructureTreeDataSource } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcAutocompleteDataWrapper, XcButtonComponent, XcDialogService, XcFormAutocompleteComponent, XcFormInputComponent, XcIconComponent, XcOptionItem, XcOptionItemUndefined, XcPanelComponent, XcStructureTreeDataSource, XcTreeComponent, XcVarDirective } from '@zeta/xc';
 
 import { finalize } from 'rxjs/operators';
 
@@ -49,7 +48,7 @@ interface WorkflowTest {
     selector: 'xfm-fman-workflow-tester',
     templateUrl: './workflow-tester.component.html',
     styleUrls: ['./workflow-tester.component.scss'],
-    imports: [XcModule, XcI18nTranslateDirective, XcI18nPipe]
+    imports: [XcButtonComponent, XcFormAutocompleteComponent, XcFormInputComponent, XcIconComponent, XcPanelComponent, XcTreeComponent, XcVarDirective, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class WorkflowTesterComponent {
     private readonly router = inject(Router);

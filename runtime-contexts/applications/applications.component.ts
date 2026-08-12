@@ -21,8 +21,7 @@ import { FactoryManagerSettingsService } from '@fman/misc/services/factory-manag
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { RouteComponent } from '@zeta/nav';
-import { XcDialogService } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcButtonComponent, XcDialogService, XcFormInputComponent, XcIconButtonComponent, XcIconComponent, XcPanelComponent, XcSpinnerComponent, XcTooltipDirective } from '@zeta/xc';
 
 import { Subscription } from 'rxjs';
 
@@ -42,7 +41,7 @@ import { FMAN_RTC } from '@fman/factory-manager.component';
 @Component({
     templateUrl: './applications.component.html',
     styleUrls: ['./applications.component.scss'],
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, ApplicationTileComponent]
+    imports: [XcButtonComponent, XcFormInputComponent, XcIconButtonComponent, XcIconComponent, XcPanelComponent, XcSpinnerComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, ApplicationTileComponent]
 })
 export class ApplicationsComponent extends RouteComponent implements OnDestroy, AfterViewInit {
     private readonly i18n = inject(I18nService);

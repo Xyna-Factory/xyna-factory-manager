@@ -21,8 +21,7 @@ import { ApiService, FullQualifiedName, OrderTypeVariable, RuntimeContext, Xo, X
 import { isArray } from '@zeta/base';
 import { I18nService } from '@zeta/i18n';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcStructureTreeDataSource } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcCheckboxComponent, XcFormDirective, XcPanelComponent, XcStructureTreeDataSource, XcTreeComponent } from '@zeta/xc';
 
 import { Observable } from 'rxjs';
 import { finalize, tap } from 'rxjs/operators';
@@ -44,7 +43,7 @@ export interface InputParameter {
     selector: 'storable-input-parameter',
     templateUrl: './storable-input-parameter.component.html',
     styleUrls: ['./storable-input-parameter.component.scss'],
-    imports: [XcModule, XcI18nTranslateDirective]
+    imports: [XcCheckboxComponent, XcFormDirective, XcPanelComponent, XcTreeComponent, XcI18nTranslateDirective]
 })
 export class StorableInputParameterComponent {
     private readonly apiService = inject(ApiService);

@@ -19,8 +19,7 @@ import { Component, inject, ViewChild } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcDialogComponent, XcFormDirective } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogWrapperComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIconComponent } from '@zeta/xc';
 
 import { FMFocusCandidateDirective, FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
 import { XoCapacityInformation } from '../../xo/xo-capacity-information.model';
@@ -39,7 +38,7 @@ export interface AddNewCapacityModalComponentData {
 @Component({
     templateUrl: './add-new-capacity-modal.component.html',
     styleUrls: ['./add-new-capacity-modal.component.scss'],
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, FMFocusCandidateDirective]
+    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIconComponent, XcI18nContextDirective, XcI18nTranslateDirective, FMFocusCandidateDirective]
 })
 export class AddNewCapacityModalComponent extends XcDialogComponent<boolean, AddNewCapacityModalComponentData> {
     private readonly i18n = inject(I18nService);

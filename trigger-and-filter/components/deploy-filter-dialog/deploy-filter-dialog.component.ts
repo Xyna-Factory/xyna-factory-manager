@@ -24,8 +24,7 @@ import { XoFilter } from '@fman/trigger-and-filter/xo/xo-filter.model';
 import { XoTriggerInstance, XoTriggerInstanceArray } from '@fman/trigger-and-filter/xo/xo-trigger-instance.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcAutocompleteDataWrapper, XcDialogComponent, XcDialogService, XcOptionItem, XcOptionItemString } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcAutocompleteDataWrapper, XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcOptionItem, XcOptionItemString } from '@zeta/xc';
 
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ORDER_TYPES } from '../../order-types';
@@ -35,7 +34,7 @@ import { ORDER_TYPES } from '../../order-types';
     templateUrl: './deploy-filter-dialog.component.html',
     styleUrls: ['./deploy-filter-dialog.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective]
+    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class DeployFilterDialogComponent extends XcDialogComponent<XoFilterInstance, XoFilter> {
     private readonly apiService = inject(ApiService);

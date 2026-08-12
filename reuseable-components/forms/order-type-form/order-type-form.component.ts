@@ -19,8 +19,7 @@ import { Component, EventEmitter, Input, Output, ViewChild, inject } from '@angu
 
 import { ApiService, StartOrderOptionsBuilder, XoArray, XoRuntimeContext } from '@zeta/api';
 import { XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcAutocompleteDataWrapper, XcFormDirective } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcAutocompleteDataWrapper, XcFormAutocompleteComponent, XcFormDirective, XcFormValidatorRequiredDirective, XcPanelComponent } from '@zeta/xc';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoOrderTypeArray } from '../../../xo/xo-order-type.model';
 import { FM_WF_GET_ORDER_TYPES } from '@fman/const';
@@ -30,7 +29,7 @@ import { FM_WF_GET_ORDER_TYPES } from '@fman/const';
     selector: 'order-type-form',
     templateUrl: './order-type-form.component.html',
     styleUrls: ['./order-type-form.component.scss'],
-    imports: [XcModule, XcI18nTranslateDirective, XcI18nPipe]
+    imports: [XcFormAutocompleteComponent, XcFormDirective, XcFormValidatorRequiredDirective, XcPanelComponent, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class OrderTypeFormComponent {
     private readonly apiService = inject(ApiService);

@@ -21,8 +21,7 @@ import { RouterOutlet } from '@angular/router';
 import { AuthService } from '@zeta/auth';
 import { I18nService, LocaleService } from '@zeta/i18n';
 import { RouteComponent } from '@zeta/nav';
-import { XcNavListItem, XcNavListOrientation } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcNavListComponent, XcNavListItem, XcNavListOrientation } from '@zeta/xc';
 
 import { filter } from 'rxjs';
 
@@ -45,7 +44,7 @@ interface XcRighteousNavListItem extends XcNavListItem {
 @Component({
     templateUrl: './factory-manager.component.html',
     styleUrls: ['./factory-manager.component.scss'],
-    imports: [XcModule, RouterOutlet]
+    imports: [XcNavListComponent, RouterOutlet]
 })
 export class FactoryManagerComponent extends RouteComponent {
     private readonly i18n = inject(I18nService);

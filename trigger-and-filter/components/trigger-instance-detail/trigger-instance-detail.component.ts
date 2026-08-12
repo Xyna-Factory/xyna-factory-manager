@@ -26,8 +26,7 @@ import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { Comparable } from '@zeta/base';
 import { I18nService } from '@zeta/i18n';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
-import { XC_COMPONENT_DATA, XcDialogService, XcDynamicComponent, XcLocalTableDataSource, XDSIconName } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XC_COMPONENT_DATA, XcButtonComponent, XcDialogService, XcDynamicComponent, XcIconComponent, XcLocalTableDataSource, XcPanelComponent, XcSpinnerComponent, XcTableComponent, XcTooltipDirective, XDSIconName } from '@zeta/xc';
 
 import { filter } from 'rxjs';
 
@@ -52,7 +51,7 @@ class FilterInstanceData extends Comparable {
     templateUrl: './trigger-instance-detail.component.html',
     styleUrls: ['./trigger-instance-detail.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [XcModule, XcI18nTranslateDirective]
+    imports: [XcButtonComponent, XcIconComponent, XcPanelComponent, XcSpinnerComponent, XcTableComponent, XcTooltipDirective, XcI18nTranslateDirective]
 })
 export class TriggerInstanceDetailComponent extends XcDynamicComponent<TriggerInstanceDetailsData> {
     private readonly apiService = inject(ApiService);

@@ -24,8 +24,7 @@ import { XoImportRTARequest } from '@fman/runtime-contexts/xo/xo-import-rta-requ
 import { XoManagedFileId } from '@fman/runtime-contexts/xo/xo-managed-file-id.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcDialogComponent, XcDialogService } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcFormDirective, XcFormLabelComponent, XcPanelComponent } from '@zeta/xc';
 
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ORDER_TYPES } from '../../order-types';
@@ -42,7 +41,7 @@ class NodeWrapper {
     templateUrl: './import-runtime-application-dialog.component.html',
     styleUrls: ['./import-runtime-application-dialog.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective]
+    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcFormDirective, XcFormLabelComponent, XcPanelComponent, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class ImportRuntimeApplicationDialogComponent extends XcDialogComponent<boolean, void> {
     private readonly apiService = inject(ApiService);
