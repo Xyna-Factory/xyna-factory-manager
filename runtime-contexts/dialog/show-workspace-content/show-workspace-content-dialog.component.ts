@@ -22,7 +22,7 @@ import { ApiService } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogWrapperComponent, XcRemoteTableDataSource, XcTableComponent, XcTooltipDirective } from '@zeta/xc';
 
-import { FM_RTC } from '../../../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { FactoryManagerSettingsService } from '../../../misc/services/factory-manager-settings.service';
 import { createContentTableInfoClass } from '../../content';
 import { ORDER_TYPES } from '../../order-types';
@@ -54,7 +54,7 @@ export class ShowWorkspaceContentDialogComponent extends XcDialogComponent<boole
         this.i18n.setTranslations(LocaleService.DE_DE, showWorkspaceContent_translations_de_DE);
 
         // create data source
-        this.dataSource = new XcRemoteTableDataSource(this.apiService, undefined, FM_RTC, ORDER_TYPES.GET_WORKSPACE_CONTENT, createContentTableInfoClass(false));
+        this.dataSource = new XcRemoteTableDataSource(this.apiService, undefined, FMAN_RTC, ORDER_TYPES.GET_WORKSPACE_CONTENT, createContentTableInfoClass(false));
         this.updateDataSource();
     }
 

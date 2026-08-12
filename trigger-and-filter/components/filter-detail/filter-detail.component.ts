@@ -17,7 +17,7 @@
  */
 import { ChangeDetectorRef, Component, inject, InjectionToken } from '@angular/core';
 
-import { FM_RTC } from '@fman/const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoRuntimeApplication } from '@fman/runtime-contexts/xo/xo-runtime-application.model';
 import { XoWorkspace } from '@fman/runtime-contexts/xo/xo-workspace.model';
 import { ORDER_TYPES } from '@fman/trigger-and-filter/order-types';
@@ -56,7 +56,7 @@ export class FilterDetailComponent extends XcDynamicComponent<XoFilter> {
 
     refresh() {
         this.busy = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.FILTER_DETAIL, this.buildRequest(this.injectedData), XoFilterDetails, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.FILTER_DETAIL, this.buildRequest(this.injectedData), XoFilterDetails, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (!result.errorMessage) {

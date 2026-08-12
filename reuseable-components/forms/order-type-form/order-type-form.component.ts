@@ -20,9 +20,9 @@ import { Component, EventEmitter, Input, Output, ViewChild, inject } from '@angu
 import { ApiService, StartOrderOptionsBuilder, XoArray, XoRuntimeContext } from '@zeta/api';
 import { XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcFormAutocompleteComponent, XcFormDirective, XcFormValidatorRequiredDirective, XcPanelComponent } from '@zeta/xc';
-
-import { FM_RTC, FM_WF_GET_ORDER_TYPES } from '../../../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoOrderTypeArray } from '../../../xo/xo-order-type.model';
+import { FM_WF_GET_ORDER_TYPES } from '@fman/const';
 
 
 @Component({
@@ -45,7 +45,7 @@ export class OrderTypeFormComponent {
     /** Error key which gets translated */
     error: string;
 
-    readonly runtimeContext = FM_RTC;
+    readonly runtimeContext = FMAN_RTC;
 
     orderTypeStringDataWrapper: XcAutocompleteDataWrapper;
     runtimeContextsDataWrapper: XcAutocompleteDataWrapper;

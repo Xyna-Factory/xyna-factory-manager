@@ -22,7 +22,6 @@ import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nT
 import { XcAutocompleteDataWrapper, XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcIconComponent, XcPanelComponent, XcRemoteTableDataSource, XcRichListComponent, XcRichListItem, XcStringIntegerDataWrapper, XcTableComponent, XcTooltipDirective } from '@zeta/xc';
 
 import { XoCapacityInformation, XoCapacityInformationArray } from '../../../capacities/xo/xo-capacity-information.model';
-import { FM_RTC } from '../../../const';
 import { FMFocusCandidateDirective, FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
 import { FactoryManagerSettingsService } from '../../../misc/services/factory-manager-settings.service';
 import { XoDestinationTypeArray } from '../../../xo/xo-destination-type.model';
@@ -33,6 +32,7 @@ import { XoOrderTypeCapacitiesTableInfo } from '../../xo/xo-order-type-capacitie
 import { XoOrderType } from '../../xo/xo-order-type.model';
 import { addNewOrderTypeModal_translations_de_DE } from './locale/add-new-order-type-modal-translations.de-DE';
 import { addNewOrderTypeModal_translations_en_US } from './locale/add-new-order-type-modal-translations.en-US';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 export interface AddNewOrderTypeModalComponentData {
@@ -232,7 +232,7 @@ export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, Ad
         this.dsOrderTypeCapacitiesDataSource = new XcRemoteTableDataSource<XoCapacityInformation>(
             this.apiService,
             this.injectedData.i18nService,
-            FM_RTC,
+            FMAN_RTC,
             this.injectedData.GetOrdertypeCapacitiesWorkflow,
             XoOrderTypeCapacitiesTableInfo
         );
@@ -275,7 +275,7 @@ export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, Ad
         }
 
         const obs = this.apiService.startOrder(
-            FM_RTC, this.injectedData.GetDestinationsWorkflow,
+            FMAN_RTC, this.injectedData.GetDestinationsWorkflow,
             [this.selectedServerRuntimeContext],
             XoDestinationTypeArray,
             StartOrderOptionsBuilder.defaultOptionsWithErrorMessage

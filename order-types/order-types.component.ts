@@ -27,7 +27,7 @@ import { XcAutocompleteDataWrapper, XcButtonComponent, XcCheckboxComponent, XcFo
 import { Subscription } from 'rxjs';
 
 import { XoCapacityInformation, XoCapacityInformationArray } from '../capacities/xo/xo-capacity-information.model';
-import { FM_RTC, PROCESS_MODELLER_TAB_URL } from '../const';
+import { PROCESS_MODELLER_TAB_URL } from '../const';
 import { XoDestinationTypeArray } from '../xo/xo-destination-type.model';
 import { XoParameterInheritanceRule } from '../xo/xo-parameter-inheritance-rule.model';
 import { ChildOrderInheritanceRuleComponent, ChildOrderInheritanceRuleComponentData } from './items/child-order-inheritance-rule/child-order-inheritance-rule.component';
@@ -39,6 +39,7 @@ import { XoOrderTypeCapacitiesTableInfo } from './xo/xo-order-type-capacities-ta
 import { XoOrderTypeName } from './xo/xo-order-type-name.model';
 import { XoOrderTypeTableFilter } from './xo/xo-order-type-table-filter.model';
 import { XoOrderType, XoOrderTypeArray } from './xo/xo-order-type.model';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 export const EXECUTION_DESTINATION_DOCUMENT_TYPE = 'workflow';
@@ -131,7 +132,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
 
         this.orderTypeTableFilter.showPath = false;
 
-        this.initRemoteTableDataSource(XoOrderType, XoOrderTypeArray, FM_RTC, ISWP.List, [new XoExecutionDestinationFilter(), this.orderTypeTableFilter]);
+        this.initRemoteTableDataSource(XoOrderType, XoOrderTypeArray, FMAN_RTC, ISWP.List, [new XoExecutionDestinationFilter(), this.orderTypeTableFilter]);
 
         this.tableInfoChangeSubscription = this.remoteTableDataSource.tableInfoChange.subscribe(() => {
             // reset overriding execution destination filter that might have been set via jumping from workflow in PMOD to order type overview
@@ -241,7 +242,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
             return;
         }
 
-        const obs = this.apiService.startOrder(FM_RTC, ISWP.GetDestinations, [this.detailsObject.runtimeContext], XoDestinationTypeArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.GetDestinations, [this.detailsObject.runtimeContext], XoDestinationTypeArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, (output: any[]) => {
             const dtArr = (output[0] || { data: [] }) as XoDestinationTypeArray;
 
@@ -256,7 +257,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
         const name = new XoOrderTypeName();
         name.name = entry.fullQualifiedName;
 
-        const obs = this.apiService.startOrder(FM_RTC, ISWP.Details, [entry.runtimeContext, name], XoOrderType, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, [entry.runtimeContext, name], XoOrderType, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
 
             this.detailsObject = (output[0] || null) as XoOrderType;
@@ -316,7 +317,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
             GetDestinationsWorkflow: ISWP.GetDestinations,
             GetOrdertypeCapacitiesWorkflow: ISWP.GetOrdertypeCapacities,
             i18nService: this.i18nService,
-            rtc: FM_RTC,
+            rtc: FMAN_RTC,
             duplicate: duplicated,
             UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR: this.UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR,
             USE_DEFAULT: this.USE_DEFAULT
@@ -344,7 +345,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
         const name = new XoOrderTypeName();
         name.name = entry.fullQualifiedName;
 
-        const obs = this.apiService.startOrder(FM_RTC, ISWP.Details, [entry.runtimeContext, name], XoOrderType, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, [entry.runtimeContext, name], XoOrderType, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
 
             const dub = (output[0] || null) as XoOrderType;
@@ -365,7 +366,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
                     if (entry instanceof XoOrderType) {
                         const name = new XoOrderTypeName();
                         name.name = entry.fullQualifiedName;
-                        const obs = this.apiService.startOrder(FM_RTC, ISWP.Delete, [entry.runtimeContext, name], null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+                        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Delete, [entry.runtimeContext, name], null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
                         this.handleStartOrderResult(obs, () => {
                             this.detailsObject = null;
                             this.clearSelection();
@@ -398,7 +399,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
             this.detailsObject.parameterInheritanceRules.data.push(item.data.rule);
         }
 
-        const obs = this.apiService.startOrder(FM_RTC, ISWP.Save, this.detailsObject.clone(), null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Save, this.detailsObject.clone(), null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, () => {
             this.dismiss();
             this.refresh();
@@ -505,7 +506,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
         const name = new XoOrderTypeName();
         name.name = this.detailsObject.fullQualifiedName;
 
-        const obs = this.apiService.startOrder(FM_RTC, ISWP.Details, [this.detailsObject.runtimeContext, name], XoOrderType, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, [this.detailsObject.runtimeContext, name], XoOrderType, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
 
             this.detailsObject = (output[0] || null) as XoOrderType;

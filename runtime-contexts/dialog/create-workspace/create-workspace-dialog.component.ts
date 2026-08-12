@@ -24,13 +24,13 @@ import { XcAutocompleteDataWrapper, XcButtonComponent, XcDialogComponent, XcDial
 import { throwError } from 'rxjs';
 import { catchError, filter, finalize, tap } from 'rxjs/operators';
 
-import { FM_RTC } from '../../../const';
 import { ORDER_TYPES } from '../../order-types';
 import { XoCreateWorkspaceRequest } from '../../xo/xo-create-workspace-request.model';
 import { XoRepositoryLink } from '../../xo/xo-repository-link.model';
 import { XoSVNRepositoryLink } from '../../xo/xo-svn-repository-link.model';
 import { createWorkspace_translations_de_DE } from './locale/create-workspace-translations.de-DE';
 import { createWorkspace_translations_en_US } from './locale/create-workspace-translations.en-US';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 type WorkspaceName = string;
@@ -83,7 +83,7 @@ export class CreateWorkspaceDialogComponent extends XcDialogComponent<WorkspaceN
             },
             [<XcOptionItem>{name: 'None', value: undefined}, XcOptionItemString(this.SVNRepositoryAccess)]
             /*
-            this.apiService.startOrderAssertFlat<XoRepositoryLinkType>(FM_RTC, ORDER_TYPES., undefined, XoRepositoryLinkType).pipe(
+            this.apiService.startOrderAssertFlat<XoRepositoryLinkType>(FMAN_RTC, ORDER_TYPES., undefined, XoRepositoryLinkType).pipe(
                 map(repositoryLinkTypes => repositoryLinkTypes.map(repositoryLinkType => XcOptionItemString(repositoryLinkType.value)))
             )
             */
@@ -109,7 +109,7 @@ export class CreateWorkspaceDialogComponent extends XcDialogComponent<WorkspaceN
         request.name = this.name;
         request.repositoryLink = this.repositoryLink;
         this.loading = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.CREATE_WORKSPACE, request, undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.CREATE_WORKSPACE, request, undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             catchError((error: any) => {
                 this.dismiss();
                 return throwError(error);

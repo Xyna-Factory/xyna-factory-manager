@@ -17,7 +17,6 @@
  */
 import { Component, inject } from '@angular/core';
 
-import { environment } from '@environments/environment';
 import { XoManagedFileId } from '@fman/runtime-contexts/xo/xo-managed-file-id.model';
 import { XoRuntimeApplication } from '@fman/runtime-contexts/xo/xo-runtime-application.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
@@ -26,10 +25,11 @@ import { XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogServ
 
 import { filter, finalize } from 'rxjs/operators';
 
-import { FM_RTC } from '../../../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ORDER_TYPES } from '../../order-types';
 import { exportapplication_translations_de_DE } from './locale/export-application-translations.de-DE';
 import { exportapplication_translations_en_US } from './locale/export-application-translations.en-US';
+import { ConfigService } from '@zeta/api/config.service';
 
 
 @Component({
@@ -38,6 +38,7 @@ import { exportapplication_translations_en_US } from './locale/export-applicatio
     imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class ExportApplicationDialogComponent extends XcDialogComponent<boolean, XoRuntimeApplication> {
+    private readonly configService = inject(ConfigService);
     private readonly apiService = inject(ApiService);
     private readonly dialogService = inject(XcDialogService);
     private readonly i18n = inject(I18nService);
@@ -58,7 +59,7 @@ export class ExportApplicationDialogComponent extends XcDialogComponent<boolean,
 
     export() {
         this.pending = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.EXPORT_RUNTIME_APPLICATION, this.application, XoManagedFileId, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.EXPORT_RUNTIME_APPLICATION, this.application, XoManagedFileId, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             filter(result => {
                 if (result.errorMessage || !(result?.output[0] as XoManagedFileId)?.id) {
                     this.dismiss(false);
@@ -74,7 +75,7 @@ export class ExportApplicationDialogComponent extends XcDialogComponent<boolean,
             finalize(() => this.pending = false)
         ).subscribe(result => {
             const fileId = (result.output[0] as XoManagedFileId).id;
-            window.location.href = `${environment.zeta.url}download?p0=${fileId}`;
+            window.location.href = `${this.configService.config.zeta.url}download?p0=${fileId}`;
             this.dismiss(true);
         });
     }

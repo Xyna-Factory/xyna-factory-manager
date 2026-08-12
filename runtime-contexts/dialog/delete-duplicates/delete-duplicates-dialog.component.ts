@@ -25,7 +25,7 @@ import { XcButtonComponent, XcDialogComponent, XcDialogService, XcDialogWrapperC
 import { throwError } from 'rxjs';
 import { catchError, finalize, tap } from 'rxjs/operators';
 
-import { FM_RTC } from '../../../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ORDER_TYPES } from '../../order-types';
 import { XoWorkspace } from '../../xo/xo-workspace.model';
 import { deleteDuplicates_translations_de_DE } from './locale/delete-duplicates-translations.de-DE';
@@ -56,7 +56,7 @@ export class DeleteDuplicatesDialogComponent extends XcDialogComponent<boolean, 
     delete() {
         const request = this.injectedData.proxy();
         this.isLoading = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.DELETE_DUPLICATES, request, XoDeleteDuplicatesResponse, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.DELETE_DUPLICATES, request, XoDeleteDuplicatesResponse, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             catchError((error: any) => {
                 this.dismiss();
                 return throwError(error);

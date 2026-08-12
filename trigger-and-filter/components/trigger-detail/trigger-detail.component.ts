@@ -17,7 +17,7 @@
  */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, InjectionToken } from '@angular/core';
 
-import { FM_RTC } from '@fman/const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoRuntimeApplication } from '@fman/runtime-contexts/xo/xo-runtime-application.model';
 import { XoWorkspace } from '@fman/runtime-contexts/xo/xo-workspace.model';
 import { ORDER_TYPES } from '@fman/trigger-and-filter/order-types';
@@ -61,7 +61,7 @@ export class TriggerDetailComponent extends XcDynamicComponent<XoTrigger> {
     }
 
     getStartParameter() {
-        this.apiService.startOrderAssertFlat<XoStartParameterDetails>(FM_RTC, ORDER_TYPES.POSSIBLE_START_PARAMETER_TRIGGER, this.injectedData, XoStartParameterDetailsArray).subscribe({
+        this.apiService.startOrderAssertFlat<XoStartParameterDetails>(FMAN_RTC, ORDER_TYPES.POSSIBLE_START_PARAMETER_TRIGGER, this.injectedData, XoStartParameterDetailsArray).subscribe({
             next: result => {
                 this.startParameter = result;
                 this.cdr.markForCheck();
@@ -74,7 +74,7 @@ export class TriggerDetailComponent extends XcDynamicComponent<XoTrigger> {
 
     refresh() {
         this.busy = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.TRIGGER_DETAIL, this.buildRequest(this.injectedData), XoTriggerDetail, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.TRIGGER_DETAIL, this.buildRequest(this.injectedData), XoTriggerDetail, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (!result.errorMessage) {

@@ -17,7 +17,7 @@
  */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 
-import { FM_RTC } from '@fman/const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { TileDataSource, TileItem } from '@fman/runtime-contexts/shared/tile/tile-data-source';
 import { ActionButtonData } from '@fman/runtime-contexts/shared/tile/tile.component';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
@@ -125,7 +125,7 @@ export class TriggerComponent extends RouteComponent {
 
     refresh() {
         this.refreshing = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.TRIGGER_OVERVIEW, [], XoTriggerArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.TRIGGER_OVERVIEW, [], XoTriggerArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (result && !result.errorMessage) {

@@ -22,13 +22,14 @@ import { I18nService } from '@zeta/i18n';
 import { XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcCheckboxComponent, XcDialogService, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIdentityDataWrapper, XcPanelComponent, XcStringIntegerDataWrapper } from '@zeta/xc';
 
-import { FM_RTC, FM_WF_GET_TIMEZONES, GET_TIMEZONE_EMPTY_ERROR, UNSPECIFIED_GET_TIMEZONE_ERROR } from '../../../const';
+import { FM_WF_GET_TIMEZONES, GET_TIMEZONE_EMPTY_ERROR, UNSPECIFIED_GET_TIMEZONE_ERROR } from '../../../const';
 import { DateSelectorComponent } from '../../../misc/components/date-selector/date-selector.component';
 import { XoOrderExecutionTime } from '../../../xo/xo-orderexecutiontime.model';
 import { XoTimeUnit, XoTimeUnitArray } from '../../../xo/xo-timeunit.model';
 import { XoRestrictionBasedTimeWindow } from '../../../xo/xo-timewindow.model';
 import { XoTimezoneArray } from '../../../xo/xo-timezone.model';
 import { ExecutionTimeInterval, ExecutionTimeMonth, ExecutionTimeMonthlyAtWhichDayOfTheMonth, ExecutionTimeMonthlyBy, ExecutionTimeWeekday, ExecutionTimeWeekdayPositionInMonth, ExecutionTimeYearlyBy, ExecutionTypes, WindowLengths } from './execution-time.constant';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 @Component({
@@ -238,7 +239,7 @@ export class ExecutionTimeComponent {
     }
 
     get fmanRTC(): RuntimeContext {
-        return FM_RTC;
+        return FMAN_RTC;
     }
 
     get startTime(): number {
@@ -407,7 +408,7 @@ export class ExecutionTimeComponent {
             Object.values(WindowLengths).map(value => ({ name: this.i18nService.translate(value), value }))
         );
 
-        this.apiService.startOrder(FM_RTC, FM_WF_GET_TIMEZONES, [], XoTimezoneArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).subscribe(result => {
+        this.apiService.startOrder(FMAN_RTC, FM_WF_GET_TIMEZONES, [], XoTimezoneArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).subscribe(result => {
             if (result && !result.errorMessage) {
                 const tzArr = result.output[0] as XoTimezoneArray;
                 if (tzArr) {

@@ -24,7 +24,7 @@ import { XcAutocompleteDataWrapper, XcButtonComponent, XcCheckboxComponent, XcDi
 import { throwError } from 'rxjs';
 import { catchError, filter, finalize, map, tap } from 'rxjs/operators';
 
-import { FM_RTC } from '../../../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { FactoryManagerSettingsService } from '../../../misc/services/factory-manager-settings.service';
 import { createFilterEnumOfState } from '../../dependencies';
 import { ORDER_TYPES } from '../../order-types';
@@ -82,14 +82,14 @@ export class LoadRuntimeApplicationDialogComponent extends XcDialogComponent<boo
         this.workspaceDataWrapper = new XcAutocompleteDataWrapper(
             () => this.workspace,
             () => { },
-            this.apiService.startOrderAssertFlat<XoWorkspace>(FM_RTC, ORDER_TYPES.GET_WORKSPACES, undefined, XoWorkspaceArray).pipe(
+            this.apiService.startOrderAssertFlat<XoWorkspace>(FMAN_RTC, ORDER_TYPES.GET_WORKSPACES, undefined, XoWorkspaceArray).pipe(
                 tap(workspaces => this.changeWorkspace(workspaces.find(workspace => workspace.name === this.injectedData.workspaceName))),
                 map(workspaces => workspaces.map(workspace => <XcOptionItem>{ name: workspace.name, value: workspace }))
             )
         );
 
         // create data source
-        this.dataSource = new XcRemoteTableDataSource(this.apiService, undefined, FM_RTC, ORDER_TYPES.GET_RUNTIME_APPLICATIONS_TABLE, remappingTableInfoClass);
+        this.dataSource = new XcRemoteTableDataSource(this.apiService, undefined, FMAN_RTC, ORDER_TYPES.GET_RUNTIME_APPLICATIONS_TABLE, remappingTableInfoClass);
         this.dataSource.output = XoRuntimeApplicationArray;
         this.dataSource.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
         this.dataSource.filterEnums.set(XoRuntimeApplication.getAccessorMap().stateTemplates, createFilterEnumOfState(this.i18n));
@@ -112,7 +112,7 @@ export class LoadRuntimeApplicationDialogComponent extends XcDialogComponent<boo
         request.documentation = this.documentation;
         request.overwrite = this.overwrite;
 
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.LOAD_RUNTIME_APPLICATION_INTO_WORKSPACE, request, undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.LOAD_RUNTIME_APPLICATION_INTO_WORKSPACE, request, undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             catchError((error: any) => {
                 this.dismiss();
                 return throwError(error);

@@ -17,7 +17,7 @@
  */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, InjectionToken, Injector } from '@angular/core';
 
-import { FM_RTC } from '@fman/const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ORDER_TYPES } from '@fman/trigger-and-filter/order-types';
 import { XoFilterInstance } from '@fman/trigger-and-filter/xo/xo-filter-instance.model';
 import { XoTriggerInstanceDetail } from '@fman/trigger-and-filter/xo/xo-trigger-instance-detail.model';
@@ -77,7 +77,7 @@ export class TriggerInstanceDetailComponent extends XcDynamicComponent<TriggerIn
 
     refresh() {
         this.busy = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.TRIGGER_INSTANCE_DETAIL, this.injectedData.triggerinstance, XoTriggerInstanceDetail, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.TRIGGER_INSTANCE_DETAIL, this.injectedData.triggerinstance, XoTriggerInstanceDetail, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (!result.errorMessage) {
@@ -99,7 +99,7 @@ export class TriggerInstanceDetailComponent extends XcDynamicComponent<TriggerIn
 
     enable() {
         this.busy = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.ENABLE_TRIGGER, this.injectedData.triggerinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.ENABLE_TRIGGER, this.injectedData.triggerinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (!result.errorMessage) {
@@ -117,7 +117,7 @@ export class TriggerInstanceDetailComponent extends XcDynamicComponent<TriggerIn
 
     disable() {
         this.busy = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.DISABLE_TRIGGER, this.injectedData.triggerinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.DISABLE_TRIGGER, this.injectedData.triggerinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (!result.errorMessage) {
@@ -138,7 +138,7 @@ export class TriggerInstanceDetailComponent extends XcDynamicComponent<TriggerIn
             .pipe(filter(res => !!res)).subscribe({
                 next: () => {
                     this.busy = true;
-                    this.apiService.startOrder(FM_RTC, ORDER_TYPES.UNDEPLOY_TRIGGER, this.injectedData.triggerinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+                    this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.UNDEPLOY_TRIGGER, this.injectedData.triggerinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
                         .subscribe({
                             next: result => {
                                 if (!result.errorMessage) {

@@ -17,7 +17,6 @@
  */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 
-import { FM_RTC } from '@fman/const';
 import { TileDataSource, TileItem } from '@fman/runtime-contexts/shared/tile/tile-data-source';
 import { ActionButtonData } from '@fman/runtime-contexts/shared/tile/tile.component';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
@@ -37,6 +36,7 @@ import { trigger_and_filter_translations_en_US } from './locale/trigger-and-filt
 import { ORDER_TYPES } from './order-types';
 import { XoFilterInstance } from './xo/xo-filter-instance.model';
 import { XoFilter, XoFilterArray } from './xo/xo-filter.model';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 class FilterTile extends Comparable implements TileItem {
@@ -125,7 +125,7 @@ export class FilterComponent extends RouteComponent {
 
     refresh() {
         this.refreshing = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.FILTER_OVERVIEW, [], XoFilterArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.FILTER_OVERVIEW, [], XoFilterArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (result && !result.errorMessage) {
