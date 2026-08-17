@@ -21,8 +21,7 @@ import { finalize } from 'rxjs/operators';
 import { Component, EventEmitter, inject, Input, OnDestroy, Output } from '@angular/core';
 import { ApiService, FullQualifiedName, RuntimeContext, StartOrderOptionsBuilder, XoArray, XoObject, XoRuntimeContext } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
-import { XcDialogService, XcStructureTreeDataSource } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcDialogService, XcStructureTreeDataSource, XcTreeComponent } from '@zeta/xc';
 
 import { XoStoreParameter } from '../../xo/xo-storeparameter.model';
 
@@ -31,7 +30,7 @@ import { XoStoreParameter } from '../../xo/xo-storeparameter.model';
     selector: 'storable-instance-detail',
     templateUrl: './storable-instance-detail.component.html',
     styleUrls: ['./storable-instance-detail.component.scss'],
-    imports: [XcModule]
+    imports: [XcTreeComponent]
 })
 export class StorableInstanceDetailComponent implements OnDestroy {
     private readonly i18n = inject(I18nService);

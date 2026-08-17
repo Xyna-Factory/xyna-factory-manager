@@ -19,13 +19,12 @@ import { Component, inject } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcAutocompleteDataWrapper, XcDialogComponent, XcDialogService, XcOptionItem } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcAutocompleteDataWrapper, XcButtonComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcOptionItem } from '@zeta/xc';
 
 import { throwError } from 'rxjs';
 import { catchError, filter, map, tap } from 'rxjs/operators';
 
-import { FM_RTC } from '../../../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ORDER_TYPES } from '../../order-types';
 import { XoCreateADRequest } from '../../xo/xo-create-adrequest.model';
 import { XoWorkspace, XoWorkspaceArray } from '../../xo/xo-workspace.model';
@@ -40,7 +39,7 @@ type WorkspaceName = string;
 @Component({
     templateUrl: './create-application-definition-dialog.component.html',
     styleUrls: ['./create-application-definition-dialog.component.scss'],
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective]
+    imports: [XcButtonComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class CreateApplicationDefinitionDialogComponent extends XcDialogComponent<ApplicationDefinitionName, WorkspaceName> {
     private readonly apiService = inject(ApiService);
@@ -64,7 +63,7 @@ export class CreateApplicationDefinitionDialogComponent extends XcDialogComponen
         this.workspaceDataWrapper = new XcAutocompleteDataWrapper(
             () => this.workspace,
             () => {},
-            this.apiService.startOrderAssertFlat<XoWorkspace>(FM_RTC, ORDER_TYPES.GET_WORKSPACES, undefined, XoWorkspaceArray).pipe(
+            this.apiService.startOrderAssertFlat<XoWorkspace>(FMAN_RTC, ORDER_TYPES.GET_WORKSPACES, undefined, XoWorkspaceArray).pipe(
                 tap(workspaces => this.changeWorkspace(workspaces.find(workspace => workspace.name === this.injectedData))),
                 map(workspaces => workspaces.map(workspace => <XcOptionItem>{name: workspace.name, value: workspace}))
             )
@@ -85,7 +84,7 @@ export class CreateApplicationDefinitionDialogComponent extends XcDialogComponen
         request.name = this.name;
         request.documentation = this.documentation;
 
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.CREATE_APPLICATION_DEFINITION, request, undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.CREATE_APPLICATION_DEFINITION, request, undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             catchError((error: any) => {
                 this.dismiss();
                 return throwError(error);

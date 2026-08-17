@@ -19,13 +19,12 @@ import { Component, inject } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcDialogComponent, XcDialogService } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcIconComponent } from '@zeta/xc';
 
 import { throwError } from 'rxjs';
 import { catchError, filter, finalize, tap } from 'rxjs/operators';
 
-import { FM_RTC } from '../../../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ORDER_TYPES } from '../../order-types';
 import { XoDeleteWorkspaceRequest } from '../../xo/xo-delete-workspace-request.model';
 import { XoWorkspace } from '../../xo/xo-workspace.model';
@@ -36,7 +35,7 @@ import { deleteWorkspace_translations_en_US } from './locale/delete-workspace-tr
 @Component({
     templateUrl: './delete-workspace-dialog.component.html',
     styleUrls: ['./delete-workspace-dialog.component.scss'],
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
+    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcIconComponent, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class DeleteWorkspaceDialogComponent extends XcDialogComponent<boolean, XoWorkspace> {
     private readonly apiService = inject(ApiService);
@@ -61,7 +60,7 @@ export class DeleteWorkspaceDialogComponent extends XcDialogComponent<boolean, X
         request.workspace = this.injectedData.proxy();
         request.stopRunningOrders = this.stopRunningOrders;
         this.loading = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.DELETE_WORKSPACE, request, undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.DELETE_WORKSPACE, request, undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             catchError((error: any) => {
                 this.dismiss();
                 return throwError(error);

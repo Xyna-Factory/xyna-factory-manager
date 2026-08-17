@@ -20,14 +20,13 @@ import { catchError, filter, finalize, first, skip, tap } from 'rxjs/operators';
 
 import { NgClass } from '@angular/common';
 import { Component, inject, OnDestroy } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoDependencyType } from '@fman/runtime-contexts/xo/xo-dependency.model';
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcDialogComponent, XcDialogService, XcLocalTableDataSource, XcOptionItem, XcRemoteTableDataSource } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcIconComponent, XcLocalTableDataSource, XcRemoteTableDataSource, XcTableComponent, XcTooltipDirective } from '@zeta/xc';
 
-import { FM_RTC } from '../../../const';
 import { FactoryManagerSettingsService } from '../../../misc/services/factory-manager-settings.service';
 import { createContentTableInfoClass } from '../../content';
 import { ORDER_TYPES } from '../../order-types';
@@ -58,7 +57,7 @@ enum ElementType {
 @Component({
     templateUrl: './manage-content-dialog.component.html',
     styleUrls: ['./manage-content-dialog.component.scss'],
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe, NgClass]
+    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcIconComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe, NgClass]
 })
 export class ManageContentDialogComponent extends XcDialogComponent<boolean, XoRuntimeContext> implements OnDestroy {
     private readonly apiService = inject(ApiService);
@@ -86,7 +85,7 @@ export class ManageContentDialogComponent extends XcDialogComponent<boolean, XoR
         this.i18n.setTranslations(LocaleService.EN_US, manageContent_translations_en_US);
 
         // create data source
-        this.dataSource = new XcRemoteTableDataSource(this.apiService, undefined, FM_RTC, ORDER_TYPES.GET_APPLICATION_CONTENT, createContentTableInfoClass(!this.readonly));
+        this.dataSource = new XcRemoteTableDataSource(this.apiService, undefined, FMAN_RTC, ORDER_TYPES.GET_APPLICATION_CONTENT, createContentTableInfoClass(!this.readonly));
         // this.dataSource.actionElements = [
         //     {
         //         class: 'delete-action-element',
@@ -194,7 +193,7 @@ export class ManageContentDialogComponent extends XcDialogComponent<boolean, XoR
         const applicationElements = new XoApplicationElementArray();
         applicationElements.data.push(...Array.from(this.changedApplicationElements.values()));
 
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.SET_AD_CONTENT, [this.injectedData.proxy(), applicationElements], undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.SET_AD_CONTENT, [this.injectedData.proxy(), applicationElements], undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             catchError((error: any) => {
                 this.dismiss();
                 return throwError(error);

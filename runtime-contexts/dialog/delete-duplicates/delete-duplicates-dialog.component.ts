@@ -20,13 +20,12 @@ import { Component, inject } from '@angular/core';
 import { XoDeleteDuplicatesResponse } from '@fman/runtime-contexts/xo/xo-delete-duplicates-response.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcDialogComponent, XcDialogService } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcButtonComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcIconComponent } from '@zeta/xc';
 
 import { throwError } from 'rxjs';
 import { catchError, finalize, tap } from 'rxjs/operators';
 
-import { FM_RTC } from '../../../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ORDER_TYPES } from '../../order-types';
 import { XoWorkspace } from '../../xo/xo-workspace.model';
 import { deleteDuplicates_translations_de_DE } from './locale/delete-duplicates-translations.de-DE';
@@ -36,7 +35,7 @@ import { deleteDuplicates_translations_en_US } from './locale/delete-duplicates-
 @Component({
     templateUrl: './delete-duplicates-dialog.component.html',
     styleUrls: ['./delete-duplicates-dialog.component.scss'],
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
+    imports: [XcButtonComponent, XcDialogWrapperComponent, XcIconComponent, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class DeleteDuplicatesDialogComponent extends XcDialogComponent<boolean, XoWorkspace> {
     private readonly apiService = inject(ApiService);
@@ -57,7 +56,7 @@ export class DeleteDuplicatesDialogComponent extends XcDialogComponent<boolean, 
     delete() {
         const request = this.injectedData.proxy();
         this.isLoading = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.DELETE_DUPLICATES, request, XoDeleteDuplicatesResponse, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.DELETE_DUPLICATES, request, XoDeleteDuplicatesResponse, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             catchError((error: any) => {
                 this.dismiss();
                 return throwError(error);

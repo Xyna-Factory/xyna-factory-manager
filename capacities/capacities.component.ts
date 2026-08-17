@@ -19,12 +19,11 @@ import { Component, ViewChild } from '@angular/core';
 
 import { StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcFormDirective, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcButtonComponent, XcCheckboxComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
 
 import { filter } from 'rxjs';
 
-import { FM_RTC } from '../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { AddNewCapacityModalComponent, AddNewCapacityModalComponentData } from './modal/add-new-capacity-modal/add-new-capacity-modal.component';
 import { CAPACITY_ISWP, RestorableCapacitiesComponent } from './restorable-capacities.component';
 import { XoCapacityInformation, XoCapacityInformationArray } from './xo/xo-capacity-information.model';
@@ -37,7 +36,7 @@ const ISWP = CAPACITY_ISWP;
 @Component({
     templateUrl: './capacities.component.html',
     styleUrls: ['./capacities.component.scss'],
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective]
+    imports: [XcButtonComponent, XcCheckboxComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class CapacitiesComponent extends RestorableCapacitiesComponent {
 
@@ -58,7 +57,7 @@ export class CapacitiesComponent extends RestorableCapacitiesComponent {
 
     constructor() {
         super();
-        this.initRemoteTableDataSource(XoCapacityInformation, XoCapacityInformationArray, FM_RTC, ISWP.List);
+        this.initRemoteTableDataSource(XoCapacityInformation, XoCapacityInformationArray, FMAN_RTC, ISWP.List);
 
         this.remoteTableDataSource.tableInfoClass = XoRemappingTableInfoClass(
             XoTableInfo, XoCapacityInformation,
@@ -94,7 +93,7 @@ export class CapacitiesComponent extends RestorableCapacitiesComponent {
         const name = new XoCapacityName();
         name.name = entry.name;
 
-        const obs = this.apiService.startOrder(FM_RTC, ISWP.Details, name, XoCapacityInformation, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, name, XoCapacityInformation, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             this.detailsObject = (output[0] || null) as XoCapacityInformation;
         }, this.UNSPECIFIED_DETAILS_ERROR, null);
@@ -106,7 +105,7 @@ export class CapacitiesComponent extends RestorableCapacitiesComponent {
             addWorkflow: ISWP.Add,
             apiService: this.apiService,
             i18nService: this.i18nService,
-            rtc: FM_RTC,
+            rtc: FMAN_RTC,
             duplicate: duplicatedProperty
         };
 
@@ -129,7 +128,7 @@ export class CapacitiesComponent extends RestorableCapacitiesComponent {
                     if (entry instanceof XoCapacityInformation) {
                         const name = new XoCapacityName();
                         name.name = entry.name;
-                        const obs = this.apiService.startOrder(FM_RTC, ISWP.Delete, name, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+                        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Delete, name, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
                         this.handleStartOrderResult(obs, output => {
                             this.detailsObject = null;
                             this.clearSelection();
@@ -147,7 +146,7 @@ export class CapacitiesComponent extends RestorableCapacitiesComponent {
     }
 
     save() {
-        const obs = this.apiService.startOrder(FM_RTC, ISWP.Save, this.detailsObject.clone(), null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Save, this.detailsObject.clone(), null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             this.dismiss();
             this.refresh();

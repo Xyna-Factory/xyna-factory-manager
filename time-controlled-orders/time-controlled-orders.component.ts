@@ -19,13 +19,12 @@ import { Component, OnInit } from '@angular/core';
 
 import { StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcOptionItem, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcButtonComponent, XcCheckboxComponent, XcFormDirective, XcIconButtonComponent, XcMasterDetailComponent, XcOptionItem, XcPanelComponent, XcTableComponent, XcTooltipDirective, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
 
 import { of } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
-import { FM_RTC } from '../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { TcoDetailSectionComponent } from './components/tco-detail-section/tco-detail-section.component';
 import { CreateTimeControlledOrderComponent } from './modal/create-time-controlled-order/create-time-controlled-order.component';
 import { RestorableTimeControlledOrderComponent } from './restorable-time-controlled-order.component';
@@ -38,7 +37,7 @@ import { XoTimeControlledOrder } from './xo/xo-time-controlled-order.model';
     selector: 'selector-name',
     templateUrl: './time-controlled-orders.component.html',
     styleUrls: ['./time-controlled-orders.component.scss'],
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, TcoDetailSectionComponent]
+    imports: [XcButtonComponent, XcCheckboxComponent, XcFormDirective, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, TcoDetailSectionComponent]
 })
 export class TimeControlledOrdersComponent extends RestorableTimeControlledOrderComponent implements OnInit {
     selection: XoTimeControlledOrderTableEntry;
@@ -56,7 +55,7 @@ export class TimeControlledOrdersComponent extends RestorableTimeControlledOrder
 
     constructor() {
         super();
-        this.initRemoteTableDataSource(XoTimeControlledOrderTableEntry, XoTimeControlledOrderTableEntryArray, FM_RTC, this.WFP_GETTCOS);
+        this.initRemoteTableDataSource(XoTimeControlledOrderTableEntry, XoTimeControlledOrderTableEntryArray, FMAN_RTC, this.WFP_GETTCOS);
 
         // Adding input and output
         this.remoteTableDataSource.input = new XoTCOTableFilter('', false);
@@ -120,7 +119,7 @@ export class TimeControlledOrdersComponent extends RestorableTimeControlledOrder
                     if (timeControlledOrder instanceof XoTimeControlledOrderTableEntry) {
                         this.apiService
                             .startOrder(
-                                FM_RTC,
+                                FMAN_RTC,
                                 this.WFP_KILL_TCO,
                                 timeControlledOrder.id,
                                 null,
@@ -163,7 +162,7 @@ export class TimeControlledOrdersComponent extends RestorableTimeControlledOrder
 
     duplicate(timeControlledOrderTableEntry: XoTimeControlledOrderTableEntry): void {
         this.apiService.startOrder(
-            FM_RTC,
+            FMAN_RTC,
             this.WFP_GET_TCO_DETAILS,
             timeControlledOrderTableEntry.id,
             XoTimeControlledOrder,

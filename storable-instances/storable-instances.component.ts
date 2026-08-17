@@ -23,10 +23,9 @@ import { ApiService, FullQualifiedName, RuntimeContext, RuntimeContextType, Star
 import { XoXynaProperty, XoXynaPropertyKey } from '@zeta/auth/xo/xyna-property.model';
 import { Comparable, isObject } from '@zeta/base';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcAutocompleteDataWrapper, XcDialogService, XcLocalTableDataSource, XcOptionItem, XcSelectionModel, XcSortDirection, XcStructureTreeDataSource, XcTableColumn, XoTableColumn, XoTableColumnArray, XoTableInfo } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcAutocompleteDataWrapper, XcButtonComponent, XcDialogService, XcFormAutocompleteComponent, XcIconButtonComponent, XcLocalTableDataSource, XcMasterDetailComponent, XcOptionItem, XcPanelComponent, XcSelectionModel, XcSortDirection, XcStructureTreeDataSource, XcTableColumn, XcTableComponent, XcTooltipDirective, XoTableColumn, XoTableColumnArray, XoTableInfo } from '@zeta/xc';
 
-import { FM_RTC } from '../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { FactoryManagerSettingsService } from '../misc/services/factory-manager-settings.service';
 import { XYNA_PROPERTY_ISWP } from '../xyna-properties/restorable-xyna-properties.component';
 import { StorableInstanceDetailComponent } from './components/storable-instance-detail/storable-instance-detail.component';
@@ -165,7 +164,7 @@ class StorableTableDataSource extends XcLocalTableDataSource<XoObject> {
 
         let tableLimit: number;
         this.apiService.startOrder(
-            FM_RTC,
+            FMAN_RTC,
             XYNA_PROPERTY_ISWP.Details,
             XoXynaPropertyKey.withKey('zeta.table.limit')
         ).pipe(
@@ -251,7 +250,7 @@ class StorableTableDataSource extends XcLocalTableDataSource<XoObject> {
     selector: 'storable-instances',
     templateUrl: './storable-instances.component.html',
     styleUrls: ['./storable-instances.component.scss'],
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, StorableInstanceDetailComponent]
+    imports: [XcButtonComponent, XcFormAutocompleteComponent, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, StorableInstanceDetailComponent]
 })
 export class StorableInstancesComponent implements OnInit {
     private readonly apiService = inject(ApiService);

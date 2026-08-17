@@ -17,15 +17,13 @@
  */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 
-import { FM_RTC } from '@fman/const';
 import { TileDataSource, TileItem } from '@fman/runtime-contexts/shared/tile/tile-data-source';
 import { ActionButtonData } from '@fman/runtime-contexts/shared/tile/tile.component';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { Comparable } from '@zeta/base';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { RouteComponent } from '@zeta/nav';
-import { XcComponentTemplate, XcDialogService, XcSelectionModel, XcTemplate } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcComponentTemplate, XcDialogService, XcIconButtonComponent, XcPanelComponent, XcSelectionModel, XcSpinnerComponent, XcTemplate, XcTooltipDirective } from '@zeta/xc';
 
 import { Subscription } from 'rxjs';
 
@@ -38,6 +36,7 @@ import { trigger_and_filter_translations_en_US } from './locale/trigger-and-filt
 import { ORDER_TYPES } from './order-types';
 import { XoFilterInstance } from './xo/xo-filter-instance.model';
 import { XoFilter, XoFilterArray } from './xo/xo-filter.model';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 class FilterTile extends Comparable implements TileItem {
@@ -100,7 +99,7 @@ class FilterInstanceTile extends Comparable implements TileItem {
     templateUrl: './filter.component.html',
     styleUrls: ['./filter.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, TileComponent]
+    imports: [XcIconButtonComponent, XcPanelComponent, XcSpinnerComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, TileComponent]
 })
 export class FilterComponent extends RouteComponent {
     private readonly apiService = inject(ApiService);
@@ -126,7 +125,7 @@ export class FilterComponent extends RouteComponent {
 
     refresh() {
         this.refreshing = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.FILTER_OVERVIEW, [], XoFilterArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.FILTER_OVERVIEW, [], XoFilterArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (result && !result.errorMessage) {

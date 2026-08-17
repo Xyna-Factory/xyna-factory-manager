@@ -19,15 +19,15 @@ import { Component } from '@angular/core';
 
 import { StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcModule } from '@zeta/xc/xc.module';
 
 import { filter } from 'rxjs';
 
-import { FM_RTC } from '../const';
 import { AddNewAdministrativeVetoModalComponent, AddNewAdministrativeVetoModalData } from './modal/add-new-administrative-veto-modal/add-new-administrative-veto-modal.component';
 import { ADMINISTRATIVE_VETOES_ISWP, RestorableAdministrativeVetoComponent } from './restorable-administrative-vetoes.component';
 import { XoAdministrativeVetoName } from './xo/xo-administrative-veto-name.mode';
 import { XoAdministrativeVeto, XoAdministrativeVetoArray } from './xo/xo-administrative-veto.model';
+import { XcButtonComponent, XcFormInputComponent, XcFormTextareaComponent, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective } from '@zeta/xc';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 const ISWP = ADMINISTRATIVE_VETOES_ISWP;
@@ -35,7 +35,7 @@ const ISWP = ADMINISTRATIVE_VETOES_ISWP;
 @Component({
     templateUrl: './administrative-vetoes.component.html',
     styleUrls: ['./administrative-vetoes.component.scss'],
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective]
+    imports: [XcButtonComponent, XcFormInputComponent, XcFormTextareaComponent, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class AdministrativeVetoesComponent extends RestorableAdministrativeVetoComponent {
 
@@ -43,7 +43,7 @@ export class AdministrativeVetoesComponent extends RestorableAdministrativeVetoC
 
     constructor() {
         super();
-        this.initRemoteTableDataSource(XoAdministrativeVeto, XoAdministrativeVetoArray, FM_RTC, ISWP.List);
+        this.initRemoteTableDataSource(XoAdministrativeVeto, XoAdministrativeVetoArray, FMAN_RTC, ISWP.List);
 
         this.selectedEntryChange.subscribe(
             selection => {
@@ -74,7 +74,7 @@ export class AdministrativeVetoesComponent extends RestorableAdministrativeVetoC
         const request = new XoAdministrativeVetoName();
         request.name = entry.name;
 
-        const obs = this.apiService.startOrder(FM_RTC, ISWP.Details, request, XoAdministrativeVeto, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, request, XoAdministrativeVeto, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             this.detailsObject = (output[0] || null) as XoAdministrativeVeto;
 
@@ -86,7 +86,7 @@ export class AdministrativeVetoesComponent extends RestorableAdministrativeVetoC
             addWorkflow: ISWP.Add,
             apiService: this.apiService,
             i18nService: this.i18nService,
-            rtc: FM_RTC,
+            rtc: FMAN_RTC,
             duplicate: duplicated
         };
 
@@ -105,7 +105,7 @@ export class AdministrativeVetoesComponent extends RestorableAdministrativeVetoC
                     if (entry instanceof XoAdministrativeVeto) {
                         const veto = new XoAdministrativeVetoName();
                         veto.name = entry.name;
-                        const obs = this.apiService.startOrder(FM_RTC, ISWP.Delete, veto, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+                        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Delete, veto, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
                         this.handleStartOrderResult(obs, () => {
                             this.detailsObject = null;
                             this.clearSelection();
@@ -122,7 +122,7 @@ export class AdministrativeVetoesComponent extends RestorableAdministrativeVetoC
         const request = new XoAdministrativeVetoName();
         request.name = entry.name;
 
-        const obs = this.apiService.startOrder(FM_RTC, ISWP.Details, request, XoAdministrativeVeto, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, request, XoAdministrativeVeto, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             const detailedEntry = (output[0] || null) as XoAdministrativeVeto;
             this.add(detailedEntry);
@@ -137,7 +137,7 @@ export class AdministrativeVetoesComponent extends RestorableAdministrativeVetoC
     }
 
     save() {
-        const obs = this.apiService.startOrder(FM_RTC, ISWP.Save, this.detailsObject.clone(), null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Save, this.detailsObject.clone(), null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             // console.log('save was successful?', output);
             this.dismiss();

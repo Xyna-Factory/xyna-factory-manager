@@ -17,8 +17,7 @@
  */
 import { Component, InjectionToken } from '@angular/core';
 
-import { XC_COMPONENT_DATA, XcDynamicComponent } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XC_COMPONENT_DATA, XcDynamicComponent, XcIconComponent, XcCheckboxComponent } from '@zeta/xc';
 
 
 @Component({
@@ -30,7 +29,7 @@ import { XcModule } from '@zeta/xc/xc.module';
         </div>
     `,
     styleUrls: ['change-template.component.scss'],
-    imports: [XcModule]
+    imports: [XcCheckboxComponent, XcIconComponent]
 })
 export class ChangeTemplateComponent extends XcDynamicComponent<{ dependency; XoDependencyType }> {
 

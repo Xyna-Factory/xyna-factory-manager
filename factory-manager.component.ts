@@ -21,8 +21,7 @@ import { RouterOutlet } from '@angular/router';
 import { AuthService } from '@zeta/auth';
 import { I18nService, LocaleService } from '@zeta/i18n';
 import { RouteComponent } from '@zeta/nav';
-import { XcNavListItem, XcNavListOrientation } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcNavListComponent, XcNavListItem, XcNavListOrientation } from '@zeta/xc';
 
 import { filter } from 'rxjs';
 
@@ -32,7 +31,10 @@ import { fman_error_code_translations_en_US } from './locale/fman-error-code-tra
 import { fman_translations_de_DE } from './locale/fman-translations.de-DE';
 import { fman_translations_en_US } from './locale/fman-translations.en-US';
 import { PluginService } from './plugin/plugin.service';
+import { ConfigService } from '@zeta/api/config.service';
+import { RuntimeContext } from '@zeta/api';
 
+export let FMAN_RTC = RuntimeContext.guiHttpApplication;
 
 interface XcRighteousNavListItem extends XcNavListItem {
     right?: string;
@@ -42,7 +44,7 @@ interface XcRighteousNavListItem extends XcNavListItem {
 @Component({
     templateUrl: './factory-manager.component.html',
     styleUrls: ['./factory-manager.component.scss'],
-    imports: [XcModule, RouterOutlet]
+    imports: [XcNavListComponent, RouterOutlet]
 })
 export class FactoryManagerComponent extends RouteComponent {
     private readonly i18n = inject(I18nService);
@@ -88,6 +90,20 @@ export class FactoryManagerComponent extends RouteComponent {
 
     constructor() {
         super();
+        const configService = inject(ConfigService);
+        if (configService.config['modeller']?.runtimeContext)  {
+            if (configService.config['modeller'].runtimeContext.application) {
+                FMAN_RTC = RuntimeContext.fromApplicationVersion(
+                    configService.config['modeller'].runtimeContext.application,
+                    configService.config['modeller'].runtimeContext.version
+                );
+            } else if (configService.config['modeller'].runtimeContext.workspace) {
+                FMAN_RTC = RuntimeContext.fromWorkspace(
+                    configService.config['modeller'].runtimeContext.workspace
+                );
+            }
+        }
+
 
 
         this.i18n.contextDismantlingSearch = true;

@@ -21,12 +21,10 @@ import { FactoryManagerSettingsService } from '@fman/misc/services/factory-manag
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { RouteComponent } from '@zeta/nav';
-import { XcDialogService } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcButtonComponent, XcDialogService, XcFormInputComponent, XcIconButtonComponent, XcIconComponent, XcPanelComponent, XcSpinnerComponent, XcTooltipDirective } from '@zeta/xc';
 
 import { Subscription } from 'rxjs';
 
-import { FM_RTC } from '../../const';
 import { CreateRuntimeApplicationDialogComponent } from '../dialog/create-runtime-application/create-runtime-application-dialog.component';
 import { ImportRuntimeApplicationDialogComponent } from '../dialog/import-runtime-application/import-runtime-application-dialog.component';
 import { MigrateWizardComponent, MigrationWizardData } from '../dialog/migrate-wizard/migrate-wizard.component';
@@ -37,12 +35,13 @@ import { XoRuntimeApplicationDetails } from '../xo/xo-runtime-application-detail
 import { XoRuntimeApplication, XoRuntimeApplicationArray } from '../xo/xo-runtime-application.model';
 import { Application, ApplicationDataSource } from './application-data-source';
 import { ApplicationTileComponent } from './application-tile/application-tile.component';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 @Component({
     templateUrl: './applications.component.html',
     styleUrls: ['./applications.component.scss'],
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, ApplicationTileComponent]
+    imports: [XcButtonComponent, XcFormInputComponent, XcIconButtonComponent, XcIconComponent, XcPanelComponent, XcSpinnerComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, ApplicationTileComponent]
 })
 export class ApplicationsComponent extends RouteComponent implements OnDestroy, AfterViewInit {
     private readonly i18n = inject(I18nService);
@@ -66,7 +65,7 @@ export class ApplicationsComponent extends RouteComponent implements OnDestroy, 
     constructor() {
         super();
 
-        this.dataSource = new ApplicationDataSource(this.apiService, FM_RTC, ORDER_TYPES.GET_RUNTIME_APPLICATIONS, undefined, XoRuntimeApplicationArray);
+        this.dataSource = new ApplicationDataSource(this.apiService, FMAN_RTC, ORDER_TYPES.GET_RUNTIME_APPLICATIONS, undefined, XoRuntimeApplicationArray);
         this.dataSource.dataChange.subscribe(() => this.filter());
         this.refresh();
 
@@ -146,7 +145,7 @@ export class ApplicationsComponent extends RouteComponent implements OnDestroy, 
         this.detailsObject = null;
         if (runtimeApplication) {
             this.apiService.startOrder(
-                FM_RTC,
+                FMAN_RTC,
                 ORDER_TYPES.GET_RUNTIME_APPLICATION_DETAILS,
                 runtimeApplication.proxy(),
                 XoRuntimeApplicationDetails,
@@ -163,7 +162,7 @@ export class ApplicationsComponent extends RouteComponent implements OnDestroy, 
 
 
     startMigration() {
-        this.dialogService.custom(MigrateWizardComponent, <MigrationWizardData>{i18n: this.i18n, rtc: FM_RTC, apiService: this.apiService});
+        this.dialogService.custom(MigrateWizardComponent, <MigrationWizardData>{i18n: this.i18n, rtc: FMAN_RTC, apiService: this.apiService});
     }
 
 

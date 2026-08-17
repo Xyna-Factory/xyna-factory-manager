@@ -18,8 +18,8 @@
 
 import { Injectable, inject } from '@angular/core';
 
-import { environment } from '@environments/environment';
 import { FACTORY_MANAGER } from '@fman/const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService, StartOrderOptionsBuilder, StartOrderResult, Xo } from '@zeta/api';
 import { XoPlugin, XoPluginArray } from '@zeta/xc';
 import { XoPluginPath, XoPluginPathArray } from '@zeta/xc/xc-form/definitions/xo/plugin-path.model';
@@ -27,7 +27,7 @@ import { XoPluginPath, XoPluginPathArray } from '@zeta/xc/xc-form/definitions/xo
 import { BehaviorSubject, catchError, filter, finalize, map, Observable, of } from 'rxjs';
 
 
-@Injectable({    
+@Injectable({
     providedIn: 'root'
 })
 export class PluginService {
@@ -54,7 +54,7 @@ export class PluginService {
             paths.append(new XoPluginPath()).append(new XoPluginPath());
             paths.data[1].path = 'manager';
             this.api.startOrder(
-                environment.zeta.xo.runtimeContext,
+                FMAN_RTC,
                 'xmcp.forms.plugin.FilterPluginsByPaths',
                 [paths], undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage
             ).pipe(

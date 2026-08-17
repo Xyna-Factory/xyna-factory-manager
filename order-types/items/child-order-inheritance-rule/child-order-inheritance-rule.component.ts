@@ -18,8 +18,7 @@
 import { Component, Injector, inject } from '@angular/core';
 
 import { XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcRichListItemComponent } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcIconButtonComponent, XcRichListItemComponent, XcTooltipDirective } from '@zeta/xc';
 
 import { XoParameterInheritanceRule } from '../../../xo/xo-parameter-inheritance-rule.model';
 
@@ -32,7 +31,7 @@ export interface ChildOrderInheritanceRuleComponentData {
 @Component({
     templateUrl: './child-order-inheritance-rule.component.html',
     styleUrls: ['./child-order-inheritance-rule.component.scss'],
-    imports: [XcModule, XcI18nTranslateDirective]
+    imports: [XcIconButtonComponent, XcTooltipDirective, XcI18nTranslateDirective]
 })
 export class ChildOrderInheritanceRuleComponent extends XcRichListItemComponent<void, ChildOrderInheritanceRuleComponentData> {
 

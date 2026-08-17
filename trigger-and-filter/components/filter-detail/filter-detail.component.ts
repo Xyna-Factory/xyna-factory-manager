@@ -17,7 +17,7 @@
  */
 import { ChangeDetectorRef, Component, inject, InjectionToken } from '@angular/core';
 
-import { FM_RTC } from '@fman/const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoRuntimeApplication } from '@fman/runtime-contexts/xo/xo-runtime-application.model';
 import { XoWorkspace } from '@fman/runtime-contexts/xo/xo-workspace.model';
 import { ORDER_TYPES } from '@fman/trigger-and-filter/order-types';
@@ -26,15 +26,14 @@ import { XoFilter } from '@fman/trigger-and-filter/xo/xo-filter.model';
 import { XoGetFilterDetailRequest } from '@fman/trigger-and-filter/xo/xo-get-filter-detail-request.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
-import { XC_COMPONENT_DATA, XcDialogService, XcDynamicComponent } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XC_COMPONENT_DATA, XcDialogService, XcDynamicComponent, XcPanelComponent } from '@zeta/xc';
 
 
 @Component({
     selector: 'filter-detail',
     templateUrl: './filter-detail.component.html',
     styleUrls: ['./filter-detail.component.scss'],
-    imports: [XcModule, XcI18nTranslateDirective]
+    imports: [XcPanelComponent, XcI18nTranslateDirective]
 })
 export class FilterDetailComponent extends XcDynamicComponent<XoFilter> {
     private readonly apiService = inject(ApiService);
@@ -57,7 +56,7 @@ export class FilterDetailComponent extends XcDynamicComponent<XoFilter> {
 
     refresh() {
         this.busy = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.FILTER_DETAIL, this.buildRequest(this.injectedData), XoFilterDetails, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.FILTER_DETAIL, this.buildRequest(this.injectedData), XoFilterDetails, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (!result.errorMessage) {

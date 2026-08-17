@@ -24,10 +24,9 @@ import { XoImportRTARequest } from '@fman/runtime-contexts/xo/xo-import-rta-requ
 import { XoManagedFileId } from '@fman/runtime-contexts/xo/xo-managed-file-id.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcDialogComponent, XcDialogService } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcFormDirective, XcFormLabelComponent, XcPanelComponent } from '@zeta/xc';
 
-import { FM_RTC } from '../../../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ORDER_TYPES } from '../../order-types';
 import { importRuntimeApplication_translations_de_DE } from './locale/import-runtime-application-translations.de-DE';
 import { importRuntimeApplication_translations_en_US } from './locale/import-runtime-application-translations.en-US';
@@ -42,7 +41,7 @@ class NodeWrapper {
     templateUrl: './import-runtime-application-dialog.component.html',
     styleUrls: ['./import-runtime-application-dialog.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective]
+    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcFormDirective, XcFormLabelComponent, XcPanelComponent, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class ImportRuntimeApplicationDialogComponent extends XcDialogComponent<boolean, void> {
     private readonly apiService = inject(ApiService);
@@ -68,7 +67,7 @@ export class ImportRuntimeApplicationDialogComponent extends XcDialogComponent<b
         this.i18n.setTranslations(LocaleService.DE_DE, importRuntimeApplication_translations_de_DE);
         this.i18n.setTranslations(LocaleService.EN_US, importRuntimeApplication_translations_en_US);
 
-        this.apiService.startOrderAssert<XoFactoryNodeArray>(FM_RTC, ORDER_TYPES.GET_FACTORY_NODES, [], XoFactoryNodeArray).subscribe(
+        this.apiService.startOrderAssert<XoFactoryNodeArray>(FMAN_RTC, ORDER_TYPES.GET_FACTORY_NODES, [], XoFactoryNodeArray).subscribe(
             nodes => {
                 this.nodes = nodes.data.map(node => new NodeWrapper(node, true));
                 this.cdr.markForCheck();
@@ -115,7 +114,7 @@ export class ImportRuntimeApplicationDialogComponent extends XcDialogComponent<b
         this.importRequest.targetNodes = new XoFactoryNodeArray();
         this.importRequest.targetNodes.data.push(...this.nodes.filter(node => node.used).map(node => node.node));
 
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.IMPORT_RTA, this.importRequest, undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.IMPORT_RTA, this.importRequest, undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             tap(result => {
                 if (result?.errorMessage) {
                     this.dialogService.error(result.errorMessage, null, result.stackTrace?.join('\r\n'));

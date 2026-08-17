@@ -19,19 +19,18 @@ import { Component, inject } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcAutocompleteDataWrapper, XcDialogComponent, XcDialogService, XcOptionItem, XcOptionItemString } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcAutocompleteDataWrapper, XcButtonComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormLabelComponent, XcFormValidatorRequiredDirective, XcOptionItem, XcOptionItemString, XcPanelComponent } from '@zeta/xc';
 
 import { throwError } from 'rxjs';
 import { catchError, filter, finalize, tap } from 'rxjs/operators';
 
-import { FM_RTC } from '../../../const';
 import { ORDER_TYPES } from '../../order-types';
 import { XoCreateWorkspaceRequest } from '../../xo/xo-create-workspace-request.model';
 import { XoRepositoryLink } from '../../xo/xo-repository-link.model';
 import { XoSVNRepositoryLink } from '../../xo/xo-svn-repository-link.model';
 import { createWorkspace_translations_de_DE } from './locale/create-workspace-translations.de-DE';
 import { createWorkspace_translations_en_US } from './locale/create-workspace-translations.en-US';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 type WorkspaceName = string;
@@ -40,7 +39,7 @@ type WorkspaceName = string;
 @Component({
     templateUrl: './create-workspace-dialog.component.html',
     styleUrls: ['./create-workspace-dialog.component.scss'],
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective]
+    imports: [XcButtonComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormLabelComponent, XcFormValidatorRequiredDirective, XcPanelComponent, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class CreateWorkspaceDialogComponent extends XcDialogComponent<WorkspaceName, void> {
     private readonly apiService = inject(ApiService);
@@ -84,7 +83,7 @@ export class CreateWorkspaceDialogComponent extends XcDialogComponent<WorkspaceN
             },
             [<XcOptionItem>{name: 'None', value: undefined}, XcOptionItemString(this.SVNRepositoryAccess)]
             /*
-            this.apiService.startOrderAssertFlat<XoRepositoryLinkType>(FM_RTC, ORDER_TYPES., undefined, XoRepositoryLinkType).pipe(
+            this.apiService.startOrderAssertFlat<XoRepositoryLinkType>(FMAN_RTC, ORDER_TYPES., undefined, XoRepositoryLinkType).pipe(
                 map(repositoryLinkTypes => repositoryLinkTypes.map(repositoryLinkType => XcOptionItemString(repositoryLinkType.value)))
             )
             */
@@ -110,7 +109,7 @@ export class CreateWorkspaceDialogComponent extends XcDialogComponent<WorkspaceN
         request.name = this.name;
         request.repositoryLink = this.repositoryLink;
         this.loading = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.CREATE_WORKSPACE, request, undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.CREATE_WORKSPACE, request, undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             catchError((error: any) => {
                 this.dismiss();
                 return throwError(error);

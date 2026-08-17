@@ -19,18 +19,18 @@ import { ChangeDetectorRef, Component, inject } from '@angular/core';
 
 import { StartOrderOptionsBuilder, XoApplication, XoArray, XoDescriber } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcModule } from '@zeta/xc/xc.module';
 
 import { Subject } from 'rxjs';
 import { filter, skip } from 'rxjs/operators';
 
-import { FM_RTC } from '../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { AddNewOrderInputSourceModalComponent, AddNewOrderInputSourceModalComponentData } from './modal/add-new-order-input-source-modal/add-new-order-input-source-modal.component';
 import { OrderInputSourceCloseEvent, OrderInputSourceDetailsComponent } from './order-input-source-details/order-input-source-details.component';
 import { ORDER_INPUT_SOURCE_ISWP, RestorableOrderInputSourcesComponent } from './restorable-order-input-sources.component';
 import { XoGetOrderInputSourceRequest } from './xo/xo-get-order-input-source-request.model';
 import { XoOrderInputSourceId } from './xo/xo-order-input-source-id.model';
 import { XoOrderInputSource, XoOrderInputSourceArray } from './xo/xo-order-input-source.model';
+import { XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective } from '@zeta/xc';
 
 
 const ISWP = ORDER_INPUT_SOURCE_ISWP;
@@ -45,7 +45,7 @@ export interface InputDataTypesTreeData {
 @Component({
     templateUrl: './order-input-sources.component.html',
     styleUrls: ['./order-input-sources.component.scss'],
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, OrderInputSourceDetailsComponent]
+    imports: [XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, OrderInputSourceDetailsComponent]
 })
 export class OrderInputSourcesComponent extends RestorableOrderInputSourcesComponent {
     private readonly cdr = inject(ChangeDetectorRef);
@@ -56,7 +56,7 @@ export class OrderInputSourcesComponent extends RestorableOrderInputSourcesCompo
     constructor() {
         super();
         
-        this.initRemoteTableDataSource(XoOrderInputSource, XoOrderInputSourceArray, FM_RTC, ISWP.List);
+        this.initRemoteTableDataSource(XoOrderInputSource, XoOrderInputSourceArray, FMAN_RTC, ISWP.List);
 
         this.refresh();
 
@@ -171,7 +171,7 @@ export class OrderInputSourcesComponent extends RestorableOrderInputSourcesCompo
             getOrderTypes: ISWP.GetOrderTypes,
             getGeneratingOrderTypes: ISWP.GetGeneratingOrderTypes,
             i18nService: this.i18nService,
-            rtc: FM_RTC,
+            rtc: FMAN_RTC,
             duplicate: duplicated,
              
             GET_GENERATING_ORDER_TYPES_EMPTY_LIST_ERROR: this.GET_GENERATING_ORDER_TYPES_EMPTY_LIST_ERROR,
@@ -193,7 +193,7 @@ export class OrderInputSourcesComponent extends RestorableOrderInputSourcesCompo
         request.inputSourceName = entry.name;
         request.revision = entry.revision;
 
-        const obs = this.apiService.startOrder(FM_RTC, ISWP.Details, request, XoOrderInputSource, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, request, XoOrderInputSource, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             const detailedEntry = (output[0] || null) as XoOrderInputSource;
             this.add(detailedEntry);
@@ -212,7 +212,7 @@ export class OrderInputSourcesComponent extends RestorableOrderInputSourcesCompo
                     if (entry instanceof XoOrderInputSource) {
                         const id = new XoOrderInputSourceId();
                         id.id = entry.id;
-                        const obs = this.apiService.startOrder(FM_RTC, ISWP.Delete, id, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+                        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Delete, id, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
                         this.handleStartOrderResult(obs, () => {
                             this.detailsObject = null;
                             this.clearSelection();

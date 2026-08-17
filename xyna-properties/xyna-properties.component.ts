@@ -20,12 +20,11 @@ import { Component } from '@angular/core';
 import { StartOrderOptionsBuilder } from '@zeta/api';
 import { XoDocumentation, XoDocumentationLanguage, XoXynaProperty, XoXynaPropertyArray, XoXynaPropertyKey } from '@zeta/auth/xo/xyna-property.model';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcComponentTemplate, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcButtonComponent, XcComponentTemplate, XcFormInputComponent, XcFormTextareaComponent, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
 
 import { filter } from 'rxjs';
 
-import { FM_RTC } from '../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ExportXynaPropertiesDialogComponent } from './dialog/export-xyna-properties/export-xyna-properties-dialog.component';
 import { ImportXynaPropertiesDialogComponent } from './dialog/import-xyna-properties/import-xyna-properties-dialog.component';
 import { AddNewXynaPropertyModalComponent, AddNewXynaPropertyModalComponentData } from './modal/add-new-xyna-property-modal/add-new-xyna-property-modal.component';
@@ -39,7 +38,7 @@ const ISWP = XYNA_PROPERTY_ISWP;
 @Component({
     templateUrl: './xyna-properties.component.html',
     styleUrls: ['./xyna-properties.component.scss'],
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective]
+    imports: [XcButtonComponent, XcFormInputComponent, XcFormTextareaComponent, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
 
@@ -83,7 +82,7 @@ export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
             return [new XcComponentTemplate(XynaPropertyTableValueTemplateComponent, data)];
         };
 
-        this.initRemoteTableDataSource(XoXynaProperty, XoXynaPropertyArray, FM_RTC, ISWP.List);
+        this.initRemoteTableDataSource(XoXynaProperty, XoXynaPropertyArray, FMAN_RTC, ISWP.List);
         const lang = new XoDocumentationLanguage();
         lang.languageTag = this.i18nService.language;
         this.remoteTableDataSource.input = lang;
@@ -124,7 +123,7 @@ export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
         const key = new XoXynaPropertyKey();
         key.key = entry.key;
 
-        const obs = this.apiService.startOrder(FM_RTC, ISWP.Details, key, XoXynaProperty, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, key, XoXynaProperty, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             this.detailsObject = (output[0] || null) as XoXynaProperty;
 
@@ -146,7 +145,7 @@ export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
             addWorkflow: ISWP.Add,
             apiService: this.apiService,
             i18nService: this.i18nService,
-            rtc: FM_RTC,
+            rtc: FMAN_RTC,
             duplicate: duplicatedProperty
         };
 
@@ -160,7 +159,7 @@ export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
         if (entry instanceof XoXynaProperty) {
             const key = new XoXynaPropertyKey();
             key.key = entry.key;
-            const obs = this.apiService.startOrder(FM_RTC, ISWP.Details, key, XoXynaProperty, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+            const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, key, XoXynaProperty, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
             this.handleStartOrderResult(obs, output => {
                 const duplicatedProperty = (output[0] || null) as XoXynaProperty;
                 this.add(duplicatedProperty);
@@ -181,7 +180,7 @@ export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
                     if (entry instanceof XoXynaProperty) {
                         const key = new XoXynaPropertyKey();
                         key.key = entry.key;
-                        const obs = this.apiService.startOrder(FM_RTC, ISWP.Delete, key, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+                        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Delete, key, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
                         this.handleStartOrderResult(obs, output => {
                             this.detailsObject = null;
                             this.clearSelection();
@@ -199,7 +198,7 @@ export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
     }
 
     save() {
-        const obs = this.apiService.startOrder(FM_RTC, ISWP.Save, this.detailsObject.clone(), null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Save, this.detailsObject.clone(), null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             // console.log('save was successful', output);
             this.dismiss();
@@ -212,7 +211,7 @@ export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
         const fn = () => {
             const resetObj = this.detailsObject.clone();
             resetObj.data[XoXynaProperty.getAccessorMap().value] = undefined;
-            const obs = this.apiService.startOrder(FM_RTC, ISWP.Save, resetObj, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+            const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Save, resetObj, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
             this.handleStartOrderResult(obs, output => {
                 this.dismiss();
                 this.refresh();

@@ -21,10 +21,9 @@ import { catchError, finalize, tap } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcAutocompleteDataWrapper, XcDialogComponent, XcDialogService, XcOptionItem } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcAutocompleteDataWrapper, XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormLabelComponent, XcFormValidatorRequiredDirective, XcOptionItem } from '@zeta/xc';
 
-import { FM_RTC } from '../../../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XynaPropertiesFormat, XYNA_PROPERTY_ISWP } from '../../restorable-xyna-properties.component';
 import { XoImportSettings } from '../../xo/xo-import-settings.model';
 import { XoXynaPropertyExport } from '../../xo/xo-xyna-property-export.model';
@@ -39,7 +38,7 @@ const ISWP = XYNA_PROPERTY_ISWP;
     templateUrl: './import-xyna-properties-dialog.component.html',
     styleUrls: ['./import-xyna-properties-dialog.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective]
+    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormLabelComponent, XcFormValidatorRequiredDirective, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class ImportXynaPropertiesDialogComponent extends XcDialogComponent<boolean, void> {
     private readonly apiService = inject(ApiService);
@@ -126,7 +125,7 @@ export class ImportXynaPropertiesDialogComponent extends XcDialogComponent<boole
         }
 
         this.importing = true;
-        this.apiService.startOrder(FM_RTC, ISWP.Import, [this.importData, this.importSettings], undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, ISWP.Import, [this.importData, this.importSettings], undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             tap(result => {
                 if (result?.errorMessage) {
                     this.dialogService.error(result.errorMessage, null, result.stackTrace?.join('\r\n'));

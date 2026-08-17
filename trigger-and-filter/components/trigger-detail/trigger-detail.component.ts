@@ -17,7 +17,7 @@
  */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, InjectionToken } from '@angular/core';
 
-import { FM_RTC } from '@fman/const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoRuntimeApplication } from '@fman/runtime-contexts/xo/xo-runtime-application.model';
 import { XoWorkspace } from '@fman/runtime-contexts/xo/xo-workspace.model';
 import { ORDER_TYPES } from '@fman/trigger-and-filter/order-types';
@@ -27,8 +27,7 @@ import { XoTriggerDetail } from '@fman/trigger-and-filter/xo/xo-trigger-detail.m
 import { XoTrigger } from '@fman/trigger-and-filter/xo/xo-trigger.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
-import { XC_COMPONENT_DATA, XcDialogService, XcDynamicComponent } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XC_COMPONENT_DATA, XcDialogService, XcDynamicComponent, XcPanelComponent } from '@zeta/xc';
 
 import { StartParameterDetailComponent } from '../start-parameter-deatil/start-parameter-detail.component';
 
@@ -38,7 +37,7 @@ import { StartParameterDetailComponent } from '../start-parameter-deatil/start-p
     templateUrl: './trigger-detail.component.html',
     styleUrls: ['./trigger-detail.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [XcModule, XcI18nTranslateDirective, StartParameterDetailComponent]
+    imports: [XcPanelComponent, XcI18nTranslateDirective, StartParameterDetailComponent]
 })
 export class TriggerDetailComponent extends XcDynamicComponent<XoTrigger> {
     private readonly apiService = inject(ApiService);
@@ -62,7 +61,7 @@ export class TriggerDetailComponent extends XcDynamicComponent<XoTrigger> {
     }
 
     getStartParameter() {
-        this.apiService.startOrderAssertFlat<XoStartParameterDetails>(FM_RTC, ORDER_TYPES.POSSIBLE_START_PARAMETER_TRIGGER, this.injectedData, XoStartParameterDetailsArray).subscribe({
+        this.apiService.startOrderAssertFlat<XoStartParameterDetails>(FMAN_RTC, ORDER_TYPES.POSSIBLE_START_PARAMETER_TRIGGER, this.injectedData, XoStartParameterDetailsArray).subscribe({
             next: result => {
                 this.startParameter = result;
                 this.cdr.markForCheck();
@@ -75,7 +74,7 @@ export class TriggerDetailComponent extends XcDynamicComponent<XoTrigger> {
 
     refresh() {
         this.busy = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.TRIGGER_DETAIL, this.buildRequest(this.injectedData), XoTriggerDetail, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.TRIGGER_DETAIL, this.buildRequest(this.injectedData), XoTriggerDetail, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (!result.errorMessage) {

@@ -24,10 +24,9 @@ import { XoFilter } from '@fman/trigger-and-filter/xo/xo-filter.model';
 import { XoTriggerInstance, XoTriggerInstanceArray } from '@fman/trigger-and-filter/xo/xo-trigger-instance.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcAutocompleteDataWrapper, XcDialogComponent, XcDialogService, XcOptionItem, XcOptionItemString } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcAutocompleteDataWrapper, XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcOptionItem, XcOptionItemString } from '@zeta/xc';
 
-import { FM_RTC } from '../../../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ORDER_TYPES } from '../../order-types';
 
 
@@ -35,7 +34,7 @@ import { ORDER_TYPES } from '../../order-types';
     templateUrl: './deploy-filter-dialog.component.html',
     styleUrls: ['./deploy-filter-dialog.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective]
+    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class DeployFilterDialogComponent extends XcDialogComponent<XoFilterInstance, XoFilter> {
     private readonly apiService = inject(ApiService);
@@ -72,7 +71,7 @@ export class DeployFilterDialogComponent extends XcDialogComponent<XoFilterInsta
     }
 
     fillContextWrapper() {
-        this.apiService.startOrderAssertFlat<XoRuntimeContext>(FM_RTC, ORDER_TYPES.POSSIBLE_CONTEXT_FILTER, this.injectedData, XoRuntimeContextArray)
+        this.apiService.startOrderAssertFlat<XoRuntimeContext>(FMAN_RTC, ORDER_TYPES.POSSIBLE_CONTEXT_FILTER, this.injectedData, XoRuntimeContextArray)
             .subscribe({
                 next: result => {
                     this.runtimeContextDataWrapper.values = result.map(rtc => <XcOptionItem<XoRuntimeContext>>{ name: rtc.label, value: rtc });
@@ -85,7 +84,7 @@ export class DeployFilterDialogComponent extends XcDialogComponent<XoFilterInsta
 
     fillTriggerInstanceWrapper() {
         if (this.context) {
-            this.apiService.startOrderAssertFlat<XoTriggerInstance>(FM_RTC, ORDER_TYPES.POSSIBLE_TRIGGER_INSTANCES, [this.injectedData, this.context], XoTriggerInstanceArray)
+            this.apiService.startOrderAssertFlat<XoTriggerInstance>(FMAN_RTC, ORDER_TYPES.POSSIBLE_TRIGGER_INSTANCES, [this.injectedData, this.context], XoTriggerInstanceArray)
                 .subscribe({
                     next: result => {
                         this.triggerInstanceDataWrapper.values = result.map(triggerInstance => XcOptionItemString(triggerInstance.triggerInstance));
@@ -111,7 +110,7 @@ export class DeployFilterDialogComponent extends XcDialogComponent<XoFilterInsta
         request.documentation = this.documentation;
         request.optional = this.optional;
 
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.DEPLOY_FILTER, request, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.DEPLOY_FILTER, request, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (!result.errorMessage) {

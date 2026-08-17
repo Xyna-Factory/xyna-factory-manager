@@ -21,12 +21,10 @@ import { FactoryManagerSettingsService } from '@fman/misc/services/factory-manag
 import { ApiService } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { RouteComponent } from '@zeta/nav';
-import { XcDialogService, XcRemoteDataSource, XcSortDirection, XcSortPredicate } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcButtonComponent, XcDialogService, XcFormInputComponent, XcIconButtonComponent, XcIconComponent, XcPanelComponent, XcRemoteDataSource, XcSortDirection, XcSortPredicate, XcSpinnerComponent, XcTooltipDirective } from '@zeta/xc';
 
 import { Subscription } from 'rxjs';
 
-import { FM_RTC } from '../../const';
 import { CreateWorkspaceDialogComponent } from '../dialog/create-workspace/create-workspace-dialog.component';
 import { MigrateWizardComponent, MigrationWizardData } from '../dialog/migrate-wizard/migrate-wizard.component';
 import { runtime_contexts_translations_de_DE } from '../locale/runtime-contexts-translations.de-DE';
@@ -38,12 +36,13 @@ import { XoRuntimeContext } from '../xo/xo-runtime-context.model';
 import { XoWorkspaceDetails } from '../xo/xo-workspace-details.model';
 import { XoWorkspace, XoWorkspaceArray } from '../xo/xo-workspace.model';
 import { WorkspaceTileComponent } from './workspace-tile/workspace-tile.component';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 @Component({
     templateUrl: './workspaces.component.html',
     styleUrls: ['./workspaces.component.scss'],
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, WorkspaceTileComponent]
+    imports: [XcButtonComponent, XcFormInputComponent, XcIconButtonComponent, XcIconComponent, XcPanelComponent, XcSpinnerComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, WorkspaceTileComponent]
 })
 export class WorkspacesComponent extends RouteComponent implements AfterViewInit, OnDestroy {
     private readonly i18n = inject(I18nService);
@@ -67,7 +66,7 @@ export class WorkspacesComponent extends RouteComponent implements AfterViewInit
     constructor() {
         super();
 
-        this.remoteDataSource = new XcRemoteDataSource(this.apiService, FM_RTC, ORDER_TYPES.GET_WORKSPACES, undefined, XoWorkspaceArray);
+        this.remoteDataSource = new XcRemoteDataSource(this.apiService, FMAN_RTC, ORDER_TYPES.GET_WORKSPACES, undefined, XoWorkspaceArray);
         this.remoteDataSource.compareFn = XcSortPredicate(XcSortDirection.asc, t => t.name.toLowerCase());
         this.remoteDataSource.dataChange.subscribe(() => this.filter());
         this.refresh();
@@ -142,7 +141,7 @@ export class WorkspacesComponent extends RouteComponent implements AfterViewInit
 
 
     startMigration() {
-        this.dialogService.custom(MigrateWizardComponent, <MigrationWizardData>{i18n: this.i18n, rtc: FM_RTC, apiService: this.apiService});
+        this.dialogService.custom(MigrateWizardComponent, <MigrationWizardData>{i18n: this.i18n, rtc: FMAN_RTC, apiService: this.apiService});
     }
 
 
@@ -157,12 +156,12 @@ export class WorkspacesComponent extends RouteComponent implements AfterViewInit
     selectDetails(runtimeContext: XoRuntimeContext) {
         this.detailsObject = null;
         if (runtimeContext instanceof XoWorkspace) {
-            this.apiService.startOrderAssert<XoWorkspaceDetails>(FM_RTC, ORDER_TYPES.GET_WORKSPACE_DETAILS, runtimeContext.proxy(), XoWorkspaceDetails, null).subscribe(
+            this.apiService.startOrderAssert<XoWorkspaceDetails>(FMAN_RTC, ORDER_TYPES.GET_WORKSPACE_DETAILS, runtimeContext.proxy(), XoWorkspaceDetails, null).subscribe(
                 workspaceDetails => this.detailsObject = workspaceDetails
             );
         }
         if (runtimeContext instanceof XoApplicationDefinition) {
-            this.apiService.startOrderAssert<XoApplicationDefinitionDetails>(FM_RTC, ORDER_TYPES.GET_APPLICATION_DEFINITION_DETAILS, runtimeContext.proxy(), XoApplicationDefinitionDetails, null).subscribe(
+            this.apiService.startOrderAssert<XoApplicationDefinitionDetails>(FMAN_RTC, ORDER_TYPES.GET_APPLICATION_DEFINITION_DETAILS, runtimeContext.proxy(), XoApplicationDefinitionDetails, null).subscribe(
                 applicationDefinitionDetails => this.detailsObject = applicationDefinitionDetails
             );
         }

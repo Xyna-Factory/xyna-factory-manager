@@ -18,15 +18,15 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcModule } from '@zeta/xc/xc.module';
 
 import { XoOrderCustoms } from '../../../xo/xo-ordercustoms.model';
+import { XcFormInputComponent, XcPanelComponent } from '@zeta/xc';
 
 
 @Component({
     selector: 'custom-information-form',
     templateUrl: './custom-information-form.component.html',
-    imports: [XcModule, XcI18nTranslateDirective]
+    imports: [XcFormInputComponent, XcPanelComponent, XcI18nTranslateDirective]
 })
 export class CustomInformationFormComponent {
     _customFields: XoOrderCustoms;

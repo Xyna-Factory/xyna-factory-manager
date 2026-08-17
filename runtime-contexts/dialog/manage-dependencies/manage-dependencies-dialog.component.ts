@@ -21,13 +21,12 @@ import { Component, inject, OnDestroy } from '@angular/core';
 import { XoForce } from '@yggdrasil/force.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcDialogComponent, XcDialogService, XcLocalTableDataSource, XcRemoteTableDataSource } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcIconComponent, XcLocalTableDataSource, XcRemoteTableDataSource, XcTableComponent, XcTooltipDirective } from '@zeta/xc';
 
 import { Observable, Subscription, throwError } from 'rxjs';
 import { catchError, filter, finalize, first, map, skip, switchMap } from 'rxjs/operators';
 
-import { FM_RTC } from '../../../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { FactoryManagerSettingsService } from '../../../misc/services/factory-manager-settings.service';
 import { createDependenciesTableInfoClass, createDependenciesTableInput, createFilterEnumOfState } from '../../dependencies';
 import { ORDER_TYPES } from '../../order-types';
@@ -44,7 +43,7 @@ import { manageDependencies_translations_en_US } from './locale/manage-dependenc
 @Component({
     templateUrl: './manage-dependencies-dialog.component.html',
     styleUrls: ['./manage-dependencies-dialog.component.scss'],
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe, NgClass]
+    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcIconComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe, NgClass]
 })
 export class ManageDependenciesDialogComponent extends XcDialogComponent<boolean, XoRuntimeContext> implements OnDestroy {
     private readonly apiService = inject(ApiService);
@@ -70,7 +69,7 @@ export class ManageDependenciesDialogComponent extends XcDialogComponent<boolean
         this.i18n.setTranslations(LocaleService.EN_US, manageDependencies_translations_en_US);
 
         // create data source
-        this.dataSource = new XcRemoteTableDataSource(this.apiService, undefined, FM_RTC, ORDER_TYPES.GET_DEPENDENT_RTCS, createDependenciesTableInfoClass(true));
+        this.dataSource = new XcRemoteTableDataSource(this.apiService, undefined, FMAN_RTC, ORDER_TYPES.GET_DEPENDENT_RTCS, createDependenciesTableInfoClass(true));
         this.dataSource.output = XoDependencyArray;
         this.dataSource.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
         this.dataSource.filterEnums.set(XoDependency.getAccessorMap().runtimeContext.stateTemplates, createFilterEnumOfState(this.i18n));
@@ -155,7 +154,7 @@ export class ManageDependenciesDialogComponent extends XcDialogComponent<boolean
         const dependencies = new XoDependencyArray();
         dependencies.data.push(...Array.from(this.changedDependencies.values()));
 
-        return this.apiService.startOrder(FM_RTC, ORDER_TYPES.SET_DEPENDENT_RTCS, [this.injectedData.proxy(), dependencies, XoForce.withForce(force)], undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        return this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.SET_DEPENDENT_RTCS, [this.injectedData.proxy(), dependencies, XoForce.withForce(force)], undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             catchError((error: any) => {
                 this.dismiss();
                 return throwError(error);

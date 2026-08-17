@@ -19,24 +19,23 @@ import { Component, inject } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcDialogComponent, XcDialogService } from '@zeta/xc';
-import { XcModule } from '@zeta/xc/xc.module';
+import { XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcIconComponent } from '@zeta/xc';
 
 import { throwError } from 'rxjs';
 import { catchError, filter, finalize, tap } from 'rxjs/operators';
 
-import { FM_RTC } from '../../../const';
 import { ORDER_TYPES } from '../../order-types';
 import { XoClearWorkspaceRequest } from '../../xo/xo-clear-workspace-request.model';
 import { XoWorkspace } from '../../xo/xo-workspace.model';
 import { clearWorkspace_translations_de_DE } from './locale/clear-workspace-translations.de-DE';
 import { clearWorkspace_translations_en_US } from './locale/clear-workspace-translations.en-US';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 @Component({
     templateUrl: './clear-workspace-dialog.component.html',
     styleUrls: ['./clear-workspace-dialog.component.scss'],
-    imports: [XcModule, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
+    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcIconComponent, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class ClearWorkspaceDialogComponent extends XcDialogComponent<boolean, XoWorkspace> {
     private readonly apiService = inject(ApiService);
@@ -61,7 +60,7 @@ export class ClearWorkspaceDialogComponent extends XcDialogComponent<boolean, Xo
         request.workspace = this.injectedData.proxy();
         request.stopRunningOrders = this.stopRunningOrders;
         this.loading = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.CLEAR_WORKSPACE, request, undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.CLEAR_WORKSPACE, request, undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             catchError((error: any) => {
                 this.dismiss();
                 return throwError(error);
