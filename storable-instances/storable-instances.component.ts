@@ -1,6 +1,3 @@
-import { Observable, of, Subject } from 'rxjs';
-import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
-
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -18,14 +15,17 @@ import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
+import { Observable, of, Subject } from 'rxjs';
+import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
+
 import { Component, inject, OnInit } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService, FullQualifiedName, RuntimeContext, RuntimeContextType, StartOrderOptionsBuilder, StartOrderResult, Xo, XoDescriber, XoObject, XoRuntimeContext, XoStorable, XoStructureMethod, XoWorkspace } from '@zeta/api';
 import { XoXynaProperty, XoXynaPropertyKey } from '@zeta/auth/xo/xyna-property.model';
 import { Comparable, isObject } from '@zeta/base';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcButtonComponent, XcDialogService, XcFormAutocompleteComponent, XcIconButtonComponent, XcLocalTableDataSource, XcMasterDetailComponent, XcOptionItem, XcPanelComponent, XcSelectionModel, XcSortDirection, XcStructureTreeDataSource, XcTableColumn, XcTableComponent, XcTooltipDirective, XoTableColumn, XoTableColumnArray, XoTableInfo } from '@zeta/xc';
 
-import { FMAN_RTC } from '@fman/factory-manager.component';
 import { FactoryManagerSettingsService } from '../misc/services/factory-manager-settings.service';
 import { XYNA_PROPERTY_ISWP } from '../xyna-properties/restorable-xyna-properties.component';
 import { StorableInstanceDetailComponent } from './components/storable-instance-detail/storable-instance-detail.component';
@@ -289,7 +289,7 @@ export class StorableInstancesComponent implements OnInit {
         this.storableTableSource = new StorableTableDataSource(this.i18nService, false);
         this.storableTableSource.apiService = this.apiService;
         this.storableTableSource.dialogs = this.dialogService;
-        this.storableTableSource.selectionModel.selectionChange.subscribe((model: XcSelectionModel<Comparable>) => {
+        this.storableTableSource.selectionModel.selectionChange.subscribe(model => {
             this.selectedRow = this.canEditTable() ? (model.selection[0] as XoObject) : null;
             this.selectedStorable = this.selectedRow;
             if (this.selectedRow) {

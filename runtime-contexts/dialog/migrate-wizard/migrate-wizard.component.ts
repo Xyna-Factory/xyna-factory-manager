@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -16,17 +15,17 @@ import { NgClass } from '@angular/common';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject } from '@angular/core';
+import { filter, finalize } from 'rxjs/operators';
 
+import { NgClass } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { XoRTCMigrationResultArray } from '@fman/runtime-contexts/xo/xo-rtcmigration-result.model';
 import { XoRTCName } from '@fman/runtime-contexts/xo/xo-rtcname.model';
 import { XoRuntimeContextTableEntry, XoRuntimeContextTableEntryArray } from '@fman/runtime-contexts/xo/xo-runtime-context-table-entry.model';
-import { ApiService, RuntimeContext, StartOrderOptionsBuilder, Xo, XoObject } from '@zeta/api';
+import { ApiService, RuntimeContext, StartOrderOptionsBuilder, Xo, XoArray, XoObject } from '@zeta/api';
 import { Comparable } from '@zeta/base';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogWrapperComponent, XcIconComponent, XcLocalTableDataSource, XcPanelComponent, XcRemoteTableDataSource, XcSpinnerComponent, XcTableComponent, XcTableDataSource, XcTooltipDirective, XDSIconName, XoRemappingTableInfoClass, XoTableColumn, XoTableInfo } from '@zeta/xc';
-
-import { filter, finalize } from 'rxjs/operators';
 
 import { FactoryManagerSettingsService } from '../../../misc/services/factory-manager-settings.service';
 import { createFilterEnumOfState } from '../../dependencies';
@@ -131,9 +130,9 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
     private migrateWizardState: MigrateWizardStateEnum = this.injectedData.presetState || MigrateWizardStateEnum.CHOOSENODE;
 
     private readonly tableNodesSource: XcLocalTableDataSource<XoFactoryNode>;
-    private readonly tableSourcesSource: XcRemoteTableDataSource;
-    private readonly tableMigrationSource: XcLocalTableDataSource;
-    private tableTargetsSource: XcRemoteTableDataSource;
+    private readonly tableSourcesSource: XcRemoteTableDataSource<XoRuntimeContextTableEntry, XoArray<XoRuntimeContextTableEntry>>;
+    private readonly tableMigrationSource: XcLocalTableDataSource<MigrationObject>;
+    private tableTargetsSource: XcRemoteTableDataSource<XoRuntimeContextTableEntry, XoArray<XoRuntimeContextTableEntry>>;
 
     private activeSelectedNode: XoFactoryNode;
     private activeSelectedSource: XoRuntimeContext;
@@ -200,7 +199,7 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
     }
 
     /** Returns the table source for the current step */
-    get tableSource(): XcTableDataSource {
+    get tableSource(): XcTableDataSource<any> {
         switch (this.stepNumber) {
             case 0:
                 if (!this.activeSelectedNode && this.currentWizardSelectedNode) {
@@ -234,7 +233,7 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
         }
 
         // Build node table
-        this.tableNodesSource = new XcLocalTableDataSource(this.injectedData.i18n);
+        this.tableNodesSource = new XcLocalTableDataSource<XoFactoryNode>(this.injectedData.i18n);
         this.tableNodesSource.localTableData = {
             rows: [],
             columns: [
@@ -245,7 +244,7 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
         this.tableNodesSource.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
 
         // Build migration summary table
-        this.tableMigrationSource = new XcLocalTableDataSource(this.injectedData.i18n);
+        this.tableMigrationSource = new XcLocalTableDataSource<MigrationObject>(this.injectedData.i18n);
         this.tableMigrationSource.localTableData = {
             rows: [],
             columns: [
@@ -314,7 +313,7 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
         this.tableSourcesSource.dataChange.subscribe(values => {
             if (!this.activeSelectedSource && this.currentWizardSelectedSource && values.length !== 0) {
                 // If something was selected previously, this will restore the selection
-                this.restoreEntry(values, this.currentWizardSelectedSource, this.tableSourcesSource);
+                this.restoreEntry(values as XoRuntimeContextTableEntry[], this.currentWizardSelectedSource, this.tableSourcesSource);
             }
         });
 
@@ -334,7 +333,7 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
         this.tableTargetsSource.dataChange.subscribe(values => {
             if (!this.activeSelectedTarget && this.currentWizardSelectedTarget) {
                 // If something was selected previously, this will restore the selection
-                this.restoreEntry(values, this.currentWizardSelectedTarget, this.tableTargetsSource);
+                this.restoreEntry(values as XoRuntimeContextTableEntry[], this.currentWizardSelectedTarget, this.tableTargetsSource);
             }
         });
 
@@ -344,17 +343,17 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
         this.tableTargetsSource.selectionModel.activatedChange.pipe(filter(target => !!target.activated)).subscribe(this.stepForwardIfAllowed.bind(this));
     }
 
-    private restoreEntry(entrys: XoObject[], target: XoRuntimeContext, dataSource: XcRemoteTableDataSource) {
-        if (entrys.find(this.restore(target))) {
-            dataSource.selectionModel.select(
-                entrys.find(this.restore(target))
-            );
+    private restoreEntry(entrys: XoRuntimeContextTableEntry[], target: XoRuntimeContext, dataSource: XcRemoteTableDataSource<XoRuntimeContextTableEntry, XoArray<XoRuntimeContextTableEntry>>) {
+        const entry = entrys.find(this.restore(target));
+
+        if (entry) {
+            dataSource.selectionModel.select(entry);
         }
     }
 
     private readonly restore = (target: XoRuntimeContext) => (entry: XoRuntimeContextTableEntry) => (target ? target.uniqueKey : '') === (entry ? entry.runtimeContext.uniqueKey : '');
 
-    private buildRTCTable(workflowInput?: Xo | Xo[]): XcRemoteTableDataSource {
+    private buildRTCTable(workflowInput?: Xo | Xo[]): XcRemoteTableDataSource<XoRuntimeContextTableEntry, XoArray<XoRuntimeContextTableEntry>> {
         // Template for state
         const remappingTableInfoClass = XoRemappingTableInfoClass(RuntimeContextTableInfo, XoRuntimeContextTableEntry, {
             src: t => t.runtimeContext.state,
@@ -455,27 +454,27 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
             this.migrate();
             this.migrateWizardState =
                 MigrateWizardStateArray[
-                    this.stepNumber + stepCount >= 0 && this.stepNumber + stepCount < MigrateWizardStateArray.length ? this.stepNumber + stepCount : 0
+                this.stepNumber + stepCount >= 0 && this.stepNumber + stepCount < MigrateWizardStateArray.length ? this.stepNumber + stepCount : 0
                 ];
         } else if (this.stepNumber + stepCount === MigrateWizardStateArray.length - 1) {
             /** Second laste step (overview) */
             this.migrationData.push(new MigrationObject(this.currentWizardSelectedNode, this.currentWizardSelectedSource, this.currentWizardSelectedTarget));
             this.migrateWizardState =
                 MigrateWizardStateArray[
-                    this.stepNumber + stepCount >= 0 && this.stepNumber + stepCount < MigrateWizardStateArray.length ? this.stepNumber + stepCount : 0
+                this.stepNumber + stepCount >= 0 && this.stepNumber + stepCount < MigrateWizardStateArray.length ? this.stepNumber + stepCount : 0
                 ];
         } else if (this.migrateWizardState === MigrateWizardStateEnum.CHOOSENODE && this.injectedData.presetSource) {
             /** Skip source selection if preset */
             this.migrateWizardState =
                 MigrateWizardStateArray[
-                    this.stepNumber + stepCount + 1 >= 0 && this.stepNumber + stepCount + 1 < MigrateWizardStateArray.length
-                        ? this.stepNumber + stepCount + 1
-                        : 0
+                this.stepNumber + stepCount + 1 >= 0 && this.stepNumber + stepCount + 1 < MigrateWizardStateArray.length
+                    ? this.stepNumber + stepCount + 1
+                    : 0
                 ];
         } else {
             this.migrateWizardState =
                 MigrateWizardStateArray[
-                    this.stepNumber + stepCount >= 0 && this.stepNumber + stepCount < MigrateWizardStateArray.length ? this.stepNumber + stepCount : 0
+                this.stepNumber + stepCount >= 0 && this.stepNumber + stepCount < MigrateWizardStateArray.length ? this.stepNumber + stepCount : 0
                 ];
         }
         this.afterStep();

@@ -1,3 +1,5 @@
+import { Subscription } from 'rxjs';
+
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -15,15 +17,13 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { AfterViewInit, Component, OnDestroy, QueryList, ViewChildren, inject } from '@angular/core';
-
+import { AfterViewInit, Component, inject, OnDestroy, QueryList, ViewChildren } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { FactoryManagerSettingsService } from '@fman/misc/services/factory-manager-settings.service';
 import { ApiService } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { RouteComponent } from '@zeta/nav';
 import { XcButtonComponent, XcDialogService, XcFormInputComponent, XcIconButtonComponent, XcIconComponent, XcPanelComponent, XcRemoteDataSource, XcSortDirection, XcSortPredicate, XcSpinnerComponent, XcTooltipDirective } from '@zeta/xc';
-
-import { Subscription } from 'rxjs';
 
 import { CreateWorkspaceDialogComponent } from '../dialog/create-workspace/create-workspace-dialog.component';
 import { MigrateWizardComponent, MigrationWizardData } from '../dialog/migrate-wizard/migrate-wizard.component';
@@ -36,7 +36,6 @@ import { XoRuntimeContext } from '../xo/xo-runtime-context.model';
 import { XoWorkspaceDetails } from '../xo/xo-workspace-details.model';
 import { XoWorkspace, XoWorkspaceArray } from '../xo/xo-workspace.model';
 import { WorkspaceTileComponent } from './workspace-tile/workspace-tile.component';
-import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 @Component({
