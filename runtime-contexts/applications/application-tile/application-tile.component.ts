@@ -150,7 +150,7 @@ export class ApplicationTileComponent implements OnInit {
         this.requiresDataSource.clear();
         this.requiredByDataSource.refresh();
         // update content data source
-        this.contentDataSource.input = XoGetApplicationContentRequest.create(runtimeApplication, false, false, false);
+        this.contentDataSource.input = XoGetApplicationContentRequest.create(runtimeApplication, false, false, false, true);
         this.contentDataSource.clear();
         this.contentDataSource.refresh();
 

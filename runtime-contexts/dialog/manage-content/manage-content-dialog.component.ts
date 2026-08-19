@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -16,18 +15,18 @@ import { NgClass } from '@angular/common';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject, OnDestroy } from '@angular/core';
+import { of, Subscription, throwError } from 'rxjs';
+import { catchError, filter, finalize, first, skip, tap } from 'rxjs/operators';
 
+import { NgClass } from '@angular/common';
+import { Component, inject, OnDestroy } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoDependencyType } from '@fman/runtime-contexts/xo/xo-dependency.model';
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcIconComponent, XcLocalTableDataSource, XcRemoteTableDataSource, XcTableComponent, XcTooltipDirective } from '@zeta/xc';
 
-import { Subscription, throwError } from 'rxjs';
-import { catchError, filter, finalize, first, skip, tap } from 'rxjs/operators';
-
-import { FMAN_RTC } from '@fman/factory-manager.component';
 import { FactoryManagerSettingsService } from '../../../misc/services/factory-manager-settings.service';
 import { createContentTableInfoClass } from '../../content';
 import { ORDER_TYPES } from '../../order-types';
@@ -38,6 +37,22 @@ import { XoRuntimeContext } from '../../xo/xo-runtime-context.model';
 import { manageContent_translations_de_DE } from './locale/manage-content-translations.de-DE';
 import { manageContent_translations_en_US } from './locale/manage-content-translations.en-US';
 
+
+enum ElementType {
+    WORKFLOW = 'WORKFLOW',
+    DATATYPE = 'DATATYPE',
+    EXCEPTION = 'EXCEPTION',
+    TRIGGER = 'TRIGGER',
+    TRIGGERINSTANCE = 'TRIGGERINSTANCE',
+    FILTERINSTANCE = 'FILTERINSTANCE',
+    FILTER = 'FILTER',
+    ORDERTYPE = 'ORDERTYPE',
+    CAPACITY = 'CAPACITY',
+    XYNAPROPERTY = 'XYNAPROPERTY',
+    SHAREDLIB = 'SHAREDLIB',
+    FORMDEFINITION = 'FORMDEFINITION',
+    ORDERINPUTSOURCE = 'ORDERINPUTSOURCE',
+}
 
 @Component({
     templateUrl: './manage-content-dialog.component.html',
@@ -56,6 +71,7 @@ export class ManageContentDialogComponent extends XcDialogComponent<boolean, XoR
     includeIndependent = true;
     includeImplicit = false;
     includeIndirect = false;
+    includeAssigned = true;
     loading: boolean;
 
     readonly changedApplicationElements = new Map<string, XoApplicationElement>();
@@ -78,6 +94,9 @@ export class ManageContentDialogComponent extends XcDialogComponent<boolean, XoR
         //         onAction: this.openInProcessModeller.bind(this)
         //     }
         // ];
+        const elementTypes = Object.values(ElementType).map(value => ({ name: value, value }));
+        this.dataSource.filterEnums.set(XoApplicationElement.getAccessorMap().elementType, of(elementTypes));
+        this.dataSource.filterEnumsAsMultiselect.add(XoApplicationElement.getAccessorMap().elementType);
         this.updateDataSource();
 
 
@@ -86,9 +105,9 @@ export class ManageContentDialogComponent extends XcDialogComponent<boolean, XoR
         this.changedContentTable.localTableData = {
             rows: [],
             columns: [
-                {path: 'changeTemplate', name: this.i18n.translate('xfm.fman.rtcs.manage-content.table.changes'), disableFilter: true, disableSort: true, shrink: true},
-                {path: 'name', name: this.i18n.translate('xfm.fman.rtcs.manage-content.table.name')},
-                {path: 'elementType', name: this.i18n.translate('xfm.fman.rtcs.manage-content.table.rtc')}
+                { path: 'changeTemplate', name: this.i18n.translate('xfm.fman.rtcs.manage-content.table.changes'), disableFilter: true, disableSort: true, shrink: true },
+                { path: 'name', name: this.i18n.translate('xfm.fman.rtcs.manage-content.table.name') },
+                { path: 'elementType', name: this.i18n.translate('xfm.fman.rtcs.manage-content.table.rtc') }
             ]
         };
         this.changedContentTable.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
@@ -101,7 +120,7 @@ export class ManageContentDialogComponent extends XcDialogComponent<boolean, XoR
 
 
     updateDataSource() {
-        this.dataSource.input = XoGetApplicationContentRequest.create(this.injectedData, this.includeIndependent, this.includeImplicit, this.includeIndirect);
+        this.dataSource.input = XoGetApplicationContentRequest.create(this.injectedData, this.includeIndependent, this.includeImplicit, this.includeIndirect, this.includeAssigned);
         this.dataSource.output = XoApplicationElementArray;
         this.dataSource.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
         this.dataSource.dataChange.subscribe(this.dataChange.bind(this));
@@ -141,18 +160,6 @@ export class ManageContentDialogComponent extends XcDialogComponent<boolean, XoR
                 applicationElement.updateTemplate();
             }
         });
-    }
-
-
-    private openInProcessModeller(item: XoApplicationElement) {
-        const rtc = item.originRTC;
-        const fqn = item.fqn;
-        const type = item.elementType;
-        console.log(JSON.stringify({rtc, fqn, type}));
-        console.log(rtc);
-        console.log(item);
-
-        window.history.pushState({}, null, 'xfm/Process-Modeller?tab1=' + encodeURI(JSON.stringify({rtc, fqn, type})));
     }
 
 
