@@ -105,9 +105,9 @@ export class ManageContentDialogComponent extends XcDialogComponent<boolean, XoR
         this.changedContentTable.localTableData = {
             rows: [],
             columns: [
-                { path: 'changeTemplate', name: this.i18n.translate('xfm.fman.rtcs.manage-content.table.changes'), disableFilter: true, disableSort: true, shrink: true },
-                { path: 'name', name: this.i18n.translate('xfm.fman.rtcs.manage-content.table.name') },
-                { path: 'elementType', name: this.i18n.translate('xfm.fman.rtcs.manage-content.table.rtc') }
+                { path: 'changeTemplate', name: this.i18n.translateSignal('xfm.fman.rtcs.manage-content.table.changes'), disableFilter: true, disableSort: true, shrink: true },
+                { path: 'name', name: this.i18n.translateSignal('xfm.fman.rtcs.manage-content.table.name') },
+                { path: 'elementType', name: this.i18n.translateSignal('xfm.fman.rtcs.manage-content.table.rtc') }
             ]
         };
         this.changedContentTable.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;

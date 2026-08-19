@@ -76,13 +76,13 @@ export class CapacitiesComponent extends RestorableCapacitiesComponent {
             {
                 class: 'delete-action-element',
                 iconName: 'delete',
-                tooltip: this.i18nService.translate('fman.capacities.delete'),
+                tooltip: this.i18nService.translateSignal('fman.capacities.delete'),
                 onAction: this.delete.bind(this)
             },
             {
                 class: 'copy-action-element',
                 iconName: 'copy',
-                tooltip: this.i18nService.translate('fman.capacities.duplicate'),
+                tooltip: this.i18nService.translateSignal('fman.capacities.duplicate'),
                 onAction: this.duplicate.bind(this)
             }
         ];

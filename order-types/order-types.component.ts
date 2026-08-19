@@ -152,13 +152,13 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
             {
                 class: 'delete-action-element',
                 iconName: 'delete',
-                tooltip: this.i18nService.translate('fman.order-types.delete'),
+                tooltip: this.i18nService.translateSignal('fman.order-types.delete'),
                 onAction: this.delete.bind(this)
             },
             {
                 class: 'copy-action-element',
                 iconName: 'copy',
-                tooltip: this.i18nService.translate('fman.order-types.duplicate'),
+                tooltip: this.i18nService.translateSignal('fman.order-types.duplicate'),
                 onAction: this.duplicate.bind(this)
             }
         ];
@@ -181,7 +181,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
                 }
             },
             [
-                { name: this.i18nService.translate(this.USE_DEFAULT), value: '-1' },
+                { name: this.i18nService.translateSignal(this.USE_DEFAULT), value: '-1' },
                 { name: '0', value: '0' },
                 { name: '5', value: '5' },
                 { name: '10', value: '10' },
@@ -534,7 +534,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
             return;
         }
 
-        const url = PROCESS_MODELLER_TAB_URL + QueryParameterService.createQueryValue(this.detailsObject.runtimeContext.toRuntimeContext().uniqueKey, this.executionDestinationDataWrapper.value.name, EXECUTION_DESTINATION_DOCUMENT_TYPE);
+        const url = PROCESS_MODELLER_TAB_URL + QueryParameterService.createQueryValue(this.detailsObject.runtimeContext.toRuntimeContext().uniqueKey, this.executionDestinationDataWrapper.value.value, EXECUTION_DESTINATION_DOCUMENT_TYPE);
         void this.router.navigateByUrl(url);
     }
 

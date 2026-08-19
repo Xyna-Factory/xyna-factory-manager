@@ -396,7 +396,7 @@ export class ExecutionTimeComponent {
                 this.executionType = value;
                 this._updateBoundObject();
             },
-            Object.values(ExecutionTypes).map(value => ({ name: this.i18nService.translate(value), value }))
+            Object.values(ExecutionTypes).map(value => ({ name: this.i18nService.translateSignal(value), value }))
         );
 
         this.windowLengthDataWrapper = new XcAutocompleteDataWrapper(
@@ -405,7 +405,7 @@ export class ExecutionTimeComponent {
                 this.windowLengthSelection = value;
                 this._updateBoundObject();
             },
-            Object.values(WindowLengths).map(value => ({ name: this.i18nService.translate(value), value }))
+            Object.values(WindowLengths).map(value => ({ name: this.i18nService.translateSignal(value), value }))
         );
 
         this.apiService.startOrder(FMAN_RTC, FM_WF_GET_TIMEZONES, [], XoTimezoneArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).subscribe(result => {

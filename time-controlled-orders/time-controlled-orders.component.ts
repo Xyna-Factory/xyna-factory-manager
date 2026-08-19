@@ -15,16 +15,15 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, OnInit } from '@angular/core';
+import { of } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
+import { Component, OnInit } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcButtonComponent, XcCheckboxComponent, XcFormDirective, XcIconButtonComponent, XcMasterDetailComponent, XcOptionItem, XcPanelComponent, XcTableComponent, XcTooltipDirective, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
 
-import { of } from 'rxjs';
-import { finalize } from 'rxjs/operators';
-
-import { FMAN_RTC } from '@fman/factory-manager.component';
 import { TcoDetailSectionComponent } from './components/tco-detail-section/tco-detail-section.component';
 import { CreateTimeControlledOrderComponent } from './modal/create-time-controlled-order/create-time-controlled-order.component';
 import { RestorableTimeControlledOrderComponent } from './restorable-time-controlled-order.component';
@@ -72,13 +71,13 @@ export class TimeControlledOrdersComponent extends RestorableTimeControlledOrder
         // Filter for status
         const filterItems: XcOptionItem[] = [
             { name: '', value: '' },
-            { name: this.i18nService.translate('fman.tco.planning'), value: 'Planning' },
-            { name: this.i18nService.translate('fman.tco.waiting'), value: 'Waiting' },
-            { name: this.i18nService.translate('fman.tco.running'), value: 'Running' },
-            { name: this.i18nService.translate('fman.tco.disabled'), value: 'Disabled' },
-            { name: this.i18nService.translate('fman.tco.cancelled'), value: 'Cancelled' },
-            { name: this.i18nService.translate('fman.tco.failed'), value: 'Failed' },
-            { name: this.i18nService.translate('fman.tco.finished'), value: 'Finished' }
+            { name: this.i18nService.translateSignal('fman.tco.planning'), value: 'Planning' },
+            { name: this.i18nService.translateSignal('fman.tco.waiting'), value: 'Waiting' },
+            { name: this.i18nService.translateSignal('fman.tco.running'), value: 'Running' },
+            { name: this.i18nService.translateSignal('fman.tco.disabled'), value: 'Disabled' },
+            { name: this.i18nService.translateSignal('fman.tco.cancelled'), value: 'Cancelled' },
+            { name: this.i18nService.translateSignal('fman.tco.failed'), value: 'Failed' },
+            { name: this.i18nService.translateSignal('fman.tco.finished'), value: 'Finished' }
         ];
         this.remoteTableDataSource.filterEnums.set(XoTimeControlledOrderTableEntry.getAccessorMap().status, of(filterItems));
         this.remoteTableDataSource.refresh();
@@ -88,14 +87,14 @@ export class TimeControlledOrdersComponent extends RestorableTimeControlledOrder
             {
                 class: 'delete-action-element',
                 iconName: 'delete',
-                tooltip: this.i18nService.translate('fman.tco.kill'),
+                tooltip: this.i18nService.translateSignal('fman.tco.kill'),
                 onAction: this.killTCO.bind(this),
                 onShow: tco => !tco.archived
             },
             {
                 class: 'copy-action-element',
                 iconName: 'copy',
-                tooltip: this.i18nService.translate('fman.tco.duplicate-tco'),
+                tooltip: this.i18nService.translateSignal('fman.tco.duplicate-tco'),
                 onAction: this.duplicate.bind(this)
             }
         ];

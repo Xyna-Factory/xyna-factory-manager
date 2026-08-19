@@ -106,13 +106,13 @@ export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
             {
                 class: 'delete-action-element',
                 iconName: 'delete',
-                tooltip: this.i18nService.translate('fman.xyna-properties.delete'),
+                tooltip: this.i18nService.translateSignal('fman.xyna-properties.delete'),
                 onAction: this.delete.bind(this)
             },
             {
                 class: 'copy-action-element',
                 iconName: 'copy',
-                tooltip: this.i18nService.translate('fman.xyna-properties.duplicate'),
+                tooltip: this.i18nService.translateSignal('fman.xyna-properties.duplicate'),
                 onAction: this.duplicate.bind(this)
             }
         ];
