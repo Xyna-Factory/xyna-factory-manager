@@ -1,5 +1,3 @@
-import { debounceTime, filter, finalize, first, skip } from 'rxjs/operators';
-
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -17,6 +15,8 @@ import { debounceTime, filter, finalize, first, skip } from 'rxjs/operators';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
+import { debounceTime, filter, finalize, first, skip } from 'rxjs/operators';
+
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, inject, Input, NgZone, OnInit, Output, ViewChild } from '@angular/core';
 import { ShowWorkspaceContentDialogComponent } from '@fman/runtime-contexts/dialog/show-workspace-content/show-workspace-content-dialog.component';
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
@@ -167,7 +167,7 @@ export class WorkspaceTileComponent implements OnInit {
         this.requiredByDataSource.refresh();
         // update content data source
         if (runtimeContext instanceof XoApplicationDefinition) {
-            this.contentDataSource.input = XoGetApplicationContentRequest.create(runtimeContext, false, false, false);
+            this.contentDataSource.input = XoGetApplicationContentRequest.create(runtimeContext, false, false, false, true);
             this.contentDataSource.orderType = ORDER_TYPES.GET_APPLICATION_CONTENT;
         } else if (runtimeContext instanceof XoWorkspace) {
             this.contentDataSource.input = XoGetWorkspaceContentRequest.create(runtimeContext, false);

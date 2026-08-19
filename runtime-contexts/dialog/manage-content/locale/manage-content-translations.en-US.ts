@@ -28,6 +28,14 @@ export const manageContent_translations_en_US: I18nTranslation[] = [
         value: 'Manage Content of Application Definition \'$0\''
     },
     {
+        key: 'fman.manage-content.manage-content-include-assigned',
+        value: 'Show Assigned'
+    },
+    {
+        key: 'fman.manage-content.manage-content-include-assigned-tooltip',
+        value: 'Show currently assigned content'
+    },
+    {
         key: 'fman.manage-content.manage-content-include-independent',
         value: 'Show Unassigned'
     },
