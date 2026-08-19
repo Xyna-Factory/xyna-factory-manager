@@ -81,9 +81,9 @@ export class ManageDependenciesDialogComponent extends XcDialogComponent<boolean
         this.changedDependencyTable.localTableData = {
             rows: [],
             columns: [
-                {path: 'changeTemplate', name: this.i18n.translate('xfm.fman.rtcs.manage-dependencies.table.changes'), disableFilter: true, disableSort: true, shrink: true},
-                {path: 'nameTemplates', name: this.i18n.translate('xfm.fman.rtcs.manage-dependencies.table.name')},
-                {path: 'rtcType', name: this.i18n.translate('xfm.fman.rtcs.manage-dependencies.table.rtc')}
+                {path: 'changeTemplate', name: this.i18n.translateSignal('xfm.fman.rtcs.manage-dependencies.table.changes'), disableFilter: true, disableSort: true, shrink: true},
+                {path: 'nameTemplates', name: this.i18n.translateSignal('xfm.fman.rtcs.manage-dependencies.table.name')},
+                {path: 'rtcType', name: this.i18n.translateSignal('xfm.fman.rtcs.manage-dependencies.table.rtc')}
             ]
         };
         this.changedDependencyTable.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;

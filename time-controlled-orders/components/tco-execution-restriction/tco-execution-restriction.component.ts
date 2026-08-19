@@ -148,7 +148,7 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
                 this.executionRestrictionChange.emit(this.executionRestriction);
             },
             Object.keys(ExecutionTimeBehaviorOnError).map(key => ({
-                name: this.i18n.translate(ExecutionTimeBehaviorOnError[key]),
+                name: this.i18n.translateSignal(ExecutionTimeBehaviorOnError[key]),
                 value: ExecutionTimeBehaviorOnError[key]
             }))
         );
@@ -160,7 +160,7 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
                 this.executionRestriction.executionInterval = this.toMilliSeconds(this.executionInterval, value);
                 this.executionRestrictionChange.emit(this.executionRestriction);
             },
-            Object.keys(TimeRestrictionOptions).map(key => ({ name: this.i18n.translate(TimeRestrictionOptions[key]), value: TimeRestrictionOptions[key] }))
+            Object.keys(TimeRestrictionOptions).map(key => ({ name: this.i18n.translateSignal(TimeRestrictionOptions[key]), value: TimeRestrictionOptions[key] }))
         );
 
         this.schedulingTimeoutUnitDataWrapper = new XcAutocompleteDataWrapper(
@@ -170,7 +170,7 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
                 this.executionRestriction.schedulingTimeout = this.toMilliSeconds(this.schedulingTimeout, value);
                 this.executionRestrictionChange.emit(this.executionRestriction);
             },
-            Object.keys(TimeRestrictionOptions).map(key => ({ name: this.i18n.translate(TimeRestrictionOptions[key]), value: TimeRestrictionOptions[key] }))
+            Object.keys(TimeRestrictionOptions).map(key => ({ name: this.i18n.translateSignal(TimeRestrictionOptions[key]), value: TimeRestrictionOptions[key] }))
         );
 
         this.executionTimeoutUnitDataWrapper = new XcAutocompleteDataWrapper(
@@ -180,7 +180,7 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
                 this.executionRestriction.executionTimeout = this.toMilliSeconds(this.executionTimeout, value);
                 this.executionRestrictionChange.emit(this.executionRestriction);
             },
-            Object.keys(TimeRestrictionOptions).map(key => ({ name: this.i18n.translate(TimeRestrictionOptions[key]), value: TimeRestrictionOptions[key] }))
+            Object.keys(TimeRestrictionOptions).map(key => ({ name: this.i18n.translateSignal(TimeRestrictionOptions[key]), value: TimeRestrictionOptions[key] }))
         );
     }
 

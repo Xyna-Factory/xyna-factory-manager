@@ -66,11 +66,11 @@ export class ExportXynaPropertiesDialogComponent extends XcDialogComponent<boole
 
         this.formatDataWrapper.values = [
             <XcOptionItem<string>>{
-                name: this.i18n.translate('fman.export-xyna-properties.format-csv'),
+                name: this.i18n.translateSignal('fman.export-xyna-properties.format-csv'),
                 value: XynaPropertiesFormat.CSV
             },
             <XcOptionItem<string>>{
-                name: this.i18n.translate('fman.export-xyna-properties.format-yaml'),
+                name: this.i18n.translateSignal('fman.export-xyna-properties.format-yaml'),
                 value: XynaPropertiesFormat.YAML
             }
         ];

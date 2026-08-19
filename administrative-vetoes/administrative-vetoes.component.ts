@@ -57,13 +57,13 @@ export class AdministrativeVetoesComponent extends RestorableAdministrativeVetoC
             {
                 class: 'delete-action-element',
                 iconName: 'delete',
-                tooltip: this.i18nService.translate('fman.administrative-vetoes.delete'),
+                tooltip: this.i18nService.translateSignal('fman.administrative-vetoes.delete'),
                 onAction: this.delete.bind(this)
             },
             {
                 class: 'copy-action-element',
                 iconName: 'copy',
-                tooltip: this.i18nService.translate('fman.administrative-vetoes.duplicate'),
+                tooltip: this.i18nService.translateSignal('fman.administrative-vetoes.duplicate'),
                 onAction: this.duplicate.bind(this)
             }
         ];

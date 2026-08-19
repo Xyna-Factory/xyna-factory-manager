@@ -95,7 +95,7 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
             {
                 class: 'delete-action-element',
                 iconName: 'delete',
-                tooltip: this.i18nService.translate('fman.deployment-items.delete'),
+                tooltip: this.i18nService.translateSignal('fman.deployment-items.delete'),
                 onAction: row => {
                     const paramArr = new XoDeleteDeploymentItemParamArray();
                     const param = new XoDeleteDeploymentItemParam();

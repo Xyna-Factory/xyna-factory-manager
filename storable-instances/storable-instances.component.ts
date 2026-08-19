@@ -24,7 +24,7 @@ import { ApiService, FullQualifiedName, RuntimeContext, RuntimeContextType, Star
 import { XoXynaProperty, XoXynaPropertyKey } from '@zeta/auth/xo/xyna-property.model';
 import { Comparable, isObject } from '@zeta/base';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcAutocompleteDataWrapper, XcButtonComponent, XcDialogService, XcFormAutocompleteComponent, XcIconButtonComponent, XcLocalTableDataSource, XcMasterDetailComponent, XcOptionItem, XcPanelComponent, XcSelectionModel, XcSortDirection, XcStructureTreeDataSource, XcTableColumn, XcTableComponent, XcTooltipDirective, XoTableColumn, XoTableColumnArray, XoTableInfo } from '@zeta/xc';
+import { resolveXcDynamicString, XcAutocompleteDataWrapper, XcButtonComponent, XcDialogService, XcFormAutocompleteComponent, XcIconButtonComponent, XcLocalTableDataSource, XcMasterDetailComponent, XcOptionItem, XcPanelComponent, XcSelectionModel, XcSortDirection, XcStructureTreeDataSource, XcTableColumn, XcTableComponent, XcTooltipDirective, XoTableColumn, XoTableColumnArray, XoTableInfo } from '@zeta/xc';
 
 import { FactoryManagerSettingsService } from '../misc/services/factory-manager-settings.service';
 import { XYNA_PROPERTY_ISWP } from '../xyna-properties/restorable-xyna-properties.component';
@@ -114,7 +114,7 @@ class StorableTableDataSource extends XcLocalTableDataSource<XoObject> {
             map(columns => {
                 const xoColumns = columns.map(child => {
                     const column = new XoTableColumn();
-                    column.name = child.name;
+                    column.name = resolveXcDynamicString(child.name);
                     column.path = child.path;
                     return column;
                 });
@@ -328,7 +328,7 @@ export class StorableInstancesComponent implements OnInit {
             {
                 class: 'delete-action-element',
                 iconName: 'delete',
-                tooltip: this.i18nService.translate('fman.storable-instances.delete'),
+                tooltip: this.i18nService.translateSignal('fman.storable-instances.delete'),
                 onAction: this.deleteStorable.bind(this)
             }
         ];

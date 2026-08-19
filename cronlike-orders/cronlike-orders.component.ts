@@ -157,13 +157,13 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
             {
                 class: 'delete-action-element',
                 iconName: 'delete',
-                tooltip: this.i18nService.translate('fman.cronlike-orders.delete'),
+                tooltip: this.i18nService.translateSignal('fman.cronlike-orders.delete'),
                 onAction: this.delete.bind(this)
             },
             {
                 class: 'copy-action-element',
                 iconName: 'copy',
-                tooltip: this.i18nService.translate('fman.cronlike-orders.duplicate'),
+                tooltip: this.i18nService.translateSignal('fman.cronlike-orders.duplicate'),
                 onAction: this.duplicate.bind(this)
             }
         ];

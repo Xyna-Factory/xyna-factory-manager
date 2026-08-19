@@ -15,15 +15,16 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
+import { filter } from 'rxjs';
+
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-
+import { RuntimeContext } from '@zeta/api';
+import { ConfigService } from '@zeta/api/config.service';
 import { AuthService } from '@zeta/auth';
 import { I18nService, LocaleService } from '@zeta/i18n';
 import { RouteComponent } from '@zeta/nav';
 import { XcNavListComponent, XcNavListItem, XcNavListOrientation } from '@zeta/xc';
-
-import { filter } from 'rxjs';
 
 import { RIGHT_FACTORY_MANAGER_ADMINISTRATIVE_VETOES, RIGHT_FACTORY_MANAGER_CAPACITIES, RIGHT_FACTORY_MANAGER_DEPLOYMENT_ITEMS, RIGHT_FACTORY_MANAGER_FILTER, RIGHT_FACTORY_MANAGER_ORDER_INPUT_SOURCES, RIGHT_FACTORY_MANAGER_ORDER_TYPES, RIGHT_FACTORY_MANAGER_STORABLE_INSTANCES, RIGHT_FACTORY_MANAGER_TIME_CONTROLLED_ORDERS, RIGHT_FACTORY_MANAGER_TRIGGER, RIGHT_FACTORY_MANAGER_WORKSPACES_AND_APPLICATIONS, RIGHT_FACTORY_MANAGER_XYNA_PROPERTIES } from './const';
 import { fman_error_code_translations_de_DE } from './locale/fman-error-code-translations.de-DE';
@@ -31,8 +32,7 @@ import { fman_error_code_translations_en_US } from './locale/fman-error-code-tra
 import { fman_translations_de_DE } from './locale/fman-translations.de-DE';
 import { fman_translations_en_US } from './locale/fman-translations.en-US';
 import { PluginService } from './plugin/plugin.service';
-import { ConfigService } from '@zeta/api/config.service';
-import { RuntimeContext } from '@zeta/api';
+
 
 export let FMAN_RTC = RuntimeContext.guiHttpApplication;
 
@@ -70,20 +70,20 @@ export class FactoryManagerComponent extends RouteComponent {
     };
 
     navListItems: XcRighteousNavListItem[] = [
-        { name: this._fmNames.WORKSPACES, link: 'workspaces', right: RIGHT_FACTORY_MANAGER_WORKSPACES_AND_APPLICATIONS },
-        { name: this._fmNames.APPLICATIONS, link: 'applications', right: RIGHT_FACTORY_MANAGER_WORKSPACES_AND_APPLICATIONS },
-        { name: this._fmNames.TRIGGER, link: 'trigger', right: RIGHT_FACTORY_MANAGER_TRIGGER },
-        { name: this._fmNames.FILTER, link: 'filter', right: RIGHT_FACTORY_MANAGER_FILTER },
-        { name: this._fmNames.ORDERTYPES, link: 'ordertypes', right: RIGHT_FACTORY_MANAGER_ORDER_TYPES },
-        { name: this._fmNames.CRONLIKE_ORDRES, link: 'cron-like-orders', right: RIGHT_FACTORY_MANAGER_WORKSPACES_AND_APPLICATIONS },
-        { name: this._fmNames.TIMECONTROLLED_ORDERS, link: 'time-controlled-orders', right: RIGHT_FACTORY_MANAGER_TIME_CONTROLLED_ORDERS },
-        { name: this._fmNames.ORDER_INPUT_SOURCES, link: 'order-input-sources', right: RIGHT_FACTORY_MANAGER_ORDER_INPUT_SOURCES },
-        { name: this._fmNames.CAPACITIES, link: 'capacities', right: RIGHT_FACTORY_MANAGER_CAPACITIES },
-        { name: this._fmNames.ADMINISTRATIVE_VETOES, link: 'administrative-vetoes', right: RIGHT_FACTORY_MANAGER_ADMINISTRATIVE_VETOES },
-        { name: this._fmNames.DEPLOYMENT_ITEMS, link: 'deployment-items', right: RIGHT_FACTORY_MANAGER_DEPLOYMENT_ITEMS },
-        { name: this._fmNames.STORABLE_INSTANCES, link: 'storable-instances', right: RIGHT_FACTORY_MANAGER_STORABLE_INSTANCES },
+        { name: this.i18n.translateSignal(this._fmNames.WORKSPACES), link: 'workspaces', right: RIGHT_FACTORY_MANAGER_WORKSPACES_AND_APPLICATIONS },
+        { name: this.i18n.translateSignal(this._fmNames.APPLICATIONS), link: 'applications', right: RIGHT_FACTORY_MANAGER_WORKSPACES_AND_APPLICATIONS },
+        { name: this.i18n.translateSignal(this._fmNames.TRIGGER), link: 'trigger', right: RIGHT_FACTORY_MANAGER_TRIGGER },
+        { name: this.i18n.translateSignal(this._fmNames.FILTER), link: 'filter', right: RIGHT_FACTORY_MANAGER_FILTER },
+        { name: this.i18n.translateSignal(this._fmNames.ORDERTYPES), link: 'ordertypes', right: RIGHT_FACTORY_MANAGER_ORDER_TYPES },
+        { name: this.i18n.translateSignal(this._fmNames.CRONLIKE_ORDRES), link: 'cron-like-orders', right: RIGHT_FACTORY_MANAGER_WORKSPACES_AND_APPLICATIONS },
+        { name: this.i18n.translateSignal(this._fmNames.TIMECONTROLLED_ORDERS), link: 'time-controlled-orders', right: RIGHT_FACTORY_MANAGER_TIME_CONTROLLED_ORDERS },
+        { name: this.i18n.translateSignal(this._fmNames.ORDER_INPUT_SOURCES), link: 'order-input-sources', right: RIGHT_FACTORY_MANAGER_ORDER_INPUT_SOURCES },
+        { name: this.i18n.translateSignal(this._fmNames.CAPACITIES), link: 'capacities', right: RIGHT_FACTORY_MANAGER_CAPACITIES },
+        { name: this.i18n.translateSignal(this._fmNames.ADMINISTRATIVE_VETOES), link: 'administrative-vetoes', right: RIGHT_FACTORY_MANAGER_ADMINISTRATIVE_VETOES },
+        { name: this.i18n.translateSignal(this._fmNames.DEPLOYMENT_ITEMS), link: 'deployment-items', right: RIGHT_FACTORY_MANAGER_DEPLOYMENT_ITEMS },
+        { name: this.i18n.translateSignal(this._fmNames.STORABLE_INSTANCES), link: 'storable-instances', right: RIGHT_FACTORY_MANAGER_STORABLE_INSTANCES },
         // { name: this._fmNames.DATA_MODELS, link: 'data-models', disabled: true, right: RIGHT_FACTORY_MANAGER_DATA_MODELS },
-        { name: this._fmNames.XYNA_PROPERTIES, link: 'xyna-properties', right: RIGHT_FACTORY_MANAGER_XYNA_PROPERTIES }
+        { name: this.i18n.translateSignal(this._fmNames.XYNA_PROPERTIES), link: 'xyna-properties', right: RIGHT_FACTORY_MANAGER_XYNA_PROPERTIES }
     ];
 
     navListOrientation = XcNavListOrientation.LEFT;
@@ -115,7 +115,6 @@ export class FactoryManagerComponent extends RouteComponent {
 
         this.navListItems.forEach(item => {
             item.disabled = item.disabled || !!item.right && !this.authService.hasRight(item.right);
-            item.name = this.i18n.translate(item.name);
         });
 
 
