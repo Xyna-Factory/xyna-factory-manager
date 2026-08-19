@@ -163,18 +163,6 @@ export class ManageContentDialogComponent extends XcDialogComponent<boolean, XoR
     }
 
 
-    // private openInProcessModeller(item: XoApplicationElement) {
-    //     const rtc = item.originRTC;
-    //     const fqn = item.fqn;
-    //     const type = item.elementType;
-    //     console.log(JSON.stringify({ rtc, fqn, type }));
-    //     console.log(rtc);
-    //     console.log(item);
-
-    //     window.history.pushState({}, null, 'xfm/Process-Modeller?tab1=' + encodeURI(JSON.stringify({ rtc, fqn, type })));
-    // }
-
-
     private dependencyTypeChange(applicationElement: XoApplicationElement) {
         if (applicationElement.dependencyTypeModified) {
             this.changedApplicationElements.set(applicationElement.uniqueKey, applicationElement);
