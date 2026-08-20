@@ -19,7 +19,7 @@ import { of, Subscription, throwError } from 'rxjs';
 import { catchError, filter, finalize, first, skip, tap } from 'rxjs/operators';
 
 import { NgClass } from '@angular/common';
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy, signal } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoDependencyType } from '@fman/runtime-contexts/xo/xo-dependency.model';
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
@@ -94,7 +94,7 @@ export class ManageContentDialogComponent extends XcDialogComponent<boolean, XoR
         //         onAction: this.openInProcessModeller.bind(this)
         //     }
         // ];
-        const elementTypes = Object.values(ElementType).map(value => ({ name: value, value }));
+        const elementTypes = Object.values(ElementType).map(value => ({ name: signal(value), value }));
         this.dataSource.filterEnums.set(XoApplicationElement.getAccessorMap().elementType, of(elementTypes));
         this.dataSource.filterEnumsAsMultiselect.add(XoApplicationElement.getAccessorMap().elementType);
         this.updateDataSource();

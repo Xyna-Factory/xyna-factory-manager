@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, ViewChild } from '@angular/core';
+import { Component, signal, ViewChild } from '@angular/core';
 
 import { FullQualifiedName, RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoArray, XoRuntimeContext, XoWorkspace } from '@zeta/api';
 import { XcAutocompleteDataWrapper, XcButtonComponent, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective } from '@zeta/xc';
@@ -194,7 +194,7 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
     private _getRuntimeContexts() {
         this.apiService.getRuntimeContexts(false).subscribe({
             next: rtcArr => {
-                this.runtimeContextsDataWrapper.values = rtcArr.map(rtc => ({value: rtc, name: rtc.toString()}));
+                this.runtimeContextsDataWrapper.values = rtcArr.map(rtc => ({value: rtc, name: signal(rtc.toString())}));
             },
             error: error => this.dialogService.error(error)
         });
@@ -210,7 +210,7 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
         this.handleStartOrderResult(sub, output => {
             const otarr = output && output.length ? (output[0] as XoOrderTypeArray) : null;
             if (otarr instanceof XoArray) {
-                this.orderTypeStringDataWrapper.values = otarr.data.map(ot => ({ value: ot.name, name: ot.name }));
+                this.orderTypeStringDataWrapper.values = otarr.data.map(ot => ({ value: ot.name, name: signal(ot.name) }));
                 if (otarr.data.length === 0) {
                     const error = this.GET_ORDER_TYPES_EMPTY_LIST_ERROR(this.selectedServerRuntimeContext);
                     this.dialogService.error(error);

@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -68,7 +68,7 @@ export class CreateRuntimeApplicationDialogComponent extends XcDialogComponent<R
             () => { },
             this.apiService.startOrderAssertFlat<XoWorkspace>(FMAN_RTC, ORDER_TYPES.GET_WORKSPACES, undefined, XoWorkspaceArray).pipe(
                 tap(workspaces => this.changeWorkspace(workspaces.find(workspace => workspace.name === this.injectedData.workspaceName))),
-                map(workspaces => workspaces.map(workspace => <XcOptionItem>{ name: workspace.name, value: workspace }))
+                map(workspaces => workspaces.map(workspace => <XcOptionItem>{ name: signal(workspace.name), value: workspace }))
             )
         );
 
@@ -89,7 +89,7 @@ export class CreateRuntimeApplicationDialogComponent extends XcDialogComponent<R
 
             // update application definition options
             this.applicationDefinitionDataWrapper.values = this.workspace
-                ? this.workspace.applicationDefinitions.data.map(applicationDefinition => <XcOptionItem>{ name: applicationDefinition.name, value: applicationDefinition })
+                ? this.workspace.applicationDefinitions.data.map(applicationDefinition => <XcOptionItem>{ name: signal(applicationDefinition.name), value: applicationDefinition })
                 : [];
         }
     }

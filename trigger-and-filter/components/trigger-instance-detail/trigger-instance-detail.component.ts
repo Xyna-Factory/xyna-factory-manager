@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, InjectionToken, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, InjectionToken, Injector, signal } from '@angular/core';
 
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ORDER_TYPES } from '@fman/trigger-and-filter/order-types';
@@ -159,9 +159,9 @@ export class TriggerInstanceDetailComponent extends XcDynamicComponent<TriggerIn
     private fillDatasource(data: XoFilterInstance[]) {
         this.datasource.localTableData = {
             columns: [
-                { path: 'filterName', name: 'fman.taf.trigger.tile.table.filter' },
-                { path: 'instance', name: 'fman.taf.trigger.tile.table.instance' },
-                { path: 'context', name: 'fman.taf.trigger.tile.table.context' }
+                { path: 'filterName', name: signal('fman.taf.trigger.tile.table.filter') },
+                { path: 'instance', name: signal('fman.taf.trigger.tile.table.instance') },
+                { path: 'context', name: signal('fman.taf.trigger.tile.table.context') }
             ],
             rows: data.map(xo => new FilterInstanceData(xo.filter, xo.filterInstance, xo.runtimeContext.label))
         };

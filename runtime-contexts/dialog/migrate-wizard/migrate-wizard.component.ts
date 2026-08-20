@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -16,8 +15,10 @@ import { NgClass } from '@angular/common';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject } from '@angular/core';
+import { filter, finalize } from 'rxjs/operators';
 
+import { NgClass } from '@angular/common';
+import { Component, inject, signal } from '@angular/core';
 import { XoRTCMigrationResultArray } from '@fman/runtime-contexts/xo/xo-rtcmigration-result.model';
 import { XoRTCName } from '@fman/runtime-contexts/xo/xo-rtcname.model';
 import { XoRuntimeContextTableEntry, XoRuntimeContextTableEntryArray } from '@fman/runtime-contexts/xo/xo-runtime-context-table-entry.model';
@@ -25,8 +26,6 @@ import { ApiService, RuntimeContext, StartOrderOptionsBuilder, Xo, XoObject } fr
 import { Comparable } from '@zeta/base';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogWrapperComponent, XcIconComponent, XcLocalTableDataSource, XcPanelComponent, XcRemoteTableDataSource, XcSpinnerComponent, XcTableComponent, XcTableDataSource, XcTooltipDirective, XDSIconName, XoRemappingTableInfoClass, XoTableColumn, XoTableInfo } from '@zeta/xc';
-
-import { filter, finalize } from 'rxjs/operators';
 
 import { FactoryManagerSettingsService } from '../../../misc/services/factory-manager-settings.service';
 import { createFilterEnumOfState } from '../../dependencies';
@@ -238,8 +237,8 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
         this.tableNodesSource.localTableData = {
             rows: [],
             columns: [
-                { path: 'name', name: this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.table.name') },
-                { path: 'isLocal', name: this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.table.isLocal') }
+                { path: 'name', name: signal(this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.table.name')) },
+                { path: 'isLocal', name: signal(this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.table.isLocal')) }
             ]
         };
         this.tableNodesSource.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
@@ -249,9 +248,9 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
         this.tableMigrationSource.localTableData = {
             rows: [],
             columns: [
-                { path: 'nodeLabel', name: this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.table.node') },
-                { path: 'sourceLabel', name: this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.table.source') },
-                { path: 'targetLabel', name: this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.table.target') }
+                { path: 'nodeLabel', name: signal(this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.table.node')) },
+                { path: 'sourceLabel', name: signal(this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.table.source')) },
+                { path: 'targetLabel', name: signal(this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.table.target')) }
             ]
         };
 
@@ -260,7 +259,7 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
             {
                 class: 'delete-action-element',
                 iconName: 'delete',
-                tooltip: this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.delete'),
+                tooltip: signal(this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.delete')),
                 onAction: this.removeMigrationObject.bind(this)
             }
         ];

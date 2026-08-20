@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -81,7 +81,7 @@ export class CreateWorkspaceDialogComponent extends XcDialogComponent<WorkspaceN
                         this.repositoryLink = undefined;
                 }
             },
-            [<XcOptionItem>{name: 'None', value: undefined}, XcOptionItemString(this.SVNRepositoryAccess)]
+            [<XcOptionItem>{name: signal('None'), value: undefined}, XcOptionItemString(this.SVNRepositoryAccess)]
             /*
             this.apiService.startOrderAssertFlat<XoRepositoryLinkType>(FMAN_RTC, ORDER_TYPES., undefined, XoRepositoryLinkType).pipe(
                 map(repositoryLinkTypes => repositoryLinkTypes.map(repositoryLinkType => XcOptionItemString(repositoryLinkType.value)))

@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, Input, Output, ViewChild, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild, inject, signal } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
@@ -413,7 +413,7 @@ export class ExecutionTimeComponent {
                 const tzArr = result.output[0] as XoTimezoneArray;
                 if (tzArr) {
                     if (tzArr.length) {
-                        this.timeZoneDataWrapper.values = tzArr.data.map(tz => ({ name: tz.label, value: tz.label }));
+                        this.timeZoneDataWrapper.values = tzArr.data.map(tz => ({ name: signal(tz.label), value: tz.label }));
                     } else {
                         this.dialogService.error(this.i18nService.translate(GET_TIMEZONE_EMPTY_ERROR));
                     }

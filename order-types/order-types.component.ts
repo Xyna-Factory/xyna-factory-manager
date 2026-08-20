@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnDestroy, signal, ViewChild } from '@angular/core';
 
 import { XmomObjectType } from '@pmod/api/xmom-types';
 import { XoRuntimeContext } from '@pmod/xo/runtime-context.model';
@@ -182,13 +182,13 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
             },
             [
                 { name: this.i18nService.translateSignal(this.USE_DEFAULT), value: '-1' },
-                { name: '0', value: '0' },
-                { name: '5', value: '5' },
-                { name: '10', value: '10' },
-                { name: '15', value: '15' },
-                { name: '17', value: '17' },
-                { name: '18', value: '18' },
-                { name: '20', value: '20' }
+                { name: signal('0'), value: '0' },
+                { name: signal('5'), value: '5' },
+                { name: signal('10'), value: '10' },
+                { name: signal('15'), value: '15' },
+                { name: signal('17'), value: '17' },
+                { name: signal('18'), value: '18' },
+                { name: signal('20'), value: '20' }
             ]
         );
 
@@ -246,8 +246,8 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
         this.handleStartOrderResult(obs, (output: any[]) => {
             const dtArr = (output[0] || { data: [] }) as XoDestinationTypeArray;
 
-            this.planningDestinationDataWrapper.values = dtArr.data.map(dt => ({ name: dt.name, value: dt }));
-            this.executionDestinationDataWrapper.values = dtArr.data.map(dt => ({ name: dt.name, value: dt }));
+            this.planningDestinationDataWrapper.values = dtArr.data.map(dt => ({ name: signal(dt.name), value: dt }));
+            this.executionDestinationDataWrapper.values = dtArr.data.map(dt => ({ name: signal(dt.name), value: dt }));
         }, 'error! ask admin!');
 
     }
@@ -266,7 +266,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
                 if (negativnumber.test(this.detailsObject.monitoringLevel)) {
                     this.detailsObject.monitoringLevel = '-1';
                 } else if (!this.monitoringLevelDataWrapper.values.find(item => item.value === this.detailsObject.monitoringLevel)) {
-                    this.monitoringLevelDataWrapper.values.push({ name: this.detailsObject.monitoringLevel, value: this.detailsObject.monitoringLevel });
+                    this.monitoringLevelDataWrapper.values.push({ name: signal(this.detailsObject.monitoringLevel), value: this.detailsObject.monitoringLevel });
                 }
             } else {
                 this.detailsObject.monitoringLevel = '-1';
