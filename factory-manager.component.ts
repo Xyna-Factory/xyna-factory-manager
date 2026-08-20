@@ -17,7 +17,7 @@
  */
 import { filter } from 'rxjs';
 
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { RuntimeContext } from '@zeta/api';
 import { ConfigService } from '@zeta/api/config.service';
@@ -123,7 +123,7 @@ export class FactoryManagerComponent extends RouteComponent {
 
             for (const [link, plugin] of plugins) {
                 this.navListItems.push(
-                    { name: plugin.navigationEntryLabel, link: link }
+                    { name: signal(plugin.navigationEntryLabel), link: link }
                 );
             }
             // let entry = plugins.entries().next();

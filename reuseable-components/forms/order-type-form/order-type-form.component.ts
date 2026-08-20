@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, Input, Output, ViewChild, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild, inject, signal } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder, XoArray, XoRuntimeContext } from '@zeta/api';
 import { XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -102,7 +102,7 @@ export class OrderTypeFormComponent {
         this.apiService.getRuntimeContexts(false).subscribe({
             next: rtcArr => {
                 if (rtcArr && rtcArr.length) {
-                    this.runtimeContextsDataWrapper.values = rtcArr.map(rtc => ({ value: rtc, name: rtc.toString() }));
+                    this.runtimeContextsDataWrapper.values = rtcArr.map(rtc => ({ value: rtc, name: signal(rtc.toString()) }));
                     this.error = '';
                 } else {
                     this.error = 'unexpectedError';
@@ -123,7 +123,7 @@ export class OrderTypeFormComponent {
                 if (result && !result.errorMessage) {
                     const orderTypeArray = result.output[0] as XoOrderTypeArray;
                     if (orderTypeArray instanceof XoArray) {
-                        this.orderTypeStringDataWrapper.values = orderTypeArray.data.map(ot => ({ value: ot.name, name: ot.name }));
+                        this.orderTypeStringDataWrapper.values = orderTypeArray.data.map(ot => ({ value: ot.name, name: signal(ot.name) }));
                         if (orderTypeArray.data.length === 0) {
                             this.error = 'error-emty';
                         }

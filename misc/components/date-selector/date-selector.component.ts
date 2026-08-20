@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output, ViewChild, inject, signal } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
@@ -100,7 +100,7 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
             if (result && !result.errorMessage) {
                 const zones = result.output[0] as XoTimezoneArray;
                 if (zones && zones.length > 0) {
-                    this.timezoneDataWrapper.values = zones.data.map(zone => <XcOptionItem>{ name: zone.label, value: zone.label });
+                    this.timezoneDataWrapper.values = zones.data.map(zone => <XcOptionItem>{ name: signal(zone.label), value: zone.label });
                 } else {
                     this.dialogService.error(this.i18n.translate('fman.date-selector.error-timezone'));
                 }

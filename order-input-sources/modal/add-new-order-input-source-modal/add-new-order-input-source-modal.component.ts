@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, signal, ViewChild } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoRuntimeContext, XoWorkspace } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -298,7 +298,7 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
         this.apiService.getRuntimeContexts(false).subscribe({
             next: runtimeContexts => {
                 if (runtimeContexts.length > 0) {
-                    this.runtimeContextsDataWrapper.values = runtimeContexts.map(rtc => ({value: rtc, name: rtc.toString()}));
+                    this.runtimeContextsDataWrapper.values = runtimeContexts.map(rtc => ({value: rtc, name: signal(rtc.toString())}));
                     this.error = '';
                 } else {
                     this.error = this.injectedData.UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR;
@@ -320,7 +320,7 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
                 const output = result.output[0] as XoSourceTypeArray;
                 this.sourceTypeDataWrapper.values = output.data
                     .filter(sourceType => !this.isSourceTypeXTF(sourceType))
-                    .map   (sourceType => ({name: sourceType.label, value: sourceType}));
+                    .map   (sourceType => ({name: signal(sourceType.label), value: sourceType}));
             } else {
                 this.error = this.injectedData.i18nService.translateErrorCode(result.errorMessage);
             }
@@ -345,7 +345,7 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
                     const output = result.output[0] as XoOrderTypeArray;
                     if (output?.length > 0) {
                         this.error = '';
-                        this.generatingOrderTypeDataWrapper.values = output.data.map(orderType => ({value: orderType, name: orderType.name}));
+                        this.generatingOrderTypeDataWrapper.values = output.data.map(orderType => ({value: orderType, name: signal(orderType.name)}));
                     } else {
                         this.error = output
                             ? this.injectedData.GET_GENERATING_ORDER_TYPES_EMPTY_LIST_ERROR(this.selectedServerRuntimeContext)
@@ -376,7 +376,7 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
                 const output = result.output[0] as XoOrderTypeArray;
                 if (output?.length > 0) {
                     this.error = '';
-                    this.orderTypeDataWrapper.values = output.data.map(orderType => ({value: orderType, name: orderType.name}));
+                    this.orderTypeDataWrapper.values = output.data.map(orderType => ({value: orderType, name: signal(orderType.name)}));
                 } else if (this.isSourceTypeConstantSelected) {
                     this.error = output
                         ? this.injectedData.GET_ORDER_TYPES_EMPTY_LIST_ERROR(this.selectedServerRuntimeContext)

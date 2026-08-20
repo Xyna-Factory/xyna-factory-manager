@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 
 import { XoRuntimeContext, XoRuntimeContextArray } from '@fman/runtime-contexts/xo/xo-runtime-context.model';
 import { XoDeployTriggerRequest } from '@fman/trigger-and-filter/xo/xo-deploy-trigger-request.model';
@@ -86,7 +86,7 @@ export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerIns
                     param.key = value;
                 },
                 this.startParameter.map(para =>
-                    <XcOptionItem<string>>{name: para.name, value: para.name}
+                    <XcOptionItem<string>>{name: signal(para.name), value: para.name}
                 )
             )
         });
@@ -102,7 +102,7 @@ export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerIns
         this.apiService.startOrderAssertFlat<XoRuntimeContext>(FMAN_RTC, ORDER_TYPES.POSSIBLE_CONTEXT_TRIGGER, this.injectedData, XoRuntimeContextArray)
             .subscribe({
                 next: result => {
-                    this.runtimeContextDataWrapper.values = result.map(rtc => <XcOptionItem<XoRuntimeContext>>{ name: rtc.label, value: rtc });
+                    this.runtimeContextDataWrapper.values = result.map(rtc => <XcOptionItem<XoRuntimeContext>>{ name: signal(rtc.label), value: rtc });
                 },
                 error: err => {
                     this.dialogService.error(err);

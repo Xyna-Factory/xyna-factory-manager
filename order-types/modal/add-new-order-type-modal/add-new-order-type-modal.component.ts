@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, signal, ViewChild } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder, XoRuntimeContext } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -190,14 +190,14 @@ export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, Ad
             () => this.orderType.monitoringLevel,
             (value: string) => this.orderType.monitoringLevel = value,
             [
-                {name: this.injectedData.USE_DEFAULT, value: '-1'},
-                {name: '0', value: '0'},
-                {name: '5', value: '5'},
-                {name: '10', value: '10'},
-                {name: '15', value: '15'},
-                {name: '17', value: '17'},
-                {name: '18', value: '18'},
-                {name: '20', value: '20'}
+                {name: signal(this.injectedData.USE_DEFAULT), value: '-1'},
+                {name: signal('0'), value: '0'},
+                {name: signal('5'), value: '5'},
+                {name: signal('10'), value: '10'},
+                {name: signal('15'), value: '15'},
+                {name: signal('17'), value: '17'},
+                {name: signal('18'), value: '18'},
+                {name: signal('20'), value: '20'}
             ]
         );
 
@@ -257,7 +257,7 @@ export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, Ad
         this.apiService.getRuntimeContexts(false).subscribe({
             next: rtcArr => {
                 if (rtcArr && rtcArr.length) {
-                    this.runtimeContextsDataWrapper.values = rtcArr.map(rtc => ({value: rtc, name: rtc.toString()}));
+                    this.runtimeContextsDataWrapper.values = rtcArr.map(rtc => ({value: rtc, name: signal(rtc.toString())}));
                     this.error = '';
                 } else {
                     this.error = this.injectedData.UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR;
@@ -284,8 +284,8 @@ export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, Ad
             next: result => {
                 if (result && !result.errorMessage) {
                     const dtArr = (result.output[0] || { data: []}) as XoDestinationTypeArray;
-                    this.planningDestinationDataWrapper.values = dtArr.data.map(dt => ({name: dt.name, value: dt}));
-                    this.executionDestinationDataWrapper.values = dtArr.data.map(dt => ({name: dt.name, value: dt}));
+                    this.planningDestinationDataWrapper.values = dtArr.data.map(dt => ({name: signal(dt.name), value: dt}));
+                    this.executionDestinationDataWrapper.values = dtArr.data.map(dt => ({name: signal(dt.name), value: dt}));
                 } else {
                     // console.log('_getDestinations\' result error: ', result);
                 }

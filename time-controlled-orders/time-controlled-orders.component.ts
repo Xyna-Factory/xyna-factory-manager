@@ -18,7 +18,7 @@
 import { of } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -70,7 +70,7 @@ export class TimeControlledOrdersComponent extends RestorableTimeControlledOrder
 
         // Filter for status
         const filterItems: XcOptionItem[] = [
-            { name: '', value: '' },
+            { name: signal(''), value: '' },
             { name: this.i18nService.translateSignal('fman.tco.planning'), value: 'Planning' },
             { name: this.i18nService.translateSignal('fman.tco.waiting'), value: 'Waiting' },
             { name: this.i18nService.translateSignal('fman.tco.running'), value: 'Running' },
