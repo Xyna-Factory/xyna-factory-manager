@@ -17,7 +17,7 @@
  */
 import { debounceTime, filter, finalize, first, skip } from 'rxjs/operators';
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, inject, input, Input, NgZone, OnInit, Output, signal, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, inject, input, Input, NgZone, OnInit, Output, signal, viewChild } from '@angular/core';
 import { ShowWorkspaceContentDialogComponent } from '@fman/runtime-contexts/dialog/show-workspace-content/show-workspace-content-dialog.component';
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
 import { XoGetWorkspaceContentRequest } from '@fman/runtime-contexts/xo/xo-get-workspace-content-request.model';
@@ -70,8 +70,7 @@ export class WorkspaceTileComponent implements OnInit {
     private readonly zone = inject(NgZone);
     private readonly settings = inject(FactoryManagerSettingsService);
 
-    @ViewChild('header', { static: false })
-    headerRef: ElementRef;
+    readonly headerRef = viewChild<ElementRef>('header');
 
     readonly XDSIconName = XDSIconName;
 
@@ -234,11 +233,11 @@ export class WorkspaceTileComponent implements OnInit {
         // Workaround because angular material has no observer that completes when data is loaded and the table is rendered.
         // See https://github.com/angular/components/issues/8068
         this.zone.onStable.pipe(skip(2), first(), debounceTime(100)).subscribe(() => {
-            this.headerRef.nativeElement.scrollIntoView(true);
+            this.headerRef().nativeElement.scrollIntoView(true);
             // The parent is the scroll section. Used to get a margin of 8px at the top of the card.
-            const parent = this.headerRef.nativeElement.parentElement.parentElement;
+            const parent = this.headerRef().nativeElement.parentElement.parentElement;
             if (parent) {
-                this.headerRef.nativeElement.parentElement.parentElement.scrollTop -= 8;
+                this.headerRef().nativeElement.parentElement.parentElement.scrollTop -= 8;
             }
         });
     }

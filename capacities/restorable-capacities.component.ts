@@ -45,10 +45,21 @@ export const CAPACITY_ISWP: CapacitiesInputScreenWorkflowPackage = {
 })
 export class RestorableCapacitiesComponent extends RestorableRouteComponent<XoCapacityInformation> implements OnInit {
 
-    protected UNSPECIFIED_DETAILS_ERROR = 'fman.restorable-capacities.unspecified-details-error';
-    protected UNSPECIFIED_ADD_ERROR = 'fman.restorable-capacities.unspecified-add-error';
-    protected UNSPECIFIED_SAVE_ERROR = 'fman.restorable-capacities.unspecified-save-error';
-    protected CONFIRM_DELETE = 'fman.restorable-capacities.confirm-delete';
+    get UNSPECIFIED_DETAILS_ERROR(): string {
+        return this.i18nService.translateSignal('fman.restorable-capacities.unspecified-details-error')();
+    }
+
+    get UNSPECIFIED_ADD_ERROR(): string {
+        return this.i18nService.translateSignal('fman.restorable-capacities.unspecified-add-error')();
+    }
+
+    get UNSPECIFIED_SAVE_ERROR(): string {
+        return this.i18nService.translateSignal('fman.restorable-capacities.unspecified-save-error')();
+    }
+
+    get CONFIRM_DELETE(): string {
+        return this.i18nService.translateSignal('fman.restorable-capacities.confirm-delete')();
+    }
 
     constructor() {
         super();
@@ -57,16 +68,8 @@ export class RestorableCapacitiesComponent extends RestorableRouteComponent<XoCa
         this.i18nService.setTranslations(LocaleService.EN_US, capacities_translations_en_US);
     }
 
-    private translateConstants() {
-        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translate(this.UNSPECIFIED_DETAILS_ERROR);
-        this.UNSPECIFIED_ADD_ERROR = this.i18nService.translate(this.UNSPECIFIED_ADD_ERROR);
-        this.UNSPECIFIED_SAVE_ERROR = this.i18nService.translate(this.UNSPECIFIED_SAVE_ERROR);
-        this.CONFIRM_DELETE = this.i18nService.translate(this.CONFIRM_DELETE);
-    }
-
     ngOnInit() {
         super.ngOnInit();
-        this.translateConstants();
     }
 
 }

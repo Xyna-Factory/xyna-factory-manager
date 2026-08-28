@@ -32,13 +32,29 @@ import { XoCronLikeOrder } from './xo/xo-cronlike-order.model';
     template: ''
 })
 export class RestorableCronlikeOrdersComponent extends RestorableRouteComponent<XoCronLikeOrder> implements OnInit {
-    protected UNSPECIFIED_DETAILS_ERROR = 'fman.restorable-cronlike-orders.unspecified-details-error';
-    protected UNSPECIFIED_ADD_ERROR = 'fman.restorable-cronlike-orders.unspecified-add-error';
-    protected UNSPECIFIED_SAVE_ERROR = 'fman.restorable-cronlike-orders.unspecified-save-error';
-    protected UNSPECIFIED_GET_ORDER_TYPES_ERROR = 'fman.restorable-cronlike-orders.unspecified-get-order-types-error';
-    protected CONFIRM_DELETE = 'fman.restorable-cronlike-orders.confirm-delete';
+    get UNSPECIFIED_DETAILS_ERROR(): string {
+        return this.i18nService.translateSignal('fman.restorable-cronlike-orders.unspecified-details-error')();
+    }
 
-    protected UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR = 'fman.restorable-cronlike-orders.unspecified-get-runtime-contexts-error';
+    get UNSPECIFIED_ADD_ERROR(): string {
+        return this.i18nService.translateSignal('fman.restorable-cronlike-orders.unspecified-add-error')();
+    }
+
+    get UNSPECIFIED_SAVE_ERROR(): string {
+        return this.i18nService.translateSignal('fman.restorable-cronlike-orders.unspecified-save-error')();
+    }
+
+    get UNSPECIFIED_GET_ORDER_TYPES_ERROR(): string {
+        return this.i18nService.translateSignal('fman.restorable-cronlike-orders.unspecified-get-order-types-error')();
+    }
+
+    get CONFIRM_DELETE(): string {
+        return this.i18nService.translateSignal('fman.restorable-cronlike-orders.confirm-delete')();
+    }
+
+    get UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR(): string {
+        return this.i18nService.translateSignal('fman.restorable-cronlike-orders.unspecified-get-runtime-contexts-error')();
+    }
 
     protected GET_ORDER_TYPES_EMPTY_LIST_ERROR(context: XoRuntimeContext): string {
         return this.i18nService.translate('fman.restorable-cronlike-orders.get-order-types-empty-list-error', {
@@ -54,34 +70,8 @@ export class RestorableCronlikeOrdersComponent extends RestorableRouteComponent<
         this.i18nService.setTranslations(LocaleService.EN_US, cronlike_orders_translations_en_US);
     }
 
-    private translateConstants() {
-        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translate(this.UNSPECIFIED_DETAILS_ERROR);
-        this.UNSPECIFIED_ADD_ERROR = this.i18nService.translate(this.UNSPECIFIED_ADD_ERROR);
-        this.UNSPECIFIED_SAVE_ERROR = this.i18nService.translate(this.UNSPECIFIED_SAVE_ERROR);
-        this.CONFIRM_DELETE = this.i18nService.translate(this.CONFIRM_DELETE);
-
-        this.UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR = this.i18nService.translate(UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR);
-        this.UNSPECIFIED_GET_ORDER_TYPES_ERROR = this.i18nService.translate(this.UNSPECIFIED_GET_ORDER_TYPES_ERROR);
-
-        const descriptors = [
-            ExecutionTimeInterval,
-            ExecutionTimeBehaviorOnError,
-            ExecutionTimeWeekday,
-            ExecutionTimeWeekdayPositionInMonth,
-            ExecutionTimeMonthlyBy,
-            ExecutionTimeMonthlyAtWhichDayOfTheMonth,
-            ExecutionTimeMonth,
-            ExecutionTimeYearlyBy
-        ];
-
-        descriptors.forEach(desc => {
-            Object.keys(desc).forEach(key => desc[key] = this.i18nService.translate(desc[key]));
-        });
-    }
-
     ngOnInit() {
         super.ngOnInit();
-        this.translateConstants();
     }
 
 }

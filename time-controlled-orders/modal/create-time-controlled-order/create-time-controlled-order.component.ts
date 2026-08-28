@@ -16,7 +16,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, viewChild } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder, XoRuntimeContext } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -54,14 +54,11 @@ export class CreateTimeControlledOrderComponent extends XcDialogComponent<boolea
     private readonly i18nService = inject(I18nService);
     private readonly apiService = inject(ApiService);
 
-    @ViewChild(XcFormDirective, { static: false })
-    xcFormDirective: XcFormDirective;
+    readonly xcFormDirective = viewChild(XcFormDirective);
 
-    @ViewChild(StorableInputParameterComponent, { static: false })
-    storableInputComponent: StorableInputParameterComponent;
+    readonly storableInputComponent = viewChild(StorableInputParameterComponent);
 
-    @ViewChild('errorMessage', { static: true })
-    errorMessageRef: ElementRef;
+    readonly errorMessageRef = viewChild<ElementRef>('errorMessage');
 
     selectedExecutionRestriction = new XoTCOExecutionRestriction();
     selectedBehaviorOnError: ExecutionTimeBehaviorOnError;
@@ -87,7 +84,7 @@ export class CreateTimeControlledOrderComponent extends XcDialogComponent<boolea
     private _querySelection: InputParameter;
 
     get valid(): boolean {
-        return this.executionTimeValid && this.orderTypeValid && this.executionRestrictionValid && this.xcFormDirective.valid;
+        return this.executionTimeValid && this.orderTypeValid && this.executionRestrictionValid && this.xcFormDirective().valid;
     }
 
     set querySelection(value: InputParameter) {
@@ -139,7 +136,7 @@ export class CreateTimeControlledOrderComponent extends XcDialogComponent<boolea
         tmpTCO.planningHorizon = this.selectedExecutionTime;
         tmpTCO.tCOExecutionRestriction = this.selectedExecutionRestriction;
         tmpTCO.orderCustoms = this.selectedCustomFields;
-        tmpTCO.inputPayload = this.storableInputComponent.getPayload();
+        tmpTCO.inputPayload = this.storableInputComponent().getPayload();
         tmpTCO.filterCriteria = this.selectedfilterCriteria;
         tmpTCO.sortCriteria = this.selectedSortCriteria;
         tmpTCO.storableFqn = this.selectedStorableFqn;
@@ -153,7 +150,7 @@ export class CreateTimeControlledOrderComponent extends XcDialogComponent<boolea
                 if (result.errorMessage) {
                     console.error(result.errorMessage);
                     this.error = result.errorMessage;
-                    this.errorMessageRef.nativeElement.scrollIntoView({ block: 'center' });
+                    this.errorMessageRef().nativeElement.scrollIntoView({ block: 'center' });
                 } else {
                     this.dismiss(true);
                 }

@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output, ViewChild, inject, signal } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output, inject, signal, viewChild } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
@@ -63,8 +63,7 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
     readonly timezoneChanged = new EventEmitter<string>();
 
 
-    @ViewChild(XcFormDirective, {static: false})
-    form: XcFormDirective;
+    readonly form = viewChild(XcFormDirective);
     private validityChangeSubscription: Subscription;
 
     @Output('validityChange')
@@ -178,7 +177,7 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
 
 
     ngAfterViewInit() {
-        this.validityChangeSubscription = this.form.validityChange.subscribe(formDirective => this.validityChangeEmitter.emit(formDirective.valid));
+        this.validityChangeSubscription = this.form().validityChange.subscribe(formDirective => this.validityChangeEmitter.emit(formDirective.valid));
     }
 
 

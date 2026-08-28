@@ -30,11 +30,25 @@ import { XoAdministrativeVeto } from './xo/xo-administrative-veto.model';
     template: ''
 })
 export class RestorableAdministrativeVetoComponent extends RestorableRouteComponent<XoAdministrativeVeto> implements OnInit {
-    protected UNSPECIFIED_DETAILS_ERROR = 'fman.restorable-administrative-vetoes.unspecified-details-error';
-    protected UNSPECIFIED_ADD_ERROR = 'fman.restorable-administrative-vetoes.unspecified-add-error';
-    protected UNSPECIFIED_SAVE_ERROR = 'fman.restorable-administrative-vetoes.unspecified-save-error';
-    protected NAME_MUST_BE_UNIQUE_ERROR = 'fman.restorable-administrative-vetoes.name-must-be-unique-error';
-    protected CONFIRM_DELETE = 'fman.administrative-vetoes.confirm-delete';
+    get UNSPECIFIED_DETAILS_ERROR(): string {
+        return this.i18nService.translateSignal('fman.restorable-administrative-vetoes.unspecified-details-error')();
+    }
+
+    get UNSPECIFIED_ADD_ERROR(): string {
+        return this.i18nService.translateSignal('fman.restorable-administrative-vetoes.unspecified-add-error')();
+    }
+
+    get UNSPECIFIED_SAVE_ERROR(): string {
+        return this.i18nService.translateSignal('fman.restorable-administrative-vetoes.unspecified-save-error')();
+    }
+
+    get NAME_MUST_BE_UNIQUE_ERROR(): string {
+        return this.i18nService.translateSignal('fman.restorable-administrative-vetoes.name-must-be-unique-error')();
+    }
+
+    get CONFIRM_DELETE(): string {
+        return this.i18nService.translateSignal('fman.administrative-vetoes.confirm-delete')();
+    }
 
     constructor() {
         super();
@@ -43,16 +57,8 @@ export class RestorableAdministrativeVetoComponent extends RestorableRouteCompon
         this.i18nService.setTranslations(LocaleService.EN_US, administrativeVetoes_translations_en_US);
     }
 
-    private translateConstants() {
-        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translate(this.UNSPECIFIED_DETAILS_ERROR);
-        this.UNSPECIFIED_ADD_ERROR = this.i18nService.translate(this.UNSPECIFIED_ADD_ERROR);
-        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translate(this.UNSPECIFIED_SAVE_ERROR);
-        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translate(this.CONFIRM_DELETE);
-    }
-
     ngOnInit() {
         super.ngOnInit();
-        this.translateConstants();
     }
 
 }

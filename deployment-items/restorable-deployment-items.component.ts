@@ -65,11 +65,25 @@ export enum DeleteDeploymentItemResolution {
 })
 export class RestorableDeploymentItemsComponent extends RestorableRouteComponent<XoDeploymentItem> implements OnInit {
 
-    protected UNSPECIFIED_DETAILS_ERROR = 'fman.restorable-deployment-items.unspecified-details-error';
-    protected CONFIRM_DELETE = 'fman.restorable-deployment-items.confirm-delete';
-    protected UNSPECIFIED_DEPLOY_ERROR = 'fman.restorable-deployment-items.unspecified-deploy-error';
-    protected UNSPECIFIED_UNDEPLOY_ERROR = 'fman.restorable-deployment-items.unspecified-undeploy-error';
-    protected UNSPECIFIED_DELETE_ERROR = 'fman.restorable-deployment-items.unspecified-delete-error';
+    get UNSPECIFIED_DETAILS_ERROR(): string {
+        return this.i18nService.translateSignal('fman.restorable-deployment-items.unspecified-details-error')();
+    }
+
+    get CONFIRM_DELETE(): string {
+        return this.i18nService.translateSignal('fman.restorable-deployment-items.confirm-delete')();
+    }
+
+    get UNSPECIFIED_DEPLOY_ERROR(): string {
+        return this.i18nService.translateSignal('fman.restorable-deployment-items.unspecified-deploy-error')();
+    }
+
+    get UNSPECIFIED_UNDEPLOY_ERROR(): string {
+        return this.i18nService.translateSignal('fman.restorable-deployment-items.unspecified-undeploy-error')();
+    }
+
+    get UNSPECIFIED_DELETE_ERROR(): string {
+        return this.i18nService.translateSignal('fman.restorable-deployment-items.unspecified-delete-error')();
+    }
 
     constructor() {
         super();
@@ -78,20 +92,8 @@ export class RestorableDeploymentItemsComponent extends RestorableRouteComponent
         this.i18nService.setTranslations(LocaleService.EN_US, deployment_items_translations_en_US);
     }
 
-    private translateConstants() {
-        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translate(this.UNSPECIFIED_DETAILS_ERROR);
-        this.UNSPECIFIED_DEPLOY_ERROR = this.i18nService.translate(this.UNSPECIFIED_DEPLOY_ERROR);
-        this.UNSPECIFIED_UNDEPLOY_ERROR = this.i18nService.translate(this.UNSPECIFIED_UNDEPLOY_ERROR);
-        this.CONFIRM_DELETE = this.i18nService.translate(this.CONFIRM_DELETE);
-        this.UNSPECIFIED_DELETE_ERROR = this.i18nService.translate(this.UNSPECIFIED_DELETE_ERROR);
-
-        Object.keys(DeployResolution).forEach(key => DeployResolution[key] = this.i18nService.translate(DeployResolution[key]));
-        Object.keys(DeleteDeploymentItemResolution).forEach(key => DeleteDeploymentItemResolution[key] = this.i18nService.translate(DeleteDeploymentItemResolution[key]));
-    }
-
     ngOnInit() {
         super.ngOnInit();
-        this.translateConstants();
     }
 
 }

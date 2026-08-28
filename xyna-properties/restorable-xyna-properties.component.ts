@@ -53,11 +53,25 @@ export enum XynaPropertiesFormat {
 })
 export class RestorableXynaPropertiesComponent extends RestorableRouteComponent<XoXynaProperty> implements OnInit {
 
-    protected UNSPECIFIED_DETAILS_ERROR = 'fman.restorable-xyna-properties.unspecified-details-error';
-    protected UNSPECIFIED_ADD_ERROR = 'fman.restorable-xyna-properties.unspecified-add-error';
-    protected UNSPECIFIED_SAVE_ERROR = 'fman.restorable-xyna-properties.unspecified-save-error';
-    protected CONFIRM_DELETE = 'fman.restorable-xyna-properties.confirm-delete';
-    protected CONFIRM_RESTORE = 'fman.restorable-xyna-properties.confirm-restore';
+    get UNSPECIFIED_DETAILS_ERROR(): string {
+        return this.i18nService.translateSignal('fman.restorable-xyna-properties.unspecified-details-error')();
+    }
+
+    get UNSPECIFIED_ADD_ERROR(): string {
+        return this.i18nService.translateSignal('fman.restorable-xyna-properties.unspecified-add-error')();
+    }
+
+    get UNSPECIFIED_SAVE_ERROR(): string {
+        return this.i18nService.translateSignal('fman.restorable-xyna-properties.unspecified-save-error')();
+    }
+
+    get CONFIRM_DELETE(): string {
+        return this.i18nService.translateSignal('fman.restorable-xyna-properties.confirm-delete')();
+    }
+
+    get CONFIRM_RESTORE(): string {
+        return this.i18nService.translateSignal('fman.restorable-xyna-properties.confirm-restore')();
+    }
 
     constructor() {
         super();
@@ -66,17 +80,8 @@ export class RestorableXynaPropertiesComponent extends RestorableRouteComponent<
         this.i18nService.setTranslations(LocaleService.EN_US, xyna_properties_translations_en_US);
     }
 
-    private translateConstants() {
-        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translate(this.UNSPECIFIED_DETAILS_ERROR);
-        this.UNSPECIFIED_ADD_ERROR = this.i18nService.translate(this.UNSPECIFIED_ADD_ERROR);
-        this.UNSPECIFIED_SAVE_ERROR = this.i18nService.translate(this.UNSPECIFIED_SAVE_ERROR);
-        this.CONFIRM_DELETE = this.i18nService.translate(this.CONFIRM_DELETE);
-        this.CONFIRM_RESTORE = this.i18nService.translate(this.CONFIRM_RESTORE);
-    }
-
     ngOnInit() {
         super.ngOnInit();
-        this.translateConstants();
     }
 
 }

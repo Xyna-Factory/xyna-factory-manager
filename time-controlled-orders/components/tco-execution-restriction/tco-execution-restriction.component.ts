@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject, viewChild } from '@angular/core';
 
 import { I18nService } from '@zeta/i18n';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
@@ -53,8 +53,7 @@ export const TimeConversion = {
 export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, AfterViewInit {
     private readonly i18n = inject(I18nService);
 
-    @ViewChild(XcFormDirective, { static: false })
-    xcFormDirective: XcFormDirective;
+    readonly xcFormDirective = viewChild(XcFormDirective);
 
     behaviorOnErrorDataWrapper: XcAutocompleteDataWrapper;
     selectedBehaviorOnError: ExecutionTimeBehaviorOnError;
@@ -223,11 +222,11 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
 
     ngAfterViewInit() {
         // Setting up an observable to detect validity change in parent
-        this.validityChangeSubscription = this.xcFormDirective.validityChange.subscribe(form => {
+        this.validityChangeSubscription = this.xcFormDirective().validityChange.subscribe(form => {
             this.validationChange.emit(form.valid);
         });
         // Because validityChange is not a behavior subject
-        this.validationChange.emit(this.xcFormDirective.valid);
+        this.validationChange.emit(this.xcFormDirective().valid);
     }
 
     ngOnDestroy() {

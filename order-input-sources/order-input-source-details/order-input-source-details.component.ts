@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, inject, Input, Output, signal, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, inject, Input, Output, signal, viewChild } from '@angular/core';
 
 import { InputParameterRef } from '@fman/misc/components/input-parameter/input-parameter-ref.class';
 import { XoOrderType, XoOrderTypeArray } from '@fman/xo/xo-order-type.model';
@@ -132,11 +132,11 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
     readonly navigated = new EventEmitter<string>();
 
 
-    @ViewChild(XcFormDirective, {static: false})
-    xcFormDirective: XcFormDirective;
+    readonly xcFormDirective = viewChild(XcFormDirective);
 
     get invalid(): boolean {
-        return this.xcFormDirective ? (this.xcFormDirective.invalid || this.noOrderTypes) : false;
+        const xcFormDirective = this.xcFormDirective();
+        return xcFormDirective ? (xcFormDirective.invalid || this.noOrderTypes) : false;
     }
 
     get isSourceTypeConstant(): boolean {

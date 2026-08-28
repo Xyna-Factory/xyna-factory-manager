@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { AfterViewInit, ChangeDetectionStrategy, Component, computed, inject, OnDestroy, QueryList, signal, ViewChildren } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, computed, effect, inject, OnDestroy, signal, viewChildren } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -55,7 +55,6 @@ export class ApplicationsComponent extends RouteComponent implements OnDestroy, 
     private readonly selectedDetails = signal<XoRuntimeApplicationDetails | undefined>(undefined);
     private readonly refreshingState = signal(false);
     private readonly markedForRefresh = signal(false);
-    private applicationTilesSubscription: Subscription;
     private readonly filterTextState = signal('');
     readonly applicationsList = computed(() => {
         this.dataVersion();
@@ -69,12 +68,22 @@ export class ApplicationsComponent extends RouteComponent implements OnDestroy, 
             : rawData;
     });
 
-    @ViewChildren('applicationTiles')
-    applicationTiles: QueryList<any>;
+    readonly applicationTiles = viewChildren<any>('applicationTiles');
 
 
     constructor() {
         super();
+
+        effect(() => {
+            const tiles = this.applicationTiles();
+            if (tiles.length > 0 && this.selectedDetails()) {
+                tiles.forEach((component: ApplicationTileComponent) => {
+                    if (component.hasDetails) {
+                        component.scrollTo();
+                    }
+                });
+            }
+        });
 
         this.dataSource = new ApplicationDataSource(this.apiService, FMAN_RTC, ORDER_TYPES.GET_RUNTIME_APPLICATIONS, undefined, XoRuntimeApplicationArray);
         this.dataSource.dataChange.subscribe(() => {
@@ -90,22 +99,10 @@ export class ApplicationsComponent extends RouteComponent implements OnDestroy, 
 
 
     ngAfterViewInit() {
-        this.applicationTilesSubscription = this.applicationTiles.changes.subscribe(t => {
-            if (t && t.length !== 0) {
-                if (this.selectedDetails()) {
-                    t._results.forEach((component: ApplicationTileComponent) => {
-                        if (component.hasDetails) {
-                            component.scrollTo();
-                        }
-                    });
-                }
-            }
-        });
     }
 
 
     ngOnDestroy() {
-        this.applicationTilesSubscription.unsubscribe();
     }
 
 

@@ -47,13 +47,29 @@ export const ORDER_TYPE_ISWP: OrderTypeInputScreenWorkflowPackage = {
 })
 export class RestorableOrderTypesComponent extends RestorableRouteComponent<XoOrderType> implements OnInit {
 
-    protected UNSPECIFIED_DETAILS_ERROR = 'fman.order-types.unspecified-details-error';
-    protected UNSPECIFIED_ADD_ERROR = 'fman.order-types.unspecified-add-error';
-    protected UNSPECIFIED_SAVE_ERROR = 'fman.order-types.unspecified-save-error';
-    protected UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR = 'fman.order-types.unspecified-get-runtime-contexts-error';
-    protected CONFIRM_DELETE = 'fman.order-types.confirm-delete';
+    get UNSPECIFIED_DETAILS_ERROR(): string {
+        return this.i18nService.translateSignal('fman.order-types.unspecified-details-error')();
+    }
 
-    protected USE_DEFAULT = 'fman.order-types.use-default';
+    get UNSPECIFIED_ADD_ERROR(): string {
+        return this.i18nService.translateSignal('fman.order-types.unspecified-add-error')();
+    }
+
+    get UNSPECIFIED_SAVE_ERROR(): string {
+        return this.i18nService.translateSignal('fman.order-types.unspecified-save-error')();
+    }
+
+    get UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR(): string {
+        return this.i18nService.translateSignal('fman.order-types.unspecified-get-runtime-contexts-error')();
+    }
+
+    get CONFIRM_DELETE(): string {
+        return this.i18nService.translateSignal('fman.order-types.confirm-delete')();
+    }
+
+    get USE_DEFAULT(): string {
+        return this.i18nService.translateSignal('fman.order-types.use-default')();
+    }
 
     private readonly TOOLTIP_HEADER_MONITORING_LEVEL = `Monitoring Level:
 0:  No audit data will be created at all.
@@ -88,18 +104,8 @@ LOW (less than 0): Select low Precedence values to prefer Monitoring Level defin
         return this.TOOLTIP_HEADER_MONITORING_LEVEL + this.TOOLTIP_HEADER_PRECEDENCE;
     }
 
-    private translateConstants() {
-        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translate(this.UNSPECIFIED_DETAILS_ERROR);
-        this.UNSPECIFIED_ADD_ERROR = this.i18nService.translate(this.UNSPECIFIED_ADD_ERROR);
-        this.UNSPECIFIED_SAVE_ERROR = this.i18nService.translate(this.UNSPECIFIED_SAVE_ERROR);
-        this.CONFIRM_DELETE = this.i18nService.translate(this.CONFIRM_DELETE);
-        this.UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR = this.i18nService.translate(this.UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR);
-        this.USE_DEFAULT = this.i18nService.translate(this.USE_DEFAULT);
-    }
-
     ngOnInit() {
         super.ngOnInit();
-        this.translateConstants();
     }
 
 }

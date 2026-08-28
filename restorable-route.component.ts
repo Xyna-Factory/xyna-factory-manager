@@ -63,7 +63,9 @@ export class RestorableRouteComponent<T extends XoObject = XoObject, D = T> exte
     refreshing = false;
 
     //#region - Factory Manager constants
-    FM_DELETE_ENTRY_HEADER = 'fman.restorable-route.warning';
+    get FM_DELETE_ENTRY_HEADER(): string {
+        return this.i18nService.translateSignal('fman.restorable-route.warning')();
+    }
     //#endregion
 
 
@@ -85,7 +87,6 @@ export class RestorableRouteComponent<T extends XoObject = XoObject, D = T> exte
 
     ngOnInit() {
         super.ngOnInit();
-        this.FM_DELETE_ENTRY_HEADER = this.i18nService.translate(this.FM_DELETE_ENTRY_HEADER);
     }
 
 

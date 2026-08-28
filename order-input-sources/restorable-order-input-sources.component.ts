@@ -31,15 +31,37 @@ import { XoOrderInputSource } from './xo/xo-order-input-source.model';
 })
 export class RestorableOrderInputSourcesComponent extends RestorableRouteComponent<XoOrderInputSource> implements OnInit {
 
-    protected UNSPECIFIED_DETAILS_ERROR = 'fman.ois.unspecified-details-error';
-    protected UNSPECIFIED_ADD_ERROR = 'fman.ois.unspecified-add-error';
-    protected UNSPECIFIED_SAVE_ERROR = 'fman.ois.unspecified-save-error';
-    protected CONFIRM_DELETE = 'fman.ois.confirm-delete';
+    get UNSPECIFIED_DETAILS_ERROR(): string {
+        return this.i18nService.translateSignal('fman.ois.unspecified-details-error')();
+    }
 
-    protected UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR = 'fman.ois.unspecified-get-runtime-contexts-error';
-    protected GET_GENERATING_ORDER_TYPES_ERROR = 'fman.ois.get-generating-order-types-error';
-    protected UNSPECIFIED_GET_ORDER_TYPES_ERROR = 'fman.ois.unspecified-get-order-types-error';
-    protected UNSPECIFIED_START_FREQUENCY_CONTROLLED_TASK_ERROR = 'fman.ois.unspecified-start-frequency-controlled-task-error';
+    get UNSPECIFIED_ADD_ERROR(): string {
+        return this.i18nService.translateSignal('fman.ois.unspecified-add-error')();
+    }
+
+    get UNSPECIFIED_SAVE_ERROR(): string {
+        return this.i18nService.translateSignal('fman.ois.unspecified-save-error')();
+    }
+
+    get CONFIRM_DELETE(): string {
+        return this.i18nService.translateSignal('fman.ois.confirm-delete')();
+    }
+
+    get UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR(): string {
+        return this.i18nService.translateSignal('fman.ois.unspecified-get-runtime-contexts-error')();
+    }
+
+    get GET_GENERATING_ORDER_TYPES_ERROR(): string {
+        return this.i18nService.translateSignal('fman.ois.get-generating-order-types-error')();
+    }
+
+    get UNSPECIFIED_GET_ORDER_TYPES_ERROR(): string {
+        return this.i18nService.translateSignal('fman.ois.unspecified-get-order-types-error')();
+    }
+
+    get UNSPECIFIED_START_FREQUENCY_CONTROLLED_TASK_ERROR(): string {
+        return this.i18nService.translateSignal('fman.ois.unspecified-start-frequency-controlled-task-error')();
+    }
 
     constructor() {
         super();
@@ -50,16 +72,6 @@ export class RestorableOrderInputSourcesComponent extends RestorableRouteCompone
 
     ngOnInit() {
         super.ngOnInit();
-
-        // translate constants
-        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translate(this.UNSPECIFIED_DETAILS_ERROR);
-        this.UNSPECIFIED_ADD_ERROR = this.i18nService.translate(this.UNSPECIFIED_ADD_ERROR);
-        this.UNSPECIFIED_SAVE_ERROR = this.i18nService.translate(this.UNSPECIFIED_SAVE_ERROR);
-        this.CONFIRM_DELETE = this.i18nService.translate(this.CONFIRM_DELETE);
-
-        this.UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR = this.i18nService.translate(this.UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR);
-        this.GET_GENERATING_ORDER_TYPES_ERROR = this.i18nService.translate(this.GET_GENERATING_ORDER_TYPES_ERROR);
-        this.UNSPECIFIED_GET_ORDER_TYPES_ERROR = this.i18nService.translate(this.UNSPECIFIED_GET_ORDER_TYPES_ERROR);
     }
 
 

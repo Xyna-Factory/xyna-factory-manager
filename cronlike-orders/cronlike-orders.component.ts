@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, signal, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, viewChild } from '@angular/core';
 
 import { FullQualifiedName, RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoArray, XoRuntimeContext, XoWorkspace } from '@zeta/api';
 import { XcAutocompleteDataWrapper, XcButtonComponent, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective } from '@zeta/xc';
@@ -44,15 +44,15 @@ const ISWP = CRONLIKE_ORDERS_ISWP;
 })
 export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
 
-    @ViewChild(XcFormDirective, {static: false})
-    xcFormDirective: XcFormDirective;
+    readonly xcFormDirective = viewChild(XcFormDirective);
 
     readonly selectedDetails = signal<XoCronLikeOrder | null>(null);
 
     executionTimeInvalid = false;
 
     get invalid(): boolean {
-        return this.xcFormDirective ? (this.xcFormDirective.invalid || this.executionTimeInvalid) : false;
+        const xcFormDirective = this.xcFormDirective();
+        return xcFormDirective ? (xcFormDirective.invalid || this.executionTimeInvalid) : false;
     }
 
     inputParameterRef = InputParameterRef.getInstance();

@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject, viewChild } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -46,11 +46,9 @@ export class TcoDetailSectionComponent implements OnInit, OnDestroy {
     private readonly apiService = inject(ApiService);
     private readonly dialogService = inject(XcDialogService);
 
-    @ViewChild(XcFormDirective, { static: false })
-    xcFormDirective: XcFormDirective;
+    readonly xcFormDirective = viewChild(XcFormDirective);
 
-    @ViewChild(StorableInputParameterComponent, { static: false })
-    storableInputComponent: StorableInputParameterComponent;
+    readonly storableInputComponent = viewChild(StorableInputParameterComponent);
 
     @Input()
     readonly WFP_GET_TCO_DETAILS;
@@ -153,7 +151,7 @@ export class TcoDetailSectionComponent implements OnInit, OnDestroy {
     }
 
     saveChanges() {
-        this.timeControlledOrder.inputPayload = this.storableInputComponent.getPayload();
+        this.timeControlledOrder.inputPayload = this.storableInputComponent().getPayload();
         this.apiService
             .startOrder(FMAN_RTC, this.WFP_UPDATE_TCO, this.timeControlledOrder, [], StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({

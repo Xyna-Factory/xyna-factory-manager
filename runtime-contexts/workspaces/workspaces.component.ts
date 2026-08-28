@@ -17,7 +17,7 @@ import { Subscription } from 'rxjs';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { AfterViewInit, ChangeDetectionStrategy, Component, computed, inject, OnDestroy, QueryList, signal, ViewChildren } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, computed, effect, inject, OnDestroy, signal, viewChildren } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -55,7 +55,6 @@ export class WorkspacesComponent extends RouteComponent implements AfterViewInit
     private readonly selectedDetails = signal<XoWorkspaceDetails | XoApplicationDefinitionDetails | undefined>(undefined);
     private readonly refreshingState = signal(false);
     private readonly markedForRefresh = signal(false);
-    private workspaceTilesSubscription: Subscription;
     private readonly filterTextState = signal('');
     readonly workspacesList = computed(() => {
         this.dataVersion();
@@ -69,12 +68,22 @@ export class WorkspacesComponent extends RouteComponent implements AfterViewInit
             : rawData;
     });
 
-    @ViewChildren('workspaceTiles')
-    workspaceTiles: QueryList<any>;
+    readonly workspaceTiles = viewChildren<any>('workspaceTiles');
 
 
     constructor() {
         super();
+
+        effect(() => {
+            const tiles = this.workspaceTiles();
+            if (tiles.length > 0 && this.selectedDetails()) {
+                tiles.forEach((component: WorkspaceTileComponent) => {
+                    if (component.hasDetails) {
+                        component.scrollTo();
+                    }
+                });
+            }
+        });
 
         this.remoteDataSource = new XcRemoteDataSource(this.apiService, FMAN_RTC, ORDER_TYPES.GET_WORKSPACES, undefined, XoWorkspaceArray);
         this.remoteDataSource.compareFn = XcSortPredicate(XcSortDirection.asc, t => t.name.toLowerCase());
@@ -91,20 +100,10 @@ export class WorkspacesComponent extends RouteComponent implements AfterViewInit
 
 
     ngAfterViewInit() {
-        this.workspaceTilesSubscription = this.workspaceTiles.changes.subscribe(list => {
-            if (list?.length > 0 && this.selectedDetails()) {
-                list._results.forEach((component: WorkspaceTileComponent) => {
-                    if (component.hasDetails) {
-                        component.scrollTo();
-                    }
-                });
-            }
-        });
     }
 
 
     ngOnDestroy() {
-        this.workspaceTilesSubscription?.unsubscribe();
     }
 
 

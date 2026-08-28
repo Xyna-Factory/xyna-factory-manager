@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, Input, Output, ViewChild, inject, signal } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject, signal, viewChild } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder, XoArray, XoRuntimeContext } from '@zeta/api';
 import { XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -34,8 +34,7 @@ import { FM_WF_GET_ORDER_TYPES } from '@fman/const';
 export class OrderTypeFormComponent {
     private readonly apiService = inject(ApiService);
 
-    @ViewChild(XcFormDirective, { static: false })
-    xcFormDirective: XcFormDirective;
+    readonly xcFormDirective = viewChild(XcFormDirective);
 
     @Output() readonly selectedRuntimeContextChange = new EventEmitter<XoRuntimeContext>();
     @Output() readonly selectedOrderTypeChange = new EventEmitter<string>();
