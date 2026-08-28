@@ -8,25 +8,22 @@
       }
       <xc-button (click)="chooseFile()" [busy]="loadingFile" [disabled]="importing || loadingFile" xc-i18n>import-xyna-properties-choosefile</xc-button>
     </span>
-    <xc-form-autocomplete
-      xc-form-validator-required
+    <xc-form-autocomplete xc-form-validator-required
       xc-form-autocomplete-asdropdown
       xc-form-autocomplete-fulltextsearch
       [(xc-form-autocomplete-option)]="formatDataWrapper.value"
       [xc-form-autocomplete-options]="formatDataWrapper.values"
       xc-i18n
       label="import-xyna-properties-format"
-    ></xc-form-autocomplete>
-    <xc-checkbox
-      [(checked)]="importData.exportSettings.includeDocumentation"
+     />
+    <xc-checkbox [(checked)]="importData.exportSettings.includeDocumentation"
       label="import-xyna-properties-include-documentation"
       xc-i18n
-    ></xc-checkbox>
-    <xc-checkbox
-      [(checked)]="importSettings.overwriteExising"
+     />
+    <xc-checkbox [(checked)]="importSettings.overwriteExising"
       label="import-xyna-properties-overwriteExisting"
       xc-i18n
-    ></xc-checkbox>
+     />
   </section>
   <ng-container footer>
     <xc-button (click)="dismiss()" xc-i18n>button-cancel</xc-button>

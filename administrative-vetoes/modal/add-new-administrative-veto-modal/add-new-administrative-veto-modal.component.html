@@ -5,13 +5,12 @@
     @if (error) {
       <div class="error-box">
         <div [fm-focus-candidate]="errorBoxFocusCandidateRef" fm-focus-candidate-focus-onload class="error-msg">
-          <div class="icon-div"><xc-icon xc-icon-name="msgwarning"></xc-icon></div><div>{{error}}</div>
+          <div class="icon-div"><xc-icon xc-icon-name="msgwarning" /></div><div>{{error}}</div>
         </div>
       </div>
     }
-    <xc-form-input label="label-name" xc-i18n [(value)]="administrativeVeto.name" xc-form-validator-required></xc-form-input>
-    <xc-form-textarea label="label-description" xc-i18n [(value)]="administrativeVeto.documentation">
-    </xc-form-textarea>
+    <xc-form-input label="label-name" xc-i18n [(value)]="administrativeVeto.name" xc-form-validator-required />
+    <xc-form-textarea label="label-description" xc-i18n [(value)]="administrativeVeto.documentation" />
   </section>
 
   <ng-container footer>

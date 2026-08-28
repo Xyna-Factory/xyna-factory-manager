@@ -23,9 +23,9 @@ import { XC_COMPONENT_DATA, XcDynamicComponent, XcIconComponent, XcCheckboxCompo
 @Component({
     template: `
         <div (click)="$event.preventDefault()">
-            <xc-checkbox [checked]="from"></xc-checkbox>
-            <xc-icon xc-icon-name="trending_flat" color="normal" xc-icon-material xc-icon-size="large"></xc-icon>
-            <xc-checkbox [checked]="to" color="primary"></xc-checkbox>
+            <xc-checkbox [checked]="from" />
+            <xc-icon xc-icon-name="trending_flat" color="normal" xc-icon-material xc-icon-size="large" />
+            <xc-checkbox [checked]="to" color="primary" />
         </div>
     `,
     styleUrls: ['change-template.component.scss'],

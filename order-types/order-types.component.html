@@ -5,16 +5,16 @@
       <h1 class="items-left" xc-i18n>header</h1>
       <div class="items-right">
         <xc-checkbox label="label-show-paths" xc-i18n (checkedChange)="showPaths()"
-        [checked]="orderTypeTableFilter.showPath"></xc-checkbox>
+        [checked]="orderTypeTableFilter.showPath" />
         <xc-icon-button xc-i18n (click)="refresh()" xc-tooltip="icon-refresh" class="refresh"
-        xc-icon-name="reload"></xc-icon-button>
+        xc-icon-name="reload" />
         <xc-icon-button xc-i18n (click)="add()" xc-tooltip="icon-add" class="add"
-        xc-icon-name="add"></xc-icon-button>
+        xc-icon-name="add" />
       </div>
     </header>
     <section class="stretch scroll">
       <xc-table [xc-table-datasource]="remoteTableDataSource" xc-table-allowsort xc-table-allowfilter
-      xc-table-allowselect></xc-table>
+      xc-table-allowselect />
     </section>
     <footer></footer>
   </xc-panel>
@@ -23,7 +23,7 @@
       <header>
         <!-- Name and RuntimeContext won't be translated so there is no need for xc-i18n-->
         <h2 class="items-left"><b>{{selectedDetails()?.fullQualifiedName}}</b>&nbsp;-&nbsp;<span>{{runtimeContextString}}</span></h2>
-        <xc-icon-button class="items-right" [xc-tooltip]="TOOLTIP_HEADER" xc-icon-name="info"></xc-icon-button>
+        <xc-icon-button class="items-right" [xc-tooltip]="TOOLTIP_HEADER" xc-icon-name="info" />
       </header>
       <section xc-form class="stretch scroll">
         <div class="items-row equal-width-2">
@@ -32,43 +32,43 @@
               [(xc-form-autocomplete-option)]="planningDestinationDataWrapper.value"
               [xc-form-autocomplete-options]="planningDestinationDataWrapper.values"
               xc-form-field-suffix="clear" xc-form-autocomplete-fulltextsearch xc-form-validator-required
-            xc-i18n></xc-form-autocomplete>
+            xc-i18n />
           }
           @if (defaultPlanningDestination) {
             <xc-form-input label="label-planning-destination" value="{{'value-default-planning' | xcI18n}}"
-            readonly xc-i18n></xc-form-input>
+            readonly xc-i18n />
           }
           <xc-checkbox [(checked)]="defaultPlanningDestination" label="label-default-planning-service"
-          xc-i18n></xc-checkbox>
+          xc-i18n />
         </div>
         <div class="items-row equal-width-2">
           <xc-form-autocomplete label="label-execution-destination" placeholder="placeholder-select"
             [(xc-form-autocomplete-option)]="executionDestinationDataWrapper.value"
             [xc-form-autocomplete-options]="executionDestinationDataWrapper.values" xc-form-field-suffix="clear"
-          xc-form-autocomplete-fulltextsearch xc-form-validator-required xc-i18n></xc-form-autocomplete>
+          xc-form-autocomplete-fulltextsearch xc-form-validator-required xc-i18n />
           <xc-button (click)="openExecutionDestination()" xc-i18n>button-open-execution-destionation</xc-button>
         </div>
         <div class="items-row equal-width-2">
           <xc-form-autocomplete label="label-monitoring-level" placeholder="placeholder-select"
             [(xc-form-autocomplete-option)]="monitoringLevelDataWrapper.value"
             [xc-form-autocomplete-options]="monitoringLevelDataWrapper.values" xc-form-field-suffix="clear"
-          xc-form-autocomplete-fulltextsearch xc-form-autocomplete-asinput xc-i18n></xc-form-autocomplete>
+          xc-form-autocomplete-fulltextsearch xc-form-autocomplete-asinput xc-i18n />
           <div></div>
         </div>
         <div class="items-row equal-width-2">
           <xc-form-input class="equal-width-previous-sibling-fix" label="label-precedence"
-          [(value)]="precedenceDataWrapper.value" xc-i18n xc-form-validator-number></xc-form-input>
+          [(value)]="precedenceDataWrapper.value" xc-i18n xc-form-validator-number />
           <div class="items-row equal-width-2">
             @if (defaultPriority) {
               <xc-form-input label="label-priority" value="" xc-i18n disabled xc-form-validator-number
-              xc-form-validator-minvalue="1" xc-form-validator-maxvalue="10"></xc-form-input>
+              xc-form-validator-minvalue="1" xc-form-validator-maxvalue="10" />
             }
             @if (!defaultPriority) {
               <xc-form-input label="label-priority" [(value)]="priorityDataWrapper.value" xc-i18n
                 xc-form-validator-required xc-form-validator-number xc-form-validator-minvalue="1"
-              xc-form-validator-maxvalue="10"></xc-form-input>
+              xc-form-validator-maxvalue="10" />
             }
-            <xc-checkbox [(checked)]="defaultPriority" label="label-default-priority" xc-i18n></xc-checkbox>
+            <xc-checkbox [(checked)]="defaultPriority" label="label-default-priority" xc-i18n />
           </div>
         </div>
         <xc-panel>
@@ -77,40 +77,40 @@
             <div class="bottom-header">
               <div class="items-row grid-12">
                 <xc-form-input class="col-4" label="label-Filter"
-                [(value)]="childOrderInheritanceRulesFilter" xc-i18></xc-form-input>
+                [(value)]="childOrderInheritanceRulesFilter" xc-i18 />
                 <xc-form-autocomplete class="col-4" label="label-monitoring-level"
                   placeholder="placeholder-select"
                   [(xc-form-autocomplete-option)]="childOrderInheritanceRulesMonitoringLevelDataWrapper.value"
                   [xc-form-autocomplete-options]="childOrderInheritanceRulesMonitoringLevelDataWrapper.values"
                   xc-form-field-suffix="clear" xc-form-autocomplete-fulltextsearch
-                xc-form-autocomplete-asinput xc-i18n></xc-form-autocomplete>
+                xc-form-autocomplete-asinput xc-i18n />
                 <!-- placeholder for future feature-->
-                <xc-form-input class="col-0" value="" disabled></xc-form-input>
+                <xc-form-input class="col-0" value="" disabled />
                 <xc-form-input class="col-3" label="label-precedence"
                   [(value)]="childOrderInheritanceRulesPrecedenceDataWrapper.value" xc-i18n
-                xc-form-validator-number></xc-form-input>
+                xc-form-validator-number />
                 <xc-icon-button (click)="addChildOrderInheritanceRule()"
                   xc-tooltip="tooltip-add-child-order-inheritance-rule" xc-i18n class="add col-1"
-                xc-icon-name="add"></xc-icon-button>
+                xc-icon-name="add" />
               </div>
             </div>
           </header>
           <section>
             <xc-rich-list [xc-rich-list-items]="childOrderInheritanceRulesItems"
-            xc-i18n-context="child-order-inheritance-rules"></xc-rich-list>
+            xc-i18n-context="child-order-inheritance-rules" />
           </section>
         </xc-panel>
         <xc-panel style="max-height: 400px">
           <header>
             <h3 xc-i18n>header-capacities</h3>
             <xc-icon-button (click)="refreshOrderTypeCapacitiesDataSource()" xc-tooltip="icon-refresh" xc-i18n
-            class="refresh items-right" xc-icon-name="reload"></xc-icon-button>
+            class="refresh items-right" xc-icon-name="reload" />
           </header>
           <xc-table [xc-table-datasource]="dsOrderTypeCapacitiesDataSource" xc-table-allowsort
-          xc-table-allowfilter></xc-table>
+          xc-table-allowfilter />
         </xc-panel>
         <xc-form-textarea label="label-documentation" [(value)]="documentation"
-        xc-form-textarea-lines="6" xc-i18n></xc-form-textarea>
+        xc-form-textarea-lines="6" xc-i18n />
       </section>
       <footer class='items-row'>
         <div class="items-left">

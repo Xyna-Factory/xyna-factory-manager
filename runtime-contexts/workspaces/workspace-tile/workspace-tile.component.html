@@ -1,9 +1,8 @@
 <div class="header" #header>
-    <runtime-context-button
-        [runtimeContext]="workspace"
+    <runtime-context-button [runtimeContext]="workspace"
         [selected]="isSelected(workspace)"
         (select)="select($event)"
-    ></runtime-context-button>
+     />
     <div class="active">
         @if (isActive()) {
             <span xc-i18n>active-workspace</span>
@@ -14,18 +13,16 @@
             applicationDefinition of workspace.applicationDefinitions.data;
             track applicationDefinition
         ) {
-            <runtime-context-button
-                [runtimeContext]="applicationDefinition"
+            <runtime-context-button [runtimeContext]="applicationDefinition"
                 [selected]="isSelected(applicationDefinition)"
                 (select)="select($event)"
-            ></runtime-context-button>
+             />
         }
-        <xc-icon-button
-            (click)="createApplicationDefinition()"
+        <xc-icon-button (click)="createApplicationDefinition()"
             xc-icon-name="add"
             xc-i18n
             xc-tooltip="create-application-definition"
-        ></xc-icon-button>
+         />
     </div>
 </div>
 @if (hasWorkspaceDetails || hasApplicationDefinitionDetails) {
@@ -137,22 +134,20 @@
                 </div>
             </div>
             <div class="row">
-                <xc-form-input
-                    xc-i18n
+                <xc-form-input xc-i18n
                     #documentation
                     label="documentation"
                     [value]="details.documentation"
                     (blur)="changeDocumentation(documentation.value)"
                     [disabled]="documentationPending()"
                     xc-form-field-compact
-                ></xc-form-input>
-                <xc-form-input
-                    xc-i18n
+                 />
+                <xc-form-input xc-i18n
                     label="source-version"
                     [value]="details.sourceVersion"
                     disabled
                     xc-form-field-compact
-                ></xc-form-input>
+                 />
             </div>
         }
         @if (issues().length > 0) {
@@ -228,12 +223,11 @@
                     </div>
                 </header>
                 <section>
-                    <xc-table
-                        [xc-table-datasource]="requiresDataSource"
+                    <xc-table [xc-table-datasource]="requiresDataSource"
                         xc-table-allowsort
                         xc-table-allowfilter
                         xc-table-lazyupdate
-                    ></xc-table>
+                     />
                 </section>
             </xc-panel>
 
@@ -246,12 +240,11 @@
                     <h2 class="items-left" xc-i18n>required-by</h2>
                 </header>
                 <section>
-                    <xc-table
-                        [xc-table-datasource]="requiredByDataSource"
+                    <xc-table [xc-table-datasource]="requiredByDataSource"
                         xc-table-allowsort
                         xc-table-allowfilter
                         xc-table-lazyupdate
-                    ></xc-table>
+                     />
                 </section>
             </xc-panel>
         </div>
@@ -282,12 +275,11 @@
                 </div>
             </header>
             <section>
-                <xc-table
-                    [xc-table-datasource]="contentDataSource"
+                <xc-table [xc-table-datasource]="contentDataSource"
                     xc-table-allowsort
                     xc-table-allowfilter
                     xc-table-lazyupdate
-                ></xc-table>
+                 />
             </section>
         </xc-panel>
     </div>

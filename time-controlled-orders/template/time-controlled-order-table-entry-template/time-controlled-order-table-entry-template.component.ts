@@ -29,7 +29,7 @@ import { TimeControlledOrderTableEntryTemplateData } from '../../xo/xo-time-cont
     selector: 'time-controlled-order-table-entry-template',
     template: `
         @if (archived) {
-          <i xc-i18n xc-tooltip="tooltip-archived"><xc-icon color="normal" xc-icon-name="folder" xc-icon-material></xc-icon>{{id}}</i>
+          <i xc-i18n xc-tooltip="tooltip-archived"><xc-icon color="normal" xc-icon-name="folder" xc-icon-material />{{id}}</i>
         } @else {
           {{id}}
         }

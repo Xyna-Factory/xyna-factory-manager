@@ -3,16 +3,13 @@
     <header>
       <h1 class="items-left" xc-i18n>header</h1>
       <div class="items-right">
-        <xc-icon-button (click)="refresh()" xc-tooltip="icon-refresh" xc-i18n class="icon-refresh" xc-icon-name="reload">
-        </xc-icon-button>
-        <xc-icon-button (click)="add()" xc-tooltip="icon-add" xc-i18n class="add" xc-icon-name="add">
-        </xc-icon-button>
+        <xc-icon-button (click)="refresh()" xc-tooltip="icon-refresh" xc-i18n class="icon-refresh" xc-icon-name="reload" />
+        <xc-icon-button (click)="add()" xc-tooltip="icon-add" xc-i18n class="add" xc-icon-name="add" />
       </div>
     </header>
     <section class="stretch scroll">
       <xc-table [xc-table-datasource]="remoteTableDataSource" xc-table-allowsort xc-table-allowfilter
-        xc-table-allowselect>
-      </xc-table>
+        xc-table-allowselect />
     </section>
   </xc-panel>
   @if (selectedDetails()) {
@@ -23,17 +20,16 @@
       <section class="stretch scroll" xc-form>
         <!--#region - General Details -->
         <div class="items-row">
-          <xc-form-input label="label-id" xc-i18n [(value)]="detailsObject.iD" xc-form-field-compact readonly></xc-form-input>
-          <xc-form-input label="label-name" xc-i18n [(value)]="detailsObject.name" xc-form-field-compact xc-form-validator-required></xc-form-input>
+          <xc-form-input label="label-id" xc-i18n [(value)]="detailsObject.iD" xc-form-field-compact readonly />
+          <xc-form-input label="label-name" xc-i18n [(value)]="detailsObject.name" xc-form-field-compact xc-form-validator-required />
         </div>
-        <xc-checkbox [(checked)]="detailsObject.enabled" label="label-is-active" xc-i18n></xc-checkbox>
+        <xc-checkbox [(checked)]="detailsObject.enabled" label="label-is-active" xc-i18n />
         <!--#endregion-->
         <!--#region - ORDER TYPE PANEL -->
         <xc-panel>
           <header><h3 xc-i18n>order-type</h3></header>
           <section>
-            <xc-form-autocomplete
-              label="label-workspace-application"
+            <xc-form-autocomplete label="label-workspace-application"
               placeholder="placeholder-select"
               [(xc-form-autocomplete-option)]="runtimeContextsDataWrapper.value"
               [xc-form-autocomplete-options]="runtimeContextsDataWrapper.values"
@@ -42,9 +38,8 @@
               xc-form-validator-required
               xc-form-field-compact
               xc-i18n
-            ></xc-form-autocomplete>
-            <xc-form-autocomplete
-              label="order-type"
+             />
+            <xc-form-autocomplete label="order-type"
               placeholder="placeholder-select"
               [(xc-form-autocomplete-option)]="orderTypeStringDataWrapper.value"
               [xc-form-autocomplete-options]="orderTypeStringDataWrapper.values"
@@ -53,18 +48,17 @@
               xc-form-validator-required
               xc-form-field-compact
               xc-i18n
-            ></xc-form-autocomplete>
+             />
           </section>
         </xc-panel>
         <!--#endregion-->
         <!--#region INPUT PARAMETER PANEL -->
-        <input-parameter
-          xc-i18n-context="input-parameter"
+        <input-parameter xc-i18n-context="input-parameter"
           [ref]="inputParameterRef"
-        ></input-parameter>
+         />
         <!--#endregion-->
         <!-- EXECUTION TIME PANEL -->
-        <execution-time xc-i18n-context="execution-time" header="header" [(executionTime)]="detailsObject.executionTime" (invalidChange)="executionTimeInvalid = $event"></execution-time>
+        <execution-time xc-i18n-context="execution-time" header="header" [(executionTime)]="detailsObject.executionTime" (invalidChange)="executionTimeInvalid = $event" />
         <!--#region CUSTOM INFORMATION PANEL -->
         <xc-panel>
           <header>
@@ -72,23 +66,18 @@
           </header>
           <section>
             <div class="items-row">
-              <xc-form-input class="compact" label="custom-field-1" [(value)]="detailsObject.cronLikeOrderCustoms.custom0" xc-i18n xc-form-field-compact>
-              </xc-form-input>
-              <xc-form-input class="compact" label="custom-field-2" [(value)]="detailsObject.cronLikeOrderCustoms.custom1" xc-i18n xc-form-field-compact>
-              </xc-form-input>
+              <xc-form-input class="compact" label="custom-field-1" [(value)]="detailsObject.cronLikeOrderCustoms.custom0" xc-i18n xc-form-field-compact />
+              <xc-form-input class="compact" label="custom-field-2" [(value)]="detailsObject.cronLikeOrderCustoms.custom1" xc-i18n xc-form-field-compact />
             </div>
             <div class="items-row">
-              <xc-form-input class="compact" label="custom-field-3" [(value)]="detailsObject.cronLikeOrderCustoms.custom2" xc-i18n xc-form-field-compact>
-              </xc-form-input>
-              <xc-form-input class="compact" label="custom-field-4" [(value)]="detailsObject.cronLikeOrderCustoms.custom3" xc-i18n xc-form-field-compact>
-              </xc-form-input>
+              <xc-form-input class="compact" label="custom-field-3" [(value)]="detailsObject.cronLikeOrderCustoms.custom2" xc-i18n xc-form-field-compact />
+              <xc-form-input class="compact" label="custom-field-4" [(value)]="detailsObject.cronLikeOrderCustoms.custom3" xc-i18n xc-form-field-compact />
             </div>
           </section>
         </xc-panel>
         <!--#endregion-->
         <!-- BEHAVIOR ON ERROR DROPDOWN -->
-        <xc-form-autocomplete
-          label="behavior-on-error"
+        <xc-form-autocomplete label="behavior-on-error"
           placeholder="placeholder-select"
           [(xc-form-autocomplete-option)]="behaviorOnErrorDataWrapper.value"
           [xc-form-autocomplete-options]="behaviorOnErrorDataWrapper.values"
@@ -97,7 +86,7 @@
           xc-form-autocomplete-asdropdown
           xc-i18n
           xc-form-field-compact
-        ></xc-form-autocomplete>
+         />
       </section>
       <footer>
         <div class="items-left">

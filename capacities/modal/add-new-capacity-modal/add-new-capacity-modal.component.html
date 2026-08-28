@@ -8,19 +8,18 @@
           [fm-focus-candidate]="errorBoxFocusCandidateRef"
           fm-focus-candidate-focus-onload
           class="error-msg"
-          ><div class="icon-div"><xc-icon xc-icon-name="msgwarning"></xc-icon></div><div>{{error}}</div></div>
+          ><div class="icon-div"><xc-icon xc-icon-name="msgwarning" /></div><div>{{error}}</div></div>
         </div>
       }
-      <xc-form-input label="label-capacity-name" [(value)]="capacity.name" xc-form-validator-required xc-i18n></xc-form-input>
-      <xc-form-input
-        label="label-cardinality"
+      <xc-form-input label="label-capacity-name" [(value)]="capacity.name" xc-form-validator-required xc-i18n />
+      <xc-form-input label="label-cardinality"
         [(value)]="capacity.cardinality"
         xc-form-validator-required
         xc-form-validator-number
         xc-form-validator-minvalue="0"
         xc-i18n
-      ></xc-form-input>
-      <xc-checkbox [(checked)]="state" label="label-is-active" xc-i18n></xc-checkbox>
+       />
+      <xc-checkbox [(checked)]="state" label="label-is-active" xc-i18n />
     </section>
 
     <ng-container footer>

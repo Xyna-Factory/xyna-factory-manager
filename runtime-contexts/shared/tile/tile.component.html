@@ -1,11 +1,9 @@
 <div class="header" #header>
   <div>
     @for (item of dataSource.leftItems; track item) {
-      <tile-button
-        [item]="item"
+      <tile-button [item]="item"
         [selected]="dataSource.isSelected(item)"
-        (select-item)="select($event)">
-      </tile-button>
+        (select-item)="select($event)" />
     }
   </div>
   <div class="label">@if (hasLabel()) {
@@ -13,20 +11,17 @@
   }</div>
   <div class="aside">
     @for (item of dataSource.rightItems; track item) {
-      <tile-button
-        [item]="item"
+      <tile-button [item]="item"
         [selected]="dataSource.isSelected(item)"
-        (select-item)="select($event)">
-      </tile-button>
+        (select-item)="select($event)" />
     }
     @if (actionButton) {
-      <xc-icon-button (click)="action()" [xc-icon-name]="actionButton.iconName" xc-i18n [xc-tooltip]="actionButton.tooltip"></xc-icon-button>
+      <xc-icon-button (click)="action()" [xc-icon-name]="actionButton.iconName" xc-i18n [xc-tooltip]="actionButton.tooltip" />
     }
   </div>
 </div>
 @if (hasDetails) {
   <div class="detail">
-    <xc-template [xc-template-instance]="dataSource.detailItem.getDetailTemplate()">
-    </xc-template>
+    <xc-template [xc-template-instance]="dataSource.detailItem.getDetailTemplate()" />
   </div>
 }

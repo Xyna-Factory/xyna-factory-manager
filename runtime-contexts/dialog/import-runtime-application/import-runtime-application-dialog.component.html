@@ -18,10 +18,9 @@
           <div
             class="target-node"
             >
-            <xc-checkbox
-              [(checked)]="node.used"
+            <xc-checkbox [(checked)]="node.used"
               [label]="node.node.name"
-            ></xc-checkbox>
+             />
           </div>
         }
       </section>
@@ -32,37 +31,32 @@
         <h2 xc-i18n>import-runtime-application-global-settings</h2>
       </header>
       <section class="zeta-scrollbar stretch scroll">
-        <xc-checkbox
-          [(checked)]="useApplication"
+        <xc-checkbox [(checked)]="useApplication"
           label="import-runtime-application-settings-application"
           xc-i18n
-        ></xc-checkbox>
+         />
         @if (useApplication) {
-          <xc-checkbox
-            [(checked)]="importRequest.overrideExisting"
+          <xc-checkbox [(checked)]="importRequest.overrideExisting"
             label="import-runtime-application-settings-overwriteexisting"
             xc-i18n
             class="indent"
-          ></xc-checkbox>
+           />
         }
         @if (useApplication) {
-          <xc-checkbox
-            [(checked)]="importRequest.onAllClusterNodes"
+          <xc-checkbox [(checked)]="importRequest.onAllClusterNodes"
             label="import-runtime-application-settings-onallclusternodes"
             xc-i18n
             class="indent"
-          ></xc-checkbox>
+           />
         }
-        <xc-checkbox
-          [(checked)]="importRequest.includeXynaProperties"
+        <xc-checkbox [(checked)]="importRequest.includeXynaProperties"
           label="import-runtime-application-settings-xynaproperties"
           xc-i18n
-        ></xc-checkbox>
-        <xc-checkbox
-          [(checked)]="importRequest.includeXynaCapacities"
+         />
+        <xc-checkbox [(checked)]="importRequest.includeXynaCapacities"
           label="import-runtime-application-settings-capacities"
           xc-i18n
-        ></xc-checkbox>
+         />
       </section>
     </xc-panel>
   </section>

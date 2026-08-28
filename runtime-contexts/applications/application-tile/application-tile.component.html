@@ -6,11 +6,10 @@
             runtimeApplication of application.runtimeApplications;
             track runtimeApplication
         ) {
-            <runtime-context-button
-                [runtimeContext]="runtimeApplication"
+            <runtime-context-button [runtimeContext]="runtimeApplication"
                 [selected]="isSelected(runtimeApplication)"
                 (select)="select($event)"
-            ></runtime-context-button>
+             />
         }
     </div>
 </div>
@@ -73,20 +72,18 @@
             </div>
         </div>
         <div class="row">
-            <xc-form-input
-                xc-i18n
+            <xc-form-input xc-i18n
                 label="documentation"
                 [value]="details.documentation"
                 disabled
                 xc-form-field-compact
-            ></xc-form-input>
-            <xc-form-input
-                xc-i18n
+             />
+            <xc-form-input xc-i18n
                 label="version"
                 [value]="details.version"
                 disabled
                 xc-form-field-compact
-            ></xc-form-input>
+             />
         </div>
         <!-- @if (issues.length > 0) { -->
         <xc-panel xc-panel-collapsable class="issues">
@@ -150,12 +147,11 @@
                     </div>
                 </header>
                 <section>
-                    <xc-table
-                        [xc-table-datasource]="requiresDataSource"
+                    <xc-table [xc-table-datasource]="requiresDataSource"
                         xc-table-allowsort
                         xc-table-allowfilter
                         xc-table-lazyupdate
-                    ></xc-table>
+                     />
                 </section>
             </xc-panel>
 
@@ -168,12 +164,11 @@
                     <h2 class="items-left" xc-i18n>required-by</h2>
                 </header>
                 <section>
-                    <xc-table
-                        [xc-table-datasource]="requiredByDataSource"
+                    <xc-table [xc-table-datasource]="requiredByDataSource"
                         xc-table-allowsort
                         xc-table-allowfilter
                         xc-table-lazyupdate
-                    ></xc-table>
+                     />
                 </section>
             </xc-panel>
         </div>
@@ -193,12 +188,11 @@
                 </div>
             </header>
             <section>
-                <xc-table
-                    [xc-table-datasource]="contentDataSource"
+                <xc-table [xc-table-datasource]="contentDataSource"
                     xc-table-allowsort
                     xc-table-allowfilter
                     xc-table-lazyupdate
-                ></xc-table>
+                 />
             </section>
         </xc-panel>
 
@@ -208,13 +202,12 @@
             </header>
             <section class="row">
                 @for (orderEntry of details.orderEntries; track orderEntry) {
-                    <xc-checkbox
-                        [label]="orderEntry.name"
+                    <xc-checkbox [label]="orderEntry.name"
                         [(checked)]="orderEntry.isActive"
                         (checkedChange)="changeOrderEntry(orderEntry)"
                         xc-i18n
                         [xc-tooltip]="orderEntry.name"
-                    ></xc-checkbox>
+                     />
                 }
             </section>
         </xc-panel>

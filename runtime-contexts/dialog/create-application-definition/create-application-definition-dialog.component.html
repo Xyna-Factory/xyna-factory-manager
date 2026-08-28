@@ -1,8 +1,7 @@
 <xc-dialog-wrapper xc-i18n-context="fman.create-application-definition-dialog">
     <ng-container header><span xc-i18n>create-application-definition-title</span></ng-container>
     <section content xc-form #form="xc-form">
-        <xc-form-autocomplete
-            xc-form-validator-required
+        <xc-form-autocomplete xc-form-validator-required
             (xc-form-autocomplete-optionChange)="changeWorkspace($event?.value)"
             [xc-form-autocomplete-option]="workspaceDataWrapper.value"
             [xc-form-autocomplete-options]="workspaceDataWrapper.values"
@@ -11,18 +10,16 @@
             xc-form-autocomplete-fulltextsearch
             xc-i18n
             label="create-application-definition-workspace"
-        ></xc-form-autocomplete>
-        <xc-form-input
-            xc-form-validator-required
+         />
+        <xc-form-input xc-form-validator-required
             [(value)]="name"
             xc-i18n
             label="create-application-definition-name"
-        ></xc-form-input>
-        <xc-form-input
-            [(value)]="documentation"
+         />
+        <xc-form-input [(value)]="documentation"
             xc-i18n
             label="create-application-definition-documentation"
-        ></xc-form-input>
+         />
     </section>
     <ng-container footer>
         <xc-button (click)="dismiss()" xc-i18n>create-application-definition-cancel</xc-button>

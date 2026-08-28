@@ -2,19 +2,17 @@
     <ng-container header>{{'delete-workspace-title' | xcI18n:injectedData.name}}</ng-container>
     <section content>
         <span class="warning">
-            <xc-icon xc-icon-name="msgwarning" color="warn"></xc-icon>{{'delete-workspace-warning-message' | xcI18n:injectedData.name}}
+            <xc-icon xc-icon-name="msgwarning" color="warn" />{{'delete-workspace-warning-message' | xcI18n:injectedData.name}}
         </span>
-        <xc-checkbox
-            [(checked)]="stopRunningOrders"
+        <xc-checkbox [(checked)]="stopRunningOrders"
             label="delete-workspace-stop-running-orders"
             xc-i18n
-        ></xc-checkbox>
-        <xc-checkbox
-            [(checked)]="insurancePolicy"
+         />
+        <xc-checkbox [(checked)]="insurancePolicy"
             label="delete-workspace-insurance-policy"
             xc-i18n
             color="warn"
-        ></xc-checkbox>
+         />
     </section>
     <ng-container footer>
         <xc-button (click)="dismiss()" xc-i18n>delete-workspace-cancel</xc-button>
