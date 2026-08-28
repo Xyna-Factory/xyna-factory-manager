@@ -76,7 +76,7 @@ export function createFilterEnumOfState(i18n?: I18nService): Observable<XcOption
         ...XoRuntimeContextStateEnum.map(
             state =>
                 <XcOptionItem>{
-                    name: signal(i18n ? i18n.translate(`xfm.fman.rtcs.state.${state}`) : state),
+                    name: i18n ? i18n.translateSignal(`xfm.fman.rtcs.state.${state}`) : signal(state),
                     value: state
                     // Icons are not supported because the table uses material icons and the dropdown doesn't yet support that
                     // icon: getStateiconName(state),

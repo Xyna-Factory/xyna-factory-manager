@@ -15,16 +15,16 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, OnDestroy, signal, ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs';
 
+import { ChangeDetectionStrategy, Component, OnDestroy, signal, ViewChild } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XmomObjectType } from '@pmod/api/xmom-types';
 import { XoRuntimeContext } from '@pmod/xo/runtime-context.model';
 import { FullQualifiedName, StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { QueryParameterService } from '@zeta/nav/query-parameter.service';
 import { XcAutocompleteDataWrapper, XcButtonComponent, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcRemoteTableDataSource, XcRichListComponent, XcRichListItem, XcStringIntegerDataWrapper, XcTableComponent, XcTooltipDirective } from '@zeta/xc';
-
-import { Subscription } from 'rxjs';
 
 import { XoCapacityInformation, XoCapacityInformationArray } from '../capacities/xo/xo-capacity-information.model';
 import { PROCESS_MODELLER_TAB_URL } from '../const';
@@ -39,7 +39,6 @@ import { XoOrderTypeCapacitiesTableInfo } from './xo/xo-order-type-capacities-ta
 import { XoOrderTypeName } from './xo/xo-order-type-name.model';
 import { XoOrderTypeTableFilter } from './xo/xo-order-type-table-filter.model';
 import { XoOrderType, XoOrderTypeArray } from './xo/xo-order-type.model';
-import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 export const EXECUTION_DESTINATION_DOCUMENT_TYPE = 'workflow';
@@ -52,6 +51,7 @@ const ISWP = ORDER_TYPE_ISWP;
 @Component({
     templateUrl: './order-types.component.html',
     styleUrls: ['./order-types.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [XcButtonComponent, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcRichListComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class OrderTypesComponent extends RestorableOrderTypesComponent implements OnDestroy {
@@ -59,23 +59,27 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
     @ViewChild(XcFormDirective, { static: false })
     xcFormDirective: XcFormDirective;
 
+    readonly selectedDetails = signal<XoOrderType | null>(null);
+
     get invalid(): boolean {
         return this.xcFormDirective ? this.xcFormDirective.invalid : false;
     }
 
 
     get runtimeContextString(): string {
-        return this.detailsObject.runtimeContext.toString();
+        return this.selectedDetails()?.runtimeContext.toString() || '';
     }
 
 
     planningDestinationDataWrapper: XcAutocompleteDataWrapper;
     get defaultPlanningDestination() {
-        return this.detailsObject ? !this.detailsObject.planningDestinationIsCustom : true;
+        const details = this.selectedDetails();
+        return details ? !details.planningDestinationIsCustom : true;
     }
     set defaultPlanningDestination(value) {
-        if (this.detailsObject) {
-            this.detailsObject.planningDestinationIsCustom = !value;
+        const details = this.selectedDetails();
+        if (details) {
+            details.planningDestinationIsCustom = !value;
         }
     }
 
@@ -83,11 +87,13 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
     monitoringLevelDataWrapper: XcAutocompleteDataWrapper;
 
     get precedence(): number {
-        return this.detailsObject ? this.detailsObject.precedence : null;
+        const details = this.selectedDetails();
+        return details ? details.precedence : null;
     }
     set precedence(value: number) {
-        if (this.detailsObject) {
-            this.detailsObject.precedence = value;
+        const details = this.selectedDetails();
+        if (details) {
+            details.precedence = value;
         }
     }
     precedenceDataWrapper = new XcStringIntegerDataWrapper(
@@ -96,16 +102,36 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
     );
 
     priorityDataWrapper = new XcStringIntegerDataWrapper(
-        () => this.detailsObject ? this.detailsObject.priority : 0,
-        (value: number) => this.detailsObject ? this.detailsObject.priority = value : null
+        () => {
+            const details = this.selectedDetails();
+            return details ? details.priority : 0;
+        },
+        (value: number) => {
+            const details = this.selectedDetails();
+            if (details) {
+                details.priority = value;
+            }
+        }
     );
 
     get defaultPriority() {
-        return this.detailsObject ? !this.detailsObject.priorityIsCustom : false;
+        const details = this.selectedDetails();
+        return details ? !details.priorityIsCustom : false;
     }
     set defaultPriority(value) {
-        if (this.detailsObject) {
-            this.detailsObject.priorityIsCustom = !value;
+        const details = this.selectedDetails();
+        if (details) {
+            details.priorityIsCustom = !value;
+        }
+    }
+
+    get documentation(): string {
+        return this.selectedDetails()?.documentation;
+    }
+    set documentation(value: string) {
+        const details = this.selectedDetails();
+        if (details) {
+            details.documentation = value;
         }
     }
 
@@ -164,20 +190,40 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
         ];
 
         this.planningDestinationDataWrapper = new XcAutocompleteDataWrapper(
-            () => this.detailsObject ? this.detailsObject.planningDestination : null,
-            value => this.detailsObject ? this.detailsObject.planningDestination = value : null
+            () => {
+                const details = this.selectedDetails();
+                return details ? details.planningDestination : null;
+            },
+            value => {
+                const details = this.selectedDetails();
+                if (details) {
+                    details.planningDestination = value;
+                }
+            }
         );
 
         this.executionDestinationDataWrapper = new XcAutocompleteDataWrapper(
-            () => this.detailsObject ? this.detailsObject.executionDestination : null,
-            value => this.detailsObject ? this.detailsObject.executionDestination = value : null
+            () => {
+                const details = this.selectedDetails();
+                return details ? details.executionDestination : null;
+            },
+            value => {
+                const details = this.selectedDetails();
+                if (details) {
+                    details.executionDestination = value;
+                }
+            }
         );
 
         this.monitoringLevelDataWrapper = new XcAutocompleteDataWrapper(
-            () => this.detailsObject ? this.detailsObject.monitoringLevel : null,
+            () => {
+                const details = this.selectedDetails();
+                return details ? details.monitoringLevel : null;
+            },
             (value: string) => {
-                if (this.detailsObject) {
-                    this.detailsObject.monitoringLevel = value;
+                const details = this.selectedDetails();
+                if (details) {
+                    details.monitoringLevel = value;
                 }
             },
             [
@@ -237,12 +283,13 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
 
     private _getDestinations() {
 
-        if (!this.detailsObject || !this.detailsObject.runtimeContext) {
-            console.warn('could not get destinations for the detail object', this.detailsObject);
+        const details = this.selectedDetails();
+        if (!details || !details.runtimeContext) {
+            console.warn('could not get destinations for the detail object', details);
             return;
         }
 
-        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.GetDestinations, [this.detailsObject.runtimeContext], XoDestinationTypeArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.GetDestinations, [details.runtimeContext], XoDestinationTypeArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, (output: any[]) => {
             const dtArr = (output[0] || { data: [] }) as XoDestinationTypeArray;
 
@@ -259,26 +306,29 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
 
         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, [entry.runtimeContext, name], XoOrderType, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
-
-            this.detailsObject = (output[0] || null) as XoOrderType;
-            if (this.detailsObject.monitoringLevel) {
+            this.selectedDetails.set((output[0] || null) as XoOrderType);
+            const details = this.selectedDetails();
+            if (!details) {
+                return;
+            }
+            if (details.monitoringLevel) {
                 const negativnumber = new RegExp('^-\\d+$');
-                if (negativnumber.test(this.detailsObject.monitoringLevel)) {
-                    this.detailsObject.monitoringLevel = '-1';
-                } else if (!this.monitoringLevelDataWrapper.values.find(item => item.value === this.detailsObject.monitoringLevel)) {
-                    this.monitoringLevelDataWrapper.values.push({ name: signal(this.detailsObject.monitoringLevel), value: this.detailsObject.monitoringLevel });
+                if (negativnumber.test(details.monitoringLevel)) {
+                    details.monitoringLevel = '-1';
+                } else if (!this.monitoringLevelDataWrapper.values.find(item => item.value === details.monitoringLevel)) {
+                    this.monitoringLevelDataWrapper.values.push({ name: signal(details.monitoringLevel), value: details.monitoringLevel });
                 }
             } else {
-                this.detailsObject.monitoringLevel = '-1';
+                details.monitoringLevel = '-1';
             }
             this._getDestinations();
 
             // #region - TODO - this logic may belong to the server ?!
             // defaultPlanningDestination = !OrderType.planningDestinationIsCustom
-            if (!this.detailsObject.planningDestination || !this.detailsObject.planningDestination.name) {
+            if (!details.planningDestination || !details.planningDestination.name) {
                 this.defaultPlanningDestination = true;
             }
-            if (this.detailsObject.planningDestination && this.detailsObject.planningDestination.name === 'DefaultPlanning') {
+            if (details.planningDestination && details.planningDestination.name === 'DefaultPlanning') {
                 this.defaultPlanningDestination = true;
             }
             // #endregion
@@ -368,7 +418,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
                         name.name = entry.fullQualifiedName;
                         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Delete, [entry.runtimeContext, name], null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
                         this.handleStartOrderResult(obs, () => {
-                            this.detailsObject = null;
+                            this.selectedDetails.set(null);
                             this.clearSelection();
                         }, this.UNSPECIFIED_DETAILS_ERROR, () => this.refresh());
                     }
@@ -378,31 +428,35 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
     }
 
     dismiss() {
-        this.detailsObject = null;
+        this.selectedDetails.set(null);
         this.clearSelection();
     }
 
     save() {
 
-        if (!this.detailsObject.priorityIsCustom) {
-            delete this.detailsObject.priority;
+        const details = this.selectedDetails();
+        if (!details) {
+            return;
+        }
+        if (!details.priorityIsCustom) {
+             delete details.priority;
         }
 
         this.writeOrderTypeCapacitiesToDetailsObject();
         this.writeUsageOfRequiredCapacitiesToDetailsObjectFromDetailsPanelCapacity();
 
         // make sure that there are no rules in the order type
-        this.detailsObject.parameterInheritanceRules.data.splice(0, this.detailsObject.parameterInheritanceRules.data.length);
+        details.parameterInheritanceRules.data.splice(0, details.parameterInheritanceRules.data.length);
         // save all rules in the ordertype, which will be sent to the server
         let item: XcRichListItem<ChildOrderInheritanceRuleComponentData>;
         for (item of this.childOrderInheritanceRulesItems) {
-            this.detailsObject.parameterInheritanceRules.data.push(item.data.rule);
+            details.parameterInheritanceRules.data.push(item.data.rule);
         }
 
-        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Save, this.detailsObject.clone(), null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Save, details.clone(), null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, () => {
-            this.dismiss();
-            this.refresh();
+             this.dismiss();
+             this.refresh();
         }, this.UNSPECIFIED_SAVE_ERROR);
     }
 
@@ -424,8 +478,9 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
     private updateChildOrderInheritanceRules() {
         this.childOrderInheritanceRulesItems = [];
 
-        if (this.detailsObject && this.detailsObject.parameterInheritanceRules) {
-            this.detailsObject.parameterInheritanceRules.data.forEach(
+        const details = this.selectedDetails();
+        if (details && details.parameterInheritanceRules) {
+            details.parameterInheritanceRules.data.forEach(
                 rule => {
                     this.childOrderInheritanceRulesItems.push({
                         component: ChildOrderInheritanceRuleComponent,
@@ -440,19 +495,25 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
 
     private readOrderTypeCapacitiesFromDetailsObject() {
         XoCapacityInformation.requiredUniqueKeys.clear();
-        if (this.detailsObject) {
-            this.detailsObject.requiredCapacities.data.forEach(
-                cap => {
-                    const capi = new XoCapacityInformation();
-                    capi.name = cap.name;
-                    capi.inuse = cap.cardinality;
-                    XoCapacityInformation.requiredUniqueKeys.set(cap.uniqueKey, capi);
-                }
-            );
+        const details = this.selectedDetails();
+        if (!details) {
+            return;
         }
+        details.requiredCapacities.data.forEach(
+            cap => {
+                const capi = new XoCapacityInformation();
+                capi.name = cap.name;
+                capi.inuse = cap.cardinality;
+                XoCapacityInformation.requiredUniqueKeys.set(cap.uniqueKey, capi);
+            }
+        );
     }
 
     private writeOrderTypeCapacitiesToDetailsObject() {
+        const details = this.selectedDetails();
+        if (!details) {
+            return;
+        }
         const capArr = new XoCapacityArray();
         XoCapacityInformation.requiredUniqueKeys.forEach(capi => {
             const cap = new XoCapacity();
@@ -460,7 +521,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
             cap.cardinality = capi.inuse;
             capArr.data.push(cap);
         });
-        this.detailsObject.requiredCapacities = capArr;
+        details.requiredCapacities = capArr;
     }
 
     private readUsageOfRequiredCapacitiesFromDetailsObjectAndAddToDetailsPanelCapacity() {
@@ -468,7 +529,11 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
         if (this.dsOrderTypeCapacitiesDataSource && this.dsOrderTypeCapacitiesDataSource.rows) {
 
             const nameUsageMap = new Map<string, number>();
-            this.detailsObject.requiredCapacities.data.forEach(rc => {
+            const details = this.selectedDetails();
+            if (!details) {
+                return;
+            }
+            details.requiredCapacities.data.forEach(rc => {
                 // cardinality is the usage of the Capacities in the detail panel of the selected order type
                 nameUsageMap.set(rc.name, rc.cardinality);
             });
@@ -485,8 +550,12 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
         if (this.dsOrderTypeCapacitiesDataSource && this.dsOrderTypeCapacitiesDataSource.rows) {
 
             const nameUsageMap = new Map<string, number>();
+            const details = this.selectedDetails();
+            if (!details) {
+                return;
+            }
 
-            this.detailsObject.requiredCapacities.data.forEach(rc => {
+            details.requiredCapacities.data.forEach(rc => {
                 nameUsageMap.set(rc.name, rc.cardinality);
             });
 
@@ -494,7 +563,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
                 nameUsageMap.set(cap.name, cap.usage);
             });
 
-            this.detailsObject.requiredCapacities.data.forEach(rc => {
+            details.requiredCapacities.data.forEach(rc => {
                 // cardinality is the usage of the Capacities in the detail panel of the selected order type
                 rc.cardinality = nameUsageMap.get(rc.name);
             });
@@ -503,13 +572,17 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
 
     refreshOrderTypeCapacitiesDataSource() {
 
+        const details = this.selectedDetails();
+        if (!details) {
+            return;
+        }
         const name = new XoOrderTypeName();
-        name.name = this.detailsObject.fullQualifiedName;
+        name.name = details.fullQualifiedName;
 
-        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, [this.detailsObject.runtimeContext, name], XoOrderType, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, [details.runtimeContext, name], XoOrderType, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
 
-            this.detailsObject = (output[0] || null) as XoOrderType;
+            this.selectedDetails.set((output[0] || null) as XoOrderType);
 
             this.dsOrderTypeCapacitiesDataSource = new XcRemoteTableDataSource<XoCapacityInformation>(
                 this.apiService, this.i18nService, this.rtc, ISWP.GetOrdertypeCapacities, XoOrderTypeCapacitiesTableInfo
@@ -534,7 +607,8 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
             return;
         }
 
-        const url = PROCESS_MODELLER_TAB_URL + QueryParameterService.createQueryValue(this.detailsObject.runtimeContext.toRuntimeContext().uniqueKey, this.executionDestinationDataWrapper.value.value, EXECUTION_DESTINATION_DOCUMENT_TYPE);
+        const details = this.selectedDetails();
+        const url = PROCESS_MODELLER_TAB_URL + QueryParameterService.createQueryValue(details.runtimeContext.toRuntimeContext().uniqueKey, this.executionDestinationDataWrapper.value.value, EXECUTION_DESTINATION_DOCUMENT_TYPE);
         void this.router.navigateByUrl(url);
     }
 

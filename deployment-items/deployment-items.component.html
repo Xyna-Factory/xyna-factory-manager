@@ -1,5 +1,5 @@
 <xc-master-detail
-  [xc-master-detail-opened]="detailsObject"
+  [xc-master-detail-opened]="selectedDetails()"
   xc-master-detail-side-area-size="golden"
   xc-i18n-context="fman.deployment-items"
   >
@@ -90,7 +90,7 @@
       </div>
     </footer>
   </xc-panel>
-  @if (detailsObject) {
+  @if (selectedDetails()) {
     <xc-panel detail>
       <header>
         <h2 class="items-left" xc-i18n>deployment-item-details</h2>

@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, signal } from '@angular/core';
 
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { TileDataSource, TileItem } from '@fman/runtime-contexts/shared/tile/tile-data-source';
@@ -107,9 +107,8 @@ export class TriggerComponent extends RouteComponent {
     private readonly i18nService = inject(I18nService);
     private readonly dialogService = inject(XcDialogService);
 
-
-    refreshing = false;
-    datasources: TileDataSource[];
+    readonly refreshing = signal(false);
+    readonly datasources = signal<TileDataSource[]>([]);
     private subscription: Subscription[] = [];
     deployButton: ActionButtonData = {  iconName: 'add', tooltip: 'deploy'  };
     selectionModel: XcSelectionModel<TileItem> = new XcSelectionModel<TileItem>();
@@ -120,18 +119,19 @@ export class TriggerComponent extends RouteComponent {
         this.i18nService.setTranslations(LocaleService.DE_DE, trigger_and_filter_translations_de_DE);
         this.i18nService.setTranslations(LocaleService.EN_US, trigger_and_filter_translations_en_US);
 
+        this.selectionModel.selectionChange.subscribe(() => this.cdr.markForCheck());
         this.refresh();
     }
 
     refresh() {
-        this.refreshing = true;
+        this.refreshing.set(true);
         this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.TRIGGER_OVERVIEW, [], XoTriggerArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (result && !result.errorMessage) {
                         this.unSubscribe();
                         const triggers: XoTrigger[] = (result.output[0] as XoTriggerArray).data;
-                        this.datasources = triggers.map(trigger => this.buildTileDatasource(trigger));
+                        this.datasources.set(triggers.map(trigger => this.buildTileDatasource(trigger)));
 
                     } else {
                         this.dialogService.error(result.errorMessage);
@@ -141,7 +141,7 @@ export class TriggerComponent extends RouteComponent {
                     this.dialogService.error(err);
                 },
                 complete: () => {
-                    this.refreshing = false;
+                    this.refreshing.set(false);
                     this.cdr.markForCheck();
                 }
             });
@@ -174,4 +174,3 @@ export class TriggerComponent extends RouteComponent {
         });
     }
 }
-

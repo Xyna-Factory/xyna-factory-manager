@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, ViewChild } from '@angular/core';
 
 import { StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -36,9 +36,11 @@ const ISWP = CAPACITY_ISWP;
 @Component({
     templateUrl: './capacities.component.html',
     styleUrls: ['./capacities.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [XcButtonComponent, XcCheckboxComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class CapacitiesComponent extends RestorableCapacitiesComponent {
+    readonly selectedDetails = signal<XoCapacityInformation | null>(null);
 
     @ViewChild(XcFormDirective, {static: false})
     xcFormDirective: XcFormDirective;
@@ -96,6 +98,7 @@ export class CapacitiesComponent extends RestorableCapacitiesComponent {
         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, name, XoCapacityInformation, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             this.detailsObject = (output[0] || null) as XoCapacityInformation;
+            this.selectedDetails.set(this.detailsObject);
         }, this.UNSPECIFIED_DETAILS_ERROR, null);
     }
 
@@ -131,6 +134,7 @@ export class CapacitiesComponent extends RestorableCapacitiesComponent {
                         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Delete, name, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
                         this.handleStartOrderResult(obs, output => {
                             this.detailsObject = null;
+                            this.selectedDetails.set(null);
                             this.clearSelection();
                             this.refresh();
                         }, this.UNSPECIFIED_DETAILS_ERROR);
@@ -142,6 +146,7 @@ export class CapacitiesComponent extends RestorableCapacitiesComponent {
 
     dismiss() {
         this.detailsObject = null;
+        this.selectedDetails.set(null);
         this.clearSelection();
     }
 

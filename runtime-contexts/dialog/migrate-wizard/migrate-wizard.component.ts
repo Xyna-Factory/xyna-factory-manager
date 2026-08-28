@@ -237,8 +237,8 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
         this.tableNodesSource.localTableData = {
             rows: [],
             columns: [
-                { path: 'name', name: signal(this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.table.name')) },
-                { path: 'isLocal', name: signal(this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.table.isLocal')) }
+                { path: 'name', name: this.injectedData.i18n.translateSignal('xfm.fman.rtcs.migrate-wizard.table.name') },
+                { path: 'isLocal', name: this.injectedData.i18n.translateSignal('xfm.fman.rtcs.migrate-wizard.table.isLocal') }
             ]
         };
         this.tableNodesSource.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
@@ -248,9 +248,9 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
         this.tableMigrationSource.localTableData = {
             rows: [],
             columns: [
-                { path: 'nodeLabel', name: signal(this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.table.node')) },
-                { path: 'sourceLabel', name: signal(this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.table.source')) },
-                { path: 'targetLabel', name: signal(this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.table.target')) }
+                { path: 'nodeLabel', name: this.injectedData.i18n.translateSignal('xfm.fman.rtcs.migrate-wizard.table.node') },
+                { path: 'sourceLabel', name: this.injectedData.i18n.translateSignal('xfm.fman.rtcs.migrate-wizard.table.source') },
+                { path: 'targetLabel', name: this.injectedData.i18n.translateSignal('xfm.fman.rtcs.migrate-wizard.table.target') }
             ]
         };
 
@@ -259,7 +259,7 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
             {
                 class: 'delete-action-element',
                 iconName: 'delete',
-                tooltip: signal(this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.delete')),
+                tooltip: this.injectedData.i18n.translateSignal('xfm.fman.rtcs.migrate-wizard.delete'),
                 onAction: this.removeMigrationObject.bind(this)
             }
         ];

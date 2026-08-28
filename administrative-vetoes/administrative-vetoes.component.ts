@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 
 import { StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -35,11 +35,13 @@ const ISWP = ADMINISTRATIVE_VETOES_ISWP;
 @Component({
     templateUrl: './administrative-vetoes.component.html',
     styleUrls: ['./administrative-vetoes.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [XcButtonComponent, XcFormInputComponent, XcFormTextareaComponent, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class AdministrativeVetoesComponent extends RestorableAdministrativeVetoComponent {
 
     runtimeContextsDataWrapper: any;
+    readonly selectedDetails = signal<XoAdministrativeVeto | null>(null);
 
     constructor() {
         super();
@@ -77,6 +79,7 @@ export class AdministrativeVetoesComponent extends RestorableAdministrativeVetoC
         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, request, XoAdministrativeVeto, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             this.detailsObject = (output[0] || null) as XoAdministrativeVeto;
+            this.selectedDetails.set(this.detailsObject);
 
         }, this.UNSPECIFIED_DETAILS_ERROR);
     }
@@ -97,8 +100,8 @@ export class AdministrativeVetoesComponent extends RestorableAdministrativeVetoC
 
     delete(entry: XoAdministrativeVeto) {
         this.dialogService.confirm(
-            this.i18nService.translate(this.FM_DELETE_ENTRY_HEADER),
-            this.i18nService.translate(this.CONFIRM_DELETE, { key: '$0', value: entry.name })
+            this.i18nService.translateSignal(this.FM_DELETE_ENTRY_HEADER)(),
+            this.i18nService.translateSignal(this.CONFIRM_DELETE, { key: '$0', value: entry.name })()
         ).afterDismissResult().subscribe(
             value => {
                 if (value) {
@@ -108,6 +111,7 @@ export class AdministrativeVetoesComponent extends RestorableAdministrativeVetoC
                         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Delete, veto, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
                         this.handleStartOrderResult(obs, () => {
                             this.detailsObject = null;
+                            this.selectedDetails.set(null);
                             this.clearSelection();
                             this.refresh();
                         }, this.UNSPECIFIED_DETAILS_ERROR);
@@ -133,6 +137,7 @@ export class AdministrativeVetoesComponent extends RestorableAdministrativeVetoC
 
     dismiss() {
         this.detailsObject = null;
+        this.selectedDetails.set(null);
         this.clearSelection();
     }
 

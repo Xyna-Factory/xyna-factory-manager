@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, signal } from '@angular/core';
 
 import { TileDataSource, TileItem } from '@fman/runtime-contexts/shared/tile/tile-data-source';
 import { ActionButtonData } from '@fman/runtime-contexts/shared/tile/tile.component';
@@ -107,9 +107,8 @@ export class FilterComponent extends RouteComponent {
     private readonly i18nService = inject(I18nService);
     private readonly dialogService = inject(XcDialogService);
 
-
-    refreshing = false;
-    datasources: TileDataSource[];
+    readonly refreshing = signal(false);
+    readonly datasources = signal<TileDataSource[]>([]);
     private subscription: Subscription[] = [];
     deployButton: ActionButtonData = {  iconName: 'add', tooltip: 'deploy'  };
     selectionModel: XcSelectionModel<TileItem> = new XcSelectionModel<TileItem>();
@@ -120,18 +119,19 @@ export class FilterComponent extends RouteComponent {
         this.i18nService.setTranslations(LocaleService.DE_DE, trigger_and_filter_translations_de_DE);
         this.i18nService.setTranslations(LocaleService.EN_US, trigger_and_filter_translations_en_US);
 
+        this.selectionModel.selectionChange.subscribe(() => this.cdr.markForCheck());
         this.refresh();
     }
 
     refresh() {
-        this.refreshing = true;
+        this.refreshing.set(true);
         this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.FILTER_OVERVIEW, [], XoFilterArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (result && !result.errorMessage) {
                         this.unSubscribe();
                         const filters: XoFilter[] = (result.output[0] as XoFilterArray).data;
-                        this.datasources = filters.map(filter => this.buildTileDatasource(filter));
+                        this.datasources.set(filters.map(filter => this.buildTileDatasource(filter)));
 
                     } else {
                         this.dialogService.error(result.errorMessage);
@@ -141,7 +141,7 @@ export class FilterComponent extends RouteComponent {
                     this.dialogService.error(err);
                 },
                 complete: () => {
-                    this.refreshing = false;
+                    this.refreshing.set(false);
                     this.cdr.markForCheck();
                 }
             });
@@ -174,4 +174,3 @@ export class FilterComponent extends RouteComponent {
         });
     }
 }
-

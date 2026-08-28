@@ -17,7 +17,7 @@
  */
 import { debounceTime, filter, finalize, first, skip } from 'rxjs/operators';
 
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, inject, Input, NgZone, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, inject, input, Input, NgZone, OnInit, Output, signal, ViewChild } from '@angular/core';
 import { ShowWorkspaceContentDialogComponent } from '@fman/runtime-contexts/dialog/show-workspace-content/show-workspace-content-dialog.component';
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
 import { XoGetWorkspaceContentRequest } from '@fman/runtime-contexts/xo/xo-get-workspace-content-request.model';
@@ -57,6 +57,7 @@ export const DUPLICATE_ELEMENT_IDENTIFIER = 'duplicate element';
 
 @Component({
     selector: 'workspace-tile',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './workspace-tile.component.html',
     styleUrls: ['./workspace-tile.component.scss'],
     imports: [RuntimeContextButtonComponent, XcI18nTranslateDirective, XcI18nPipe, XcButtonComponent, XcFormInputComponent, XcFormLabelComponent, XcIconButtonComponent, XcIconComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcVarDirective]
@@ -74,16 +75,13 @@ export class WorkspaceTileComponent implements OnInit {
 
     readonly XDSIconName = XDSIconName;
 
-    @Input()
-    workspace: XoWorkspace;
+    readonly workspaceInput = input.required<XoWorkspace>({ alias: 'workspace' });
 
-    @Input()
-    selection: XoWorkspace;
+    readonly selectionInput = input<XoWorkspace | undefined>(undefined, { alias: 'selection' });
 
-    @Input()
-    details: XoWorkspaceDetails | XoApplicationDefinitionDetails;
+    readonly detailsInput = input<XoWorkspaceDetails | XoApplicationDefinitionDetails | undefined>(undefined, { alias: 'details' });
 
-    collapsedRequiredRow = false;
+    collapsedRequiredRow = signal(false);
 
     private _forceRefresh: boolean;
 
@@ -96,6 +94,18 @@ export class WorkspaceTileComponent implements OnInit {
         if (value) {
             this._forceRefresh = true;
         }
+    }
+
+    get workspace(): XoWorkspace {
+        return this.workspaceInput();
+    }
+
+    get selection(): XoWorkspace {
+        return this.selectionInput();
+    }
+
+    get details(): XoWorkspaceDetails | XoApplicationDefinitionDetails {
+        return this.detailsInput();
     }
 
     @Output()
@@ -117,11 +127,11 @@ export class WorkspaceTileComponent implements OnInit {
      */
     contentDataSource: XcRemoteTableDataSource;
 
-    documentationPending = false;
+    documentationPending = signal(false);
 
-    issues = new Array<XoIssue>();
-    hasDuplicateElements = false;
-    truncateIssues = true;
+    issues = signal<XoIssue[]>([]);
+    hasDuplicateElements = signal(false);
+    truncateIssues = signal(true);
 
 
     ngOnInit() {
@@ -177,14 +187,14 @@ export class WorkspaceTileComponent implements OnInit {
         this.contentDataSource.resetTableInfo();
         this.contentDataSource.refresh();
         // request issues
-        this.issues = [];
+        this.issues.set([]);
         this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.GET_ISSUES, runtimeContext, XoIssueArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe(result => {
                 if (result.errorMessage) {
                     this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n'));
                 } else {
-                    this.issues = result.output[0].data as XoIssue[];
-                    this.hasDuplicateElements = this.issues.filter(issue => issue.identifier === DUPLICATE_ELEMENT_IDENTIFIER).length > 0;
+                    this.issues.set(result.output[0].data as XoIssue[]);
+                    this.hasDuplicateElements.set(this.issues().filter(issue => issue.identifier === DUPLICATE_ELEMENT_IDENTIFIER).length > 0);
                 }
             });
     }
@@ -297,9 +307,6 @@ export class WorkspaceTileComponent implements OnInit {
         this.dialogService.custom(DeleteWorkspaceDialogComponent, this.workspace).afterDismissResult().subscribe(
             () => {
                 this.validationChange.next();
-                this.selection = null;
-                this.workspace = null;
-                this.details = null;
                 this.select(null);
             }
         );
@@ -323,9 +330,6 @@ export class WorkspaceTileComponent implements OnInit {
                         filter(result => result.errorMessage ? (this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n')), false) : true)
                     ).subscribe(() => {
                         this.validationChange.next();
-                        this.selection = null;
-                        this.workspace = null;
-                        this.details = null;
                         this.select(null);
                     });
                 }
@@ -339,7 +343,7 @@ export class WorkspaceTileComponent implements OnInit {
             const applicationDefinitionDetails = this.details;
             const documentation = new XoDocumentation();
             documentation.value = value;
-            this.documentationPending = true;
+            this.documentationPending.set(true);
             this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.SET_APPLICATION_DEFINITION_DOCUMENTATION, [this.details.proxy(), documentation], null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
                 finalize(() => {
                     // trigger change detection even with an unchanged value to reset input field
@@ -347,7 +351,7 @@ export class WorkspaceTileComponent implements OnInit {
                     applicationDefinitionDetails.documentation = value;
                     this.cdref.detectChanges();
                     applicationDefinitionDetails.documentation = currentValue;
-                    this.documentationPending = false;
+                    this.documentationPending.set(false);
                 })
             ).subscribe(
                 // set new value
@@ -383,6 +387,6 @@ export class WorkspaceTileComponent implements OnInit {
     }
 
     collapsedChange(collapsed: boolean) {
-        this.collapsedRequiredRow = collapsed;
+        this.collapsedRequiredRow.set(collapsed);
     }
 }

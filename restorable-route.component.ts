@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject, Injector, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, Injector, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, NavigationExtras, Router } from '@angular/router';
 
 import { ApiService, RuntimeContext, StartOrderResult, Xo, XoArray, XoArrayClassInterface, XoObject, XoObjectClassInterface } from '@zeta/api';
@@ -48,6 +48,7 @@ export class RestorableRouteComponent<T extends XoObject = XoObject, D = T> exte
     protected readonly i18nService = inject(I18nService);
     protected readonly injector = inject(Injector);
     protected readonly settings = inject(FactoryManagerSettingsService);
+    protected readonly changeDetectorRef = inject(ChangeDetectorRef);
 
 
     private readonly _selectedEntryChange: Subject<T[]> = new Subject();
@@ -58,7 +59,7 @@ export class RestorableRouteComponent<T extends XoObject = XoObject, D = T> exte
     private orderType: string;
 
     rtc: RuntimeContext;
-    detailsObject: D = null;
+    private readonly detailsObjectSignal = signal<D>(null);
     refreshing = false;
 
     //#region - Factory Manager constants
@@ -85,6 +86,16 @@ export class RestorableRouteComponent<T extends XoObject = XoObject, D = T> exte
     ngOnInit() {
         super.ngOnInit();
         this.FM_DELETE_ENTRY_HEADER = this.i18nService.translate(this.FM_DELETE_ENTRY_HEADER);
+    }
+
+
+    protected get detailsObject(): D {
+        return this.detailsObjectSignal();
+    }
+
+
+    protected set detailsObject(value: D) {
+        this.detailsObjectSignal.set(value);
     }
 
 
@@ -181,12 +192,14 @@ export class RestorableRouteComponent<T extends XoObject = XoObject, D = T> exte
             next: result => {
                 if (result && !result.errorMessage) {
                     handler(result.output);
+                    this.changeDetectorRef.detectChanges();
                 } else {
                     this.dialogService.error(this.i18nService.translateErrorCode(result.errorMessage));
                     if (onError) {
                         onError(result.errorMessage);
                     }
                     console.error(result);
+                    this.changeDetectorRef.detectChanges();
                 }
             },
             error: error => {
@@ -195,9 +208,11 @@ export class RestorableRouteComponent<T extends XoObject = XoObject, D = T> exte
                     onError(undefinedErrorMessage);
                 }
                 console.error(error);
+                this.changeDetectorRef.detectChanges();
             },
             complete: () => {
                 finalizer?.();
+                this.changeDetectorRef.detectChanges();
             }
         });
     }

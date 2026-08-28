@@ -1,5 +1,5 @@
 <xc-master-detail
-  [xc-master-detail-opened]="detailsObject"
+  [xc-master-detail-opened]="selectedDetails()"
   xc-i18n-context="fman.xyna-properties"
   >
   <xc-panel master>
@@ -24,7 +24,7 @@
     </section>
     <footer></footer>
   </xc-panel>
-  @if (detailsObject) {
+  @if (selectedDetails()) {
     <xc-panel detail>
       <header>
         <h2 class="items-left" xc-i18n>header-details</h2>

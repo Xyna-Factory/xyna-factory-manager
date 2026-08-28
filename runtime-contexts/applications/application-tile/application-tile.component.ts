@@ -17,7 +17,7 @@ import { debounceTime, filter, first, skip } from 'rxjs/operators';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, ElementRef, EventEmitter, HostBinding, inject, Input, NgZone, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, HostBinding, inject, input, Input, NgZone, OnInit, Output, signal, ViewChild } from '@angular/core';
 import { ExportApplicationDialogComponent } from '@fman/runtime-contexts/dialog/export-application/export-application-dialog.component';
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
@@ -50,6 +50,7 @@ import { FMAN_RTC } from '@fman/factory-manager.component';
 
 @Component({
     selector: 'application-tile',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './application-tile.component.html',
     styleUrls: ['./application-tile.component.scss'],
     imports: [RuntimeContextButtonComponent, XcI18nTranslateDirective, XcI18nPipe, XcButtonComponent, XcCheckboxComponent, XcFormInputComponent, XcIconComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective]
@@ -66,16 +67,13 @@ export class ApplicationTileComponent implements OnInit {
 
     readonly XDSIconName = XDSIconName;
 
-    @Input()
-    application: Application;
+    readonly applicationInput = input.required<Application>({ alias: 'application' });
 
-    @Input()
-    selection: Application;
+    readonly selectionInput = input<Application | undefined>(undefined, { alias: 'selection' });
 
-    @Input()
-    details: XoRuntimeApplicationDetails;
+    readonly detailsInput = input<XoRuntimeApplicationDetails | undefined>(undefined, { alias: 'details' });
 
-    collapsedRequiredRow = false;
+    collapsedRequiredRow = signal(false);
 
     private _forceRefresh: boolean;
 
@@ -88,6 +86,18 @@ export class ApplicationTileComponent implements OnInit {
         if (value) {
             this._forceRefresh = true;
         }
+    }
+
+    get application(): Application {
+        return this.applicationInput();
+    }
+
+    get selection(): Application {
+        return this.selectionInput();
+    }
+
+    get details(): XoRuntimeApplicationDetails {
+        return this.detailsInput();
     }
 
     @Output()
@@ -105,8 +115,8 @@ export class ApplicationTileComponent implements OnInit {
 
     contentDataSource: XcRemoteTableDataSource;
 
-    issues = new Array<XoIssue>();
-    truncateIssues = true;
+    issues = signal<XoIssue[]>([]);
+    truncateIssues = signal(true);
 
 
     ngOnInit() {
@@ -155,12 +165,12 @@ export class ApplicationTileComponent implements OnInit {
         this.contentDataSource.refresh();
 
         // request issues
-        this.issues = [];
+        this.issues.set([]);
         this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.GET_ISSUES, runtimeApplication, XoIssueArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).subscribe(result => {
             if (result.errorMessage) {
                 this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n'));
             } else {
-                this.issues = result.output[0].data as XoIssue[];
+                this.issues.set(result.output[0].data as XoIssue[]);
             }
         });
     }
@@ -215,9 +225,6 @@ export class ApplicationTileComponent implements OnInit {
         this.dialogService.custom(DeleteRuntimeApplicationDialogComponent, this.details as XoRuntimeApplication).afterDismissResult().subscribe(
             () => {
                 this.validationChange.next();
-                this.selection = null;
-                this.application = null;
-                this.details = null;
                 this.select(null);
             }
         );
@@ -295,6 +302,6 @@ export class ApplicationTileComponent implements OnInit {
     }
 
     collapsedChange(collapsed: boolean) {
-        this.collapsedRequiredRow = collapsed;
+        this.collapsedRequiredRow.set(collapsed);
     }
 }

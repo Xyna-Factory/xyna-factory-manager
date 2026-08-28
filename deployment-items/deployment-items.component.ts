@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 
 import { RuntimeContext, RuntimeContextType, StartOrderOptionsBuilder, XoRuntimeContext } from '@zeta/api';
 import { dateTimeString } from '@zeta/base';
@@ -47,9 +47,11 @@ const ISWP = DEPLOYMENT_ITEMS_ISWP;
 @Component({
     templateUrl: './deployment-items.component.html',
     styleUrls: ['./deployment-items.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [XcButtonComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, DeploymentStateDetailComponent]
 })
 export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent {
+    readonly selectedDetails = signal<XoDeploymentItem | null>(null);
 
     detailsLastStateChange: string;
     detailsLastModified: string;
@@ -86,6 +88,7 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
                     this.getDetails(selection[0]);
                 } else {
                     this.detailsObject = null;
+                    this.selectedDetails.set(null);
                     this.detailsRuntimeContext = null;
                 }
             }
@@ -193,6 +196,7 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, [entry.id, this.selectedRuntimeContext], XoDeploymentItem, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             this.detailsObject = (output[0] || null) as XoDeploymentItem;
+            this.selectedDetails.set(this.detailsObject);
             this.detailsRuntimeContext = this.selectedRuntimeContext.clone();
             this.detailsLastStateChange = dateTimeString(this.detailsObject.lastStateChange, false);
             this.detailsLastModified = dateTimeString(this.detailsObject.lastModified, false);
@@ -287,6 +291,7 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
 
     dismiss() {
         this.detailsObject = null;
+        this.selectedDetails.set(null);
         this.clearSelection();
     }
 

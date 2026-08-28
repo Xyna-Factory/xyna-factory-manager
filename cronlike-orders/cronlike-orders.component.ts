@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, signal, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, ViewChild } from '@angular/core';
 
 import { FullQualifiedName, RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoArray, XoRuntimeContext, XoWorkspace } from '@zeta/api';
 import { XcAutocompleteDataWrapper, XcButtonComponent, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective } from '@zeta/xc';
@@ -39,12 +39,15 @@ const ISWP = CRONLIKE_ORDERS_ISWP;
 @Component({
     templateUrl: './cronlike-orders.component.html',
     styleUrls: ['./cronlike-orders.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [XcButtonComponent, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, InputParameterComponent, ExecutionTimeComponent]
 })
 export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
 
     @ViewChild(XcFormDirective, {static: false})
     xcFormDirective: XcFormDirective;
+
+    readonly selectedDetails = signal<XoCronLikeOrder | null>(null);
 
     executionTimeInvalid = false;
 
@@ -272,6 +275,7 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
 
     dismiss() {
         this.detailsObject = null;
+        this.selectedDetails.set(null);
         this.clearSelection();
     }
 
@@ -299,6 +303,7 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, entry, XoCronLikeOrder, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             this.detailsObject = (output[0] || null) as XoCronLikeOrder;
+            this.selectedDetails.set(this.detailsObject);
             this._getRuntimeContexts();
             this._getOrderTypes();
             this.behaviorOnErrorDataWrapper.update();

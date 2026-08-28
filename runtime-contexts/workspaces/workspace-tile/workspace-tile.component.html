@@ -143,7 +143,7 @@
                     label="documentation"
                     [value]="details.documentation"
                     (blur)="changeDocumentation(documentation.value)"
-                    [disabled]="documentationPending"
+                    [disabled]="documentationPending()"
                     xc-form-field-compact
                 ></xc-form-input>
                 <xc-form-input
@@ -155,12 +155,12 @@
                 ></xc-form-input>
             </div>
         }
-        @if (issues.length > 0) {
+        @if (issues().length > 0) {
             <xc-panel xc-panel-collapsable class="issues">
                 <header>
                     <h2 class="items-left" xc-i18n>issues</h2>
                     <div class="items-right">
-                        @if (hasDuplicateElements) {
+                        @if (hasDuplicateElements()) {
                             <xc-button
                                 (click)="deleteDuplicates()"
                                 xc-tooltip="{{
@@ -170,11 +170,11 @@
                                 >{{ "delete-duplicates" | xcI18n }}</xc-button
                             >
                         }
-                        @if (issues.length > 20) {
+                        @if (issues().length > 20) {
                             <xc-button
-                                (click)="truncateIssues = !truncateIssues"
+                                (click)="truncateIssues.set(!truncateIssues())"
                                 >{{
-                                    truncateIssues
+                                    truncateIssues()
                                         ? ("show-all-issues" | xcI18n)
                                         : ("hide-issues" | xcI18n)
                                 }}</xc-button
@@ -183,8 +183,8 @@
                     </div>
                 </header>
                 <section>
-                    @for (issue of issues; track issue; let i = $index) {
-                        @if (!truncateIssues || i < 20) {
+                    @for (issue of issues(); track issue; let i = $index) {
+                        @if (!truncateIssues() || i < 20) {
                             <div class="issue-row">
                                 <span class="issue-identifier">{{
                                     issue.identifier
@@ -211,7 +211,7 @@
         <div class="row requires">
             <xc-panel
                 xc-panel-collapsable
-                [xc-panel-collapsed]="collapsedRequiredRow"
+                [xc-panel-collapsed]="collapsedRequiredRow()"
                 (xc-panel-collapsedChange)="collapsedChange($event)"
             >
                 <header>
@@ -239,7 +239,7 @@
 
             <xc-panel
                 xc-panel-collapsable
-                [xc-panel-collapsed]="collapsedRequiredRow"
+                [xc-panel-collapsed]="collapsedRequiredRow()"
                 (xc-panel-collapsedChange)="collapsedChange($event)"
             >
                 <header>

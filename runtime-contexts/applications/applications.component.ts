@@ -15,9 +15,8 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { AfterViewInit, Component, OnDestroy, QueryList, ViewChildren, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, computed, inject, OnDestroy, QueryList, signal, ViewChildren } from '@angular/core';
 
-import { FactoryManagerSettingsService } from '@fman/misc/services/factory-manager-settings.service';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { RouteComponent } from '@zeta/nav';
@@ -39,6 +38,7 @@ import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './applications.component.html',
     styleUrls: ['./applications.component.scss'],
     imports: [XcButtonComponent, XcFormInputComponent, XcIconButtonComponent, XcIconComponent, XcPanelComponent, XcSpinnerComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, ApplicationTileComponent]
@@ -47,16 +47,27 @@ export class ApplicationsComponent extends RouteComponent implements OnDestroy, 
     private readonly i18n = inject(I18nService);
     private readonly apiService = inject(ApiService);
     private readonly dialogService = inject(XcDialogService);
-    private readonly settings = inject(FactoryManagerSettingsService);
 
 
     private readonly dataSource: ApplicationDataSource;
-    private detailsObject: XoRuntimeApplicationDetails;
-    private markedForRefresh = false;
+    private readonly dataVersion = signal(0);
+    private readonly selectedApplication = signal<Application | undefined>(undefined);
+    private readonly selectedDetails = signal<XoRuntimeApplicationDetails | undefined>(undefined);
+    private readonly refreshingState = signal(false);
+    private readonly markedForRefresh = signal(false);
     private applicationTilesSubscription: Subscription;
-    private _filterText: string;
-
-    filteredApplications: Application[];
+    private readonly filterTextState = signal('');
+    readonly applicationsList = computed(() => {
+        this.dataVersion();
+        const text = this.filterTextState().toLowerCase();
+        const rawData = this.dataSource.rawData;
+        return text
+            ? rawData.filter(application =>
+                application.name.toLowerCase().includes(text) ||
+                application.runtimeApplications.some(runtimeApplication => runtimeApplication.title.toLowerCase().includes(text))
+            )
+            : rawData;
+    });
 
     @ViewChildren('applicationTiles')
     applicationTiles: QueryList<any>;
@@ -66,7 +77,11 @@ export class ApplicationsComponent extends RouteComponent implements OnDestroy, 
         super();
 
         this.dataSource = new ApplicationDataSource(this.apiService, FMAN_RTC, ORDER_TYPES.GET_RUNTIME_APPLICATIONS, undefined, XoRuntimeApplicationArray);
-        this.dataSource.dataChange.subscribe(() => this.filter());
+        this.dataSource.dataChange.subscribe(() => {
+            this.dataVersion.update(value => value + 1);
+            this.refreshingState.set(false);
+            this.markedForRefresh.set(false);
+        });
         this.refresh();
 
         this.i18n.setTranslations(LocaleService.DE_DE, runtime_contexts_translations_de_DE);
@@ -77,7 +92,7 @@ export class ApplicationsComponent extends RouteComponent implements OnDestroy, 
     ngAfterViewInit() {
         this.applicationTilesSubscription = this.applicationTiles.changes.subscribe(t => {
             if (t && t.length !== 0) {
-                if (this.detailsObject) {
+                if (this.selectedDetails()) {
                     t._results.forEach((component: ApplicationTileComponent) => {
                         if (component.hasDetails) {
                             component.scrollTo();
@@ -95,46 +110,37 @@ export class ApplicationsComponent extends RouteComponent implements OnDestroy, 
 
 
     filter() {
-        if (this.filterText) {
-            const text = this.filterText.toLowerCase();
-            this.filteredApplications = this.dataSource.rawData.filter(application =>
-                application.name.toLowerCase().includes(text) ||
-                application.runtimeApplications.some(runtimeApplication => runtimeApplication.title.toLowerCase().includes(text))
-            );
-        } else {
-            this.filteredApplications = this.dataSource.rawData;
-        }
+        this.dataVersion.update(value => value + 1);
     }
 
 
     set filterText(value: string) {
         if (this.filterText !== value) {
-            this._filterText = value;
-            if (this.settings.tableRefreshOnFilterChange) {
-                this.filter();
-            }
+            this.filterTextState.set(value);
         }
     }
 
 
     get filterText(): string {
-        return this._filterText;
+        return this.filterTextState();
     }
 
 
     refresh() {
+        this.refreshingState.set(true);
         this.dataSource.refresh();
-        this.markedForRefresh = true;
+        this.markedForRefresh.set(true);
     }
 
 
     needsRefresh(application: Application) {
-        return this.dataSource.selectionModel.selection[0] === application && this.markedForRefresh;
+        return this.selectedApplication() === application && this.markedForRefresh();
     }
 
 
     select(application: Application) {
         this.dataSource.selectionModel.clear();
+        this.selectedApplication.set(application);
         if (application) {
             this.dataSource.selectionModel.select(application);
         }
@@ -142,7 +148,7 @@ export class ApplicationsComponent extends RouteComponent implements OnDestroy, 
 
 
     selectDetails(runtimeApplication: XoRuntimeApplication) {
-        this.detailsObject = null;
+        this.selectedDetails.set(undefined);
         if (runtimeApplication) {
             this.apiService.startOrder(
                 FMAN_RTC,
@@ -154,7 +160,7 @@ export class ApplicationsComponent extends RouteComponent implements OnDestroy, 
                 if (result.errorMessage) {
                     this.dialogService.error(result.errorMessage, 'Error', result.stackTrace.join('\r\n'));
                 } else {
-                    this.detailsObject = result.output[0] as XoRuntimeApplicationDetails;
+                    this.selectedDetails.set(result.output[0] as XoRuntimeApplicationDetails);
                 }
             });
         }
@@ -167,24 +173,22 @@ export class ApplicationsComponent extends RouteComponent implements OnDestroy, 
 
 
     get refreshing(): boolean {
-        return this.dataSource.refreshing;
+        return this.refreshingState();
     }
 
 
     get selection(): Application {
-        return this.dataSource.selectionModel.selection[0];
+        return this.selectedApplication()!;
     }
 
 
     get details(): XoRuntimeApplicationDetails {
-        return this.detailsObject;
+        return this.selectedDetails()!;
     }
 
 
     get applications(): Application[] {
-        return !this.refreshing
-            ? this.filteredApplications
-            : [];
+        return this.applicationsList();
     }
 
 

@@ -1,4 +1,4 @@
-<xc-master-detail [xc-master-detail-opened]="detailsObject" xc-master-detail-side-area-size="half"
+<xc-master-detail [xc-master-detail-opened]="selectedDetails()" xc-master-detail-side-area-size="half"
   xc-i18n-context="fman.order-types">
   <xc-panel master>
     <header>
@@ -18,11 +18,11 @@
     </section>
     <footer></footer>
   </xc-panel>
-  @if (detailsObject) {
+  @if (selectedDetails()) {
     <xc-panel detail>
       <header>
         <!-- Name and RuntimeContext won't be translated so there is no need for xc-i18n-->
-        <h2 class="items-left"><b>{{detailsObject.fullQualifiedName}}</b>&nbsp;-&nbsp;<span>{{runtimeContextString}}</span></h2>
+        <h2 class="items-left"><b>{{selectedDetails()?.fullQualifiedName}}</b>&nbsp;-&nbsp;<span>{{runtimeContextString}}</span></h2>
         <xc-icon-button class="items-right" [xc-tooltip]="TOOLTIP_HEADER" xc-icon-name="info"></xc-icon-button>
       </header>
       <section xc-form class="stretch scroll">
@@ -109,7 +109,7 @@
           <xc-table [xc-table-datasource]="dsOrderTypeCapacitiesDataSource" xc-table-allowsort
           xc-table-allowfilter></xc-table>
         </xc-panel>
-        <xc-form-textarea label="label-documentation" [(value)]="detailsObject.documentation"
+        <xc-form-textarea label="label-documentation" [(value)]="documentation"
         xc-form-textarea-lines="6" xc-i18n></xc-form-textarea>
       </section>
       <footer class='items-row'>

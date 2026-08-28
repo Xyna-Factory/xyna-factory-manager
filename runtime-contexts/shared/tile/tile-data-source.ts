@@ -34,7 +34,6 @@ export class TileDataSource extends XcSelectionDataSource<TileItem> {
 
     private left: TileItem[];
     private right: TileItem[];
-    private _isSelected = true;
     private leftSelected = true;
 
     constructor(selectionModel: XcSelectionModel<TileItem>, leftItems: TileItem[], rightItems: TileItem[], public label = '') {
@@ -68,20 +67,18 @@ export class TileDataSource extends XcSelectionDataSource<TileItem> {
     }
 
     set detailItem(value: TileItem) {
-        let selected = this.leftItems.find(item => item.equals(value));
-        if (selected) {
+        const selected = this.leftItems.find(item => item === value) ?? this.rightItems.find(item => item === value);
+
+        if (selected && this.leftItems.includes(selected)) {
             this.leftSelected = true;
-        } else {
-            selected = this.rightItems.find(item => item.equals(value));
+        } else if (selected) {
             this.leftSelected = false;
         }
 
         this.selectionModel.combineOperations(() => {
-            this._isSelected = false;
             this.selectionModel.clear();
             if (selected) {
                 this.selectionModel.select(selected);
-                this._isSelected = true;
             }
         });
     }
@@ -95,30 +92,35 @@ export class TileDataSource extends XcSelectionDataSource<TileItem> {
     }
 
     hasDetail(): boolean {
-        if (this._isSelected && !this.selectionModel.isEmpty()) {
-            if (this.leftItems.find(item => item.equals(this.selectionModel.selection[0]))) {
-                this.leftSelected = true;
-                return true;
-            }
-            if (this.rightItems.find(item => item.equals(this.selectionModel.selection[0]))) {
-                this.leftSelected = false;
-                return true;
-            }
+        if (this.selectionModel.isEmpty()) {
+            return false;
         }
-        this._isSelected = false;
+
+        const selectedItem = this.selectionModel.selection[0];
+        if (this.leftItems.some(item => item === selectedItem)) {
+            this.leftSelected = true;
+            return true;
+        }
+        if (this.rightItems.some(item => item === selectedItem)) {
+            this.leftSelected = false;
+            return true;
+        }
+
         return false;
     }
 
     isLeftSelected(): boolean {
-        return this.hasDetail() && this.leftSelected;
+        const selectedItem = this.detailItem;
+        return !!selectedItem && this.leftItems.some(item => item === selectedItem);
     }
 
     isRightSelected(): boolean {
-        return this.hasDetail() && !this.leftSelected;
+        const selectedItem = this.detailItem;
+        return !!selectedItem && this.rightItems.some(item => item === selectedItem);
     }
 
     isSelected(item: TileItem): boolean {
-        return this.hasDetail() && this.detailItem.equals(item);
+        return !!this.detailItem && this.detailItem === item;
     }
 
     isEmpty() {

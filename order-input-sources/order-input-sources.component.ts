@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, signal } from '@angular/core';
 
 import { StartOrderOptionsBuilder, XoApplication, XoArray, XoDescriber } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -45,10 +45,12 @@ export interface InputDataTypesTreeData {
 @Component({
     templateUrl: './order-input-sources.component.html',
     styleUrls: ['./order-input-sources.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, OrderInputSourceDetailsComponent]
 })
 export class OrderInputSourcesComponent extends RestorableOrderInputSourcesComponent {
     private readonly cdr = inject(ChangeDetectorRef);
+    readonly selectedDetails = signal<XoOrderInputSource | null>(null);
 
 
     // FIXME: USE CODE FROM ADD NEW ORDER INPUT SOURCE MODAL !!!!!
@@ -61,7 +63,10 @@ export class OrderInputSourcesComponent extends RestorableOrderInputSourcesCompo
         this.refresh();
 
         this.selectedEntryChange.pipe(filter(selection => !!selection?.length)).subscribe(
-            selection => this.detailsObject = selection[0]
+            selection => {
+                this.detailsObject = selection[0];
+                this.selectedDetails.set(this.detailsObject);
+            }
         );
 
         this.remoteTableDataSource.actionElements = [
@@ -227,6 +232,7 @@ export class OrderInputSourcesComponent extends RestorableOrderInputSourcesCompo
 
     dismiss(event?: OrderInputSourceCloseEvent) {
         this.detailsObject = null;
+        this.selectedDetails.set(null);
         this.clearSelection();
         if (event?.dataChanged) {
             this.refresh();

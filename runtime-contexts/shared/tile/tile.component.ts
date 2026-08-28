@@ -15,14 +15,11 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectorRef, Component, ElementRef, HostBinding, Input, NgZone, OnInit, ViewChild, inject } from '@angular/core';
+import { debounceTime, first, skip, Subscription } from 'rxjs';
 
-import { ApiService } from '@zeta/api';
-import { I18nService } from '@zeta/i18n';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, inject, Input, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcDialogService, XDSIconName, XcIconButtonComponent, XcTemplateComponent, XcTooltipDirective } from '@zeta/xc';
-
-import { debounceTime, first, skip } from 'rxjs';
+import { XcIconButtonComponent, XcTemplateComponent, XcTooltipDirective, XDSIconName } from '@zeta/xc';
 
 import { TileButtonComponent } from './tile-button/tile-button.component';
 import { TileDataSource, TileItem } from './tile-data-source';
@@ -37,14 +34,13 @@ export interface ActionButtonData {
     selector: 'tile',
     templateUrl: './tile.component.html',
     styleUrls: ['./tile.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [TileButtonComponent, XcI18nTranslateDirective, XcIconButtonComponent, XcTemplateComponent, XcTooltipDirective]
 })
-export class TileComponent  implements OnInit {
-    private readonly apiService = inject(ApiService);
-    private readonly dialogService = inject(XcDialogService);
-    private readonly i18n = inject(I18nService);
+export class TileComponent implements OnInit, OnDestroy {
     private readonly cdref = inject(ChangeDetectorRef);
     private readonly zone = inject(NgZone);
+    private selectionSubscription = new Subscription();
 
     @ViewChild('header', { static: false })
     headerRef: ElementRef;
@@ -56,7 +52,12 @@ export class TileComponent  implements OnInit {
 
     @Input('tile-datasource')
     set dataSource(value: TileDataSource) {
+        this.selectionSubscription.unsubscribe();
         this._dataSource = value;
+        if (value) {
+            this.selectionSubscription = value.selectionModel.selectionChange.subscribe(() => this.cdref.markForCheck());
+            this.selectionSubscription.add(value.selectionModel.focusedChange.subscribe(() => this.cdref.markForCheck()));
+        }
     }
 
     get dataSource(): TileDataSource {
@@ -73,6 +74,10 @@ export class TileComponent  implements OnInit {
     }
     ngOnInit(): void {
         this.cdref.markForCheck();
+    }
+
+    ngOnDestroy(): void {
+        this.selectionSubscription.unsubscribe();
     }
 
     hasLabel(): boolean {

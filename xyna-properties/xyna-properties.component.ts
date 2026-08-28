@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 
 import { StartOrderOptionsBuilder } from '@zeta/api';
 import { XoDocumentation, XoDocumentationLanguage, XoXynaProperty, XoXynaPropertyArray, XoXynaPropertyKey } from '@zeta/auth/xo/xyna-property.model';
@@ -38,9 +38,11 @@ const ISWP = XYNA_PROPERTY_ISWP;
 @Component({
     templateUrl: './xyna-properties.component.html',
     styleUrls: ['./xyna-properties.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [XcButtonComponent, XcFormInputComponent, XcFormTextareaComponent, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
+    readonly selectedDetails = signal<XoXynaProperty | null>(null);
 
 
     get detailsObjectLanguageTag(): string {
@@ -126,6 +128,7 @@ export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, key, XoXynaProperty, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             this.detailsObject = (output[0] || null) as XoXynaProperty;
+            this.selectedDetails.set(this.detailsObject);
 
             if (!this.detailsObjectLanguageTag) {
                 // console.log(`Could not find documentation language of '${this.detailsObject.key}' and is set to '${this.i18nService.language}'`, this.detailsObject);
@@ -183,6 +186,7 @@ export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
                         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Delete, key, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
                         this.handleStartOrderResult(obs, output => {
                             this.detailsObject = null;
+                            this.selectedDetails.set(null);
                             this.clearSelection();
                             this.refresh();
                         }, this.UNSPECIFIED_DETAILS_ERROR);
@@ -194,6 +198,7 @@ export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
 
     dismiss() {
         this.detailsObject = null;
+        this.selectedDetails.set(null);
         this.clearSelection();
     }
 

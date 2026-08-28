@@ -17,9 +17,8 @@ import { Subscription } from 'rxjs';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { AfterViewInit, Component, inject, OnDestroy, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, computed, inject, OnDestroy, QueryList, signal, ViewChildren } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
-import { FactoryManagerSettingsService } from '@fman/misc/services/factory-manager-settings.service';
 import { ApiService } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { RouteComponent } from '@zeta/nav';
@@ -39,6 +38,7 @@ import { WorkspaceTileComponent } from './workspace-tile/workspace-tile.componen
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './workspaces.component.html',
     styleUrls: ['./workspaces.component.scss'],
     imports: [XcButtonComponent, XcFormInputComponent, XcIconButtonComponent, XcIconComponent, XcPanelComponent, XcSpinnerComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, WorkspaceTileComponent]
@@ -47,16 +47,27 @@ export class WorkspacesComponent extends RouteComponent implements AfterViewInit
     private readonly i18n = inject(I18nService);
     private readonly apiService = inject(ApiService);
     private readonly dialogService = inject(XcDialogService);
-    private readonly settings = inject(FactoryManagerSettingsService);
 
 
     private readonly remoteDataSource: XcRemoteDataSource<XoWorkspace>;
-    private detailsObject: XoWorkspaceDetails | XoApplicationDefinitionDetails;
-    private markedForRefresh = false;
+    private readonly dataVersion = signal(0);
+    private readonly selectedWorkspace = signal<XoWorkspace | undefined>(undefined);
+    private readonly selectedDetails = signal<XoWorkspaceDetails | XoApplicationDefinitionDetails | undefined>(undefined);
+    private readonly refreshingState = signal(false);
+    private readonly markedForRefresh = signal(false);
     private workspaceTilesSubscription: Subscription;
-    private _filterText: string;
-
-    filteredWorkspaces: XoWorkspace[];
+    private readonly filterTextState = signal('');
+    readonly workspacesList = computed(() => {
+        this.dataVersion();
+        const text = this.filterTextState().toLowerCase();
+        const rawData = this.remoteDataSource.rawData;
+        return text
+            ? rawData.filter(workspace =>
+                workspace.name.toLowerCase().includes(text) ||
+                workspace.applicationDefinitions.data.some(applicationDefinition => applicationDefinition.title.toLowerCase().includes(text))
+            )
+            : rawData;
+    });
 
     @ViewChildren('workspaceTiles')
     workspaceTiles: QueryList<any>;
@@ -67,7 +78,11 @@ export class WorkspacesComponent extends RouteComponent implements AfterViewInit
 
         this.remoteDataSource = new XcRemoteDataSource(this.apiService, FMAN_RTC, ORDER_TYPES.GET_WORKSPACES, undefined, XoWorkspaceArray);
         this.remoteDataSource.compareFn = XcSortPredicate(XcSortDirection.asc, t => t.name.toLowerCase());
-        this.remoteDataSource.dataChange.subscribe(() => this.filter());
+        this.remoteDataSource.dataChange.subscribe(() => {
+            this.dataVersion.update(value => value + 1);
+            this.refreshingState.set(false);
+            this.markedForRefresh.set(false);
+        });
         this.refresh();
 
         this.i18n.setTranslations(LocaleService.DE_DE, runtime_contexts_translations_de_DE);
@@ -77,7 +92,7 @@ export class WorkspacesComponent extends RouteComponent implements AfterViewInit
 
     ngAfterViewInit() {
         this.workspaceTilesSubscription = this.workspaceTiles.changes.subscribe(list => {
-            if (list?.length > 0 && this.detailsObject) {
+            if (list?.length > 0 && this.selectedDetails()) {
                 list._results.forEach((component: WorkspaceTileComponent) => {
                     if (component.hasDetails) {
                         component.scrollTo();
@@ -94,48 +109,31 @@ export class WorkspacesComponent extends RouteComponent implements AfterViewInit
 
 
     filter() {
-        this.filteredWorkspaces = this.filterText
-            ? this.remoteDataSource.rawData.filter(workspace =>
-                workspace.name.includes(this.filterText) ||
-                workspace.applicationDefinitions.data.some(applicationDefinition => applicationDefinition.title.includes(this.filterText))
-            )
-            : this.remoteDataSource.rawData;
-
-        if (this.filterText) {
-            const text = this.filterText.toLowerCase();
-            this.filteredWorkspaces = this.remoteDataSource.rawData.filter(workspace =>
-                workspace.name.toLowerCase().includes(text) ||
-                workspace.applicationDefinitions.data.some(applicationDefinition => applicationDefinition.title.toLowerCase().includes(text))
-            );
-        } else {
-            this.filteredWorkspaces = this.remoteDataSource.rawData;
-        }
+        this.dataVersion.update(value => value + 1);
     }
 
 
     set filterText(value: string) {
         if (this.filterText !== value) {
-            this._filterText = value;
-            if (this.settings.tableRefreshOnFilterChange) {
-                this.filter();
-            }
+            this.filterTextState.set(value);
         }
     }
 
 
     get filterText(): string {
-        return this._filterText;
+        return this.filterTextState();
     }
 
 
     refresh() {
+        this.refreshingState.set(true);
         this.remoteDataSource.refresh();
-        this.markedForRefresh = true;
+        this.markedForRefresh.set(true);
     }
 
 
     needsRefresh(workspace: XoWorkspace) {
-        return this.remoteDataSource.selectionModel.selection[0] === workspace && this.markedForRefresh;
+        return this.selectedWorkspace() === workspace && this.markedForRefresh();
     }
 
 
@@ -146,6 +144,7 @@ export class WorkspacesComponent extends RouteComponent implements AfterViewInit
 
     select(workspace: XoWorkspace) {
         this.remoteDataSource.selectionModel.clear();
+        this.selectedWorkspace.set(workspace);
         if (workspace) {
             this.remoteDataSource.selectionModel.select(workspace);
         }
@@ -153,39 +152,37 @@ export class WorkspacesComponent extends RouteComponent implements AfterViewInit
 
 
     selectDetails(runtimeContext: XoRuntimeContext) {
-        this.detailsObject = null;
+        this.selectedDetails.set(undefined);
         if (runtimeContext instanceof XoWorkspace) {
             this.apiService.startOrderAssert<XoWorkspaceDetails>(FMAN_RTC, ORDER_TYPES.GET_WORKSPACE_DETAILS, runtimeContext.proxy(), XoWorkspaceDetails, null).subscribe(
-                workspaceDetails => this.detailsObject = workspaceDetails
+                workspaceDetails => this.selectedDetails.set(workspaceDetails)
             );
         }
         if (runtimeContext instanceof XoApplicationDefinition) {
             this.apiService.startOrderAssert<XoApplicationDefinitionDetails>(FMAN_RTC, ORDER_TYPES.GET_APPLICATION_DEFINITION_DETAILS, runtimeContext.proxy(), XoApplicationDefinitionDetails, null).subscribe(
-                applicationDefinitionDetails => this.detailsObject = applicationDefinitionDetails
+                applicationDefinitionDetails => this.selectedDetails.set(applicationDefinitionDetails)
             );
         }
     }
 
 
     get refreshing(): boolean {
-        return this.remoteDataSource.refreshing;
+        return this.refreshingState();
     }
 
 
     get selection(): XoWorkspace {
-        return this.remoteDataSource.selectionModel.selection[0];
+        return this.selectedWorkspace()!;
     }
 
 
     get details(): XoWorkspaceDetails | XoApplicationDefinitionDetails {
-        return this.detailsObject;
+        return this.selectedDetails()!;
     }
 
 
     get workspaces(): XoWorkspace[] {
-        return !this.refreshing
-            ? this.filteredWorkspaces
-            : [];
+        return this.workspacesList();
     }
 
 
