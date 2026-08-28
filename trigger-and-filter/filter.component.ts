@@ -1,3 +1,5 @@
+import { Subscription } from 'rxjs';
+
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -16,7 +18,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, signal } from '@angular/core';
-
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { TileDataSource, TileItem } from '@fman/runtime-contexts/shared/tile/tile-data-source';
 import { ActionButtonData } from '@fman/runtime-contexts/shared/tile/tile.component';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
@@ -24,8 +26,6 @@ import { Comparable } from '@zeta/base';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { RouteComponent } from '@zeta/nav';
 import { XcComponentTemplate, XcDialogService, XcIconButtonComponent, XcPanelComponent, XcSelectionModel, XcSpinnerComponent, XcTemplate, XcTooltipDirective } from '@zeta/xc';
-
-import { Subscription } from 'rxjs';
 
 import { TileComponent } from '../runtime-contexts/shared/tile/tile.component';
 import { DeployFilterDialogComponent } from './components/deploy-filter-dialog/deploy-filter-dialog.component';
@@ -36,7 +36,6 @@ import { trigger_and_filter_translations_en_US } from './locale/trigger-and-filt
 import { ORDER_TYPES } from './order-types';
 import { XoFilterInstance } from './xo/xo-filter-instance.model';
 import { XoFilter, XoFilterArray } from './xo/xo-filter.model';
-import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 class FilterTile extends Comparable implements TileItem {

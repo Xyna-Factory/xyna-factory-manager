@@ -1,3 +1,5 @@
+import { Subscription } from 'rxjs';
+
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -16,13 +18,11 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { AfterViewInit, ChangeDetectionStrategy, Component, computed, effect, inject, OnDestroy, signal, viewChildren } from '@angular/core';
-
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { RouteComponent } from '@zeta/nav';
 import { XcButtonComponent, XcDialogService, XcFormInputComponent, XcIconButtonComponent, XcIconComponent, XcPanelComponent, XcSpinnerComponent, XcTooltipDirective } from '@zeta/xc';
-
-import { Subscription } from 'rxjs';
 
 import { CreateRuntimeApplicationDialogComponent } from '../dialog/create-runtime-application/create-runtime-application-dialog.component';
 import { ImportRuntimeApplicationDialogComponent } from '../dialog/import-runtime-application/import-runtime-application-dialog.component';
@@ -34,7 +34,6 @@ import { XoRuntimeApplicationDetails } from '../xo/xo-runtime-application-detail
 import { XoRuntimeApplication, XoRuntimeApplicationArray } from '../xo/xo-runtime-application.model';
 import { Application, ApplicationDataSource } from './application-data-source';
 import { ApplicationTileComponent } from './application-tile/application-tile.component';
-import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 @Component({

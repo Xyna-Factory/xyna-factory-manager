@@ -1,3 +1,6 @@
+import { throwError } from 'rxjs';
+import { catchError, filter, finalize, map, tap } from 'rxjs/operators';
+
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -16,15 +19,11 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { Component, inject, signal } from '@angular/core';
-
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormLabelComponent, XcFormValidatorRequiredDirective, XcOptionItem, XcRemoteTableDataSource, XcTableComponent, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
 
-import { throwError } from 'rxjs';
-import { catchError, filter, finalize, map, tap } from 'rxjs/operators';
-
-import { FMAN_RTC } from '@fman/factory-manager.component';
 import { FactoryManagerSettingsService } from '../../../misc/services/factory-manager-settings.service';
 import { createFilterEnumOfState } from '../../dependencies';
 import { ORDER_TYPES } from '../../order-types';

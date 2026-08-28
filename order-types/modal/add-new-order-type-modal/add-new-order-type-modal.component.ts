@@ -16,7 +16,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { Component, inject, signal, viewChild } from '@angular/core';
-
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder, XoRuntimeContext } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcIconComponent, XcPanelComponent, XcRemoteTableDataSource, XcRichListComponent, XcRichListItem, XcStringIntegerDataWrapper, XcTableComponent, XcTooltipDirective } from '@zeta/xc';
@@ -32,7 +32,6 @@ import { XoOrderTypeCapacitiesTableInfo } from '../../xo/xo-order-type-capacitie
 import { XoOrderType } from '../../xo/xo-order-type.model';
 import { addNewOrderTypeModal_translations_de_DE } from './locale/add-new-order-type-modal-translations.de-DE';
 import { addNewOrderTypeModal_translations_en_US } from './locale/add-new-order-type-modal-translations.en-US';
-import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 export interface AddNewOrderTypeModalComponentData {

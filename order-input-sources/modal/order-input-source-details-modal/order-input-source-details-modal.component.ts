@@ -16,7 +16,6 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { Component } from '@angular/core';
-
 import { XcI18nContextDirective } from '@zeta/i18n';
 import { XcDialogComponent } from '@zeta/xc';
 

@@ -1,3 +1,5 @@
+import { filter } from 'rxjs';
+
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -16,7 +18,6 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, InjectionToken, Injector, signal } from '@angular/core';
-
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ORDER_TYPES } from '@fman/trigger-and-filter/order-types';
 import { XoFilterInstance } from '@fman/trigger-and-filter/xo/xo-filter-instance.model';
@@ -24,11 +25,8 @@ import { XoTriggerInstanceDetail } from '@fman/trigger-and-filter/xo/xo-trigger-
 import { XoTriggerInstance } from '@fman/trigger-and-filter/xo/xo-trigger-instance.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { Comparable } from '@zeta/base';
-import { I18nService } from '@zeta/i18n';
-import { XcI18nTranslateDirective } from '@zeta/i18n';
+import { I18nService, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XC_COMPONENT_DATA, XcButtonComponent, XcDialogService, XcDynamicComponent, XcIconComponent, XcLocalTableDataSource, XcPanelComponent, XcSpinnerComponent, XcTableComponent, XcTooltipDirective, XDSIconName } from '@zeta/xc';
-
-import { filter } from 'rxjs';
 
 
 export interface TriggerInstanceDetailsData {

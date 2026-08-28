@@ -18,7 +18,6 @@
 import { of, Subscription, throwError } from 'rxjs';
 import { catchError, filter, finalize, first, skip, tap } from 'rxjs/operators';
 
-
 import { Component, inject, OnDestroy, signal } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoDependencyType } from '@fman/runtime-contexts/xo/xo-dependency.model';

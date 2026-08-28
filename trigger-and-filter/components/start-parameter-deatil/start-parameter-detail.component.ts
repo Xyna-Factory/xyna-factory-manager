@@ -16,11 +16,9 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { Component, inject, Input, signal } from '@angular/core';
-
 import { XoStartParameterDetails } from '@fman/trigger-and-filter/xo/xo-start-parameter-details.model';
 import { coerceBoolean, Comparable } from '@zeta/base';
-import { I18nService } from '@zeta/i18n';
-import { XcI18nPipe } from '@zeta/i18n';
+import { I18nService, XcI18nPipe } from '@zeta/i18n';
 import { XcLocalTableDataSource, XcPanelComponent, XcTableComponent } from '@zeta/xc';
 
 

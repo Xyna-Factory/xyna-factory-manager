@@ -15,11 +15,10 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, Input, Output, inject, signal, viewChild } from '@angular/core';
-
+import { Component, inject, Input, output, signal, viewChild } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nService } from '@zeta/i18n';
-import { XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
+import { I18nService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcCheckboxComponent, XcDialogService, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIdentityDataWrapper, XcPanelComponent, XcStringIntegerDataWrapper } from '@zeta/xc';
 
 import { FM_WF_GET_TIMEZONES, GET_TIMEZONE_EMPTY_ERROR, UNSPECIFIED_GET_TIMEZONE_ERROR } from '../../../const';
@@ -29,7 +28,6 @@ import { XoTimeUnit, XoTimeUnitArray } from '../../../xo/xo-timeunit.model';
 import { XoRestrictionBasedTimeWindow } from '../../../xo/xo-timewindow.model';
 import { XoTimezoneArray } from '../../../xo/xo-timezone.model';
 import { ExecutionTimeInterval, ExecutionTimeMonth, ExecutionTimeMonthlyAtWhichDayOfTheMonth, ExecutionTimeMonthlyBy, ExecutionTimeWeekday, ExecutionTimeWeekdayPositionInMonth, ExecutionTimeYearlyBy, ExecutionTypes, WindowLengths } from './execution-time.constant';
-import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 @Component({
@@ -45,10 +43,8 @@ export class ExecutionTimeComponent {
 
     readonly xcFormDirective = viewChild(XcFormDirective);
 
-    @Output()
-    private readonly invalidChange = new EventEmitter<boolean>();
-    @Output()
-    private readonly executionTimeChange = new EventEmitter<XoOrderExecutionTime>();
+    readonly invalidChange = output<boolean>();
+    readonly executionTimeChange = output<XoOrderExecutionTime>();
 
     /** Changes the header of the xc-panel */
     @Input() header: string;

@@ -17,7 +17,6 @@
  */
 import { filter, finalize } from 'rxjs/operators';
 
-
 import { Component, inject, signal } from '@angular/core';
 import { XoRTCMigrationResultArray } from '@fman/runtime-contexts/xo/xo-rtcmigration-result.model';
 import { XoRTCName } from '@fman/runtime-contexts/xo/xo-rtcname.model';

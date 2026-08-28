@@ -16,7 +16,6 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { Component, InjectionToken } from '@angular/core';
-
 import { XC_COMPONENT_DATA, XcDynamicComponent, XcIconComponent } from '@zeta/xc';
 
 

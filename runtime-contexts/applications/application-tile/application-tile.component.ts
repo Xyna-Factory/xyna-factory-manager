@@ -17,7 +17,8 @@ import { debounceTime, filter, first, skip } from 'rxjs/operators';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, HostBinding, inject, input, Input, NgZone, OnInit, Output, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, inject, input, Input, NgZone, OnInit, output, signal, viewChild } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ExportApplicationDialogComponent } from '@fman/runtime-contexts/dialog/export-application/export-application-dialog.component';
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
@@ -45,7 +46,6 @@ import { XoRuntimeApplication } from '../../xo/xo-runtime-application.model';
 import { XoRuntimeContextState } from '../../xo/xo-runtime-context-state.model';
 import { XoRuntimeContext } from '../../xo/xo-runtime-context.model';
 import { Application } from '../application-data-source';
-import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 @Component({
@@ -99,14 +99,11 @@ export class ApplicationTileComponent implements OnInit {
         return this.detailsInput();
     }
 
-    @Output()
-    readonly validationChange = new EventEmitter<void>();
+    readonly validationChange = output<void>();
 
-    @Output()
-    readonly selectionChange = new EventEmitter<Application>();
+    readonly selectionChange = output<Application>();
 
-    @Output()
-    readonly selectionDetailsChange = new EventEmitter<XoRuntimeApplication>();
+    readonly selectionDetailsChange = output<XoRuntimeApplication>();
 
     requiresDataSource: XcRemoteTableDataSource;
 
@@ -223,7 +220,7 @@ export class ApplicationTileComponent implements OnInit {
     deleteRuntimeApplication() {
         this.dialogService.custom(DeleteRuntimeApplicationDialogComponent, this.details as XoRuntimeApplication).afterDismissResult().subscribe(
             () => {
-                this.validationChange.next();
+                this.validationChange.emit();
                 this.select(null);
             }
         );

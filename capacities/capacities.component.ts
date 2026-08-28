@@ -1,3 +1,5 @@
+import { filter } from 'rxjs';
+
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -16,14 +18,11 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { ChangeDetectionStrategy, Component, signal, viewChild } from '@angular/core';
-
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcButtonComponent, XcCheckboxComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
 
-import { filter } from 'rxjs';
-
-import { FMAN_RTC } from '@fman/factory-manager.component';
 import { AddNewCapacityModalComponent, AddNewCapacityModalComponentData } from './modal/add-new-capacity-modal/add-new-capacity-modal.component';
 import { CAPACITY_ISWP, RestorableCapacitiesComponent } from './restorable-capacities.component';
 import { XoCapacityInformation, XoCapacityInformationArray } from './xo/xo-capacity-information.model';

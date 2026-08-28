@@ -16,8 +16,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { Component, InjectionToken } from '@angular/core';
-
-import { XC_COMPONENT_DATA, XcDynamicComponent, XcIconComponent, XcCheckboxComponent } from '@zeta/xc';
+import { XC_COMPONENT_DATA, XcCheckboxComponent, XcDynamicComponent, XcIconComponent } from '@zeta/xc';
 
 
 @Component({

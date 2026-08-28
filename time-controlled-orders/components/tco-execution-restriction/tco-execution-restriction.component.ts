@@ -1,3 +1,5 @@
+import { Subscription } from 'rxjs';
+
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -15,13 +17,9 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject, viewChild } from '@angular/core';
-
-import { I18nService } from '@zeta/i18n';
-import { XcI18nTranslateDirective } from '@zeta/i18n';
+import { AfterViewInit, Component, inject, Input, OnDestroy, OnInit, output, viewChild } from '@angular/core';
+import { I18nService, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcPanelComponent, XcTooltipDirective } from '@zeta/xc';
-
-import { Subscription } from 'rxjs';
 
 import { ExecutionTimeBehaviorOnError } from '../../../cronlike-orders/components/execution-time/execution-time.constant';
 import { XoTCOExecutionRestriction } from '../../xo/xo-tcoexecution-restriction.model';
@@ -72,10 +70,8 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
     private validityChangeSubscription: Subscription;
     private _executionRestriction: XoTCOExecutionRestriction;
 
-    @Output()
-    private readonly validationChange = new EventEmitter<boolean>();
-    @Output()
-    private readonly executionRestrictionChange = new EventEmitter<XoTCOExecutionRestriction>();
+    readonly validationChange = output<boolean>();
+    readonly executionRestrictionChange = output<XoTCOExecutionRestriction>();
 
     @Input()
     private readonly hasTooltip: boolean;

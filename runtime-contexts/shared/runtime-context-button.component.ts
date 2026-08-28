@@ -15,15 +15,14 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
-
+import { Component, HostBinding, Input, output } from '@angular/core';
+import { XcButtonComponent, XcTooltipDirective } from '@zeta/xc';
 import { XcColor } from '@zeta/xc/shared/xc-themeable.component';
 
 import { XoApplicationDefinition } from '../xo/xo-application-definition.model';
 import { XoRuntimeContextState } from '../xo/xo-runtime-context-state.model';
 import { XoRuntimeContext } from '../xo/xo-runtime-context.model';
 import { RuntimeContextIconComponent } from './runtime-context-icon.component';
-import { XcButtonComponent, XcTooltipDirective } from '@zeta/xc';
 
 
 @Component({
@@ -41,8 +40,7 @@ export class RuntimeContextButtonComponent {
     @Input()
     selected = false;
 
-    @Output()
-    readonly select = new EventEmitter<XoRuntimeContext>();
+    readonly select = output<XoRuntimeContext>();
 
 
     click() {

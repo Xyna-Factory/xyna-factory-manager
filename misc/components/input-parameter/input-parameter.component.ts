@@ -15,8 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
-
+import { Component, inject, Input, OnInit, output } from '@angular/core';
 import { ApiService, FullQualifiedName, RuntimeContext, XoArray, XoClassInterfaceFrom, XoDescriber, XoJson, XoObject } from '@zeta/api';
 import { coerceBoolean, isArray } from '@zeta/base';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
@@ -111,8 +110,7 @@ export class InputParameterComponent implements OnInit {
     @Input()
     ref: InputParameterRef;
 
-    @Output()
-    readonly markForChange = new EventEmitter<void>();
+    readonly markForChange = output<void>();
 
     inputParamterTreeDataSource: XcStructureTreeDataSource;
 

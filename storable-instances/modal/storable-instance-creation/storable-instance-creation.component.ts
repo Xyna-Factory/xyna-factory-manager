@@ -1,3 +1,5 @@
+import { finalize } from 'rxjs/operators';
+
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -16,12 +18,9 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { Component } from '@angular/core';
-
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder, StartOrderResult } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcButtonComponent, XcDialogComponent, XcDialogWrapperComponent, XcStructureTreeDataSource, XcTreeComponent } from '@zeta/xc';
-
-import { finalize } from 'rxjs/operators';
 
 import { XoStoreParameter } from '../../xo/xo-storeparameter.model';
 import { storableInstanceCreation_translations_de_DE } from './locale/storable-instance-creation-translations.de-DE';

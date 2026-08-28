@@ -1,3 +1,6 @@
+import { throwError } from 'rxjs';
+import { catchError, filter, finalize, tap } from 'rxjs/operators';
+
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -16,20 +19,16 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { Component, inject } from '@angular/core';
-
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcIconComponent } from '@zeta/xc';
-
-import { throwError } from 'rxjs';
-import { catchError, filter, finalize, tap } from 'rxjs/operators';
 
 import { ORDER_TYPES } from '../../order-types';
 import { XoClearWorkspaceRequest } from '../../xo/xo-clear-workspace-request.model';
 import { XoWorkspace } from '../../xo/xo-workspace.model';
 import { clearWorkspace_translations_de_DE } from './locale/clear-workspace-translations.de-DE';
 import { clearWorkspace_translations_en_US } from './locale/clear-workspace-translations.en-US';
-import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 @Component({

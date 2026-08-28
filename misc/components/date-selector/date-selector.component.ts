@@ -1,3 +1,5 @@
+import { Subscription } from 'rxjs';
+
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -15,14 +17,10 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output, inject, signal, viewChild } from '@angular/core';
-
+import { AfterViewInit, Component, inject, Input, OnDestroy, output, signal, viewChild } from '@angular/core';
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nService } from '@zeta/i18n';
-import { XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
+import { I18nService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcDialogService, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcOptionItem, XcPanelComponent, XcStringIntegerDataWrapper } from '@zeta/xc';
-
-import { Subscription } from 'rxjs';
 
 import { XoTimezoneArray } from '../../../xo/xo-timezone.model';
 
@@ -59,15 +57,13 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
         this.timezoneDataWrapper.update();
     }
 
-    @Output('timezoneChange')
-    readonly timezoneChanged = new EventEmitter<string>();
+    readonly timezoneChanged = output<string>({ alias: 'timezoneChange' });
 
 
     readonly form = viewChild(XcFormDirective);
     private validityChangeSubscription: Subscription;
 
-    @Output('validityChange')
-    readonly validityChangeEmitter = new EventEmitter<boolean>();
+    readonly validityChangeEmitter = output<boolean>({ alias: 'validityChange' });
 
 
 
@@ -89,8 +85,7 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
         }
     }
 
-    @Output('datetimeChange')
-    readonly datetimeChanged = new EventEmitter<number>();
+    readonly datetimeChanged = output<number>({ alias: 'datetimeChange' });
 
 
     @Input()

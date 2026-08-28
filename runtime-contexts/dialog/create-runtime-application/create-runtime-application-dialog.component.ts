@@ -1,3 +1,6 @@
+import { throwError } from 'rxjs';
+import { catchError, filter, finalize, map, tap } from 'rxjs/operators';
+
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -16,13 +19,10 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { Component, inject, signal } from '@angular/core';
-
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcButtonComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcOptionItem } from '@zeta/xc';
-
-import { throwError } from 'rxjs';
-import { catchError, filter, finalize, map, tap } from 'rxjs/operators';
 
 import { ORDER_TYPES } from '../../order-types';
 import { XoApplicationDefinition } from '../../xo/xo-application-definition.model';
@@ -30,7 +30,6 @@ import { XoCreateRTARequest } from '../../xo/xo-create-rtarequest.model';
 import { XoWorkspace, XoWorkspaceArray } from '../../xo/xo-workspace.model';
 import { createRuntimeApplication_translations_de_DE } from './locale/create-runtime-application-translations.de-DE';
 import { createRuntimeApplication_translations_en_US } from './locale/create-runtime-application-translations.en-US';
-import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 type RuntimeApplicationVersion = string;

@@ -1,3 +1,6 @@
+import { throwError } from 'rxjs';
+import { catchError, finalize, tap } from 'rxjs/operators';
+
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -16,16 +19,12 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { Component, inject } from '@angular/core';
-
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoDeleteDuplicatesResponse } from '@fman/runtime-contexts/xo/xo-delete-duplicates-response.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcButtonComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcIconComponent } from '@zeta/xc';
 
-import { throwError } from 'rxjs';
-import { catchError, finalize, tap } from 'rxjs/operators';
-
-import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ORDER_TYPES } from '../../order-types';
 import { XoWorkspace } from '../../xo/xo-workspace.model';
 import { deleteDuplicates_translations_de_DE } from './locale/delete-duplicates-translations.de-DE';

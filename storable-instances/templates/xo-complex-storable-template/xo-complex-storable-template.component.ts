@@ -16,7 +16,6 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { Component, InjectionToken } from '@angular/core';
-
 import { XoArray, XoObject } from '@zeta/api';
 import { XcI18nPipe } from '@zeta/i18n';
 import { XC_COMPONENT_DATA, XcDynamicComponent } from '@zeta/xc';

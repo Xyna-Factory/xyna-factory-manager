@@ -16,7 +16,6 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { Component, inject, InjectionToken } from '@angular/core';
-
 import { I18nParam, I18nService, LocaleService } from '@zeta/i18n';
 import { XC_COMPONENT_DATA, XcDynamicComponent, XcFormInputComponent, XcStringIntegerDataWrapper, XcTooltipDirective } from '@zeta/xc';
 

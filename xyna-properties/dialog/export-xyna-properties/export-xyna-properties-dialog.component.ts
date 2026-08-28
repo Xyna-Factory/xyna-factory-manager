@@ -1,3 +1,5 @@
+import { filter, finalize } from 'rxjs/operators';
+
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -16,20 +18,17 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { Component, inject } from '@angular/core';
-
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoManagedFileId } from '@fman/runtime-contexts/xo/xo-managed-file-id.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
+import { ConfigService } from '@zeta/api/config.service';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcOptionItem } from '@zeta/xc';
 
-import { filter, finalize } from 'rxjs/operators';
-
-import { FMAN_RTC } from '@fman/factory-manager.component';
-import { XynaPropertiesFormat, XYNA_PROPERTY_ISWP } from '../../restorable-xyna-properties.component';
+import { XYNA_PROPERTY_ISWP, XynaPropertiesFormat } from '../../restorable-xyna-properties.component';
 import { XoExportSettings } from '../../xo/xo-export-settings.model';
 import { exportXynaProperties_translations_de_DE } from './locale/export-xyna-properties-translations.de-DE';
 import { exportXynaProperties_translations_en_US } from './locale/export-xyna-properties-translations.en-US';
-import { ConfigService } from '@zeta/api/config.service';
 
 
 const ISWP = XYNA_PROPERTY_ISWP;

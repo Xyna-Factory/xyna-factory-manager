@@ -15,8 +15,8 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, inject, Input, Output, signal, viewChild } from '@angular/core';
-
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, output, signal, viewChild } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { InputParameterRef } from '@fman/misc/components/input-parameter/input-parameter-ref.class';
 import { XoOrderType, XoOrderTypeArray } from '@fman/xo/xo-order-type.model';
 import { RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoArray, XoRuntimeContext, XoWorkspace } from '@zeta/api';
@@ -34,7 +34,6 @@ import { XoOrderInputSource } from '../xo/xo-order-input-source.model';
 import { XoParameter } from '../xo/xo-parameter.model';
 import { XoSourceType, XoSourceTypeArray } from '../xo/xo-source-type.model';
 import { XoStartFrequencyControlledTaskParameter } from '../xo/xo-start-frequency-controlled-task-parameter.model';
-import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 const ISWP = ORDER_INPUT_SOURCE_ISWP;
@@ -125,11 +124,9 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
         }
     }
 
-    @Output('closed')
-    readonly closed = new EventEmitter<OrderInputSourceCloseEvent>();
+    readonly closed = output<OrderInputSourceCloseEvent>({ alias: 'closed' });
 
-    @Output('navigated')
-    readonly navigated = new EventEmitter<string>();
+    readonly navigated = output<string>({ alias: 'navigated' });
 
 
     readonly xcFormDirective = viewChild(XcFormDirective);

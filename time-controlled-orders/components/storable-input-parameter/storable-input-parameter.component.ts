@@ -1,3 +1,6 @@
+import { Observable } from 'rxjs';
+import { finalize, tap } from 'rxjs/operators';
+
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -15,16 +18,11 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
-
+import { Component, inject, Input, output } from '@angular/core';
 import { ApiService, FullQualifiedName, OrderTypeVariable, RuntimeContext, Xo, XoArray, XoClassInterfaceFrom, XoJson, XoObject, XoRuntimeContext, XoStorable, XoStructureType } from '@zeta/api';
 import { isArray } from '@zeta/base';
-import { I18nService } from '@zeta/i18n';
-import { XcI18nTranslateDirective } from '@zeta/i18n';
+import { I18nService, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcCheckboxComponent, XcFormDirective, XcPanelComponent, XcStructureTreeDataSource, XcTreeComponent } from '@zeta/xc';
-
-import { Observable } from 'rxjs';
-import { finalize, tap } from 'rxjs/operators';
 
 import { XoOrderDestination } from '../../../xo/xo-orderdestination.model';
 
@@ -49,12 +47,9 @@ export class StorableInputParameterComponent {
     private readonly apiService = inject(ApiService);
     private readonly i18n = inject(I18nService);
 
-    @Output()
-    private readonly querySelectionChange = new EventEmitter<InputParameter>();
-    @Output()
-    private readonly destinationChange = new EventEmitter<XoOrderDestination>();
-    @Output()
-    private readonly payloadChange = new EventEmitter<string>();
+    readonly querySelectionChange = output<InputParameter>();
+    readonly destinationChange = output<XoOrderDestination>();
+    readonly payloadChange = output<string>();
 
     private _destination: XoOrderDestination;
     private _querySelection;

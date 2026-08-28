@@ -1,3 +1,5 @@
+import { Subject } from 'rxjs';
+
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -16,11 +18,8 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { Component, inject } from '@angular/core';
-
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcButtonComponent, XcDialogComponent, XcDialogWrapperComponent, XcFormDirective, XcFormTextareaComponent, XcRichListComponent, XcRichListItem } from '@zeta/xc';
-
-import { Subject } from 'rxjs';
 
 import { DeleteDeploymentItemResolution } from '../../restorable-deployment-items.component';
 import { XoDeleteDeploymentItemParam, XoDeleteDeploymentItemParamArray } from '../../xo/xo-delete-deployment-item-param.model';

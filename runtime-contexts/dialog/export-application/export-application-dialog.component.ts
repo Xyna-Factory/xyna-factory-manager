@@ -1,3 +1,5 @@
+import { filter, finalize } from 'rxjs/operators';
+
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -16,20 +18,17 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { Component, inject } from '@angular/core';
-
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoManagedFileId } from '@fman/runtime-contexts/xo/xo-managed-file-id.model';
 import { XoRuntimeApplication } from '@fman/runtime-contexts/xo/xo-runtime-application.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
+import { ConfigService } from '@zeta/api/config.service';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent } from '@zeta/xc';
 
-import { filter, finalize } from 'rxjs/operators';
-
-import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ORDER_TYPES } from '../../order-types';
 import { exportapplication_translations_de_DE } from './locale/export-application-translations.de-DE';
 import { exportapplication_translations_en_US } from './locale/export-application-translations.en-US';
-import { ConfigService } from '@zeta/api/config.service';
 
 
 @Component({

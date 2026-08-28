@@ -15,8 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Input, inject } from '@angular/core';
-
+import { Component, inject, Input } from '@angular/core';
 import { dateTimeString } from '@zeta/base';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcButtonComponent, XcDialogService, XcIconComponent, XcTooltipDirective } from '@zeta/xc';

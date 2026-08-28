@@ -18,7 +18,7 @@
 import { Subject, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
-import { Component, EventEmitter, inject, Input, OnDestroy, Output } from '@angular/core';
+import { Component, inject, Input, OnDestroy, output } from '@angular/core';
 import { ApiService, FullQualifiedName, RuntimeContext, StartOrderOptionsBuilder, XoArray, XoObject, XoRuntimeContext } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
 import { XcDialogService, XcStructureTreeDataSource, XcTreeComponent } from '@zeta/xc';
@@ -37,8 +37,7 @@ export class StorableInstanceDetailComponent implements OnDestroy {
     private readonly apiService = inject(ApiService);
     private readonly dialogService = inject(XcDialogService);
 
-    @Output()
-    readonly valueChange = new EventEmitter<void>();
+    readonly valueChange = output<void>();
 
     @Input()
     set xoRtc(xoRtc: XoRuntimeContext) {

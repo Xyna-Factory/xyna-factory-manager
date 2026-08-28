@@ -1,3 +1,5 @@
+import { Subscription } from 'rxjs';
+
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -16,7 +18,6 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, signal } from '@angular/core';
-
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { TileDataSource, TileItem } from '@fman/runtime-contexts/shared/tile/tile-data-source';
 import { ActionButtonData } from '@fman/runtime-contexts/shared/tile/tile.component';
@@ -25,8 +26,6 @@ import { Comparable } from '@zeta/base';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { RouteComponent } from '@zeta/nav';
 import { XcComponentTemplate, XcDialogService, XcIconButtonComponent, XcPanelComponent, XcSelectionModel, XcSpinnerComponent, XcTemplate, XcTooltipDirective } from '@zeta/xc';
-
-import { Subscription } from 'rxjs';
 
 import { TileComponent } from '../runtime-contexts/shared/tile/tile.component';
 import { DeployTriggerDialogComponent } from './components/deploy-trigger-dialog/deploy-trigger-dialog.component';

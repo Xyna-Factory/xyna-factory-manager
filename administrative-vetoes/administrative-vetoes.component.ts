@@ -1,3 +1,5 @@
+import { filter } from 'rxjs';
+
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -16,18 +18,15 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
-
-import { filter } from 'rxjs';
+import { XcButtonComponent, XcFormInputComponent, XcFormTextareaComponent, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective } from '@zeta/xc';
 
 import { AddNewAdministrativeVetoModalComponent, AddNewAdministrativeVetoModalData } from './modal/add-new-administrative-veto-modal/add-new-administrative-veto-modal.component';
 import { ADMINISTRATIVE_VETOES_ISWP, RestorableAdministrativeVetoComponent } from './restorable-administrative-vetoes.component';
 import { XoAdministrativeVetoName } from './xo/xo-administrative-veto-name.mode';
 import { XoAdministrativeVeto, XoAdministrativeVetoArray } from './xo/xo-administrative-veto.model';
-import { XcButtonComponent, XcFormInputComponent, XcFormTextareaComponent, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective } from '@zeta/xc';
-import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 const ISWP = ADMINISTRATIVE_VETOES_ISWP;

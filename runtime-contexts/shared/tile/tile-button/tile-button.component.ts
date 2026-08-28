@@ -15,12 +15,11 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
-
+import { Component, HostBinding, Input, output } from '@angular/core';
+import { XcButtonComponent, XcTemplateComponent, XcTooltipDirective } from '@zeta/xc';
 import { XcColor } from '@zeta/xc/shared/xc-themeable.component';
 
 import { TileItem } from '../tile-data-source';
-import { XcButtonComponent, XcTemplateComponent, XcTooltipDirective } from '@zeta/xc';
 
 
 @Component({
@@ -38,8 +37,7 @@ export class TileButtonComponent {
     @Input()
     selected = false;
 
-    @Output('select-item')
-    readonly selectItem = new EventEmitter<TileItem>();
+    readonly selectItem = output<TileItem>({ alias: 'select-item' });
 
 
     click() {

@@ -1,3 +1,6 @@
+import { Subject } from 'rxjs';
+import { filter, skip } from 'rxjs/operators';
+
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -16,21 +19,17 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, signal } from '@angular/core';
-
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { StartOrderOptionsBuilder, XoApplication, XoArray, XoDescriber } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective } from '@zeta/xc';
 
-import { Subject } from 'rxjs';
-import { filter, skip } from 'rxjs/operators';
-
-import { FMAN_RTC } from '@fman/factory-manager.component';
 import { AddNewOrderInputSourceModalComponent, AddNewOrderInputSourceModalComponentData } from './modal/add-new-order-input-source-modal/add-new-order-input-source-modal.component';
 import { OrderInputSourceCloseEvent, OrderInputSourceDetailsComponent } from './order-input-source-details/order-input-source-details.component';
 import { ORDER_INPUT_SOURCE_ISWP, RestorableOrderInputSourcesComponent } from './restorable-order-input-sources.component';
 import { XoGetOrderInputSourceRequest } from './xo/xo-get-order-input-source-request.model';
 import { XoOrderInputSourceId } from './xo/xo-order-input-source-id.model';
 import { XoOrderInputSource, XoOrderInputSourceArray } from './xo/xo-order-input-source.model';
-import { XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective } from '@zeta/xc';
 
 
 const ISWP = ORDER_INPUT_SOURCE_ISWP;

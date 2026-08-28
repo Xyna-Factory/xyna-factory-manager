@@ -19,12 +19,12 @@ import { throwError } from 'rxjs';
 import { catchError, finalize, tap } from 'rxjs/operators';
 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormLabelComponent, XcFormValidatorRequiredDirective, XcOptionItem } from '@zeta/xc';
 
-import { FMAN_RTC } from '@fman/factory-manager.component';
-import { XynaPropertiesFormat, XYNA_PROPERTY_ISWP } from '../../restorable-xyna-properties.component';
+import { XYNA_PROPERTY_ISWP, XynaPropertiesFormat } from '../../restorable-xyna-properties.component';
 import { XoImportSettings } from '../../xo/xo-import-settings.model';
 import { XoXynaPropertyExport } from '../../xo/xo-xyna-property-export.model';
 import { importXynaProperties_translations_de_DE } from './locale/import-xyna-properties-translations.de-DE';
