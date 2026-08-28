@@ -10,7 +10,7 @@
       <xc-checkbox [(checked)]="includeIndirect" (checkedChange)="updateDataSource()" xc-i18n label="manage-content-include-indirect" xc-tooltip="manage-content-include-indirect-tooltip" style="margin-left: 16px;" />
     </ng-container>
   }
-  <section content [ngClass]="{'two-items': !!changedApplicationElements.size}">
+  <section content [class.two-items]="!!changedApplicationElements.size">
     <xc-table class="zeta-scrollbar scroll" [xc-table-datasource]="dataSource" xc-table-allowsort xc-table-allowfilter xc-table-lazyupdate></xc-table>
     @if (!!changedApplicationElements.size) {
       <div>

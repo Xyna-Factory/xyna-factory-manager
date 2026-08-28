@@ -64,7 +64,7 @@
                             {{ migrationResult.rTCMigration.target.name }} {{ migrationResult.rTCMigration.target.version }}
                           </div>
                           <div class="items-right">
-                            <span class="resultBadge" [ngClass]="{ success: migrationResult.wasSuccessful }">{{
+                            <span class="resultBadge" [class.success]="migrationResult.wasSuccessful">{{
                               (migrationResult.wasSuccessful ? 'success' : 'failure') | xcI18n
                             }}</span>
                           </div>

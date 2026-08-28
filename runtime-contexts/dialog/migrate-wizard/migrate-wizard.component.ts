@@ -17,7 +17,7 @@
  */
 import { filter, finalize } from 'rxjs/operators';
 
-import { NgClass } from '@angular/common';
+
 import { Component, inject, signal } from '@angular/core';
 import { XoRTCMigrationResultArray } from '@fman/runtime-contexts/xo/xo-rtcmigration-result.model';
 import { XoRTCName } from '@fman/runtime-contexts/xo/xo-rtcname.model';
@@ -121,7 +121,7 @@ export class RuntimeContextTableInfo extends XoTableInfo {
     selector: 'migrate-wizard',
     templateUrl: './migrate-wizard.component.html',
     styleUrls: ['./migrate-wizard.component.scss'],
-    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcIconComponent, XcPanelComponent, XcSpinnerComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe, NgClass]
+    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcIconComponent, XcPanelComponent, XcSpinnerComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class MigrateWizardComponent extends XcDialogComponent<boolean, MigrationWizardData> {
     private readonly settings = inject(FactoryManagerSettingsService);
