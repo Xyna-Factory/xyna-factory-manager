@@ -1,5 +1,3 @@
-import { Subscription } from 'rxjs';
-
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -17,6 +15,9 @@ import { Subscription } from 'rxjs';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
+
+import { Subscription } from 'rxjs';
+
 import { AfterViewInit, Component, inject, Input, OnDestroy, output, signal, viewChild } from '@angular/core';
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';

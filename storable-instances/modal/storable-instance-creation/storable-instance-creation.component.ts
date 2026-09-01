@@ -1,5 +1,3 @@
-import { finalize } from 'rxjs/operators';
-
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -17,6 +15,9 @@ import { finalize } from 'rxjs/operators';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
+
+import { finalize } from 'rxjs/operators';
+
 import { Component } from '@angular/core';
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder, StartOrderResult } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';

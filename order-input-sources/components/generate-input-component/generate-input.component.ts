@@ -1,5 +1,3 @@
-import { finalize } from 'rxjs/operators';
-
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -17,6 +15,9 @@ import { finalize } from 'rxjs/operators';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
+
+import { finalize } from 'rxjs/operators';
+
 import { ChangeDetectorRef, Component, inject, Input, output } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService, FullQualifiedName, RuntimeContext, StartOrderOptions, XoArray, XoClassInterfaceFrom, XoDescriber, XoJson, XoObject } from '@zeta/api';

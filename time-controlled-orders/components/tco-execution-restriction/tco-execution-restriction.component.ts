@@ -1,5 +1,3 @@
-import { Subscription } from 'rxjs';
-
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -17,6 +15,9 @@ import { Subscription } from 'rxjs';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
+
+import { Subscription } from 'rxjs';
+
 import { AfterViewInit, Component, inject, Input, OnDestroy, OnInit, output, viewChild } from '@angular/core';
 import { I18nService, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcPanelComponent, XcTooltipDirective } from '@zeta/xc';

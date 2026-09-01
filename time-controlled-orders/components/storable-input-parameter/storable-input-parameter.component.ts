@@ -1,6 +1,3 @@
-import { Observable } from 'rxjs';
-import { finalize, tap } from 'rxjs/operators';
-
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -18,6 +15,10 @@ import { finalize, tap } from 'rxjs/operators';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
+
+import { Observable } from 'rxjs';
+import { finalize, tap } from 'rxjs/operators';
+
 import { Component, inject, Input, output } from '@angular/core';
 import { ApiService, FullQualifiedName, OrderTypeVariable, RuntimeContext, Xo, XoArray, XoClassInterfaceFrom, XoJson, XoObject, XoRuntimeContext, XoStorable, XoStructureType } from '@zeta/api';
 import { isArray } from '@zeta/base';

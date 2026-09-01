@@ -1,5 +1,3 @@
-import { finalize } from 'rxjs/operators';
-
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -17,6 +15,9 @@ import { finalize } from 'rxjs/operators';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
+
+import { finalize } from 'rxjs/operators';
+
 import { Component, inject, Input, output, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService, OrderTypeSignature, OrderTypeVariable, RuntimeContext, StartOrderOptionsBuilder, Xo, XoArray, XoObject, XoStartOrderExceptionResponse, XoStartOrderSuccessResponse, XoStructureArray, XoStructureObject, XynaMonitoringLevel, XynaPriority } from '@zeta/api';

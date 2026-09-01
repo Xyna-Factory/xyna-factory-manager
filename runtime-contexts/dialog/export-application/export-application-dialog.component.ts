@@ -1,5 +1,3 @@
-import { filter, finalize } from 'rxjs/operators';
-
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -17,6 +15,9 @@ import { filter, finalize } from 'rxjs/operators';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
+
+import { filter, finalize } from 'rxjs/operators';
+
 import { Component, inject } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoManagedFileId } from '@fman/runtime-contexts/xo/xo-managed-file-id.model';

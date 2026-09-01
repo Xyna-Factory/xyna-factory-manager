@@ -1,6 +1,3 @@
-import { Subject } from 'rxjs';
-import { filter, skip } from 'rxjs/operators';
-
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -18,6 +15,10 @@ import { filter, skip } from 'rxjs/operators';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
+
+import { Subject } from 'rxjs';
+import { filter, skip } from 'rxjs/operators';
+
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, signal } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { StartOrderOptionsBuilder, XoApplication, XoArray, XoDescriber } from '@zeta/api';

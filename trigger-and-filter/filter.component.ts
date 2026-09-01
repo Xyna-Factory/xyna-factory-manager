@@ -1,5 +1,3 @@
-import { Subscription } from 'rxjs';
-
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -17,6 +15,9 @@ import { Subscription } from 'rxjs';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
+
+import { Subscription } from 'rxjs';
+
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, signal } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { TileDataSource, TileItem } from '@fman/runtime-contexts/shared/tile/tile-data-source';

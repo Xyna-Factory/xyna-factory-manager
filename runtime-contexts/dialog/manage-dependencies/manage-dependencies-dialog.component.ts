@@ -1,7 +1,4 @@
 
-import { Observable, Subscription, throwError } from 'rxjs';
-import { catchError, filter, finalize, first, map, skip, switchMap } from 'rxjs/operators';
-
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -19,6 +16,10 @@ import { catchError, filter, finalize, first, map, skip, switchMap } from 'rxjs/
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
+
+import { Observable, Subscription, throwError } from 'rxjs';
+import { catchError, filter, finalize, first, map, skip, switchMap } from 'rxjs/operators';
+
 import { Component, inject, OnDestroy } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoForce } from '@yggdrasil/force.model';

@@ -1,5 +1,3 @@
-import { filter } from 'rxjs';
-
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -17,6 +15,9 @@ import { filter } from 'rxjs';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
+
+import { filter } from 'rxjs';
+
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { StartOrderOptionsBuilder } from '@zeta/api';

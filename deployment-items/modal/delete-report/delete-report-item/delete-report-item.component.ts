@@ -1,5 +1,3 @@
-import { Subject } from 'rxjs';
-
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -17,6 +15,9 @@ import { Subject } from 'rxjs';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
+
+import { Subject } from 'rxjs';
+
 import { Component, HostBinding, HostListener, inject, Injector } from '@angular/core';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcFormAutocompleteComponent, XcRichListItemComponent } from '@zeta/xc';

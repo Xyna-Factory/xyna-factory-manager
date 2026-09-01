@@ -1,5 +1,3 @@
-import { debounceTime, filter, first, skip } from 'rxjs/operators';
-
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -17,6 +15,9 @@ import { debounceTime, filter, first, skip } from 'rxjs/operators';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
+
+import { debounceTime, filter, first, skip } from 'rxjs/operators';
+
 import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, inject, input, Input, NgZone, OnInit, output, signal, viewChild } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ExportApplicationDialogComponent } from '@fman/runtime-contexts/dialog/export-application/export-application-dialog.component';

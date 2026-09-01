@@ -1,6 +1,3 @@
-import { throwError } from 'rxjs';
-import { catchError, finalize, tap } from 'rxjs/operators';
-
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -18,6 +15,10 @@ import { catchError, finalize, tap } from 'rxjs/operators';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
+
+import { throwError } from 'rxjs';
+import { catchError, finalize, tap } from 'rxjs/operators';
+
 import { Component, inject } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoDeleteDuplicatesResponse } from '@fman/runtime-contexts/xo/xo-delete-duplicates-response.model';

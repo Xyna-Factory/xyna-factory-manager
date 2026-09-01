@@ -1,5 +1,3 @@
-import { filter, Subscription, take } from 'rxjs';
-
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -17,6 +15,9 @@ import { filter, Subscription, take } from 'rxjs';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
+
+import { filter, Subscription, take } from 'rxjs';
+
 import { ChangeDetectorRef, Component, inject, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
