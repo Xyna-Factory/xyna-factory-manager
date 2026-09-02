@@ -18,7 +18,7 @@
 
 import { Subject } from 'rxjs';
 
-import { Component, HostBinding, HostListener, inject, Injector } from '@angular/core';
+import { Component, HostBinding, HostListener } from '@angular/core';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcFormAutocompleteComponent, XcRichListItemComponent } from '@zeta/xc';
 
@@ -43,9 +43,8 @@ export class UndeployReportItemComponent extends XcRichListItemComponent<void, U
     resolutionDataWrapper: XcAutocompleteDataWrapper;
 
     constructor() {
-        const injector = inject(Injector);
+        super();
 
-        super(injector);
         this.resolutionDataWrapper = new XcAutocompleteDataWrapper(
             () => this.injectedData.resolution,
             (value: string) => this.injectedData.resolution = value

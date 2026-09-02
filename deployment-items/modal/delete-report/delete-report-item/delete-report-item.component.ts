@@ -18,7 +18,7 @@
 
 import { Subject } from 'rxjs';
 
-import { Component, HostBinding, HostListener, inject, Injector } from '@angular/core';
+import { Component, HostBinding, HostListener } from '@angular/core';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcFormAutocompleteComponent, XcRichListItemComponent } from '@zeta/xc';
 
@@ -43,9 +43,7 @@ export class DeleteReportItemComponent extends XcRichListItemComponent<void, Del
     resolutionDataWrapper: XcAutocompleteDataWrapper;
 
     constructor() {
-        const injector = inject(Injector);
-
-        super(injector);
+        super();
         this.resolutionDataWrapper = new XcAutocompleteDataWrapper(
             () => this.injectedData.resolution,
             (value: string) => this.injectedData.resolution = value

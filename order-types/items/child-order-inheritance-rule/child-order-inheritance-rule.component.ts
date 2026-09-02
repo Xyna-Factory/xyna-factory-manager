@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject, Injector } from '@angular/core';
+import { Component } from '@angular/core';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcIconButtonComponent, XcRichListItemComponent, XcTooltipDirective } from '@zeta/xc';
 
@@ -34,9 +34,4 @@ export interface ChildOrderInheritanceRuleComponentData {
 })
 export class ChildOrderInheritanceRuleComponent extends XcRichListItemComponent<void, ChildOrderInheritanceRuleComponentData> {
 
-    constructor() {
-        const injector = inject(Injector);
-
-        super(injector);
-    }
 }
