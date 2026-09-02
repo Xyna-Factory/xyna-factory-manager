@@ -18,7 +18,7 @@
 
 import { Subscription } from 'rxjs';
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, signal } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { TileDataSource, TileItem } from '@fman/runtime-contexts/shared/tile/tile-data-source';
 import { ActionButtonData } from '@fman/runtime-contexts/shared/tile/tile.component';
@@ -98,7 +98,6 @@ class FilterInstanceTile extends Comparable implements TileItem {
 @Component({
     templateUrl: './filter.component.html',
     styleUrls: ['./filter.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [XcIconButtonComponent, XcPanelComponent, XcSpinnerComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, TileComponent]
 })
 export class FilterComponent extends RouteComponent {

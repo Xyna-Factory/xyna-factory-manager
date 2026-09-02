@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, signal, viewChild } from '@angular/core';
+import { Component, signal, viewChild } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { FullQualifiedName, RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoArray, XoRuntimeContext, XoWorkspace } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -38,7 +38,6 @@ const ISWP = CRONLIKE_ORDERS_ISWP;
 @Component({
     templateUrl: './cronlike-orders.component.html',
     styleUrls: ['./cronlike-orders.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [XcButtonComponent, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, InputParameterComponent, ExecutionTimeComponent]
 })
 export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {

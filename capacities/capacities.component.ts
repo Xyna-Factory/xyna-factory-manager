@@ -18,7 +18,7 @@
 
 import { filter } from 'rxjs';
 
-import { ChangeDetectionStrategy, Component, signal, viewChild } from '@angular/core';
+import { Component, signal, viewChild } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -36,7 +36,6 @@ const ISWP = CAPACITY_ISWP;
 @Component({
     templateUrl: './capacities.component.html',
     styleUrls: ['./capacities.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [XcButtonComponent, XcCheckboxComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class CapacitiesComponent extends RestorableCapacitiesComponent {

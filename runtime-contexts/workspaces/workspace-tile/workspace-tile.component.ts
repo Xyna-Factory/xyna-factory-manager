@@ -15,9 +15,10 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
+
 import { debounceTime, filter, finalize, first, skip } from 'rxjs/operators';
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, inject, input, Input, NgZone, OnInit, output, signal, viewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostBinding, inject, input, Input, NgZone, OnInit, output, signal, viewChild } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ShowWorkspaceContentDialogComponent } from '@fman/runtime-contexts/dialog/show-workspace-content/show-workspace-content-dialog.component';
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
@@ -57,7 +58,6 @@ export const DUPLICATE_ELEMENT_IDENTIFIER = 'duplicate element';
 
 @Component({
     selector: 'workspace-tile',
-    changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './workspace-tile.component.html',
     styleUrls: ['./workspace-tile.component.scss'],
     imports: [RuntimeContextButtonComponent, XcI18nTranslateDirective, XcI18nPipe, XcButtonComponent, XcFormInputComponent, XcFormLabelComponent, XcIconButtonComponent, XcIconComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcVarDirective]

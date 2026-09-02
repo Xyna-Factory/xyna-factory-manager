@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject, Input, OnInit, output } from '@angular/core';
+import { Component, inject, Input, OnInit, output, input } from '@angular/core';
 import { ApiService, FullQualifiedName, RuntimeContext, XoArray, XoClassInterfaceFrom, XoDescriber, XoJson, XoObject } from '@zeta/api';
 import { coerceBoolean, isArray } from '@zeta/base';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
@@ -107,8 +107,7 @@ export class InputParameterComponent implements OnInit {
         this.updateComponentView();
     }
 
-    @Input()
-    ref: InputParameterRef;
+    readonly ref = input<InputParameterRef>(undefined);
 
     readonly markForChange = output<void>();
 
@@ -125,8 +124,9 @@ export class InputParameterComponent implements OnInit {
 
     ngOnInit() {
 
-        if (this.ref) {
-            this.ref.setComponent(this);
+        const ref = this.ref();
+        if (ref) {
+            ref.setComponent(this);
         } else {
             console.warn('No Reference set for InputParameterComponent');
         }

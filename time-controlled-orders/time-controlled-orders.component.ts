@@ -18,7 +18,7 @@
 import { of } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
-import { ChangeDetectionStrategy, Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -36,7 +36,6 @@ import { XoTimeControlledOrder } from './xo/xo-time-controlled-order.model';
     selector: 'selector-name',
     templateUrl: './time-controlled-orders.component.html',
     styleUrls: ['./time-controlled-orders.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [XcButtonComponent, XcCheckboxComponent, XcFormDirective, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, TcoDetailSectionComponent]
 })
 export class TimeControlledOrdersComponent extends RestorableTimeControlledOrderComponent implements OnInit {

@@ -18,7 +18,7 @@
 import { Subject } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { RuntimeContext, RuntimeContextType, StartOrderOptionsBuilder, XoRuntimeContext } from '@zeta/api';
 import { dateTimeString } from '@zeta/base';
@@ -46,7 +46,6 @@ const ISWP = DEPLOYMENT_ITEMS_ISWP;
 @Component({
     templateUrl: './deployment-items.component.html',
     styleUrls: ['./deployment-items.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [XcButtonComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, DeploymentStateDetailComponent]
 })
 export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent {

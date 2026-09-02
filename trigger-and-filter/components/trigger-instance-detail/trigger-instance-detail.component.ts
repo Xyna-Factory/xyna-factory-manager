@@ -18,7 +18,7 @@
 
 import { filter } from 'rxjs';
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, InjectionToken, Injector, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, InjectionToken, Injector, signal } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ORDER_TYPES } from '@fman/trigger-and-filter/order-types';
 import { XoFilterInstance } from '@fman/trigger-and-filter/xo/xo-filter-instance.model';
@@ -49,7 +49,6 @@ class FilterInstanceData extends Comparable {
 @Component({
     templateUrl: './trigger-instance-detail.component.html',
     styleUrls: ['./trigger-instance-detail.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [XcButtonComponent, XcIconComponent, XcPanelComponent, XcSpinnerComponent, XcTableComponent, XcTooltipDirective, XcI18nTranslateDirective]
 })
 export class TriggerInstanceDetailComponent extends XcDynamicComponent<TriggerInstanceDetailsData> {

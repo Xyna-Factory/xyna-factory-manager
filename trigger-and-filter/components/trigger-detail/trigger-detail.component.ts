@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, InjectionToken } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, InjectionToken } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoRuntimeApplication } from '@fman/runtime-contexts/xo/xo-runtime-application.model';
 import { XoWorkspace } from '@fman/runtime-contexts/xo/xo-workspace.model';
@@ -35,7 +35,6 @@ import { StartParameterDetailComponent } from '../start-parameter-deatil/start-p
     selector: 'trigger-detail',
     templateUrl: './trigger-detail.component.html',
     styleUrls: ['./trigger-detail.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [XcPanelComponent, XcI18nTranslateDirective, StartParameterDetailComponent]
 })
 export class TriggerDetailComponent extends XcDynamicComponent<XoTrigger> {

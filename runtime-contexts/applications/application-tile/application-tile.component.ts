@@ -18,7 +18,7 @@
 
 import { debounceTime, filter, first, skip } from 'rxjs/operators';
 
-import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, inject, input, Input, NgZone, OnInit, output, signal, viewChild } from '@angular/core';
+import { Component, ElementRef, HostBinding, inject, input, Input, NgZone, OnInit, output, signal, viewChild } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ExportApplicationDialogComponent } from '@fman/runtime-contexts/dialog/export-application/export-application-dialog.component';
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
@@ -51,7 +51,6 @@ import { Application } from '../application-data-source';
 
 @Component({
     selector: 'application-tile',
-    changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './application-tile.component.html',
     styleUrls: ['./application-tile.component.scss'],
     imports: [RuntimeContextButtonComponent, XcI18nTranslateDirective, XcI18nPipe, XcButtonComponent, XcCheckboxComponent, XcFormInputComponent, XcIconComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective]

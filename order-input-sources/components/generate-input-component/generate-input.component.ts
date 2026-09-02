@@ -18,7 +18,7 @@
 
 import { finalize } from 'rxjs/operators';
 
-import { ChangeDetectorRef, Component, inject, Input, output } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, Input, output, input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService, FullQualifiedName, RuntimeContext, StartOrderOptions, XoArray, XoClassInterfaceFrom, XoDescriber, XoJson, XoObject } from '@zeta/api';
 import { AuthService } from '@zeta/auth';
@@ -82,11 +82,9 @@ export class GenerateInputComponent {
         this.resetComponent(true);
     }
 
-    @Input()
-    fmanRtc: RuntimeContext;
+    readonly fmanRtc = input<RuntimeContext>(undefined);
 
-    @Input()
-    disabled = false;
+    readonly disabled = input(false);
 
     readonly generatingErrorEmitter = output<any>();
 

@@ -11,7 +11,7 @@
       xc-form-field-compact
       xc-i18n
      />
-    @if (masterWorkflowInfoText) {
+    @if (masterWorkflowInfoText()) {
       <span xc-i18n>master-workflow-info-text</span>
       }<br>
       <xc-form-autocomplete label="header"

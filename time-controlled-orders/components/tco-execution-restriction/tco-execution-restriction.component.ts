@@ -18,7 +18,7 @@
 
 import { Subscription } from 'rxjs';
 
-import { AfterViewInit, Component, inject, Input, OnDestroy, OnInit, output, viewChild } from '@angular/core';
+import { AfterViewInit, Component, inject, Input, input, OnDestroy, OnInit, output, viewChild } from '@angular/core';
 import { I18nService, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcPanelComponent, XcTooltipDirective } from '@zeta/xc';
 
@@ -74,8 +74,7 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
     readonly validationChange = output<boolean>();
     readonly executionRestrictionChange = output<XoTCOExecutionRestriction>();
 
-    @Input()
-    private readonly hasTooltip: boolean;
+    readonly hasTooltip = input<boolean>(undefined);
 
     @Input()
     get executionRestriction(): XoTCOExecutionRestriction {
@@ -88,7 +87,7 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
     }
 
     get timeoutTooltip(): string {
-        return this.hasTooltip ? this.i18n.translate('fman.tco.detail-section.tco-execution-restriction.tooltip-timeout') : null;
+        return this.hasTooltip() ? this.i18n.translate('fman.tco.detail-section.tco-execution-restriction.tooltip-timeout') : null;
     }
 
     set executionInterval(value: number) {

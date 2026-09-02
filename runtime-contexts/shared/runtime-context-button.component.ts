@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, HostBinding, Input, output } from '@angular/core';
+import { Component, HostBinding, Input, output, input } from '@angular/core';
 import { XcButtonComponent, XcTooltipDirective } from '@zeta/xc';
 import { XcColor } from '@zeta/xc/shared/xc-themeable.component';
 
@@ -33,8 +33,7 @@ import { RuntimeContextIconComponent } from './runtime-context-icon.component';
 })
 export class RuntimeContextButtonComponent {
 
-    @Input()
-    runtimeContext: XoRuntimeContext;
+    readonly runtimeContext = input<XoRuntimeContext>(undefined);
 
     @HostBinding('class.selected')
     @Input()
@@ -44,12 +43,12 @@ export class RuntimeContextButtonComponent {
 
 
     click() {
-        this.select.emit(this.selected ? undefined : this.runtimeContext);
+        this.select.emit(this.selected ? undefined : this.runtimeContext());
     }
 
 
     get hasIcon(): boolean {
-        return this.runtimeContext.state !== XoRuntimeContextState.OK;
+        return this.runtimeContext().state !== XoRuntimeContextState.OK;
     }
 
 
@@ -59,8 +58,9 @@ export class RuntimeContextButtonComponent {
 
 
     get tooltip(): string {
-        if (this.runtimeContext instanceof XoApplicationDefinition && this.runtimeContext.sourceVersion) {
-            return 'Source Version: ' + this.runtimeContext.sourceVersion;
+        const runtimeContext = this.runtimeContext();
+        if (runtimeContext instanceof XoApplicationDefinition && runtimeContext.sourceVersion) {
+            return 'Source Version: ' + runtimeContext.sourceVersion;
         }
         return '';
     }

@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject, Input, output, signal, viewChild } from '@angular/core';
+import { Component, inject, Input, output, signal, viewChild, input } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -47,7 +47,7 @@ export class ExecutionTimeComponent {
     readonly executionTimeChange = output<XoOrderExecutionTime>();
 
     /** Changes the header of the xc-panel */
-    @Input() header: string;
+    readonly header = input<string>(undefined);
 
     /** @description Decides if the form can have a time window and therefore a:
      *  - execution type

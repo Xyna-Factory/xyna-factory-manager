@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject, Input, output, signal, viewChild } from '@angular/core';
+import { Component, inject, Input, output, signal, viewChild, input } from '@angular/core';
 import { FM_WF_GET_ORDER_TYPES } from '@fman/const';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService, StartOrderOptionsBuilder, XoArray, XoRuntimeContext } from '@zeta/api';
@@ -40,7 +40,7 @@ export class OrderTypeFormComponent {
     readonly selectedOrderTypeChange = output<string>();
     readonly validationChange = output<boolean>();
 
-    @Input() readonly masterWorkflowInfoText: boolean;
+    readonly masterWorkflowInfoText = input<boolean>(undefined);
     /** Error key which gets translated */
     error: string;
 

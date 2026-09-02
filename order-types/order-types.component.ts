@@ -17,7 +17,7 @@
  */
 import { Subscription } from 'rxjs';
 
-import { ChangeDetectionStrategy, Component, OnDestroy, signal, viewChild } from '@angular/core';
+import { Component, OnDestroy, signal, viewChild } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XmomObjectType } from '@pmod/api/xmom-types';
 import { XoRuntimeContext } from '@pmod/xo/runtime-context.model';
@@ -51,7 +51,6 @@ const ISWP = ORDER_TYPE_ISWP;
 @Component({
     templateUrl: './order-types.component.html',
     styleUrls: ['./order-types.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [XcButtonComponent, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcRichListComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class OrderTypesComponent extends RestorableOrderTypesComponent implements OnDestroy {

@@ -19,7 +19,7 @@
 import { Observable, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
-import { Component, inject, Input, OnDestroy, OnInit, output, viewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, output, viewChild, input } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -50,15 +50,12 @@ export class TcoDetailSectionComponent implements OnInit, OnDestroy {
 
     readonly storableInputComponent = viewChild(StorableInputParameterComponent);
 
-    @Input()
-    readonly WFP_GET_TCO_DETAILS;
-    @Input()
-    readonly WFP_UPDATE_TCO;
+    readonly WFP_GET_TCO_DETAILS = input(undefined);
+    readonly WFP_UPDATE_TCO = input(undefined);
     readonly refresh = output<void>();
     readonly validationChange = output<boolean>();
 
-    @Input()
-    selectionObservable: Observable<XcSelectionModel<XoTimeControlledOrderTableEntry>>;
+    readonly selectionObservable = input<Observable<XcSelectionModel<XoTimeControlledOrderTableEntry>>>(undefined);
 
     selectionSubscription: Subscription;
     querySelection: InputParameter;
@@ -108,7 +105,7 @@ export class TcoDetailSectionComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.selectionSubscription = this.selectionObservable.subscribe(selectionModel => {
+        this.selectionSubscription = this.selectionObservable().subscribe(selectionModel => {
             this.reset();
             this.timeControlledOrderTableEntry = selectionModel.selection[0];
         });
@@ -132,7 +129,7 @@ export class TcoDetailSectionComponent implements OnInit, OnDestroy {
 
     getDetailsAboutTableEntry(id: XoTimeControlledOrderId) {
         this.loading = true;
-        this.apiService.startOrder(FMAN_RTC, this.WFP_GET_TCO_DETAILS, id, XoTimeControlledOrder, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, this.WFP_GET_TCO_DETAILS(), id, XoTimeControlledOrder, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             finalize(() => this.loading = false)
         ).subscribe({
             next: result => {
@@ -151,7 +148,7 @@ export class TcoDetailSectionComponent implements OnInit, OnDestroy {
     saveChanges() {
         this.timeControlledOrder.inputPayload = this.storableInputComponent().getPayload();
         this.apiService
-            .startOrder(FMAN_RTC, this.WFP_UPDATE_TCO, this.timeControlledOrder, [], StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+            .startOrder(FMAN_RTC, this.WFP_UPDATE_TCO(), this.timeControlledOrder, [], StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (result.errorMessage) {

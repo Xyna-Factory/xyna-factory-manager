@@ -18,7 +18,7 @@
 import { throwError } from 'rxjs';
 import { catchError, finalize, tap } from 'rxjs/operators';
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoFactoryNode, XoFactoryNodeArray } from '@fman/runtime-contexts/xo/xo-factory-node.model';
 import { XoImportRTARequest } from '@fman/runtime-contexts/xo/xo-import-rta-request.model';
@@ -40,7 +40,6 @@ class NodeWrapper {
 @Component({
     templateUrl: './import-runtime-application-dialog.component.html',
     styleUrls: ['./import-runtime-application-dialog.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcFormDirective, XcFormLabelComponent, XcPanelComponent, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class ImportRuntimeApplicationDialogComponent extends XcDialogComponent<boolean, void> {

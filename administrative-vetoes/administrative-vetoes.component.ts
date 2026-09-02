@@ -18,7 +18,7 @@
 
 import { filter } from 'rxjs';
 
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -35,7 +35,6 @@ const ISWP = ADMINISTRATIVE_VETOES_ISWP;
 @Component({
     templateUrl: './administrative-vetoes.component.html',
     styleUrls: ['./administrative-vetoes.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [XcButtonComponent, XcFormInputComponent, XcFormTextareaComponent, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class AdministrativeVetoesComponent extends RestorableAdministrativeVetoComponent {

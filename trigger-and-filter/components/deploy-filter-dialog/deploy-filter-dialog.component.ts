@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoRuntimeContext, XoRuntimeContextArray } from '@fman/runtime-contexts/xo/xo-runtime-context.model';
 import { XoDeployFilterRequest } from '@fman/trigger-and-filter/xo/xo-deploy-filter-request.model';
@@ -32,7 +32,6 @@ import { ORDER_TYPES } from '../../order-types';
 @Component({
     templateUrl: './deploy-filter-dialog.component.html',
     styleUrls: ['./deploy-filter-dialog.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class DeployFilterDialogComponent extends XcDialogComponent<XoFilterInstance, XoFilter> {

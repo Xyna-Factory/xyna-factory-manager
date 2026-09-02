@@ -17,7 +17,7 @@
  */
 import { debounceTime, first, skip, Subscription } from 'rxjs';
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, inject, Input, NgZone, OnDestroy, OnInit, viewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostBinding, inject, Input, NgZone, OnDestroy, OnInit, viewChild } from '@angular/core';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcIconButtonComponent, XcTemplateComponent, XcTooltipDirective, XDSIconName } from '@zeta/xc';
 
@@ -34,7 +34,6 @@ export interface ActionButtonData {
     selector: 'tile',
     templateUrl: './tile.component.html',
     styleUrls: ['./tile.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [TileButtonComponent, XcI18nTranslateDirective, XcIconButtonComponent, XcTemplateComponent, XcTooltipDirective]
 })
 export class TileComponent implements OnInit, OnDestroy {

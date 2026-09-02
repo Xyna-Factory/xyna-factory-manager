@@ -18,7 +18,7 @@
 
 import { Subscription } from 'rxjs';
 
-import { AfterViewInit, Component, inject, Input, OnDestroy, output, signal, viewChild } from '@angular/core';
+import { AfterViewInit, Component, inject, Input, OnDestroy, output, signal, viewChild, input } from '@angular/core';
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcDialogService, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcOptionItem, XcPanelComponent, XcStringIntegerDataWrapper } from '@zeta/xc';
@@ -50,7 +50,7 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
     );
 
     @Input() header: string;
-    @Input() disableTimeZoneSelection: boolean;
+    readonly disableTimeZoneSelection = input<boolean>(undefined);
 
     @Input('timezone')
     set timezone(value: string) {

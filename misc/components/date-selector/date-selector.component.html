@@ -1,5 +1,5 @@
 <div xc-form class="form-wrapper" xc-i18n-context="date-selector">
-  @if (!disableTimeZoneSelection) {
+  @if (!disableTimeZoneSelection()) {
     <xc-form-autocomplete label="label-time-zone"
       xc-i18n
       placeholder="placeholder-select-time-zone"
