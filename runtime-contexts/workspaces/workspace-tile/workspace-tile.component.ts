@@ -169,7 +169,7 @@ export class WorkspaceTileComponent implements OnInit {
         this.requiresDataSource.refresh();
         // update required-by data source
         this.requiredByDataSource.input = createDependenciesTableInput(runtimeContext, new XoReferenceDirectionBackwards(), false, true);
-        this.requiresDataSource.clear();
+        this.requiredByDataSource.clear();
         this.requiredByDataSource.refresh();
         // update content data source
         if (runtimeContext instanceof XoApplicationDefinition) {
