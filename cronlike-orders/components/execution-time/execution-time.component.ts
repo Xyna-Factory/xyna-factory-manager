@@ -55,7 +55,7 @@ export class ExecutionTimeComponent {
      *  - end time
      * @usecase Using this component to build a TCOExecutionRestriction, you need a time window.
      */
-    @Input() hasTimeWindow: boolean;
+    readonly hasTimeWindow = input<boolean>(undefined);
 
     private _executionTime: XoOrderExecutionTime;
     private _year: number;
@@ -269,7 +269,7 @@ export class ExecutionTimeComponent {
     }
 
     get enableInterval(): boolean {
-        return this.hasTimeWindow ? this.executionType === ExecutionTypes.TIME_WINDOW : true;
+        return this.hasTimeWindow() ? this.executionType === ExecutionTypes.TIME_WINDOW : true;
     }
 
     get allowCustomWindowLength(): boolean {
@@ -577,7 +577,7 @@ export class ExecutionTimeComponent {
     private _updateComponentView() {
         this._readStartTimeFromObject();
         this._readIntervalAndItsValuesFromObject();
-        if (this.hasTimeWindow) {
+        if (this.hasTimeWindow()) {
             this._readEndTimeFromObject();
             this._readWindowLengthFromObject();
         }
@@ -1026,7 +1026,7 @@ export class ExecutionTimeComponent {
 
     private _writeIntervalAndItsValuesToObject() {
         // If the execution type is set to always there is no time window
-        if (this.hasTimeWindow && this.executionType === ExecutionTypes.ALWAYS) {
+        if (this.hasTimeWindow() && this.executionType === ExecutionTypes.ALWAYS) {
             this.executionTime.timeWindow = null;
         } else {
             const tw = this.executionTime.timeWindow;

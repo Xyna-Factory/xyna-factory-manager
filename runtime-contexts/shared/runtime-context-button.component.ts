@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, HostBinding, Input, output, input } from '@angular/core';
+import { Component, HostBinding, input, output } from '@angular/core';
 import { XcButtonComponent, XcTooltipDirective } from '@zeta/xc';
 import { XcColor } from '@zeta/xc/shared/xc-themeable.component';
 
@@ -36,14 +36,13 @@ export class RuntimeContextButtonComponent {
     readonly runtimeContext = input<XoRuntimeContext>(undefined);
 
     @HostBinding('class.selected')
-    @Input()
-    selected = false;
+    readonly selected = input(false);
 
     readonly select = output<XoRuntimeContext>();
 
 
     click() {
-        this.select.emit(this.selected ? undefined : this.runtimeContext());
+        this.select.emit(this.selected() ? undefined : this.runtimeContext());
     }
 
 
@@ -53,7 +52,7 @@ export class RuntimeContextButtonComponent {
 
 
     get color(): XcColor {
-        return this.selected ? 'primary' : 'normal';
+        return this.selected() ? 'primary' : 'normal';
     }
 
 

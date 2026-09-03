@@ -34,7 +34,7 @@
         </xc-panel>
         <!--#endregion-->
         <!-- SELECT EXECUTION TYPE -->
-        @if (hasTimeWindow) {
+        @if (hasTimeWindow()) {
           <xc-form-autocomplete label="label-execution-type"
             placeholder="placeholder-select"
             xc-i18n
@@ -270,8 +270,8 @@
             }
             <!-- #endregion -->
           }
-          @if (hasTimeWindow) {
-            @if (hasTimeWindow) {
+          @if (hasTimeWindow()) {
+            @if (hasTimeWindow()) {
               <xc-form-autocomplete label="label-window-length"
                 xc-i18n
                 placeholder="placeholder-select"
@@ -296,10 +296,10 @@
             }
           }
         }
-        @if (hasTimeWindow && !noEndTime) {
+        @if (hasTimeWindow() && !noEndTime) {
           <date-selector [runtimeContext]="fmanRTC" [(datetime)]="endTime" (validityChange)="validityChangeBoolean(!$event)" header="{{'end-time' | xcI18n}}" [disableTimeZoneSelection]="true" xc-i18n-context="date-selector" />
         }
-        @if (hasTimeWindow) {
+        @if (hasTimeWindow()) {
           <xc-checkbox label="label-no-end-time"
             xc-i18n
             [(checked)]="noEndTime"

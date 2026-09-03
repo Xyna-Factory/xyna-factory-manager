@@ -49,7 +49,7 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
         }
     );
 
-    @Input() header: string;
+    readonly header = input<string>(undefined);
     readonly disableTimeZoneSelection = input<boolean>(undefined);
 
     @Input('timezone')

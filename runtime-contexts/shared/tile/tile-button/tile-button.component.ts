@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, HostBinding, Input, output, input } from '@angular/core';
+import { Component, HostBinding, output, input } from '@angular/core';
 import { XcButtonComponent, XcTemplateComponent, XcTooltipDirective } from '@zeta/xc';
 import { XcColor } from '@zeta/xc/shared/xc-themeable.component';
 
@@ -33,14 +33,13 @@ export class TileButtonComponent {
     readonly item = input<TileItem>(undefined);
 
     @HostBinding('class.selected')
-    @Input()
-    selected = false;
+readonly selected = input(false);
 
     readonly selectItem = output<TileItem>({ alias: 'select-item' });
 
 
     click() {
-        this.selectItem.emit(this.selected ? undefined : this.item());
+        this.selectItem.emit(this.selected() ? undefined : this.item());
     }
 
 
@@ -50,7 +49,7 @@ export class TileButtonComponent {
 
 
     get color(): XcColor {
-        return this.selected ? 'primary' : 'normal';
+        return this.selected() ? 'primary' : 'normal';
     }
 
 
