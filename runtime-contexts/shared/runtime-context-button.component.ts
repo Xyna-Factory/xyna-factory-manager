@@ -35,8 +35,12 @@ export class RuntimeContextButtonComponent {
 
     readonly runtimeContext = input<XoRuntimeContext>(undefined);
 
-    @HostBinding('class.selected')
     readonly selected = input(false);
+
+    @HostBinding('class.selected')
+    get selectedClass(): boolean {
+        return this.selected();
+    }
 
     readonly select = output<XoRuntimeContext>();
 

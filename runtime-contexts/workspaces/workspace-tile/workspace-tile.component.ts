@@ -92,6 +92,12 @@ export class WorkspaceTileComponent implements OnInit {
     set forceRefresh(value: boolean) {
         if (value) {
             this._forceRefresh = true;
+            // if the component instance is reused (not (re-)created), ngOnInit() won't run again,
+            // so trigger the data source update here as well, once the data sources actually exist
+            if (this.requiresDataSource) {
+                this.updateDataSources(this.details);
+                this._forceRefresh = false;
+            }
         }
     }
 

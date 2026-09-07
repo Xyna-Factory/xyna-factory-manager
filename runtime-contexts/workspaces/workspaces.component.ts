@@ -86,9 +86,18 @@ export class WorkspacesComponent extends RouteComponent implements AfterViewInit
         this.remoteDataSource = new XcRemoteDataSource(this.apiService, FMAN_RTC, ORDER_TYPES.GET_WORKSPACES, undefined, XoWorkspaceArray);
         this.remoteDataSource.compareFn = XcSortPredicate(XcSortDirection.asc, t => t.name.toLowerCase());
         this.remoteDataSource.dataChange.subscribe(() => {
+            const selectedWorkspace = this.selectedWorkspace();
+            const refreshedSelection = selectedWorkspace
+                ? this.remoteDataSource.rawData.find(workspace => workspace.equals(selectedWorkspace))
+                : undefined;
+            if (refreshedSelection) {
+                this.selectedWorkspace.set(refreshedSelection);
+                this.remoteDataSource.selectionModel.clear();
+                this.remoteDataSource.selectionModel.select(refreshedSelection);
+            }
             this.dataVersion.update(value => value + 1);
             this.refreshingState.set(false);
-            this.markedForRefresh.set(false);
+            setTimeout(() => this.markedForRefresh.set(false));
         });
         this.refresh();
 
@@ -130,7 +139,9 @@ export class WorkspacesComponent extends RouteComponent implements AfterViewInit
 
 
     needsRefresh(workspace: XoWorkspace) {
-        return this.selectedWorkspace() === workspace && this.markedForRefresh();
+        // use equals() instead of === since refresh() replaces all workspace instances with new ones from the server,
+        // so the tracked (previously selected) workspace instance no longer matches by reference
+        return !!this.selectedWorkspace()?.equals(workspace) && this.markedForRefresh();
     }
 
 

@@ -10,7 +10,7 @@
     </div>
   </header>
   <section class="scroll zeta-scrollbar">
-    @for (workspace of workspaces; track workspace) {
+    @for (workspace of workspaces; track workspace.name) {
       <workspace-tile xc-i18n-context="workspace-tile"
         [workspace]="workspace"
         [selection]="selection"
