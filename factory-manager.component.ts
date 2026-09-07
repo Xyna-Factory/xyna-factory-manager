@@ -17,7 +17,7 @@
  */
 import { filter } from 'rxjs';
 
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { RuntimeContext } from '@zeta/api';
 import { ConfigService } from '@zeta/api/config.service';
@@ -69,7 +69,7 @@ export class FactoryManagerComponent extends RouteComponent {
         XYNA_PROPERTIES: 'Xyna Properties'
     };
 
-    navListItems: XcRighteousNavListItem[] = [
+    private readonly navListItemsState = signal<XcRighteousNavListItem[]>([
         { name: this.i18n.translateSignal(this._fmNames.WORKSPACES), link: 'workspaces', right: RIGHT_FACTORY_MANAGER_WORKSPACES_AND_APPLICATIONS },
         { name: this.i18n.translateSignal(this._fmNames.APPLICATIONS), link: 'applications', right: RIGHT_FACTORY_MANAGER_WORKSPACES_AND_APPLICATIONS },
         { name: this.i18n.translateSignal(this._fmNames.TRIGGER), link: 'trigger', right: RIGHT_FACTORY_MANAGER_TRIGGER },
@@ -84,7 +84,8 @@ export class FactoryManagerComponent extends RouteComponent {
         { name: this.i18n.translateSignal(this._fmNames.STORABLE_INSTANCES), link: 'storable-instances', right: RIGHT_FACTORY_MANAGER_STORABLE_INSTANCES },
         // { name: this._fmNames.DATA_MODELS, link: 'data-models', disabled: true, right: RIGHT_FACTORY_MANAGER_DATA_MODELS },
         { name: this.i18n.translateSignal(this._fmNames.XYNA_PROPERTIES), link: 'xyna-properties', right: RIGHT_FACTORY_MANAGER_XYNA_PROPERTIES }
-    ];
+    ]);
+    readonly navListItems = computed(() => this.navListItemsState());
 
     navListOrientation = XcNavListOrientation.LEFT;
 
@@ -113,7 +114,7 @@ export class FactoryManagerComponent extends RouteComponent {
         this.i18n.setTranslations(LocaleService.EN_US, fman_error_code_translations_en_US);
 
 
-        this.navListItems.forEach(item => {
+        this.navListItemsState().forEach(item => {
             item.disabled = item.disabled || !!item.right && !this.authService.hasRight(item.right);
         });
 
@@ -122,9 +123,10 @@ export class FactoryManagerComponent extends RouteComponent {
         this.pluginService.plugins.pipe(filter(plugins => !!plugins)).subscribe(plugins => {
 
             for (const [link, plugin] of plugins) {
-                this.navListItems.push(
+                this.navListItemsState.update(items => [
+                    ...items,
                     { name: signal(plugin.navigationEntryLabel), link: link }
-                );
+                ]);
             }
             // let entry = plugins.entries().next();
             // while (entry) {
