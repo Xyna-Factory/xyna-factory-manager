@@ -1,3 +1,5 @@
+import { Subject } from 'rxjs';
+
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -15,12 +17,9 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, HostBinding, HostListener, Injector, inject } from '@angular/core';
-
+import { ChangeDetectionStrategy, Component, HostBinding, HostListener } from '@angular/core';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcFormAutocompleteComponent, XcRichListItemComponent } from '@zeta/xc';
-
-import { Subject } from 'rxjs';
 
 import { DeployResolution } from '../../../restorable-deployment-items.component';
 import { XoUndeployDeploymentItemResult } from '../../../xo/xo-undeploy-deployment-item-result.model';
@@ -44,9 +43,8 @@ export class UndeployReportItemComponent extends XcRichListItemComponent<void, U
     resolutionDataWrapper: XcAutocompleteDataWrapper;
 
     constructor() {
-        const injector = inject(Injector);
+        super();
 
-        super(injector);
         this.resolutionDataWrapper = new XcAutocompleteDataWrapper(
             () => this.injectedData.resolution,
             (value: string) => this.injectedData.resolution = value
