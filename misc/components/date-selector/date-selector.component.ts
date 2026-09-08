@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output, inject, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output, inject, viewChild, input } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
@@ -52,7 +52,7 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
     );
 
     @Input() header: string;
-    @Input() disableTimeZoneSelection: boolean;
+    readonly disableTimeZoneSelection = input<boolean>(undefined);
 
     @Input('timezone')
     set timezone(value: string) {

@@ -1,3 +1,5 @@
+import { Subscription } from 'rxjs';
+
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -15,13 +17,9 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject, viewChild } from '@angular/core';
-
-import { I18nService } from '@zeta/i18n';
-import { XcI18nTranslateDirective } from '@zeta/i18n';
+import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, inject, Input, input, OnDestroy, OnInit, Output, viewChild } from '@angular/core';
+import { I18nService, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcPanelComponent, XcTooltipDirective } from '@zeta/xc';
-
-import { Subscription } from 'rxjs';
 
 import { ExecutionTimeBehaviorOnError } from '../../../cronlike-orders/components/execution-time/execution-time.constant';
 import { XoTCOExecutionRestriction } from '../../xo/xo-tcoexecution-restriction.model';
@@ -78,8 +76,7 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
     @Output()
     private readonly executionRestrictionChange = new EventEmitter<XoTCOExecutionRestriction>();
 
-    @Input()
-    private readonly hasTooltip: boolean;
+    readonly hasTooltip = input<boolean>(undefined);
 
     @Input()
     get executionRestriction(): XoTCOExecutionRestriction {
@@ -92,7 +89,7 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
     }
 
     get timeoutTooltip(): string {
-        return this.hasTooltip ? this.i18n.translate('fman.tco.detail-section.tco-execution-restriction.tooltip-timeout') : null;
+        return this.hasTooltip() ? this.i18n.translate('fman.tco.detail-section.tco-execution-restriction.tooltip-timeout') : null;
     }
 
     set executionInterval(value: number) {

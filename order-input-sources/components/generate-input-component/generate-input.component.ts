@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ApiService, FullQualifiedName, RuntimeContext, StartOrderOptions, XoArray, XoClassInterfaceFrom, XoDescriber, XoJson, XoObject } from '@zeta/api';
@@ -83,11 +83,9 @@ export class GenerateInputComponent {
         this.resetComponent(true);
     }
 
-    @Input()
-    fmanRtc: RuntimeContext;
+    readonly fmanRtc = input<RuntimeContext>(undefined);
 
-    @Input()
-    disabled = false;
+    readonly disabled = input(false);
 
     @Output()
     readonly generatingErrorEmitter = new EventEmitter<any>();

@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, inject, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, inject, viewChild, input } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder, XoArray, XoRuntimeContext } from '@zeta/api';
 import { XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -41,7 +41,7 @@ export class OrderTypeFormComponent {
     @Output() readonly selectedOrderTypeChange = new EventEmitter<string>();
     @Output() readonly validationChange = new EventEmitter<boolean>();
 
-    @Input() readonly masterWorkflowInfoText: boolean;
+    readonly masterWorkflowInfoText = input<boolean>(undefined);
     /** Error key which gets translated */
     error: string;
 

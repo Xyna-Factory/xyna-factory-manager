@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, inject, input } from '@angular/core';
 
 import { ApiService, FullQualifiedName, RuntimeContext, XoArray, XoClassInterfaceFrom, XoDescriber, XoJson, XoObject } from '@zeta/api';
 import { coerceBoolean, isArray } from '@zeta/base';
@@ -109,8 +109,7 @@ export class InputParameterComponent implements OnInit {
         this.updateComponentView();
     }
 
-    @Input()
-    ref: InputParameterRef;
+    readonly ref = input<InputParameterRef>(undefined);
 
     @Output()
     readonly markForChange = new EventEmitter<void>();
@@ -128,8 +127,9 @@ export class InputParameterComponent implements OnInit {
 
     ngOnInit() {
 
-        if (this.ref) {
-            this.ref.setComponent(this);
+        const ref = this.ref();
+        if (ref) {
+            ref.setComponent(this);
         } else {
             console.warn('No Reference set for InputParameterComponent');
         }

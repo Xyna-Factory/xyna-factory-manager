@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output, input } from '@angular/core';
 
 import { XcColor } from '@zeta/xc/shared/xc-themeable.component';
 
@@ -32,8 +32,7 @@ import { XcButtonComponent, XcTemplateComponent, XcTooltipDirective } from '@zet
 })
 export class TileButtonComponent {
 
-    @Input()
-    item: TileItem;
+    readonly item = input<TileItem>(undefined);
 
     @HostBinding('class.selected')
     @Input()
@@ -44,12 +43,12 @@ export class TileButtonComponent {
 
 
     click() {
-        this.selectItem.emit(this.selected ? undefined : this.item);
+        this.selectItem.emit(this.selected ? undefined : this.item());
     }
 
 
     get hasIcon(): boolean {
-        return !!this.item.getIcon;
+        return !!this.item().getIcon;
     }
 
 
@@ -59,15 +58,17 @@ export class TileButtonComponent {
 
 
     get label(): string {
-        return this.item.getLabel();
+        return this.item().getLabel();
     }
 
     get cursiveLabel(): string {
-        return this.item.getCursiveLabel ? this.item.getCursiveLabel() : undefined;
+        const item = this.item();
+        return item.getCursiveLabel ? item.getCursiveLabel() : undefined;
     }
 
 
     get tooltip(): string {
-        return this.item.getTooltip ? this.item.getTooltip() : '';
+        const item = this.item();
+        return item.getTooltip ? item.getTooltip() : '';
     }
 }

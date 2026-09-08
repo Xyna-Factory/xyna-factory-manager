@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, inject, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, inject, viewChild, input } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
@@ -52,7 +52,7 @@ export class ExecutionTimeComponent {
     private readonly executionTimeChange = new EventEmitter<XoOrderExecutionTime>();
 
     /** Changes the header of the xc-panel */
-    @Input() header: string;
+    readonly header = input<string>(undefined);
 
     /** @description Decides if the form can have a time window and therefore a:
      *  - execution type
