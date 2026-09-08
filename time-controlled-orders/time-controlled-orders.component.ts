@@ -15,16 +15,15 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, OnInit } from '@angular/core';
+import { of } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
+import { Component, OnInit } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcButtonComponent, XcCheckboxComponent, XcFormDirective, XcIconButtonComponent, XcMasterDetailComponent, XcOptionItem, XcPanelComponent, XcTableComponent, XcTooltipDirective, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
 
-import { of } from 'rxjs';
-import { finalize } from 'rxjs/operators';
-
-import { FMAN_RTC } from '@fman/factory-manager.component';
 import { TcoDetailSectionComponent } from './components/tco-detail-section/tco-detail-section.component';
 import { CreateTimeControlledOrderComponent } from './modal/create-time-controlled-order/create-time-controlled-order.component';
 import { RestorableTimeControlledOrderComponent } from './restorable-time-controlled-order.component';
@@ -89,14 +88,14 @@ export class TimeControlledOrdersComponent extends RestorableTimeControlledOrder
                 class: 'delete-action-element',
                 iconName: 'delete',
                 tooltip: this.i18nService.translate('fman.tco.kill'),
-                onAction: this.killTCO.bind(this),
+                onAction: row => this.killTCO(row),
                 onShow: tco => !tco.archived
             },
             {
                 class: 'copy-action-element',
                 iconName: 'copy',
                 tooltip: this.i18nService.translate('fman.tco.duplicate-tco'),
-                onAction: this.duplicate.bind(this)
+                onAction: row => this.duplicate(row)
             }
         ];
 
@@ -110,7 +109,7 @@ export class TimeControlledOrdersComponent extends RestorableTimeControlledOrder
         super.ngOnInit();
     }
 
-    killTCO(timeControlledOrder: XoTimeControlledOrder) {
+    killTCO(timeControlledOrder: XoTimeControlledOrderTableEntry) {
         this.dialogService
             .confirm(this.i18nService.translate('fman.tco.warning'), this.i18nService.translate(this.CONFIRM_KILL, { key: '$0', value: timeControlledOrder.name }))
             .afterDismissResult()
