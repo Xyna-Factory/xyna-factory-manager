@@ -1,4 +1,4 @@
-import { NgClass } from '@angular/common';
+
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -123,7 +123,7 @@ export class RuntimeContextTableInfo extends XoTableInfo {
     selector: 'migrate-wizard',
     templateUrl: './migrate-wizard.component.html',
     styleUrls: ['./migrate-wizard.component.scss'],
-    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcIconComponent, XcPanelComponent, XcSpinnerComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe, NgClass]
+    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcIconComponent, XcPanelComponent, XcSpinnerComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class MigrateWizardComponent extends XcDialogComponent<boolean, MigrationWizardData> {
     private readonly settings = inject(FactoryManagerSettingsService);

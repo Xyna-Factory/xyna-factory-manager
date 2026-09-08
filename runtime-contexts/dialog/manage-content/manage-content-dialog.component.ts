@@ -18,7 +18,7 @@
 import { of, Subscription, throwError } from 'rxjs';
 import { catchError, filter, finalize, first, skip, tap } from 'rxjs/operators';
 
-import { NgClass } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, inject, OnDestroy } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoDependencyType } from '@fman/runtime-contexts/xo/xo-dependency.model';
@@ -58,7 +58,7 @@ enum ElementType {
     changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './manage-content-dialog.component.html',
     styleUrls: ['./manage-content-dialog.component.scss'],
-    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcIconComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe, NgClass]
+    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcIconComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class ManageContentDialogComponent extends XcDialogComponent<boolean, XoRuntimeContext> implements OnDestroy {
     private readonly apiService = inject(ApiService);

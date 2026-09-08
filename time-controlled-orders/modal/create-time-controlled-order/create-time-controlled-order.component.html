@@ -1,7 +1,7 @@
 <xc-dialog-wrapper xc-i18n-context="fman.create-time-controlled-order">
   <ng-container header><span xc-i18n>header</span></ng-container>
   <section xc-form content class="min-width scroll compact">
-    <div #errorMessage [ngClass]="{'error-wrapper': !!error}">@if (error) {
+    <div #errorMessage [class.error-wrapper]="!!error">@if (error) {
       <span class="error">{{ error }}</span>
     }</div>
     <div class="custom-items-row equal-width-2">
