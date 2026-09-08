@@ -3,11 +3,10 @@
     <header><label xc-i18n>header-input</label></header>
     <section>
       @if (hasInput) {
-        <xc-tree
-          class="input-tree zeta-scrollbar"
+        <xc-tree class="input-tree zeta-scrollbar"
           [xc-tree-datasource]="inputTree"
           xc-tree-autoexpand="first"
-        ></xc-tree>
+         />
       } @else {
         <span xc-i18n>label-no-input</span>
       }
@@ -18,12 +17,12 @@
   <header><label xc-i18n>header-execution</label></header>
   <section>
     <div class="items-row">
-      <xc-form-input xc-i18n label="label-custom-field-1" [(value)]="customField1" xc-form-field-compact></xc-form-input>
-      <xc-form-input xc-i18n label="label-custom-field-2" [(value)]="customField2" xc-form-field-compact></xc-form-input>
+      <xc-form-input xc-i18n label="label-custom-field-1" [(value)]="customField1" xc-form-field-compact />
+      <xc-form-input xc-i18n label="label-custom-field-2" [(value)]="customField2" xc-form-field-compact />
     </div>
     <div class="items-row">
-      <xc-form-input xc-i18n label="label-custom-field-3" [(value)]="customField3" xc-form-field-compact></xc-form-input>
-      <xc-form-input xc-i18n label="label-custom-field-4" [(value)]="customField4" xc-form-field-compact></xc-form-input>
+      <xc-form-input xc-i18n label="label-custom-field-3" [(value)]="customField3" xc-form-field-compact />
+      <xc-form-input xc-i18n label="label-custom-field-4" [(value)]="customField4" xc-form-field-compact />
     </div>
     <div class="items-row">
       <xc-form-autocomplete label="{{'label-monitoring-level' | xcI18n }}" placeholder="{{'placeholder-monitoring-level' | xcI18n }}"
@@ -31,13 +30,13 @@
         [xc-form-autocomplete-options]="monitoringLevelDataWrapper.values"
         xc-form-autocomplete-asdropdown
         xc-form-field-compact
-      ></xc-form-autocomplete>
+       />
       <xc-form-autocomplete label="{{'label-priority' | xcI18n }}" placeholder="{{'placeholder-priority' | xcI18n }}"
         [(xc-form-autocomplete-option)]="priorityDataWrapper.value"
         [xc-form-autocomplete-options]="priorityDataWrapper.values"
         xc-form-autocomplete-asdropdown
         xc-form-field-compact
-      ></xc-form-autocomplete>
+       />
     </div>
   </section>
 </xc-panel>
@@ -71,11 +70,10 @@
         <div class="stack zeta-scrollbar">{{test.stack}}</div>
       }
       @if (outputTree.container.length > 0) {
-        <xc-tree
-          class="output-tree zeta-scrollbar"
+        <xc-tree class="output-tree zeta-scrollbar"
           [xc-tree-datasource]="outputTree"
           xc-tree-autoexpand="first"
-        ></xc-tree>
+         />
       }
     }
   </section>

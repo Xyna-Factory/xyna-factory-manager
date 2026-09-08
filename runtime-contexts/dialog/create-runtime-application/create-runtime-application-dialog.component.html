@@ -1,8 +1,7 @@
 <xc-dialog-wrapper xc-i18n-context="fman.create-runtime-application-dialog">
     <ng-container header><span xc-i18n>create-runtime-application-title</span></ng-container>
     <section content xc-form #form="xc-form">
-        <xc-form-autocomplete
-            xc-form-validator-required
+        <xc-form-autocomplete xc-form-validator-required
             (xc-form-autocomplete-optionChange)="changeWorkspace($event?.value)"
             [xc-form-autocomplete-option]="workspaceDataWrapper.value"
             [xc-form-autocomplete-options]="workspaceDataWrapper.values"
@@ -11,9 +10,8 @@
             xc-form-autocomplete-fulltextsearch
             xc-i18n
             label="create-runtime-application-workspace"
-        ></xc-form-autocomplete>
-        <xc-form-autocomplete
-            xc-form-validator-required
+         />
+        <xc-form-autocomplete xc-form-validator-required
             [(xc-form-autocomplete-option)]="applicationDefinitionDataWrapper.value"
             [xc-form-autocomplete-options]="applicationDefinitionDataWrapper.values"
             xc-form-autocomplete-sortdirection="asc"
@@ -21,18 +19,16 @@
             xc-form-autocomplete-fulltextsearch
             label="create-runtime-application-application-definition"
             xc-i18n
-        ></xc-form-autocomplete>
-        <xc-form-input
-            xc-form-validator-required
+         />
+        <xc-form-input xc-form-validator-required
             [(value)]="version"
             label="create-runtime-application-version"
             xc-i18n
-        ></xc-form-input>
-        <xc-form-input
-            [(value)]="documentation"
+         />
+        <xc-form-input [(value)]="documentation"
             label="create-runtime-application-documentation"
             xc-i18n
-        ></xc-form-input>
+         />
     </section>
     <ng-container footer>
         <xc-button (click)="dismiss()" xc-i18n>create-runtime-application-cancel</xc-button>

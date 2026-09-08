@@ -10,46 +10,44 @@
         @switch (stepNumber) {
           @case (0) {
             <div>
-              <xc-table [xc-table-datasource]="tableSource" xc-table-allowsort xc-table-allowfilter xc-table-allowselect> </xc-table>
+              <xc-table [xc-table-datasource]="tableSource" xc-table-allowsort xc-table-allowfilter xc-table-allowselect />
             </div>
           }
           @case (1) {
             <div>
-              <xc-table
-                [xc-table-lazyupdate]="true"
+              <xc-table [xc-table-lazyupdate]="true"
                 [xc-table-datasource]="tableSource"
                 xc-table-allowsort
                 xc-table-allowfilter
                 xc-table-allowselect
-              ></xc-table>
+               />
             </div>
           }
           @case (2) {
             <div>
-              <xc-table
-                [xc-table-lazyupdate]="true"
+              <xc-table [xc-table-lazyupdate]="true"
                 [xc-table-datasource]="tableSource"
                 xc-table-allowsort
                 xc-table-allowfilter
                 xc-table-allowselect
-              ></xc-table>
+               />
             </div>
           }
           @case (3) {
             <div>
-              <xc-table [xc-table-datasource]="tableSource" xc-table-allowsort xc-table-allowfilter> </xc-table>
+              <xc-table [xc-table-datasource]="tableSource" xc-table-allowsort xc-table-allowfilter />
               <br />
-              <xc-checkbox xc-i18n label="abort" [(checked)]="abortProbelamticOrders"></xc-checkbox>
+              <xc-checkbox xc-i18n label="abort" [(checked)]="abortProbelamticOrders" />
             </div>
           }
           @case (4) {
             <div>
               @if (!!!result && !resultError) {
-                <xc-spinner></xc-spinner>
+                <xc-spinner />
               } @else {
                 @if (resultError) {
                   <div class="items-row">
-                    <xc-icon color="warn" xc-icon-name="msgwarning"></xc-icon>
+                    <xc-icon color="warn" xc-icon-name="msgwarning" />
                     <div class="items-row">{{ resultError }}</div>
                   </div>
                 }
@@ -60,7 +58,7 @@
                         <header>
                           <div class="items-left title">
                             {{ migrationResult.rTCMigration.source.name }} {{ migrationResult.rTCMigration.source.version }}
-                            <xc-icon class="arrow" color="primary" xc-icon-name="arrow_forward" xc-icon-size="normal" xc-icon-material></xc-icon>
+                            <xc-icon class="arrow" color="primary" xc-icon-name="arrow_forward" xc-icon-size="normal" xc-icon-material />
                             {{ migrationResult.rTCMigration.target.name }} {{ migrationResult.rTCMigration.target.version }}
                           </div>
                           <div class="items-right">
@@ -92,13 +90,13 @@
           </xc-button>
           @if (!!stepBackButtonName) {
             <xc-button [disabled]="!canStepToOffset(-1)" color="normal" (click)="step(-1)">
-              <xc-icon xc-icon-size="small" color="normal" [xc-icon-name]="XDSIconName.ARROWLEFT" class="margin-right"></xc-icon>
+              <xc-icon xc-icon-size="small" color="normal" [xc-icon-name]="XDSIconName.ARROWLEFT" class="margin-right" />
               {{ stepBackButtonName }}
             </xc-button>
           }
           @if (stepNumber === 3) {
             <xc-button (click)="addAnother()">
-              <xc-icon xc-icon-size="small" [xc-icon-name]="XDSIconName.ADD" class="margin-right"></xc-icon>
+              <xc-icon xc-icon-size="small" [xc-icon-name]="XDSIconName.ADD" class="margin-right" />
               <span xc-i18n>addOther</span>
             </xc-button>
           }
@@ -106,7 +104,7 @@
             @if (!!stepNextButtonName) {
               <xc-button [disabled]="!canStepToOffset(+1)" color="primary" (click)="step(+1)">
                 {{ stepNextButtonName }}
-                <xc-icon color="primary" class="margin-left" xc-icon-size="small" [xc-icon-name]="XDSIconName.ARROWRIGHT"></xc-icon>
+                <xc-icon color="primary" class="margin-left" xc-icon-size="small" [xc-icon-name]="XDSIconName.ARROWRIGHT" />
               </xc-button>
             }
           </div>

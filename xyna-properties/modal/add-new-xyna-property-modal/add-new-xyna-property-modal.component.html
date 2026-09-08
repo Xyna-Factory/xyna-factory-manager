@@ -8,13 +8,13 @@
           [fm-focus-candidate]="errorBoxFocusCandidateRef"
           fm-focus-candidate-focus-onload
           class="error-msg"
-          ><div class="icon-div"><xc-icon xc-icon-name="msgwarning"></xc-icon></div><div>{{error}}</div></div>
+          ><div class="icon-div"><xc-icon xc-icon-name="msgwarning" /></div><div>{{error}}</div></div>
         </div>
       }
 
-      <xc-form-input label="label-key" [(value)]="xynaProperty.key" xc-form-validator-required xc-i18n></xc-form-input>
-      <xc-form-textarea label="label-value" [(value)]="xynaProperty.value" xc-i18n></xc-form-textarea>
-      <xc-form-textarea [label]="documentationLabel" [(value)]="documentation"></xc-form-textarea>
+      <xc-form-input label="label-key" [(value)]="xynaProperty.key" xc-form-validator-required xc-i18n />
+      <xc-form-textarea label="label-value" [(value)]="xynaProperty.value" xc-i18n />
+      <xc-form-textarea [label]="documentationLabel" [(value)]="documentation" />
     </section>
 
     <ng-container footer>

@@ -11,15 +11,13 @@
     </ng-container>
   }
   <section content [class.two-items]="!!changedApplicationElements.size">
-    <xc-table class="zeta-scrollbar scroll" [xc-table-datasource]="dataSource" xc-table-allowsort xc-table-allowfilter xc-table-lazyupdate></xc-table>
+    <xc-table class="zeta-scrollbar scroll" [xc-table-datasource]="dataSource" xc-table-allowsort xc-table-allowfilter xc-table-lazyupdate />
     @if (!!changedApplicationElements.size) {
       <div>
-        <span class="row" xc-i18n><xc-icon xc-icon-name="msginfo"></xc-icon>manage-content-apply-info</span>
-        <xc-table
-          class="zeta-scrollbar scroll"
+        <span class="row" xc-i18n><xc-icon xc-icon-name="msginfo" />manage-content-apply-info</span>
+        <xc-table class="zeta-scrollbar scroll"
           [xc-table-datasource]="changedContentTable"
-          xc-table-allowsort>
-        </xc-table>
+          xc-table-allowsort />
       </div>
     }
   </section>

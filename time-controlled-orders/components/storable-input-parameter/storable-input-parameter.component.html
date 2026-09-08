@@ -9,17 +9,15 @@
         @for (inputParameter of inputParameters; track inputParameter) {
           <div>
             <div class="items-row">
-              <xc-tree
-                [xc-tree-autoexpand]="loadedPayload && !inputParameter.queryable ? 'first' : null"
+              <xc-tree [xc-tree-autoexpand]="loadedPayload && !inputParameter.queryable ? 'first' : null"
                 [xc-tree-datasource]="inputParameter.treeDataSource"
-              ></xc-tree>
+               />
               @if (inputParameter.queryable) {
-                <xc-checkbox
-                  [disabled]="inputParameter.checkBoxDisabled"
+                <xc-checkbox [disabled]="inputParameter.checkBoxDisabled"
                   label="label-query"
                   xc-i18n
                   [(checked)]="inputParameter.querySet"
-                ></xc-checkbox>
+                 />
               }
             </div>
           </div>
