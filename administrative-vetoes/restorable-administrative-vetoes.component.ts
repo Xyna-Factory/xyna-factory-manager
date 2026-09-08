@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 import { LocaleService } from '@zeta/i18n';
 
@@ -26,6 +26,7 @@ import { XoAdministrativeVeto } from './xo/xo-administrative-veto.model';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'restorable-administrative-veto',
     template: ''
 })

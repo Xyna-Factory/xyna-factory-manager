@@ -18,7 +18,7 @@
 import { Subject, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
-import { Component, EventEmitter, inject, Input, OnDestroy, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, OnDestroy, Output } from '@angular/core';
 import { ApiService, FullQualifiedName, RuntimeContext, StartOrderOptionsBuilder, XoArray, XoObject, XoRuntimeContext } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
 import { XcDialogService, XcStructureTreeDataSource, XcTreeComponent } from '@zeta/xc';
@@ -27,6 +27,7 @@ import { XoStoreParameter } from '../../xo/xo-storeparameter.model';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'storable-instance-detail',
     templateUrl: './storable-instance-detail.component.html',
     styleUrls: ['./storable-instance-detail.component.scss'],

@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, inject } from '@angular/core';
 
 import { ApiService, FullQualifiedName, OrderTypeVariable, RuntimeContext, Xo, XoArray, XoClassInterfaceFrom, XoJson, XoObject, XoRuntimeContext, XoStorable, XoStructureType } from '@zeta/api';
 import { isArray } from '@zeta/base';
@@ -40,6 +40,7 @@ export interface InputParameter {
     querySet?: boolean;
 }
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'storable-input-parameter',
     templateUrl: './storable-input-parameter.component.html',
     styleUrls: ['./storable-input-parameter.component.scss'],

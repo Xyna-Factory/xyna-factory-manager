@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -33,6 +33,7 @@ import { FMAN_RTC } from '@fman/factory-manager.component';
 const ISWP = ADMINISTRATIVE_VETOES_ISWP;
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './administrative-vetoes.component.html',
     styleUrls: ['./administrative-vetoes.component.scss'],
     imports: [XcButtonComponent, XcFormInputComponent, XcFormTextareaComponent, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective]

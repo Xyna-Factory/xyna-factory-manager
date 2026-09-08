@@ -18,7 +18,7 @@ import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ApiService, FullQualifiedName, RuntimeContext, RuntimeContextType, StartOrderOptionsBuilder, StartOrderResult, Xo, XoDescriber, XoObject, XoRuntimeContext, XoStorable, XoStructureMethod, XoWorkspace } from '@zeta/api';
 import { XoXynaProperty, XoXynaPropertyKey } from '@zeta/auth/xo/xyna-property.model';
 import { Comparable, isObject } from '@zeta/base';
@@ -247,6 +247,7 @@ class StorableTableDataSource extends XcLocalTableDataSource<XoObject> {
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'storable-instances',
     templateUrl: './storable-instances.component.html',
     styleUrls: ['./storable-instances.component.scss'],

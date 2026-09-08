@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject, InjectionToken } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, InjectionToken } from '@angular/core';
 
 import { XoOrderExecutionTime } from '@fman/xo/xo-orderexecutiontime.model';
 import { XoRestrictionBasedTimeWindow } from '@fman/xo/xo-timewindow.model';
@@ -33,6 +33,7 @@ export interface CronlikeOrderIntervalTemplateData {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: '<span>{{interval}}</span>',
     styleUrls: ['./cronlike-order-interval-template.component.scss']
 })

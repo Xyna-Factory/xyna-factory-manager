@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectorRef, Component, ElementRef, HostBinding, Input, NgZone, OnInit, ViewChild, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, NgZone, OnInit, ViewChild, inject } from '@angular/core';
 
 import { ApiService } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
@@ -34,6 +34,7 @@ export interface ActionButtonData {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'tile',
     templateUrl: './tile.component.html',
     styleUrls: ['./tile.component.scss'],

@@ -17,7 +17,7 @@
  */
 import { debounceTime, filter, finalize, first, skip } from 'rxjs/operators';
 
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, inject, Input, NgZone, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, inject, Input, NgZone, OnInit, Output, ViewChild } from '@angular/core';
 import { ShowWorkspaceContentDialogComponent } from '@fman/runtime-contexts/dialog/show-workspace-content/show-workspace-content-dialog.component';
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
 import { XoGetWorkspaceContentRequest } from '@fman/runtime-contexts/xo/xo-get-workspace-content-request.model';
@@ -56,6 +56,7 @@ import { XoWorkspace } from '../../xo/xo-workspace.model';
 export const DUPLICATE_ELEMENT_IDENTIFIER = 'duplicate element';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'workspace-tile',
     templateUrl: './workspace-tile.component.html',
     styleUrls: ['./workspace-tile.component.scss'],

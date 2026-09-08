@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, InjectionToken } from '@angular/core';
+import { ChangeDetectionStrategy, Component, InjectionToken } from '@angular/core';
 
 import { XC_COMPONENT_DATA, XcDynamicComponent } from '@zeta/xc';
 
@@ -26,6 +26,7 @@ export interface XynaPropertyTableValueTemplateData {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: '@if (!isBold) {{{value}}}@if (isBold) {<b>{{value}}</b>}',
     styles: []
 })

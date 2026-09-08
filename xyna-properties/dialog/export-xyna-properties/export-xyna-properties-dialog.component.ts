@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { XoManagedFileId } from '@fman/runtime-contexts/xo/xo-managed-file-id.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
@@ -36,6 +36,7 @@ const ISWP = XYNA_PROPERTY_ISWP;
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './export-xyna-properties-dialog.component.html',
     styleUrls: ['./export-xyna-properties-dialog.component.scss'],
     imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcI18nContextDirective, XcI18nTranslateDirective]

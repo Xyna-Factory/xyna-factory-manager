@@ -16,7 +16,7 @@ import { NgClass } from '@angular/common';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { XoRTCMigrationResultArray } from '@fman/runtime-contexts/xo/xo-rtcmigration-result.model';
 import { XoRTCName } from '@fman/runtime-contexts/xo/xo-rtcname.model';
@@ -119,6 +119,7 @@ export class RuntimeContextTableInfo extends XoTableInfo {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'migrate-wizard',
     templateUrl: './migrate-wizard.component.html',
     styleUrls: ['./migrate-wizard.component.scss'],

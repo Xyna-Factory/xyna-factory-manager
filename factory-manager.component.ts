@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import { AuthService } from '@zeta/auth';
@@ -42,6 +42,7 @@ interface XcRighteousNavListItem extends XcNavListItem {
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './factory-manager.component.html',
     styleUrls: ['./factory-manager.component.scss'],
     imports: [XcNavListComponent, RouterOutlet]

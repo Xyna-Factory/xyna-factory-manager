@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, InjectionToken, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, InjectionToken, Input } from '@angular/core';
 
 import { XC_COMPONENT_DATA, XcDynamicComponent, XcIconComponent, XcTooltipDirective } from '@zeta/xc';
 import { XcColor } from '@zeta/xc/shared/xc-themeable.component';
@@ -31,6 +31,7 @@ export const TriggerFilterState = {
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'trigger-filter-state-icon',
     templateUrl: './trigger-filter-state-icon.component.html',
     styleUrls: ['./trigger-filter-state-icon.component.scss'],

@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 
 import { XcColor } from '@zeta/xc/shared/xc-themeable.component';
 
@@ -27,6 +27,7 @@ import { XcButtonComponent, XcTooltipDirective } from '@zeta/xc';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'runtime-context-button',
     templateUrl: './runtime-context-button.component.html',
     styleUrls: ['./runtime-context-button.component.scss'],

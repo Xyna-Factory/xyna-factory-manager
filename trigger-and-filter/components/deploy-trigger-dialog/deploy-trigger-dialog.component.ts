@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { XoRuntimeContext, XoRuntimeContextArray } from '@fman/runtime-contexts/xo/xo-runtime-context.model';
 import { XoDeployTriggerRequest } from '@fman/trigger-and-filter/xo/xo-deploy-trigger-request.model';
@@ -38,6 +38,7 @@ interface StartParameter {
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './deploy-trigger-dialog.component.html',
     styleUrls: ['./deploy-trigger-dialog.component.scss'],
     imports: [XcButtonComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcI18nContextDirective, XcI18nTranslateDirective, StartParameterDetailComponent]

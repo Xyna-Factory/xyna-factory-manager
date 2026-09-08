@@ -16,7 +16,7 @@ import { NgClass } from '@angular/common';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy } from '@angular/core';
 
 import { XoForce } from '@yggdrasil/force.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
@@ -41,6 +41,7 @@ import { manageDependencies_translations_en_US } from './locale/manage-dependenc
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './manage-dependencies-dialog.component.html',
     styleUrls: ['./manage-dependencies-dialog.component.scss'],
     imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcIconComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe, NgClass]

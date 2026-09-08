@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectorRef, Component, inject, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
@@ -31,6 +31,7 @@ import { PluginService } from './plugin.service';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'plugin',
     templateUrl: './plugin.component.html',
     styleUrls: ['./plugin.component.scss'],

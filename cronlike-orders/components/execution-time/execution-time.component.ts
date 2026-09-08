@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, Input, Output, ViewChild, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild, inject } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
@@ -33,6 +33,7 @@ import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'execution-time',
     templateUrl: './execution-time.component.html',
     styleUrls: ['./execution-time.component.scss'],

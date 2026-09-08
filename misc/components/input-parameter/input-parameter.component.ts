@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 
 import { ApiService, FullQualifiedName, RuntimeContext, XoArray, XoClassInterfaceFrom, XoDescriber, XoJson, XoObject } from '@zeta/api';
 import { coerceBoolean, isArray } from '@zeta/base';
@@ -43,6 +43,7 @@ export interface InputDataTypesTreeData {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'input-parameter',
     templateUrl: './input-parameter.component.html',
     styleUrls: ['./input-parameter.component.scss'],

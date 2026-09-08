@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, inject } from '@angular/core';
+import { ChangeDetectionStrategy, AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, inject } from '@angular/core';
 
 import { I18nService } from '@zeta/i18n';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
@@ -45,6 +45,7 @@ export const TimeConversion = {
 };
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'tco-execution-restriction',
     templateUrl: './tco-execution-restriction.component.html',
     styleUrls: ['./tco-execution-restriction.component.scss'],

@@ -18,7 +18,7 @@
 import { of } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -33,6 +33,7 @@ import { XoTimeControlledOrder } from './xo/xo-time-controlled-order.model';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'selector-name',
     templateUrl: './time-controlled-orders.component.html',
     styleUrls: ['./time-controlled-orders.component.scss'],

@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { RuntimeContext, RuntimeContextType, StartOrderOptionsBuilder, XoRuntimeContext } from '@zeta/api';
 import { dateTimeString } from '@zeta/base';
@@ -45,6 +45,7 @@ const ISWP = DEPLOYMENT_ITEMS_ISWP;
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './deployment-items.component.html',
     styleUrls: ['./deployment-items.component.scss'],
     imports: [XcButtonComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, DeploymentStateDetailComponent]

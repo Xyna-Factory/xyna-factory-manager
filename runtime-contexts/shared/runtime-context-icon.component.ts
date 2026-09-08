@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, InjectionToken, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, InjectionToken, Input } from '@angular/core';
 
 import { XC_COMPONENT_DATA, XcDynamicComponent, XcIconComponent, XcTooltipDirective } from '@zeta/xc';
 import { XcColor } from '@zeta/xc/shared/xc-themeable.component';
@@ -24,6 +24,7 @@ import { XoRuntimeContextState } from '../xo/xo-runtime-context-state.model';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'runtime-context-icon',
     templateUrl: './runtime-context-icon.component.html',
     styleUrls: ['./runtime-context-icon.component.scss'],

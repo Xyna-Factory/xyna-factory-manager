@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, Input, Output, ViewChild, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild, inject } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder, XoArray, XoRuntimeContext } from '@zeta/api';
 import { XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -26,6 +26,7 @@ import { FM_WF_GET_ORDER_TYPES } from '@fman/const';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'order-type-form',
     templateUrl: './order-type-form.component.html',
     styleUrls: ['./order-type-form.component.scss'],

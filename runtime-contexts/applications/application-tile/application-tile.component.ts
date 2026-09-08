@@ -17,7 +17,7 @@ import { debounceTime, filter, first, skip } from 'rxjs/operators';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, ElementRef, EventEmitter, HostBinding, inject, Input, NgZone, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, HostBinding, inject, Input, NgZone, OnInit, Output, ViewChild } from '@angular/core';
 import { ExportApplicationDialogComponent } from '@fman/runtime-contexts/dialog/export-application/export-application-dialog.component';
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
@@ -49,6 +49,7 @@ import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'application-tile',
     templateUrl: './application-tile.component.html',
     styleUrls: ['./application-tile.component.scss'],

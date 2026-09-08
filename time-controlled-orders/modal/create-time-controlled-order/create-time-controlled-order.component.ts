@@ -16,7 +16,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 import { NgClass } from '@angular/common';
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, ViewChild } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder, XoRuntimeContext } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -45,6 +45,7 @@ export interface TCODefaultData {
     default: XoTimeControlledOrder;
 }
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'create-time-controlled-order',
     templateUrl: './create-time-controlled-order.component.html',
     styleUrls: ['./create-time-controlled-order.component.scss'],

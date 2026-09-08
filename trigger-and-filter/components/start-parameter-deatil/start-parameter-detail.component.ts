@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 
 import { XoStartParameterDetails } from '@fman/trigger-and-filter/xo/xo-start-parameter-details.model';
 import { coerceBoolean, Comparable } from '@zeta/base';
@@ -32,6 +32,7 @@ interface ParameterTableRow extends Comparable {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'start-parameter-detail',
     templateUrl: './start-parameter-detail.component.html',
     styleUrls: ['./start-parameter-detail.component.scss'],

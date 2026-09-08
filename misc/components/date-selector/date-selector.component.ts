@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output, ViewChild, inject } from '@angular/core';
+import { ChangeDetectionStrategy, AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output, ViewChild, inject } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
@@ -28,6 +28,7 @@ import { XoTimezoneArray } from '../../../xo/xo-timezone.model';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'date-selector',
     templateUrl: './date-selector.component.html',
     styleUrls: ['./date-selector.component.scss'],

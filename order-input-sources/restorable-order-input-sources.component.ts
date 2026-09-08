@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 import { XoRuntimeContext } from '@zeta/api';
 import { LocaleService } from '@zeta/i18n';
@@ -27,6 +27,7 @@ import { XoOrderInputSource } from './xo/xo-order-input-source.model';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: ''
 })
 export class RestorableOrderInputSourcesComponent extends RestorableRouteComponent<XoOrderInputSource> implements OnInit {

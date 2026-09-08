@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { XcI18nTranslateDirective } from '@zeta/i18n';
 
@@ -24,6 +24,7 @@ import { XcFormInputComponent, XcPanelComponent } from '@zeta/xc';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'custom-information-form',
     templateUrl: './custom-information-form.component.html',
     imports: [XcFormInputComponent, XcPanelComponent, XcI18nTranslateDirective]

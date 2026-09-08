@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 import { XoXynaProperty } from '@zeta/auth/xo/xyna-property.model';
 import { LocaleService } from '@zeta/i18n';
@@ -49,6 +49,7 @@ export enum XynaPropertiesFormat {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: ''
 })
 export class RestorableXynaPropertiesComponent extends RestorableRouteComponent<XoXynaProperty> implements OnInit {

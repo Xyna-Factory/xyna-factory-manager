@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { XoDeleteDuplicatesResponse } from '@fman/runtime-contexts/xo/xo-delete-duplicates-response.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
@@ -33,6 +33,7 @@ import { deleteDuplicates_translations_en_US } from './locale/delete-duplicates-
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './delete-duplicates-dialog.component.html',
     styleUrls: ['./delete-duplicates-dialog.component.scss'],
     imports: [XcButtonComponent, XcDialogWrapperComponent, XcIconComponent, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]

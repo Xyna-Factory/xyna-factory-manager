@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 import { LocaleService } from '@zeta/i18n';
 
@@ -40,6 +40,7 @@ export const CAPACITY_ISWP: CapacitiesInputScreenWorkflowPackage = {
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'restorable-capacities',
     template: ''
 })

@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, OnDestroy, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, ViewChild } from '@angular/core';
 
 import { XmomObjectType } from '@pmod/api/xmom-types';
 import { XoRuntimeContext } from '@pmod/xo/runtime-context.model';
@@ -50,6 +50,7 @@ export const ORDER_TYPES_URL = '/xfm/Factory-Manager/ordertypes';
 const ISWP = ORDER_TYPE_ISWP;
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './order-types.component.html',
     styleUrls: ['./order-types.component.scss'],
     imports: [XcButtonComponent, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcRichListComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]

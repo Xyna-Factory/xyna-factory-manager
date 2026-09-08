@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ApiService, OrderTypeSignature, OrderTypeVariable, RuntimeContext, StartOrderOptionsBuilder, Xo, XoArray, XoObject, XoStartOrderExceptionResponse, XoStartOrderSuccessResponse, XoStructureArray, XoStructureObject, XynaMonitoringLevel, XynaPriority } from '@zeta/api';
@@ -45,6 +45,7 @@ interface WorkflowTest {
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'xfm-fman-workflow-tester',
     templateUrl: './workflow-tester.component.html',
     styleUrls: ['./workflow-tester.component.scss'],

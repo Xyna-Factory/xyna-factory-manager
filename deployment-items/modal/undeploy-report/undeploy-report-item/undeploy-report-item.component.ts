@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, HostBinding, HostListener, Injector, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, HostListener, Injector, inject } from '@angular/core';
 
 import { XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcFormAutocompleteComponent, XcRichListItemComponent } from '@zeta/xc';
@@ -34,6 +34,7 @@ export interface UndeployReportItemComponentData {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './undeploy-report-item.component.html',
     styleUrls: ['./undeploy-report-item.component.scss'],
     imports: [XcI18nTranslateDirective, XcFormAutocompleteComponent]

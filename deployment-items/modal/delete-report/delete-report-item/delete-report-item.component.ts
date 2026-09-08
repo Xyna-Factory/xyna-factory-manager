@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, HostBinding, HostListener, Injector, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, HostListener, Injector, inject } from '@angular/core';
 
 import { XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcFormAutocompleteComponent, XcRichListItemComponent } from '@zeta/xc';
@@ -34,6 +34,7 @@ export interface DeleteReportItemComponentData {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './delete-report-item.component.html',
     styleUrls: ['./delete-report-item.component.scss'],
     imports: [XcI18nTranslateDirective, XcFormAutocompleteComponent]

@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, inject } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -37,6 +37,7 @@ import { TcoExecutionRestrictionComponent } from '../tco-execution-restriction/t
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'tco-detail-section',
     templateUrl: './tco-detail-section.component.html',
     styleUrls: ['./tco-detail-section.component.scss'],
