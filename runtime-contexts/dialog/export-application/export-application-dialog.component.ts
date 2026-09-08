@@ -18,7 +18,7 @@
 
 import { filter, finalize } from 'rxjs/operators';
 
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoManagedFileId } from '@fman/runtime-contexts/xo/xo-managed-file-id.model';
 import { XoRuntimeApplication } from '@fman/runtime-contexts/xo/xo-runtime-application.model';
@@ -35,6 +35,7 @@ import { exportapplication_translations_en_US } from './locale/export-applicatio
 @Component({
     templateUrl: './export-application-dialog.component.html',
     styleUrls: ['./export-application-dialog.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class ExportApplicationDialogComponent extends XcDialogComponent<boolean, XoRuntimeApplication> {

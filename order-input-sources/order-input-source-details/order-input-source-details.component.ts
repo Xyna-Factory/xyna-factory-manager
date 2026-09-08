@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectorRef, Component, inject, Input, output, signal, viewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, Input, output, signal, viewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { InputParameterRef } from '@fman/misc/components/input-parameter/input-parameter-ref.class';
 import { XoOrderType, XoOrderTypeArray } from '@fman/xo/xo-order-type.model';
@@ -99,6 +99,7 @@ export class FrequencyControlledTaskLoadPreset extends FrequencyControlledTaskPr
     selector: 'order-input-source-details',
     templateUrl: './order-input-source-details.component.html',
     styleUrls: ['./order-input-source-details.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcButtonComponent, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcPanelComponent, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe, InputParameterComponent, GenerateInputComponent, DateSelectorComponent]
 })
 export class OrderInputSourceDetailsComponent extends RestorableOrderInputSourcesComponent {
@@ -107,11 +108,15 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
 
     // FIXME: USE CODE FROM ADD NEW ORDER INPUT SOURCE MODAL !!!!!
 
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input('order-input-source')
     set orderInputSource(value: XoOrderInputSource) {
         this.getDetails(value);
     }
 
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input('fct-preset')
     set fctPreset(preset: FrequencyControlledTaskPreset) {
         if (preset) {

@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, HostBinding, input, output } from '@angular/core';
+import { Component, HostBinding, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { XcButtonComponent, XcTooltipDirective } from '@zeta/xc';
 import { XcColor } from '@zeta/xc/shared/xc-themeable.component';
 
@@ -29,6 +29,7 @@ import { RuntimeContextIconComponent } from './runtime-context-icon.component';
     selector: 'runtime-context-button',
     templateUrl: './runtime-context-button.component.html',
     styleUrls: ['./runtime-context-button.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcButtonComponent, XcTooltipDirective, RuntimeContextIconComponent]
 })
 export class RuntimeContextButtonComponent {

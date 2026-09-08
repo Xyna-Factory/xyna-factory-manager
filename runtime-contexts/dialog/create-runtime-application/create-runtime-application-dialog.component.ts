@@ -19,7 +19,7 @@
 import { throwError } from 'rxjs';
 import { catchError, filter, finalize, map, tap } from 'rxjs/operators';
 
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -39,6 +39,7 @@ type RuntimeApplicationVersion = string;
 @Component({
     templateUrl: './create-runtime-application-dialog.component.html',
     styleUrls: ['./create-runtime-application-dialog.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcButtonComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class CreateRuntimeApplicationDialogComponent extends XcDialogComponent<RuntimeApplicationVersion, { workspaceName: string; applicationDefinitionName: string }> {

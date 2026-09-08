@@ -20,7 +20,7 @@
 import { Observable, Subscription, throwError } from 'rxjs';
 import { catchError, filter, finalize, first, map, skip, switchMap } from 'rxjs/operators';
 
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoForce } from '@yggdrasil/force.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
@@ -43,6 +43,7 @@ import { manageDependencies_translations_en_US } from './locale/manage-dependenc
 @Component({
     templateUrl: './manage-dependencies-dialog.component.html',
     styleUrls: ['./manage-dependencies-dialog.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcIconComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class ManageDependenciesDialogComponent extends XcDialogComponent<boolean, XoRuntimeContext> implements OnDestroy {

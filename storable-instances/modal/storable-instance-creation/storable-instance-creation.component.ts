@@ -18,7 +18,7 @@
 
 import { finalize } from 'rxjs/operators';
 
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder, StartOrderResult } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcButtonComponent, XcDialogComponent, XcDialogWrapperComponent, XcStructureTreeDataSource, XcTreeComponent } from '@zeta/xc';
@@ -32,6 +32,7 @@ import { storableInstanceCreation_translations_en_US } from './locale/storable-i
     selector: 'storable-instance-creation',
     templateUrl: './storable-instance-creation.component.html',
     styleUrls: ['./storable-instance-creation.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcButtonComponent, XcDialogWrapperComponent, XcTreeComponent, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class StorableInstanceCreationComponent extends XcDialogComponent<any, any> {

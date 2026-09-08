@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { XcI18nContextDirective } from '@zeta/i18n';
 import { XcDialogComponent } from '@zeta/xc';
 
@@ -32,6 +32,7 @@ export interface OrderInputSourceDetailsModalComponentData {
 @Component({
     templateUrl: './order-input-source-details-modal.component.html',
     styleUrls: ['./order-input-source-details-modal.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcI18nContextDirective, OrderInputSourceDetailsComponent]
 })
 export class OrderInputSourceDetailsModalComponent extends XcDialogComponent<boolean, OrderInputSourceDetailsModalComponentData> {

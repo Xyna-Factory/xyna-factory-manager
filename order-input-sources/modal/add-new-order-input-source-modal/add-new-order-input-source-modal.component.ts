@@ -18,7 +18,7 @@
 
 import { finalize } from 'rxjs/operators';
 
-import { ChangeDetectorRef, Component, inject, signal, viewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, signal, viewChild, ChangeDetectionStrategy } from '@angular/core';
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoRuntimeContext, XoWorkspace } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcButtonComponent, XcDialogComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIconComponent, XcOptionItemString, XcPanelComponent } from '@zeta/xc';
@@ -55,6 +55,7 @@ export interface AddNewOrderInputSourceModalComponentData {
 @Component({
     templateUrl: './add-new-order-input-source-modal.component.html',
     styleUrls: ['./add-new-order-input-source-modal.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcButtonComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIconComponent, XcPanelComponent, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe, FMFocusCandidateDirective, InputParameterComponent]
 })
 export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<boolean, AddNewOrderInputSourceModalComponentData> {

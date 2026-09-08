@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject, Input, signal } from '@angular/core';
+import { Component, inject, Input, signal, ChangeDetectionStrategy } from '@angular/core';
 import { XoStartParameterDetails } from '@fman/trigger-and-filter/xo/xo-start-parameter-details.model';
 import { coerceBoolean, Comparable } from '@zeta/base';
 import { I18nService, XcI18nPipe } from '@zeta/i18n';
@@ -33,6 +33,7 @@ interface ParameterTableRow extends Comparable {
     selector: 'start-parameter-detail',
     templateUrl: './start-parameter-detail.component.html',
     styleUrls: ['./start-parameter-detail.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcPanelComponent, XcTableComponent, XcI18nPipe]
 })
 export class StartParameterDetailComponent {
@@ -43,6 +44,8 @@ export class StartParameterDetailComponent {
     tableDataSource: XcLocalTableDataSource<ParameterTableRow> = new XcLocalTableDataSource<ParameterTableRow>(this.i18n);
     legacy: boolean;
 
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input('start-parameter')
     set startParameter(parameter: XoStartParameterDetails[]) {
         if (!parameter) {
@@ -62,6 +65,8 @@ export class StartParameterDetailComponent {
         return this._startParameter;
     }
 
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input('compact')
     set compact(compact: boolean) {
         if (coerceBoolean(compact)) {

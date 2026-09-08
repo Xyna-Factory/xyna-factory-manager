@@ -14,7 +14,7 @@
        />
     }
     <xc-form-autocomplete xc-form-validator-required
-      (xc-form-autocomplete-optionChange)="changeWorkspace($event?.value)"
+      (xc-form-autocomplete-optionChange)="changeWorkspace($safeNavigationMigration($event?.value))"
       [xc-form-autocomplete-option]="workspaceDataWrapper.value"
       [xc-form-autocomplete-options]="workspaceDataWrapper.values"
       xc-form-autocomplete-sortdirection="asc"

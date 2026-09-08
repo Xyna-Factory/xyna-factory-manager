@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject, viewChild } from '@angular/core';
+import { Component, inject, viewChild, ChangeDetectionStrategy } from '@angular/core';
 import { ApiService, FullQualifiedName, RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoRuntimeContext, XoWorkspace } from '@zeta/api';
 import { isString } from '@zeta/base';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -48,6 +48,7 @@ export interface AddNewCronLikeOrderModalComponentData {
     selector: 'app-add-new-cronlike-order-modal',
     templateUrl: './add-new-cronlike-order-modal.component.html',
     styleUrls: ['./add-new-cronlike-order-modal.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcIconComponent, XcPanelComponent, XcI18nContextDirective, XcI18nTranslateDirective, FMFocusCandidateDirective, OrderTypeFormComponent, InputParameterComponent, ExecutionTimeComponent]
 })
 export class AddNewCronlikeOrderModalComponent extends XcDialogComponent<boolean, AddNewCronLikeOrderModalComponentData> {

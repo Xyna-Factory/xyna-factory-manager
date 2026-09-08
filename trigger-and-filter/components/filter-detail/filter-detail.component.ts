@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectorRef, Component, inject, InjectionToken } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, InjectionToken, ChangeDetectionStrategy } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoRuntimeApplication } from '@fman/runtime-contexts/xo/xo-runtime-application.model';
 import { XoWorkspace } from '@fman/runtime-contexts/xo/xo-workspace.model';
@@ -32,6 +32,7 @@ import { XC_COMPONENT_DATA, XcDialogService, XcDynamicComponent, XcPanelComponen
     selector: 'filter-detail',
     templateUrl: './filter-detail.component.html',
     styleUrls: ['./filter-detail.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcPanelComponent, XcI18nTranslateDirective]
 })
 export class FilterDetailComponent extends XcDynamicComponent<XoFilter> {

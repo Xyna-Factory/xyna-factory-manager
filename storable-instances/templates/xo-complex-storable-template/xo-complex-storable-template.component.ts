@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, InjectionToken } from '@angular/core';
+import { Component, InjectionToken, ChangeDetectionStrategy } from '@angular/core';
 import { XoArray, XoObject } from '@zeta/api';
 import { XcI18nPipe } from '@zeta/i18n';
 import { XC_COMPONENT_DATA, XcDynamicComponent } from '@zeta/xc';
@@ -29,6 +29,7 @@ import { XoComplexStorableTemplateData } from '../../xo/xo-complex-storable.mode
     selector: 'xo-complex-storable-template',
     templateUrl: './xo-complex-storable-template.component.html',
     styleUrls: ['./xo-complex-storable-template.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcI18nPipe]
 })
 export class XoComplexStorableTemplateComponent extends XcDynamicComponent<XoComplexStorableTemplateData> {

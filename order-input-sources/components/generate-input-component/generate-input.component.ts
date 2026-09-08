@@ -18,7 +18,7 @@
 
 import { finalize } from 'rxjs/operators';
 
-import { ChangeDetectorRef, Component, inject, Input, output, input } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, Input, output, input, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService, FullQualifiedName, RuntimeContext, StartOrderOptions, XoArray, XoClassInterfaceFrom, XoDescriber, XoJson, XoObject } from '@zeta/api';
 import { AuthService } from '@zeta/auth';
@@ -39,6 +39,7 @@ interface InputDataTypesTreeData {
     selector: 'generate-input-component',
     templateUrl: './generate-input.component.html',
     styleUrls: ['./generate-input.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcButtonComponent, XcPanelComponent, XcTreeComponent, XcI18nTranslateDirective]
 })
 export class GenerateInputComponent {
@@ -76,6 +77,8 @@ export class GenerateInputComponent {
     private lastStringContainerForXTF: string[];
     private lastInputSourceId: number;
 
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input()
     private set orderInputSource(value: XoOrderInputSource) {
         this.ois = value;

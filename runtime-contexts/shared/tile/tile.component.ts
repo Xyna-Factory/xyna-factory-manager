@@ -17,7 +17,7 @@
  */
 import { debounceTime, first, skip, Subscription } from 'rxjs';
 
-import { ChangeDetectorRef, Component, ElementRef, HostBinding, inject, Input, NgZone, OnDestroy, OnInit, viewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostBinding, inject, Input, NgZone, OnDestroy, OnInit, viewChild, ChangeDetectionStrategy } from '@angular/core';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcIconButtonComponent, XcTemplateComponent, XcTooltipDirective, XDSIconName } from '@zeta/xc';
 
@@ -34,6 +34,7 @@ export interface ActionButtonData {
     selector: 'tile',
     templateUrl: './tile.component.html',
     styleUrls: ['./tile.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [TileButtonComponent, XcI18nTranslateDirective, XcIconButtonComponent, XcTemplateComponent, XcTooltipDirective]
 })
 export class TileComponent implements OnInit, OnDestroy {
@@ -48,6 +49,8 @@ export class TileComponent implements OnInit, OnDestroy {
     private _dataSource: TileDataSource;
     private _actionButton: ActionButtonData;
 
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input('tile-datasource')
     set dataSource(value: TileDataSource) {
         this.selectionSubscription.unsubscribe();
@@ -62,6 +65,8 @@ export class TileComponent implements OnInit, OnDestroy {
         return this._dataSource;
     }
 
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input('action-button')
     set actionButton(value: ActionButtonData) {
         this._actionButton = value;

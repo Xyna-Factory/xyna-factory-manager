@@ -18,7 +18,7 @@
 
 import { Subscription } from 'rxjs';
 
-import { AfterViewInit, Component, inject, Input, input, OnDestroy, OnInit, output, viewChild } from '@angular/core';
+import { AfterViewInit, Component, inject, Input, input, OnDestroy, OnInit, output, viewChild, ChangeDetectionStrategy } from '@angular/core';
 import { I18nService, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcPanelComponent, XcTooltipDirective } from '@zeta/xc';
 
@@ -47,6 +47,7 @@ export const TimeConversion = {
     selector: 'tco-execution-restriction',
     templateUrl: './tco-execution-restriction.component.html',
     styleUrls: ['./tco-execution-restriction.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcPanelComponent, XcTooltipDirective, XcI18nTranslateDirective]
 })
 export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -76,6 +77,8 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
 
     readonly hasTooltip = input<boolean>(undefined);
 
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input()
     get executionRestriction(): XoTCOExecutionRestriction {
         return this._executionRestriction;

@@ -16,7 +16,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 
-import { AfterViewInit, Component, computed, effect, inject, OnDestroy, signal, viewChildren } from '@angular/core';
+import { AfterViewInit, Component, computed, effect, inject, OnDestroy, signal, viewChildren, ChangeDetectionStrategy } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -39,6 +39,7 @@ import { WorkspaceTileComponent } from './workspace-tile/workspace-tile.componen
 @Component({
     templateUrl: './workspaces.component.html',
     styleUrls: ['./workspaces.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcButtonComponent, XcFormInputComponent, XcIconButtonComponent, XcIconComponent, XcPanelComponent, XcSpinnerComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, WorkspaceTileComponent]
 })
 export class WorkspacesComponent extends RouteComponent implements AfterViewInit, OnDestroy {

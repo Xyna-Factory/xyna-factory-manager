@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject, Input, output, signal, viewChild, input } from '@angular/core';
+import { Component, inject, Input, output, signal, viewChild, input, ChangeDetectionStrategy } from '@angular/core';
 import { FM_WF_GET_ORDER_TYPES } from '@fman/const';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService, StartOrderOptionsBuilder, XoArray, XoRuntimeContext } from '@zeta/api';
@@ -29,6 +29,7 @@ import { XoOrderTypeArray } from '../../../xo/xo-order-type.model';
     selector: 'order-type-form',
     templateUrl: './order-type-form.component.html',
     styleUrls: ['./order-type-form.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcFormAutocompleteComponent, XcFormDirective, XcFormValidatorRequiredDirective, XcPanelComponent, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class OrderTypeFormComponent {
@@ -52,6 +53,8 @@ export class OrderTypeFormComponent {
     private _selectedRTC: XoRuntimeContext;
     private _selectedOrderType = '';
 
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input()
     get selectedRuntimeContext(): XoRuntimeContext {
         return this._selectedRTC;
@@ -66,6 +69,8 @@ export class OrderTypeFormComponent {
         }
     }
 
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input()
     get selectedOrderType(): string {
         return this._selectedOrderType;

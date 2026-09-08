@@ -19,7 +19,7 @@
 import { throwError } from 'rxjs';
 import { catchError, finalize, tap } from 'rxjs/operators';
 
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoDeleteDuplicatesResponse } from '@fman/runtime-contexts/xo/xo-delete-duplicates-response.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
@@ -35,6 +35,7 @@ import { deleteDuplicates_translations_en_US } from './locale/delete-duplicates-
 @Component({
     templateUrl: './delete-duplicates-dialog.component.html',
     styleUrls: ['./delete-duplicates-dialog.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcButtonComponent, XcDialogWrapperComponent, XcIconComponent, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class DeleteDuplicatesDialogComponent extends XcDialogComponent<boolean, XoWorkspace> {

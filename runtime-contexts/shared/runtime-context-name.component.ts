@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, HostBinding, InjectionToken, input } from '@angular/core';
+import { Component, HostBinding, InjectionToken, input, ChangeDetectionStrategy } from '@angular/core';
 
 import { repeat } from '@zeta/base';
 import { XC_COMPONENT_DATA, XcDynamicComponent } from '@zeta/xc';
@@ -24,6 +24,7 @@ import { XC_COMPONENT_DATA, XcDynamicComponent } from '@zeta/xc';
 @Component({
     selector: 'runtime-context-name',
     templateUrl: './runtime-context-name.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./runtime-context-name.component.scss']
 })
 export class RuntimeContextNameComponent extends XcDynamicComponent<{ name: string; hierarchyLevel: number }> {

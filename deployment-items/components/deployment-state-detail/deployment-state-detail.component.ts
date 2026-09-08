@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, ChangeDetectionStrategy } from '@angular/core';
 import { dateTimeString } from '@zeta/base';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcButtonComponent, XcDialogService, XcIconComponent, XcTooltipDirective } from '@zeta/xc';
@@ -27,6 +27,7 @@ import { XoDeploymentItem } from '../../xo/xo-deployment-item.model';
     selector: 'deployment-state-detail',
     templateUrl: './deployment-state-detail.component.html',
     styleUrls: ['./deployment-state-detail.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcI18nTranslateDirective, XcButtonComponent, XcIconComponent, XcTooltipDirective]
 })
 export class DeploymentStateDetailComponent {
@@ -35,6 +36,8 @@ export class DeploymentStateDetailComponent {
     private _deploymentItem: XoDeploymentItem;
 
 
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input()
     set deploymentItem(value: XoDeploymentItem) {
         this._deploymentItem = value;

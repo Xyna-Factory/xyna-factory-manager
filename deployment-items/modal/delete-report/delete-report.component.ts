@@ -18,7 +18,7 @@
 
 import { Subject } from 'rxjs';
 
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcButtonComponent, XcDialogComponent, XcDialogWrapperComponent, XcFormDirective, XcFormTextareaComponent, XcRichListComponent, XcRichListItem } from '@zeta/xc';
 
@@ -38,6 +38,7 @@ export interface DeleteReportComponentData {
 @Component({
     templateUrl: './delete-report.component.html',
     styleUrls: ['./delete-report.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcButtonComponent, XcDialogWrapperComponent, XcFormDirective, XcFormTextareaComponent, XcRichListComponent, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class DeleteReportComponent extends XcDialogComponent<XoDeleteDeploymentItemParamArray, DeleteReportComponentData> {

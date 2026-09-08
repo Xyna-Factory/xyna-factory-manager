@@ -16,7 +16,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 
-import { AfterViewInit, Component, computed, effect, inject, OnDestroy, signal, viewChildren } from '@angular/core';
+import { AfterViewInit, Component, computed, effect, inject, OnDestroy, signal, viewChildren, ChangeDetectionStrategy } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -38,6 +38,7 @@ import { ApplicationTileComponent } from './application-tile/application-tile.co
 @Component({
     templateUrl: './applications.component.html',
     styleUrls: ['./applications.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcButtonComponent, XcFormInputComponent, XcIconButtonComponent, XcIconComponent, XcPanelComponent, XcSpinnerComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, ApplicationTileComponent]
 })
 export class ApplicationsComponent extends RouteComponent implements OnDestroy, AfterViewInit {

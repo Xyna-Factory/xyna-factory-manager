@@ -2,7 +2,7 @@
     <ng-container header><span xc-i18n>create-application-definition-title</span></ng-container>
     <section content xc-form #form="xc-form">
         <xc-form-autocomplete xc-form-validator-required
-            (xc-form-autocomplete-optionChange)="changeWorkspace($event?.value)"
+            (xc-form-autocomplete-optionChange)="changeWorkspace($safeNavigationMigration($event?.value))"
             [xc-form-autocomplete-option]="workspaceDataWrapper.value"
             [xc-form-autocomplete-options]="workspaceDataWrapper.values"
             xc-form-autocomplete-sortdirection="asc"

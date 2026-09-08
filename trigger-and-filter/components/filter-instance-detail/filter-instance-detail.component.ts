@@ -18,7 +18,7 @@
 
 import { filter } from 'rxjs';
 
-import { ChangeDetectorRef, Component, inject, InjectionToken } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, InjectionToken, ChangeDetectionStrategy } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ORDER_TYPES } from '@fman/trigger-and-filter/order-types';
 import { XoFilterInstanceDetails } from '@fman/trigger-and-filter/xo/xo-filter-instance-details.model';
@@ -36,6 +36,7 @@ export interface FilterInstanceDetailsData {
 @Component({
     templateUrl: './filter-instance-detail.component.html',
     styleUrls: ['./filter-instance-detail.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcButtonComponent, XcIconComponent, XcPanelComponent, XcSpinnerComponent, XcTooltipDirective, XcI18nTranslateDirective]
 })
 export class FilterInstanceDetailComponent extends XcDynamicComponent<FilterInstanceDetailsData> {

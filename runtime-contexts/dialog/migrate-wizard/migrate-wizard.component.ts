@@ -17,7 +17,7 @@
  */
 import { filter, finalize } from 'rxjs/operators';
 
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { XoRTCMigrationResultArray } from '@fman/runtime-contexts/xo/xo-rtcmigration-result.model';
 import { XoRTCName } from '@fman/runtime-contexts/xo/xo-rtcname.model';
 import { XoRuntimeContextTableEntry, XoRuntimeContextTableEntryArray } from '@fman/runtime-contexts/xo/xo-runtime-context-table-entry.model';
@@ -120,6 +120,7 @@ export class RuntimeContextTableInfo extends XoTableInfo {
     selector: 'migrate-wizard',
     templateUrl: './migrate-wizard.component.html',
     styleUrls: ['./migrate-wizard.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcIconComponent, XcPanelComponent, XcSpinnerComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class MigrateWizardComponent extends XcDialogComponent<boolean, MigrationWizardData> {

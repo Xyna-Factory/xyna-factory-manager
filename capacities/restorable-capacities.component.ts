@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { LocaleService } from '@zeta/i18n';
 
@@ -41,6 +41,7 @@ export const CAPACITY_ISWP: CapacitiesInputScreenWorkflowPackage = {
 
 @Component({
     selector: 'restorable-capacities',
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: ''
 })
 export class RestorableCapacitiesComponent extends RestorableRouteComponent<XoCapacityInformation> implements OnInit {

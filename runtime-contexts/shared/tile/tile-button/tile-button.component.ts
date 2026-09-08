@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, HostBinding, input, output } from '@angular/core';
+import { Component, HostBinding, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { XcButtonComponent, XcTemplateComponent, XcTooltipDirective } from '@zeta/xc';
 import { XcColor } from '@zeta/xc/shared/xc-themeable.component';
 
@@ -26,6 +26,7 @@ import { TileItem } from '../tile-data-source';
     selector: 'tile-button',
     templateUrl: './tile-button.component.html',
     styleUrls: ['./tile-button.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcButtonComponent, XcTemplateComponent, XcTooltipDirective]
 })
 export class TileButtonComponent {

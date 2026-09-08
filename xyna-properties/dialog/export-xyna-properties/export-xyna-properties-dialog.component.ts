@@ -18,7 +18,7 @@
 
 import { filter, finalize } from 'rxjs/operators';
 
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoManagedFileId } from '@fman/runtime-contexts/xo/xo-managed-file-id.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
@@ -38,6 +38,7 @@ const ISWP = XYNA_PROPERTY_ISWP;
 @Component({
     templateUrl: './export-xyna-properties-dialog.component.html',
     styleUrls: ['./export-xyna-properties-dialog.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class ExportXynaPropertiesDialogComponent extends XcDialogComponent<boolean, void> {

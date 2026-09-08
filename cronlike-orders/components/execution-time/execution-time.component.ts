@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject, Input, output, signal, viewChild, input } from '@angular/core';
+import { Component, inject, Input, output, signal, viewChild, input, ChangeDetectionStrategy } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -34,6 +34,7 @@ import { ExecutionTimeInterval, ExecutionTimeMonth, ExecutionTimeMonthlyAtWhichD
     selector: 'execution-time',
     templateUrl: './execution-time.component.html',
     styleUrls: ['./execution-time.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcPanelComponent, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe, DateSelectorComponent]
 })
 export class ExecutionTimeComponent {
@@ -212,6 +213,8 @@ export class ExecutionTimeComponent {
         return this._executionTime;
     }
 
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input()
     set executionTime(value: XoOrderExecutionTime) {
         this._executionTime = value;

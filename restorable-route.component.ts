@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectorRef, Component, inject, Injector, OnInit, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, Injector, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, NavigationExtras, Router } from '@angular/router';
 
 import { ApiService, RuntimeContext, StartOrderResult, Xo, XoArray, XoArrayClassInterface, XoObject, XoObjectClassInterface } from '@zeta/api';
@@ -38,6 +38,7 @@ export interface InputScreenWorkflowPackage {
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: ''
 })
 export class RestorableRouteComponent<T extends XoObject = XoObject, D = T> extends RouteComponent implements OnInit {

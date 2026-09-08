@@ -18,7 +18,7 @@
 
 import { Subscription } from 'rxjs';
 
-import { AfterViewInit, Component, inject, Input, OnDestroy, output, signal, viewChild, input } from '@angular/core';
+import { AfterViewInit, Component, inject, Input, OnDestroy, output, signal, viewChild, input, ChangeDetectionStrategy } from '@angular/core';
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcDialogService, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcOptionItem, XcPanelComponent, XcStringIntegerDataWrapper } from '@zeta/xc';
@@ -30,6 +30,7 @@ import { XoTimezoneArray } from '../../../xo/xo-timezone.model';
     selector: 'date-selector',
     templateUrl: './date-selector.component.html',
     styleUrls: ['./date-selector.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcPanelComponent, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class DateSelectorComponent implements AfterViewInit, OnDestroy {
@@ -52,6 +53,8 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
     readonly header = input<string>(undefined);
     readonly disableTimeZoneSelection = input<boolean>(undefined);
 
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input('timezone')
     set timezone(value: string) {
         this._timezone = value;
@@ -70,6 +73,8 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
 
     private _datetime: number;
 
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input('datetime')
     set datetime(value: number) {
         if (value && value !== this._datetime) {
@@ -89,6 +94,8 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
     readonly datetimeChanged = output<number>({ alias: 'datetimeChange' });
 
 
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input()
     set runtimeContext(value: RuntimeContext) {
         this.apiService.startOrder(value, DateSelectorComponent.FM_WF_GET_TIMEZONES, [], XoTimezoneArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).subscribe(result => {

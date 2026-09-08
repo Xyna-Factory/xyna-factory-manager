@@ -18,7 +18,7 @@
 
 import { Subject } from 'rxjs';
 
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcButtonComponent, XcDialogComponent, XcDialogWrapperComponent, XcFormDirective, XcFormTextareaComponent, XcRichListComponent, XcRichListItem } from '@zeta/xc';
 
@@ -38,6 +38,7 @@ export interface UndeployReportComponentData {
 @Component({
     templateUrl: './undeploy-report.component.html',
     styleUrls: ['./undeploy-report.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcButtonComponent, XcDialogWrapperComponent, XcFormDirective, XcFormTextareaComponent, XcRichListComponent, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class UndeployReportComponent extends XcDialogComponent<XoUndeployDeploymentItemParamArray, UndeployReportComponentData> {

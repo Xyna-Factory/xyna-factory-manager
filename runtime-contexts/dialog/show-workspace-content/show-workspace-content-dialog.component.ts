@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoGetWorkspaceContentRequest } from '@fman/runtime-contexts/xo/xo-get-workspace-content-request.model';
 import { ApiService } from '@zeta/api';
@@ -34,6 +34,7 @@ import { showWorkspaceContent_translations_en_US } from './locale/show-workspace
 @Component({
     templateUrl: './show-workspace-content-dialog.component.html',
     styleUrls: ['./show-workspace-content-dialog.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class ShowWorkspaceContentDialogComponent extends XcDialogComponent<boolean, XoRuntimeContext> {

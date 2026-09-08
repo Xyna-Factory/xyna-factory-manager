@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { XoRuntimeContext } from '@zeta/api';
 import { LocaleService } from '@zeta/i18n';
@@ -29,6 +29,7 @@ import { XoCronLikeOrder } from './xo/xo-cronlike-order.model';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: ''
 })
 export class RestorableCronlikeOrdersComponent extends RestorableRouteComponent<XoCronLikeOrder> implements OnInit {

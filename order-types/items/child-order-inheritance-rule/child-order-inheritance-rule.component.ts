@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcIconButtonComponent, XcRichListItemComponent, XcTooltipDirective } from '@zeta/xc';
 
@@ -30,6 +30,7 @@ export interface ChildOrderInheritanceRuleComponentData {
 @Component({
     templateUrl: './child-order-inheritance-rule.component.html',
     styleUrls: ['./child-order-inheritance-rule.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcIconButtonComponent, XcTooltipDirective, XcI18nTranslateDirective]
 })
 export class ChildOrderInheritanceRuleComponent extends XcRichListItemComponent<void, ChildOrderInheritanceRuleComponentData> {

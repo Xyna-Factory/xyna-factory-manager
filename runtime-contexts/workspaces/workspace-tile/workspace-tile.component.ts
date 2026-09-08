@@ -18,7 +18,7 @@
 
 import { debounceTime, filter, finalize, first, skip } from 'rxjs/operators';
 
-import { ChangeDetectorRef, Component, ElementRef, HostBinding, inject, input, Input, NgZone, OnInit, output, signal, viewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostBinding, inject, input, Input, NgZone, OnInit, output, signal, viewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ShowWorkspaceContentDialogComponent } from '@fman/runtime-contexts/dialog/show-workspace-content/show-workspace-content-dialog.component';
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
@@ -60,6 +60,7 @@ export const DUPLICATE_ELEMENT_IDENTIFIER = 'duplicate element';
     selector: 'workspace-tile',
     templateUrl: './workspace-tile.component.html',
     styleUrls: ['./workspace-tile.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [RuntimeContextButtonComponent, XcI18nTranslateDirective, XcI18nPipe, XcButtonComponent, XcFormInputComponent, XcFormLabelComponent, XcIconButtonComponent, XcIconComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcVarDirective]
 })
 export class WorkspaceTileComponent implements OnInit {
@@ -84,6 +85,8 @@ export class WorkspaceTileComponent implements OnInit {
 
     private _forceRefresh: boolean;
 
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input()
     get forceRefresh(): boolean {
         return this._forceRefresh;

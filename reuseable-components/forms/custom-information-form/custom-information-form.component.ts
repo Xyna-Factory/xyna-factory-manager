@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Input, output } from '@angular/core';
+import { Component, Input, output, ChangeDetectionStrategy } from '@angular/core';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcFormInputComponent, XcPanelComponent } from '@zeta/xc';
 
@@ -25,6 +25,7 @@ import { XoOrderCustoms } from '../../../xo/xo-ordercustoms.model';
 @Component({
     selector: 'custom-information-form',
     templateUrl: './custom-information-form.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcFormInputComponent, XcPanelComponent, XcI18nTranslateDirective]
 })
 export class CustomInformationFormComponent {
@@ -36,6 +37,8 @@ export class CustomInformationFormComponent {
      */
     readonly customFieldsChange = output<XoOrderCustoms>();
 
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input()
     get customFields(): XoOrderCustoms {
         return this._customFields;

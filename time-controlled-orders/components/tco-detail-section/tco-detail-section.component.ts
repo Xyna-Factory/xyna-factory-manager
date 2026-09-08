@@ -19,7 +19,7 @@
 import { Observable, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
-import { Component, inject, OnDestroy, OnInit, output, viewChild, input } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, output, viewChild, input, ChangeDetectionStrategy } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -40,6 +40,7 @@ import { TcoExecutionRestrictionComponent } from '../tco-execution-restriction/t
     selector: 'tco-detail-section',
     templateUrl: './tco-detail-section.component.html',
     styleUrls: ['./tco-detail-section.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcCheckboxComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcPanelComponent, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe, OrderTypeFormComponent, StorableInputParameterComponent, ExecutionTimeComponent, TcoExecutionRestrictionComponent, CustomInformationFormComponent]
 })
 export class TcoDetailSectionComponent implements OnInit, OnDestroy {

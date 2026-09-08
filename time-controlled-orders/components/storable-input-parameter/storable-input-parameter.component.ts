@@ -19,7 +19,7 @@
 import { Observable } from 'rxjs';
 import { finalize, tap } from 'rxjs/operators';
 
-import { Component, inject, Input, output } from '@angular/core';
+import { Component, inject, Input, output, ChangeDetectionStrategy } from '@angular/core';
 import { ApiService, FullQualifiedName, OrderTypeVariable, RuntimeContext, Xo, XoArray, XoClassInterfaceFrom, XoJson, XoObject, XoRuntimeContext, XoStorable, XoStructureType } from '@zeta/api';
 import { isArray } from '@zeta/base';
 import { I18nService, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -42,6 +42,7 @@ export interface InputParameter {
     selector: 'storable-input-parameter',
     templateUrl: './storable-input-parameter.component.html',
     styleUrls: ['./storable-input-parameter.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcCheckboxComponent, XcFormDirective, XcPanelComponent, XcTreeComponent, XcI18nTranslateDirective]
 })
 export class StorableInputParameterComponent {
@@ -64,6 +65,8 @@ export class StorableInputParameterComponent {
     inputParameters: InputParameter[];
     loadedPayload: boolean;
 
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input()
     get destination(): XoOrderDestination {
         return this._destination;
@@ -82,6 +85,8 @@ export class StorableInputParameterComponent {
         }
     }
 
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input()
     get payload(): string {
         return this.getPayload();
@@ -95,6 +100,8 @@ export class StorableInputParameterComponent {
         this.payloadChange.emit(this.payload);
     }
 
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input()
     get storableFqn(): string {
         return this._storableFqn;

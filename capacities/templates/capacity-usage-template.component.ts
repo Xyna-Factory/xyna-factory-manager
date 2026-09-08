@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject, InjectionToken } from '@angular/core';
+import { Component, inject, InjectionToken, ChangeDetectionStrategy } from '@angular/core';
 import { I18nParam, I18nService, LocaleService } from '@zeta/i18n';
 import { XC_COMPONENT_DATA, XcDynamicComponent, XcFormInputComponent, XcStringIntegerDataWrapper, XcTooltipDirective } from '@zeta/xc';
 
@@ -33,6 +33,7 @@ export interface CapacityUsageTemplateData {
     selector: 'capacity-usage-template',
     templateUrl: './capacity-usage-template.component.html',
     styleUrls: ['./capacity-usage-template.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcFormInputComponent, XcTooltipDirective]
 })
 export class CapacityUsageTemplateComponent extends XcDynamicComponent<CapacityUsageTemplateData> {

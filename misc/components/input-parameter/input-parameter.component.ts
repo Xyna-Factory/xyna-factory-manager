@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject, Input, OnInit, output, input } from '@angular/core';
+import { Component, inject, Input, OnInit, output, input, ChangeDetectionStrategy } from '@angular/core';
 import { ApiService, FullQualifiedName, RuntimeContext, XoArray, XoClassInterfaceFrom, XoDescriber, XoJson, XoObject } from '@zeta/api';
 import { coerceBoolean, isArray } from '@zeta/base';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
@@ -45,6 +45,7 @@ export interface InputDataTypesTreeData {
     selector: 'input-parameter',
     templateUrl: './input-parameter.component.html',
     styleUrls: ['./input-parameter.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcPanelComponent, XcTreeComponent, XcI18nTranslateDirective]
 })
 export class InputParameterComponent implements OnInit {
@@ -56,6 +57,8 @@ export class InputParameterComponent implements OnInit {
         return this._collapsable;
     }
 
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input('collapsable')
     set collapsed(value: boolean) {
         this._collapsable = coerceBoolean(value);

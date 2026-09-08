@@ -18,7 +18,7 @@
 
 import { Subject } from 'rxjs';
 
-import { Component, HostBinding, HostListener } from '@angular/core';
+import { Component, HostBinding, HostListener, ChangeDetectionStrategy } from '@angular/core';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcFormAutocompleteComponent, XcRichListItemComponent } from '@zeta/xc';
 
@@ -36,6 +36,7 @@ export interface DeleteReportItemComponentData {
 @Component({
     templateUrl: './delete-report-item.component.html',
     styleUrls: ['./delete-report-item.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcI18nTranslateDirective, XcFormAutocompleteComponent]
 })
 export class DeleteReportItemComponent extends XcRichListItemComponent<void, DeleteReportItemComponentData> {

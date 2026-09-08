@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { LocaleService } from '@zeta/i18n';
 
@@ -61,6 +61,7 @@ export enum DeleteDeploymentItemResolution {
 
 @Component({
     selector: 'restorable-deployment-items',
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: ''
 })
 export class RestorableDeploymentItemsComponent extends RestorableRouteComponent<XoDeploymentItem> implements OnInit {

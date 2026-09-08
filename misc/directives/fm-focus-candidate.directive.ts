@@ -31,6 +31,8 @@ export class FMFocusCandidateDirective implements OnInit, OnDestroy {
     private _ref: FMFocusCandidateRef;
 
     // tslint:disable-next-line: no-output-rename
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input('fm-focus-candidate')
     private set _refFMFocusCandidateRef(value: FMFocusCandidateRef) {
         value.setRef(this);
@@ -41,6 +43,8 @@ export class FMFocusCandidateDirective implements OnInit, OnDestroy {
     private _onload = false;
 
 
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input('fm-focus-candidate-focus-onload')
     private set onload(value: any) {
         // this._onload = !!(value || value === '');

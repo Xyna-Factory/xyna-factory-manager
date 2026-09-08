@@ -19,7 +19,7 @@
 import { throwError } from 'rxjs';
 import { catchError, filter, finalize, tap } from 'rxjs/operators';
 
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -35,6 +35,7 @@ import { clearWorkspace_translations_en_US } from './locale/clear-workspace-tran
 @Component({
     templateUrl: './clear-workspace-dialog.component.html',
     styleUrls: ['./clear-workspace-dialog.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcIconComponent, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class ClearWorkspaceDialogComponent extends XcDialogComponent<boolean, XoWorkspace> {

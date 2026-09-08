@@ -18,7 +18,7 @@
 import { Subject, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
-import { Component, inject, Input, OnDestroy, output } from '@angular/core';
+import { Component, inject, Input, OnDestroy, output, ChangeDetectionStrategy } from '@angular/core';
 import { ApiService, FullQualifiedName, RuntimeContext, StartOrderOptionsBuilder, XoArray, XoObject, XoRuntimeContext } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
 import { XcDialogService, XcStructureTreeDataSource, XcTreeComponent } from '@zeta/xc';
@@ -30,6 +30,7 @@ import { XoStoreParameter } from '../../xo/xo-storeparameter.model';
     selector: 'storable-instance-detail',
     templateUrl: './storable-instance-detail.component.html',
     styleUrls: ['./storable-instance-detail.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcTreeComponent]
 })
 export class StorableInstanceDetailComponent implements OnDestroy {
@@ -39,6 +40,8 @@ export class StorableInstanceDetailComponent implements OnDestroy {
 
     readonly valueChange = output<void>();
 
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input()
     set xoRtc(xoRtc: XoRuntimeContext) {
         if (xoRtc) {
@@ -47,6 +50,8 @@ export class StorableInstanceDetailComponent implements OnDestroy {
         }
     }
 
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input()
     set fqn(fqn: FullQualifiedName) {
         if (fqn) {
@@ -55,6 +60,8 @@ export class StorableInstanceDetailComponent implements OnDestroy {
         }
     }
 
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input()
     set selectedStorable(storable: XoObject) {
         if (storable) {
@@ -63,6 +70,8 @@ export class StorableInstanceDetailComponent implements OnDestroy {
         }
     }
 
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input()
     set editSubject(subject: Subject<void>) {
         this.editSubscription = subject.subscribe(() => {

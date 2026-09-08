@@ -17,7 +17,7 @@
  */
 import { filter } from 'rxjs';
 
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { RuntimeContext } from '@zeta/api';
 import { ConfigService } from '@zeta/api/config.service';
@@ -44,6 +44,7 @@ interface XcRighteousNavListItem extends XcNavListItem {
 @Component({
     templateUrl: './factory-manager.component.html',
     styleUrls: ['./factory-manager.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcNavListComponent, RouterOutlet]
 })
 export class FactoryManagerComponent extends RouteComponent {

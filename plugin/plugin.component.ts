@@ -18,7 +18,7 @@
 
 import { filter, Subscription, take } from 'rxjs';
 
-import { ChangeDetectorRef, Component, inject, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { RouteComponent } from '@zeta/nav';
@@ -34,6 +34,7 @@ import { PluginService } from './plugin.service';
     selector: 'plugin',
     templateUrl: './plugin.component.html',
     styleUrls: ['./plugin.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcStackComponent]
 })
 export class PluginComponent extends RouteComponent implements OnDestroy {

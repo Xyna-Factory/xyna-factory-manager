@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, InjectionToken } from '@angular/core';
+import { Component, InjectionToken, ChangeDetectionStrategy } from '@angular/core';
 import { XC_COMPONENT_DATA, XcCheckboxComponent, XcDynamicComponent, XcIconComponent } from '@zeta/xc';
 
 
@@ -28,6 +28,7 @@ import { XC_COMPONENT_DATA, XcCheckboxComponent, XcDynamicComponent, XcIconCompo
         </div>
     `,
     styleUrls: ['change-template.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcCheckboxComponent, XcIconComponent]
 })
 export class ChangeTemplateComponent extends XcDynamicComponent<{ dependency; XoDependencyType }> {

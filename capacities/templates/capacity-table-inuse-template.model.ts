@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, InjectionToken } from '@angular/core';
+import { Component, InjectionToken, ChangeDetectionStrategy } from '@angular/core';
 
 import { XC_COMPONENT_DATA, XcDynamicComponent } from '@zeta/xc';
 
@@ -34,6 +34,7 @@ export interface CapacityTableInuseTemplateData {
                 <div>{{isValue}} / {{maxValue}}<div>
             </div>
         </div>`,
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./capacity-table-inuse-template.model.scss']
 })
 export class CapacityTableInuseTemplateComponent extends XcDynamicComponent<CapacityTableInuseTemplateData> {

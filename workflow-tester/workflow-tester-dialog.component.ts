@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { RuntimeContext, Xo } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcButtonComponent, XcDialogComponent, XcDialogWrapperComponent, XcIconComponent } from '@zeta/xc';
@@ -35,6 +35,7 @@ export interface WorkflowTesterData {
 @Component({
     templateUrl: './workflow-tester-dialog.component.html',
     styleUrls: ['./workflow-tester-dialog.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcButtonComponent, XcDialogWrapperComponent, XcIconComponent, XcI18nContextDirective, XcI18nTranslateDirective, WorkflowTesterComponent]
 })
 export class WorkflowTesterDialogComponent extends XcDialogComponent<void, WorkflowTesterData> {

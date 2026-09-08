@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { LocaleService } from '@zeta/i18n';
 
@@ -27,6 +27,7 @@ import { XoAdministrativeVeto } from './xo/xo-administrative-veto.model';
 
 @Component({
     selector: 'restorable-administrative-veto',
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: ''
 })
 export class RestorableAdministrativeVetoComponent extends RestorableRouteComponent<XoAdministrativeVeto> implements OnInit {

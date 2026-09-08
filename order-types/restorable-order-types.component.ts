@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { LocaleService } from '@zeta/i18n';
 
@@ -43,6 +43,7 @@ export const ORDER_TYPE_ISWP: OrderTypeInputScreenWorkflowPackage = {
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: ''
 })
 export class RestorableOrderTypesComponent extends RestorableRouteComponent<XoOrderType> implements OnInit {

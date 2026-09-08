@@ -18,7 +18,7 @@
 
 import { finalize } from 'rxjs/operators';
 
-import { Component, inject, Input, output, signal } from '@angular/core';
+import { Component, inject, Input, output, signal, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService, OrderTypeSignature, OrderTypeVariable, RuntimeContext, StartOrderOptionsBuilder, Xo, XoArray, XoObject, XoStartOrderExceptionResponse, XoStartOrderSuccessResponse, XoStructureArray, XoStructureObject, XynaMonitoringLevel, XynaPriority } from '@zeta/api';
 import { I18nService, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -47,6 +47,7 @@ interface WorkflowTest {
     selector: 'xfm-fman-workflow-tester',
     templateUrl: './workflow-tester.component.html',
     styleUrls: ['./workflow-tester.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [XcButtonComponent, XcFormAutocompleteComponent, XcFormInputComponent, XcIconComponent, XcPanelComponent, XcTreeComponent, XcVarDirective, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class WorkflowTesterComponent {
@@ -123,6 +124,8 @@ export class WorkflowTesterComponent {
     }
 
 
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input()
     set runtimeContext(value: RuntimeContext) {
         this._runtimeContext = value;
@@ -135,6 +138,8 @@ export class WorkflowTesterComponent {
     }
 
 
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input()
     set orderType(value: string) {
         this._orderType = value;
@@ -147,6 +152,8 @@ export class WorkflowTesterComponent {
     }
 
 
+    // TODO: Skipped for migration because:
+    //  Accessor inputs cannot be migrated as they are too complex.
     @Input()
     set input(value: Xo[]) {
         this._input = value;
