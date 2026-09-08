@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, inject, viewChild } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
@@ -44,8 +44,7 @@ export class ExecutionTimeComponent {
     private readonly dialogService = inject(XcDialogService);
     private readonly i18nService = inject(I18nService);
 
-    @ViewChild(XcFormDirective, { static: false })
-    xcFormDirective: XcFormDirective;
+    readonly xcFormDirective = viewChild(XcFormDirective);
 
     @Output()
     private readonly invalidChange = new EventEmitter<boolean>();
@@ -236,7 +235,8 @@ export class ExecutionTimeComponent {
     }
 
     get invalid(): boolean {
-        return this.xcFormDirective ? this.xcFormDirective.invalid : false;
+        const xcFormDirective = this.xcFormDirective();
+        return xcFormDirective ? xcFormDirective.invalid : false;
     }
 
     get fmanRTC(): RuntimeContext {

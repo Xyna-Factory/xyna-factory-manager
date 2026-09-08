@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, NgZone, OnInit, ViewChild, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, NgZone, OnInit, inject, viewChild } from '@angular/core';
 
 import { ApiService } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
@@ -47,8 +47,7 @@ export class TileComponent  implements OnInit {
     private readonly cdref = inject(ChangeDetectorRef);
     private readonly zone = inject(NgZone);
 
-    @ViewChild('header', { static: false })
-    headerRef: ElementRef;
+    readonly headerRef = viewChild<ElementRef>('header');
 
     readonly XDSIconName = XDSIconName;
 
@@ -116,11 +115,11 @@ export class TileComponent  implements OnInit {
         // Workaround because angular material has no observer that completes when data is loaded and the table is rendered.
         // See https://github.com/angular/components/issues/8068
         this.zone.onStable.pipe(skip(2), first(), debounceTime(100)).subscribe(() => {
-            this.headerRef.nativeElement.scrollIntoView(true);
+            this.headerRef().nativeElement.scrollIntoView(true);
             // The parent is the scroll section. Used to get a margin of 8px at the top of the card.
-            const parent = this.headerRef.nativeElement.parentElement.parentElement;
+            const parent = this.headerRef().nativeElement.parentElement.parentElement;
             if (parent) {
-                this.headerRef.nativeElement.parentElement.parentElement.scrollTop -= 8;
+                this.headerRef().nativeElement.parentElement.parentElement.scrollTop -= 8;
             }
         });
     }

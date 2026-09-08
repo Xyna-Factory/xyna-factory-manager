@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, viewChild } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoRuntimeContext, XoWorkspace } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -64,8 +64,7 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
     private readonly apiService = inject(ApiService);
 
 
-    @ViewChild(XcFormDirective, {static: false})
-    xcFormDirective: XcFormDirective;
+    readonly xcFormDirective = viewChild(XcFormDirective);
 
     busy = false;
 
@@ -510,7 +509,7 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
 
 
     get invalid(): boolean {
-        return this.xcFormDirective?.invalid || this.noOrderTypes || this.noSourceTypes;
+        return this.xcFormDirective()?.invalid || this.noOrderTypes || this.noSourceTypes;
     }
 
 

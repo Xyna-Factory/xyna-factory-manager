@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, inject, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, viewChild } from '@angular/core';
 
 import { ApiService, FullQualifiedName, RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoRuntimeContext, XoWorkspace } from '@zeta/api';
 import { isString } from '@zeta/base';
@@ -56,8 +56,7 @@ export class AddNewCronlikeOrderModalComponent extends XcDialogComponent<boolean
     private readonly apiService = inject(ApiService);
     private readonly i18n = inject(I18nService);
 
-    @ViewChild(XcFormDirective, { static: false })
-    xcFormDirective: XcFormDirective;
+    readonly xcFormDirective = viewChild(XcFormDirective);
 
     executionTimeInvalid = false;
     orderTypeValid = false;
@@ -67,7 +66,8 @@ export class AddNewCronlikeOrderModalComponent extends XcDialogComponent<boolean
         if (!this.orderTypeValid || this.executionTimeInvalid) {
             return true;
         }
-        return this.xcFormDirective ? this.xcFormDirective.invalid : false;
+        const xcFormDirective = this.xcFormDirective();
+        return xcFormDirective ? xcFormDirective.invalid : false;
     }
 
     cronlikeOrder: XoCronLikeOrder;
