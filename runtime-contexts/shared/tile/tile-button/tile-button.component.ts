@@ -15,12 +15,11 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output, input } from '@angular/core';
-
+import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, input, Output } from '@angular/core';
+import { XcButtonComponent, XcTemplateComponent, XcTooltipDirective } from '@zeta/xc';
 import { XcColor } from '@zeta/xc/shared/xc-themeable.component';
 
 import { TileItem } from '../tile-data-source';
-import { XcButtonComponent, XcTemplateComponent, XcTooltipDirective } from '@zeta/xc';
 
 
 @Component({
@@ -34,16 +33,19 @@ export class TileButtonComponent {
 
     readonly item = input<TileItem>(undefined);
 
+    readonly selected = input(false);
+
     @HostBinding('class.selected')
-    @Input()
-    selected = false;
+    get hostSelected(): boolean {
+        return this.selected();
+    }
 
     @Output('select-item')
     readonly selectItem = new EventEmitter<TileItem>();
 
 
     click() {
-        this.selectItem.emit(this.selected ? undefined : this.item());
+        this.selectItem.emit(this.selected() ? undefined : this.item());
     }
 
 
@@ -53,7 +55,7 @@ export class TileButtonComponent {
 
 
     get color(): XcColor {
-        return this.selected ? 'primary' : 'normal';
+        return this.selected() ? 'primary' : 'normal';
     }
 
 

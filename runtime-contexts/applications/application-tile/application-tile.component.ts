@@ -17,7 +17,8 @@ import { debounceTime, filter, first, skip } from 'rxjs/operators';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, HostBinding, inject, Input, NgZone, OnInit, Output, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, HostBinding, inject, Input, input, linkedSignal, NgZone, OnInit, Output, viewChild } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ExportApplicationDialogComponent } from '@fman/runtime-contexts/dialog/export-application/export-application-dialog.component';
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
@@ -45,7 +46,6 @@ import { XoRuntimeApplication } from '../../xo/xo-runtime-application.model';
 import { XoRuntimeContextState } from '../../xo/xo-runtime-context-state.model';
 import { XoRuntimeContext } from '../../xo/xo-runtime-context.model';
 import { Application } from '../application-data-source';
-import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 @Component({
@@ -66,14 +66,14 @@ export class ApplicationTileComponent implements OnInit {
 
     readonly XDSIconName = XDSIconName;
 
-    @Input()
-    application: Application;
+    readonly applicationInput = input<Application>(undefined, { alias: 'application' });
+    readonly application = linkedSignal(() => this.applicationInput());
 
-    @Input()
-    selection: Application;
+    readonly selectionInput = input<Application>(undefined, { alias: 'selection' });
+    readonly selection = linkedSignal(() => this.selectionInput());
 
-    @Input()
-    details: XoRuntimeApplicationDetails;
+    readonly detailsInput = input<XoRuntimeApplicationDetails>(undefined, { alias: 'details' });
+    readonly details = linkedSignal(() => this.detailsInput());
 
     collapsedRequiredRow = false;
 
@@ -134,7 +134,7 @@ export class ApplicationTileComponent implements OnInit {
         );
         // If this component gets built but was selected before, the forceRefresh flag is set and the component will load its content immediately
         if (this.forceRefresh) {
-            this.updateDataSources(this.details);
+            this.updateDataSources(this.details());
             this._forceRefresh = false;
         }
     }
@@ -168,7 +168,7 @@ export class ApplicationTileComponent implements OnInit {
 
     select(runtimeApplication: XoRuntimeApplication) {
         if (runtimeApplication) {
-            this.selectionChange.emit(this.application);
+            this.selectionChange.emit(this.application());
             this.selectionDetailsChange.emit(runtimeApplication);
             this.updateDataSources(runtimeApplication);
             this.scrollTo();
@@ -195,29 +195,29 @@ export class ApplicationTileComponent implements OnInit {
 
     @HostBinding('class.runtime-application')
     get hasDetails(): boolean {
-        return this.application.equals(this.selection) && this.details instanceof XoRuntimeApplicationDetails;
+        return this.application().equals(this.selection()) && this.details() instanceof XoRuntimeApplicationDetails;
     }
 
 
     isSelected(runtimeApplication: XoRuntimeApplication): boolean {
-        return runtimeApplication.equals(this.details);
+        return runtimeApplication.equals(this.details());
     }
 
 
     loadRuntimeApplication() {
-        this.dialogService.custom(LoadRuntimeApplicationDialogComponent, { workspaceName: undefined, runtimeApplication: this.details as XoRuntimeApplication }).afterDismissResult().subscribe(
+        this.dialogService.custom(LoadRuntimeApplicationDialogComponent, { workspaceName: undefined, runtimeApplication: this.details() as XoRuntimeApplication }).afterDismissResult().subscribe(
             () => { }
         );
     }
 
 
     deleteRuntimeApplication() {
-        this.dialogService.custom(DeleteRuntimeApplicationDialogComponent, this.details as XoRuntimeApplication).afterDismissResult().subscribe(
+        this.dialogService.custom(DeleteRuntimeApplicationDialogComponent, this.details() as XoRuntimeApplication).afterDismissResult().subscribe(
             () => {
                 this.validationChange.next();
-                this.selection = null;
-                this.application = null;
-                this.details = null;
+                this.selection.set(null);
+                this.application.set(null);
+                this.details.set(null);
                 this.select(null);
             }
         );
@@ -225,10 +225,10 @@ export class ApplicationTileComponent implements OnInit {
 
 
     start() {
-        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.START_RUNTIME_APPLICATION, this.details.proxy(), undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.START_RUNTIME_APPLICATION, this.details().proxy(), undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             filter(result => result.errorMessage ? (this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n')), false) : true)
         ).subscribe(() => {
-            const runtimeApplication = this.application.runtimeApplications.find(value => value.equals(this.details));
+            const runtimeApplication = this.application().runtimeApplications.find(value => value.equals(this.details()));
             runtimeApplication.state = XoRuntimeContextState.RUNNING;
             this.selectionDetailsChange.emit(runtimeApplication);
         });
@@ -236,10 +236,10 @@ export class ApplicationTileComponent implements OnInit {
 
 
     stop() {
-        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.STOP_RUNTIME_APPLICATION, this.details.proxy(), undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.STOP_RUNTIME_APPLICATION, this.details().proxy(), undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             filter(result => result.errorMessage ? (this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n')), false) : true)
         ).subscribe(() => {
-            const runtimeApplication = this.application.runtimeApplications.find(value => value.equals(this.details));
+            const runtimeApplication = this.application().runtimeApplications.find(value => value.equals(this.details()));
             runtimeApplication.state = XoRuntimeContextState.STOPPED;
             this.selectionDetailsChange.emit(runtimeApplication);
         });
@@ -251,45 +251,47 @@ export class ApplicationTileComponent implements OnInit {
             i18n: this.i18n,
             apiService: this.apiService,
             rtc: FMAN_RTC,
-            presetSource: this.application.runtimeApplications.find(value => value.equals(this.details))
+            presetSource: this.application().runtimeApplications.find(value => value.equals(this.details()))
         });
     }
 
 
     export() {
-        this.dialogService.custom(ExportApplicationDialogComponent, this.application.runtimeApplications.find(value => value.equals(this.details)));
+        this.dialogService.custom(ExportApplicationDialogComponent, this.application().runtimeApplications.find(value => value.equals(this.details())));
     }
 
 
     get isRunning() {
-        return this.details && this.details.state === XoRuntimeContextState.RUNNING;
+        const details = this.details();
+        return details && details.state === XoRuntimeContextState.RUNNING;
     }
 
 
     get isStopped() {
-        return this.details && this.details.state === XoRuntimeContextState.STOPPED;
+        const details = this.details();
+        return details && details.state === XoRuntimeContextState.STOPPED;
     }
 
 
     manageDependencies() {
-        this.dialogService.custom(ManageDependenciesDialogComponent, this.details as XoRuntimeContext).afterDismissResult().subscribe(
+        this.dialogService.custom(ManageDependenciesDialogComponent, this.details() as XoRuntimeContext).afterDismissResult().subscribe(
             () => this.requiresDataSource.refresh()
         );
     }
 
 
     manageContent() {
-        this.dialogService.custom(ManageContentDialogComponent, this.details as XoRuntimeContext).afterDismissResult().subscribe(
+        this.dialogService.custom(ManageContentDialogComponent, this.details() as XoRuntimeContext).afterDismissResult().subscribe(
             () => this.contentDataSource.refresh()
         );
     }
 
 
     changeOrderEntry(orderEntry: XoOrderEntry) {
-        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.SET_RUNTIME_APPLICATION_ORDER_ENTRY, [this.details.proxy(), orderEntry], undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.SET_RUNTIME_APPLICATION_ORDER_ENTRY, [this.details().proxy(), orderEntry], undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             filter(result => result.errorMessage ? (this.dialogService.error(result.errorMessage), false) : true)
         ).subscribe(() => {
-            const runtimeApplication = this.application.runtimeApplications.find(value => value.equals(this.details));
+            const runtimeApplication = this.application().runtimeApplications.find(value => value.equals(this.details()));
             this.selectionDetailsChange.emit(runtimeApplication);
         });
     }

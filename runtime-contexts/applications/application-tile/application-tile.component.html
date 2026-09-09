@@ -1,9 +1,9 @@
 <div class="header" #header>
-    <label>{{ application.name }}</label>
+    <label>{{ application().name }}</label>
     <div class="active"></div>
     <div class="aside">
         @for (
-            runtimeApplication of application.runtimeApplications;
+            runtimeApplication of application().runtimeApplications;
             track runtimeApplication
         ) {
             <runtime-context-button [runtimeContext]="runtimeApplication"
@@ -18,8 +18,8 @@
         <div class="row">
             <div class="title">
                 <span xc-i18n>runtime-application</span>
-                <span>{{ details.label }}</span>
-                @if (details.isStub) {
+                <span>{{ details().label }}</span>
+                @if (details().isStub) {
                     <span class="stub">(Stub)</span>
                 }
             </div>
@@ -74,13 +74,13 @@
         <div class="row">
             <xc-form-input xc-i18n
                 label="documentation"
-                [value]="details.documentation"
+                [value]="details().documentation"
                 disabled
                 xc-form-field-compact
              />
             <xc-form-input xc-i18n
                 label="version"
-                [value]="details.version"
+                [value]="details().version"
                 disabled
                 xc-form-field-compact
              />
@@ -134,12 +134,12 @@
                 <header>
                     <h2 class="items-left" xc-i18n>requires</h2>
                     <div class="items-right">
-                        @if (details.isLocal) {
+                        @if (details().isLocal) {
                             <xc-button
                                 (click)="manageDependencies()"
                                 xc-tooltip="{{
                                     'manage-dependencies-of-runtime-context'
-                                        | xcI18n: details.name
+                                        | xcI18n: details().name
                                 }}"
                                 >{{ "manage-dependencies" | xcI18n }}</xc-button
                             >
@@ -181,7 +181,7 @@
                         (click)="manageContent()"
                         xc-tooltip="{{
                             'manage-content-of-runtime-context'
-                                | xcI18n: details.name
+                                | xcI18n: details().name
                         }}"
                         >{{ "view-content" | xcI18n }}</xc-button
                     >
@@ -201,7 +201,7 @@
                 <h2 class="items-left" xc-i18n>order-entries</h2>
             </header>
             <section class="row">
-                @for (orderEntry of details.orderEntries; track orderEntry) {
+                @for (orderEntry of details().orderEntries; track orderEntry) {
                     <xc-checkbox [label]="orderEntry.name"
                         [(checked)]="orderEntry.isActive"
                         (checkedChange)="changeOrderEntry(orderEntry)"
