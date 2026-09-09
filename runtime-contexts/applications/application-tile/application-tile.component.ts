@@ -17,7 +17,7 @@ import { debounceTime, filter, first, skip } from 'rxjs/operators';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, HostBinding, inject, Input, input, linkedSignal, NgZone, OnInit, Output, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, inject, Input, input, linkedSignal, NgZone, OnInit, output, viewChild } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ExportApplicationDialogComponent } from '@fman/runtime-contexts/dialog/export-application/export-application-dialog.component';
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
@@ -90,14 +90,11 @@ export class ApplicationTileComponent implements OnInit {
         }
     }
 
-    @Output()
-    readonly validationChange = new EventEmitter<void>();
+    readonly validationChange = output<void>();
 
-    @Output()
-    readonly selectionChange = new EventEmitter<Application>();
+    readonly selectionChange = output<Application>();
 
-    @Output()
-    readonly selectionDetailsChange = new EventEmitter<XoRuntimeApplication>();
+    readonly selectionDetailsChange = output<XoRuntimeApplication>();
 
     requiresDataSource: XcRemoteTableDataSource;
 
@@ -214,7 +211,7 @@ export class ApplicationTileComponent implements OnInit {
     deleteRuntimeApplication() {
         this.dialogService.custom(DeleteRuntimeApplicationDialogComponent, this.details() as XoRuntimeApplication).afterDismissResult().subscribe(
             () => {
-                this.validationChange.next();
+                this.validationChange.emit();
                 this.selection.set(null);
                 this.application.set(null);
                 this.details.set(null);

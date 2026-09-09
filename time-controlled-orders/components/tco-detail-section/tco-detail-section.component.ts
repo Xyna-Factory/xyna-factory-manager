@@ -15,16 +15,15 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output, inject, viewChild, input } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
+import { ChangeDetectionStrategy, Component, inject, input, OnDestroy, OnInit, output, viewChild } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcCheckboxComponent, XcDialogService, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcPanelComponent, XcSelectionModel } from '@zeta/xc';
 
-import { Observable, Subscription } from 'rxjs';
-import { finalize } from 'rxjs/operators';
-
-import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ExecutionTimeComponent } from '../../../cronlike-orders/components/execution-time/execution-time.component';
 import { CustomInformationFormComponent } from '../../../reuseable-components/forms/custom-information-form/custom-information-form.component';
 import { OrderTypeFormComponent } from '../../../reuseable-components/forms/order-type-form/order-type-form.component';
@@ -53,10 +52,8 @@ export class TcoDetailSectionComponent implements OnInit, OnDestroy {
 
     readonly WFP_GET_TCO_DETAILS = input(undefined);
     readonly WFP_UPDATE_TCO = input(undefined);
-    @Output()
-    readonly refresh = new EventEmitter<void>();
-    @Output()
-    readonly validationChange = new EventEmitter<boolean>();
+    readonly refresh = output<void>();
+    readonly validationChange = output<boolean>();
 
     readonly selectionObservable = input<Observable<XcSelectionModel<XoTimeControlledOrderTableEntry>>>(undefined);
 

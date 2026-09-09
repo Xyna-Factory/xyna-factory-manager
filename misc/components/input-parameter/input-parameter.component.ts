@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, inject, input, output } from '@angular/core';
 
 import { ApiService, FullQualifiedName, RuntimeContext, XoArray, XoClassInterfaceFrom, XoDescriber, XoJson, XoObject } from '@zeta/api';
 import { coerceBoolean, isArray } from '@zeta/base';
@@ -111,8 +111,7 @@ export class InputParameterComponent implements OnInit {
 
     readonly ref = input<InputParameterRef>(undefined);
 
-    @Output()
-    readonly markForChange = new EventEmitter<void>();
+    readonly markForChange = output<void>();
 
     inputParamterTreeDataSource: XcStructureTreeDataSource;
 

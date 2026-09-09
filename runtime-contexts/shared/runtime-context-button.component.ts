@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Output, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, input, output } from '@angular/core';
 
 import { XcColor } from '@zeta/xc/shared/xc-themeable.component';
 
@@ -44,8 +44,7 @@ export class RuntimeContextButtonComponent {
         return this.selected();
     }
 
-    @Output()
-    readonly select = new EventEmitter<XoRuntimeContext>();
+    readonly select = output<XoRuntimeContext>();
 
 
     click() {

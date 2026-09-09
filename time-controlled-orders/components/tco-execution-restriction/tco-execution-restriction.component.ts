@@ -17,7 +17,7 @@ import { Subscription } from 'rxjs';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, inject, Input, input, OnDestroy, OnInit, Output, viewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, Input, input, OnDestroy, OnInit, output, viewChild } from '@angular/core';
 import { I18nService, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcPanelComponent, XcTooltipDirective } from '@zeta/xc';
 
@@ -71,10 +71,8 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
     private validityChangeSubscription: Subscription;
     private _executionRestriction: XoTCOExecutionRestriction;
 
-    @Output()
-    private readonly validationChange = new EventEmitter<boolean>();
-    @Output()
-    private readonly executionRestrictionChange = new EventEmitter<XoTCOExecutionRestriction>();
+    readonly validationChange = output<boolean>();
+    readonly executionRestrictionChange = output<XoTCOExecutionRestriction>();
 
     readonly hasTooltip = input<boolean>(undefined);
 

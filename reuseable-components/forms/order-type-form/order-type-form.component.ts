@@ -15,14 +15,14 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, inject, viewChild, input } from '@angular/core';
-
+import { ChangeDetectionStrategy, Component, inject, Input, input, output, viewChild } from '@angular/core';
+import { FM_WF_GET_ORDER_TYPES } from '@fman/const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService, StartOrderOptionsBuilder, XoArray, XoRuntimeContext } from '@zeta/api';
 import { XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcFormAutocompleteComponent, XcFormDirective, XcFormValidatorRequiredDirective, XcPanelComponent } from '@zeta/xc';
-import { FMAN_RTC } from '@fman/factory-manager.component';
+
 import { XoOrderTypeArray } from '../../../xo/xo-order-type.model';
-import { FM_WF_GET_ORDER_TYPES } from '@fman/const';
 
 
 @Component({
@@ -37,9 +37,9 @@ export class OrderTypeFormComponent {
 
     readonly xcFormDirective = viewChild(XcFormDirective);
 
-    @Output() readonly selectedRuntimeContextChange = new EventEmitter<XoRuntimeContext>();
-    @Output() readonly selectedOrderTypeChange = new EventEmitter<string>();
-    @Output() readonly validationChange = new EventEmitter<boolean>();
+    readonly selectedRuntimeContextChange = output<XoRuntimeContext>();
+    readonly selectedOrderTypeChange = output<string>();
+    readonly validationChange = output<boolean>();
 
     readonly masterWorkflowInfoText = input<boolean>(undefined);
     /** Error key which gets translated */

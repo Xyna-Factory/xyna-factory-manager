@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, input, output } from '@angular/core';
 import { XcButtonComponent, XcTemplateComponent, XcTooltipDirective } from '@zeta/xc';
 import { XcColor } from '@zeta/xc/shared/xc-themeable.component';
 
@@ -40,8 +40,7 @@ export class TileButtonComponent {
         return this.selected();
     }
 
-    @Output('select-item')
-    readonly selectItem = new EventEmitter<TileItem>();
+    readonly selectItem = output<TileItem>({ alias: 'select-item' });
 
 
     click() {

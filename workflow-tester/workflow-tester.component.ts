@@ -1,3 +1,5 @@
+import { finalize } from 'rxjs/operators';
+
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -15,15 +17,11 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, output } from '@angular/core';
 import { Router } from '@angular/router';
-
 import { ApiService, OrderTypeSignature, OrderTypeVariable, RuntimeContext, StartOrderOptionsBuilder, Xo, XoArray, XoObject, XoStartOrderExceptionResponse, XoStartOrderSuccessResponse, XoStructureArray, XoStructureObject, XynaMonitoringLevel, XynaPriority } from '@zeta/api';
-import { I18nService } from '@zeta/i18n';
-import { XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
+import { I18nService, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcButtonComponent, XcDialogService, XcFormAutocompleteComponent, XcFormInputComponent, XcIconComponent, XcOptionItem, XcOptionItemUndefined, XcPanelComponent, XcStructureTreeDataSource, XcTreeComponent, XcVarDirective } from '@zeta/xc';
-
-import { finalize } from 'rxjs/operators';
 
 
 interface WorkflowTest {
@@ -95,8 +93,7 @@ export class WorkflowTesterComponent {
         )
     );
 
-    @Output()
-    readonly navigate = new EventEmitter<void>();
+    readonly navigate = output<void>();
 
 
     constructor() {

@@ -17,7 +17,7 @@
  */
 import { debounceTime, filter, finalize, first, skip } from 'rxjs/operators';
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, inject, Input, input, linkedSignal, NgZone, OnInit, Output, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, inject, Input, input, linkedSignal, NgZone, OnInit, output, viewChild } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ShowWorkspaceContentDialogComponent } from '@fman/runtime-contexts/dialog/show-workspace-content/show-workspace-content-dialog.component';
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
@@ -98,14 +98,11 @@ export class WorkspaceTileComponent implements OnInit {
         }
     }
 
-    @Output()
-    readonly validationChange = new EventEmitter<void>();
+    readonly validationChange = output<void>();
 
-    @Output()
-    readonly selectionChange = new EventEmitter<XoWorkspace>();
+    readonly selectionChange = output<XoWorkspace>();
 
-    @Output()
-    readonly selectionDetailsChange = new EventEmitter<XoRuntimeContext>();
+    readonly selectionDetailsChange = output<XoRuntimeContext>();
 
     requiresDataSource: XcRemoteTableDataSource;
 
@@ -275,21 +272,21 @@ export class WorkspaceTileComponent implements OnInit {
 
     createApplicationDefinition() {
         this.dialogService.custom(CreateApplicationDefinitionDialogComponent, this.workspace().name).afterDismissResult().subscribe(
-            () => this.validationChange.next()
+            () => this.validationChange.emit()
         );
     }
 
 
     loadRuntimeApplication() {
         this.dialogService.custom(LoadRuntimeApplicationDialogComponent, { workspaceName: this.workspace().name, runtimeApplication: undefined }).afterDismissResult().subscribe(
-            () => this.validationChange.next()
+            () => this.validationChange.emit()
         );
     }
 
 
     clearWorkspace() {
         this.dialogService.custom(ClearWorkspaceDialogComponent, this.workspace()).afterDismissResult().subscribe(
-            () => this.validationChange.next()
+            () => this.validationChange.emit()
         );
     }
 
@@ -297,7 +294,7 @@ export class WorkspaceTileComponent implements OnInit {
     deleteWorkspace() {
         this.dialogService.custom(DeleteWorkspaceDialogComponent, this.workspace()).afterDismissResult().subscribe(
             () => {
-                this.validationChange.next();
+                this.validationChange.emit();
                 this.selection.set(null);
                 this.workspace.set(null);
                 this.details.set(null);
@@ -324,7 +321,7 @@ export class WorkspaceTileComponent implements OnInit {
                     this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.DELETE_APPLICATION_DEFINITION, this.details().proxy(), undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
                         filter(result => result.errorMessage ? (this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n')), false) : true)
                     ).subscribe(() => {
-                        this.validationChange.next();
+                        this.validationChange.emit();
                         this.selection.set(null);
                         this.workspace.set(null);
                         this.details.set(null);
@@ -381,7 +378,7 @@ export class WorkspaceTileComponent implements OnInit {
 
     deleteDuplicates() {
         this.dialogService.custom(DeleteDuplicatesDialogComponent, this.workspace()).afterDismissResult().subscribe(
-            () => this.validationChange.next()
+            () => this.validationChange.emit()
         );
     }
 

@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, output } from '@angular/core';
 
 import { XcI18nTranslateDirective } from '@zeta/i18n';
 
@@ -36,8 +36,7 @@ export class CustomInformationFormComponent {
      * @description The CustomInformationFormComponent has four custom inputs which can be fetche via the customFieldsChange event.
      * @returns A XoOrderCustoms.
      */
-    @Output()
-    readonly customFieldsChange = new EventEmitter<XoOrderCustoms>();
+    readonly customFieldsChange = output<XoOrderCustoms>();
 
     @Input()
     get customFields(): XoOrderCustoms {
