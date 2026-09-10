@@ -128,7 +128,7 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
         this.runtimeContextsLoading = true;
         this.apiService.getRuntimeContexts().subscribe({
             next: rtcs => {
-                this.runtimeContextsDataWrapper.values = rtcs.map(rtc => (<XcOptionItem>{ value: rtc, name: signal(rtc.toString)() }));
+                this.runtimeContextsDataWrapper.values = rtcs.map(rtc => (<XcOptionItem>{ value: rtc, name: signal(rtc.toString()) }));
                 this.setDefaultRTC();
             },
             error: error => this.dialogService.error(error),
