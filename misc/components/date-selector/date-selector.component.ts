@@ -1,5 +1,3 @@
-import { Subscription } from 'rxjs';
-
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -17,7 +15,9 @@ import { Subscription } from 'rxjs';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { AfterViewInit, ChangeDetectionStrategy, Component, inject, Input, input, OnDestroy, output, viewChild } from '@angular/core';
+import { Subscription } from 'rxjs';
+
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, Input, input, OnDestroy, output, signal, viewChild } from '@angular/core';
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcDialogService, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcOptionItem, XcPanelComponent, XcStringIntegerDataWrapper } from '@zeta/xc';
@@ -95,9 +95,9 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
             if (result && !result.errorMessage) {
                 const zones = result.output[0] as XoTimezoneArray;
                 if (zones && zones.length > 0) {
-                    this.timezoneDataWrapper.values = zones.data.map(zone => <XcOptionItem>{ name: zone.label, value: zone.label });
+                    this.timezoneDataWrapper.values = zones.data.map(zone => <XcOptionItem>{ name: signal(zone.label), value: zone.label });
                 } else {
-                    this.dialogService.error(this.i18n.translate('fman.date-selector.error-timezone'));
+                    this.dialogService.error(this.i18n.translateInstant('fman.date-selector.error-timezone'));
                 }
             } else {
                 this.dialogService.error(result.errorMessage);

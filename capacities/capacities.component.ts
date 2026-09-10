@@ -15,15 +15,14 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, viewChild } from '@angular/core';
+import { filter } from 'rxjs';
 
+import { ChangeDetectionStrategy, Component, viewChild } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcButtonComponent, XcCheckboxComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
 
-import { filter } from 'rxjs';
-
-import { FMAN_RTC } from '@fman/factory-manager.component';
 import { AddNewCapacityModalComponent, AddNewCapacityModalComponentData } from './modal/add-new-capacity-modal/add-new-capacity-modal.component';
 import { CAPACITY_ISWP, RestorableCapacitiesComponent } from './restorable-capacities.component';
 import { XoCapacityInformation, XoCapacityInformationArray } from './xo/xo-capacity-information.model';
@@ -77,13 +76,13 @@ export class CapacitiesComponent extends RestorableCapacitiesComponent {
             {
                 class: 'delete-action-element',
                 iconName: 'delete',
-                tooltip: this.i18nService.translate('fman.capacities.delete'),
+                tooltip: this.i18nService.translateSignal('fman.capacities.delete'),
                 onAction: this.delete.bind(this)
             },
             {
                 class: 'copy-action-element',
                 iconName: 'copy',
-                tooltip: this.i18nService.translate('fman.capacities.duplicate'),
+                tooltip: this.i18nService.translateSignal('fman.capacities.duplicate'),
                 onAction: this.duplicate.bind(this)
             }
         ];
@@ -121,8 +120,8 @@ export class CapacitiesComponent extends RestorableCapacitiesComponent {
 
     delete(entry: XoCapacityInformation) {
         this.dialogService.confirm(
-            this.i18nService.translate(this.FM_DELETE_ENTRY_HEADER),
-            this.i18nService.translate(this.CONFIRM_DELETE, {key: '$0', value: entry.name})
+            this.i18nService.translateInstant(this.FM_DELETE_ENTRY_HEADER),
+            this.i18nService.translateInstant(this.CONFIRM_DELETE, { key: '$0', value: entry.name })
         ).afterDismissResult().subscribe(
             value => {
                 if (value) {

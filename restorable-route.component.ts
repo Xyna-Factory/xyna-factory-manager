@@ -15,15 +15,14 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
+import { Observable, Subject } from 'rxjs';
+
 import { ChangeDetectionStrategy, Component, inject, Injector, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, NavigationExtras, Router } from '@angular/router';
-
 import { ApiService, RuntimeContext, StartOrderResult, Xo, XoArray, XoArrayClassInterface, XoObject, XoObjectClassInterface } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
 import { RouteComponent } from '@zeta/nav';
 import { XcDialogService, XcRemoteDataSource, XcRemoteTableDataSource, XcSelectionDataSource } from '@zeta/xc';
-
-import { Observable, Subject } from 'rxjs';
 
 import { FactoryManagerSettingsService } from './misc/services/factory-manager-settings.service';
 

@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, inject, Input, input, output, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, input, output, viewChild , signal} from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -393,7 +393,7 @@ export class ExecutionTimeComponent {
                 this.executionType = value;
                 this._updateBoundObject();
             },
-            Object.values(ExecutionTypes).map(value => ({ name: this.i18nService.translate(value), value }))
+            Object.values(ExecutionTypes).map(value => ({ name: this.i18nService.translateSignal(value), value }))
         );
 
         this.windowLengthDataWrapper = new XcAutocompleteDataWrapper(
@@ -402,7 +402,7 @@ export class ExecutionTimeComponent {
                 this.windowLengthSelection = value;
                 this._updateBoundObject();
             },
-            Object.values(WindowLengths).map(value => ({ name: this.i18nService.translate(value), value }))
+            Object.values(WindowLengths).map(value => ({ name: this.i18nService.translateSignal(value), value }))
         );
 
         this.apiService.startOrder(FMAN_RTC, FM_WF_GET_TIMEZONES, [], XoTimezoneArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).subscribe(result => {
@@ -410,7 +410,7 @@ export class ExecutionTimeComponent {
                 const tzArr = result.output[0] as XoTimezoneArray;
                 if (tzArr) {
                     if (tzArr.length) {
-                        this.timeZoneDataWrapper.values = tzArr.data.map(tz => ({ name: tz.label, value: tz.label }));
+                        this.timeZoneDataWrapper.values = tzArr.data.map(tz => ({ name: signal(tz.label), value: tz.label }));
                     } else {
                         this.dialogService.error(this.i18nService.translate(GET_TIMEZONE_EMPTY_ERROR));
                     }
