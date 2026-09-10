@@ -1,4 +1,3 @@
-
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -16,17 +15,16 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, inject, OnDestroy } from '@angular/core';
+import { Observable, Subscription, throwError } from 'rxjs';
+import { catchError, filter, finalize, first, map, skip, switchMap } from 'rxjs/operators';
 
+import { ChangeDetectionStrategy, Component, inject, OnDestroy } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoForce } from '@yggdrasil/force.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcIconComponent, XcLocalTableDataSource, XcRemoteTableDataSource, XcTableComponent, XcTooltipDirective } from '@zeta/xc';
 
-import { Observable, Subscription, throwError } from 'rxjs';
-import { catchError, filter, finalize, first, map, skip, switchMap } from 'rxjs/operators';
-
-import { FMAN_RTC } from '@fman/factory-manager.component';
 import { FactoryManagerSettingsService } from '../../../misc/services/factory-manager-settings.service';
 import { createDependenciesTableInfoClass, createDependenciesTableInput, createFilterEnumOfState } from '../../dependencies';
 import { ORDER_TYPES } from '../../order-types';
@@ -82,9 +80,9 @@ export class ManageDependenciesDialogComponent extends XcDialogComponent<boolean
         this.changedDependencyTable.localTableData = {
             rows: [],
             columns: [
-                {path: 'changeTemplate', name: this.i18n.translate('xfm.fman.rtcs.manage-dependencies.table.changes'), disableFilter: true, disableSort: true, shrink: true},
-                {path: 'nameTemplates', name: this.i18n.translate('xfm.fman.rtcs.manage-dependencies.table.name')},
-                {path: 'rtcType', name: this.i18n.translate('xfm.fman.rtcs.manage-dependencies.table.rtc')}
+                { path: 'changeTemplate', name: this.i18n.translateSignal('xfm.fman.rtcs.manage-dependencies.table.changes'), disableFilter: true, disableSort: true, shrink: true },
+                { path: 'nameTemplates', name: this.i18n.translateSignal('xfm.fman.rtcs.manage-dependencies.table.name') },
+                { path: 'rtcType', name: this.i18n.translateSignal('xfm.fman.rtcs.manage-dependencies.table.rtc') }
             ]
         };
         this.changedDependencyTable.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;

@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, inject, Input, input, output, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, input, output, viewChild , signal} from '@angular/core';
 import { FM_WF_GET_ORDER_TYPES } from '@fman/const';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService, StartOrderOptionsBuilder, XoArray, XoRuntimeContext } from '@zeta/api';
@@ -102,7 +102,7 @@ export class OrderTypeFormComponent {
         this.apiService.getRuntimeContexts(false).subscribe({
             next: rtcArr => {
                 if (rtcArr && rtcArr.length) {
-                    this.runtimeContextsDataWrapper.values = rtcArr.map(rtc => ({ value: rtc, name: rtc.toString() }));
+                    this.runtimeContextsDataWrapper.values = rtcArr.map(rtc => ({ value: rtc, name: signal(rtc.toString()) }));
                     this.error = '';
                 } else {
                     this.error = 'unexpectedError';
@@ -123,7 +123,7 @@ export class OrderTypeFormComponent {
                 if (result && !result.errorMessage) {
                     const orderTypeArray = result.output[0] as XoOrderTypeArray;
                     if (orderTypeArray instanceof XoArray) {
-                        this.orderTypeStringDataWrapper.values = orderTypeArray.data.map(ot => ({ value: ot.name, name: ot.name }));
+                        this.orderTypeStringDataWrapper.values = orderTypeArray.data.map(ot => ({ value: ot.name, name: signal(ot.name) }));
                         if (orderTypeArray.data.length === 0) {
                             this.error = 'error-emty';
                         }

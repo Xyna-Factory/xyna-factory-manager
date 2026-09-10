@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, output, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, output, signal, viewChild } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { InputParameterRef } from '@fman/misc/components/input-parameter/input-parameter-ref.class';
 import { XoOrderType, XoOrderTypeArray } from '@fman/xo/xo-order-type.model';
@@ -335,13 +335,13 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
         );
 
         this.monitoringLevelDataWrapper.values = [
-            { name: '0', value: '0' },
-            { name: '5', value: '5' },
-            { name: '10', value: '10' },
-            { name: '15', value: '15' },
-            { name: '17', value: '17' },
-            { name: '18', value: '18' },
-            { name: '20', value: '20' }
+            { name: signal('0'), value: '0' },
+            { name: signal('5'), value: '5' },
+            { name: signal('10'), value: '10' },
+            { name: signal('15'), value: '15' },
+            { name: signal('17'), value: '17' },
+            { name: signal('18'), value: '18' },
+            { name: signal('20'), value: '20' }
         ];
 
         this.frequencyControlledTaskTypes = new XcAutocompleteDataWrapper(
@@ -350,8 +350,8 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
         );
 
         this.frequencyControlledTaskTypes.values = [
-            { name: 'Load', value: 'Load' },
-            { name: 'Rate (in Hz)', value: 'Rate' }
+            { name: signal('Load'), value: 'Load' },
+            { name: signal('Rate (in Hz)'), value: 'Rate' }
         ];
 
         this.selectedGeneratingOrderType = new XoOrderType();
@@ -409,7 +409,7 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
     private _getRuntimeContexts() {
         this.apiService.getRuntimeContexts(false).subscribe({
             next: rtcArr => {
-                this.runtimeContextsDataWrapper.values = rtcArr.map(rtc => ({value: rtc, name: rtc.toString()}));
+                this.runtimeContextsDataWrapper.values = rtcArr.map(rtc => ({value: rtc, name: signal(rtc.toString())}));
             },
             error: error => this.dialogService.error(error)
         });
@@ -428,7 +428,7 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
         this.handleStartOrderResult(sub, output => {
             const otarr = output && output.length ? (output[0] as XoOrderTypeArray) : null;
             if (otarr instanceof XoArray) {
-                this.orderTypeDataWrapper.values = otarr.data.map(ot => ({ value: ot, name: ot.name }));
+                this.orderTypeDataWrapper.values = otarr.data.map(ot => ({ value: ot, name: signal(ot.name) }));
             } else {
                 this.orderTypeDataWrapper.values = [];
                 let error: string;
@@ -451,7 +451,7 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
         const sub = this.apiService.startOrder(FMAN_RTC, ISWP.GetOrderSourceTypes, [], XoSourceTypeArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(sub, output => {
             const stArr = output[0] as XoSourceTypeArray;
-            this.sourceTypeDataWrapper.values = stArr.data.map(st => ({ name: st.label, value: st }));
+            this.sourceTypeDataWrapper.values = stArr.data.map(st => ({ name: signal(st.label), value: st }));
             this.cdr.markForCheck();
         }, 'get Source Type Error');
     }
@@ -551,7 +551,7 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
             this.handleStartOrderResult(sub, output => {
                 const otArr = (output[0] || []) as XoOrderTypeArray;
                 if (otArr) {
-                    this.generatingOrderTypeDataWrapper.values = otArr.data.map(ot => ({ value: ot, name: ot.name }));
+                    this.generatingOrderTypeDataWrapper.values = otArr.data.map(ot => ({ value: ot, name: signal(ot.name) }));
                 }
 
                 if (!otArr.length) {
@@ -623,7 +623,7 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
     }
 
     onGeneratingError(error: any) {
-        const msg = this.i18nService.translate('fman.ois.generating-error-message');
+        const msg = this.i18nService.translateInstant('fman.ois.generating-error-message');
         this.dialogService.error(msg);
     }
 
