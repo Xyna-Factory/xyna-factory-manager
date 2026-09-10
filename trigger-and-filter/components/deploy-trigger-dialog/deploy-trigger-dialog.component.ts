@@ -15,8 +15,8 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoRuntimeContext, XoRuntimeContextArray } from '@fman/runtime-contexts/xo/xo-runtime-context.model';
 import { XoDeployTriggerRequest } from '@fman/trigger-and-filter/xo/xo-deploy-trigger-request.model';
 import { XoStartParameterDetails, XoStartParameterDetailsArray } from '@fman/trigger-and-filter/xo/xo-start-parameter-details.model';
@@ -26,7 +26,6 @@ import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcButtonComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcOptionItem, XDSIconName } from '@zeta/xc';
 
-import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ORDER_TYPES } from '../../order-types';
 import { StartParameterDetailComponent } from '../start-parameter-deatil/start-parameter-detail.component';
 
@@ -56,7 +55,7 @@ export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerIns
     busy: boolean;
     startParameter: XoStartParameterDetails[];
     legacy: boolean;
-    startparameter: {parameter: StartParameter; wrapper: XcAutocompleteDataWrapper<string>}[] = [];
+    startparameter: { parameter: StartParameter; wrapper: XcAutocompleteDataWrapper<string> }[] = [];
 
     context: XoRuntimeContext;
 
@@ -78,7 +77,7 @@ export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerIns
     }
 
     appendStartparameter() {
-        const param = {key: '', value: ''};
+        const param = { key: '', value: '' };
         this.startparameter.push({
             parameter: param,
             wrapper: new XcAutocompleteDataWrapper<string>(
@@ -87,7 +86,7 @@ export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerIns
                     param.key = value;
                 },
                 this.startParameter.map(para =>
-                    <XcOptionItem<string>>{name: para.name, value: para.name}
+                    <XcOptionItem<string>>{ name: signal(para.name), value: para.name }
                 )
             )
         });
@@ -103,7 +102,7 @@ export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerIns
         this.apiService.startOrderAssertFlat<XoRuntimeContext>(FMAN_RTC, ORDER_TYPES.POSSIBLE_CONTEXT_TRIGGER, this.injectedData, XoRuntimeContextArray)
             .subscribe({
                 next: result => {
-                    this.runtimeContextDataWrapper.values = result.map(rtc => <XcOptionItem<XoRuntimeContext>>{ name: rtc.label, value: rtc });
+                    this.runtimeContextDataWrapper.values = result.map(rtc => <XcOptionItem<XoRuntimeContext>>{ name: signal(rtc.label), value: rtc });
                 },
                 error: err => {
                     this.dialogService.error(err);

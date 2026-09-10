@@ -18,7 +18,7 @@
 import { throwError } from 'rxjs';
 import { catchError, finalize, tap } from 'rxjs/operators';
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject , signal} from '@angular/core';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormLabelComponent, XcFormValidatorRequiredDirective, XcOptionItem } from '@zeta/xc';
@@ -70,11 +70,11 @@ export class ImportXynaPropertiesDialogComponent extends XcDialogComponent<boole
 
         this.formatDataWrapper.values = [
             <XcOptionItem<XynaPropertiesFormat>>{
-                name: this.i18n.translate('fman.import-xyna-properties.format-csv'),
+                name: this.i18n.translateSignal('fman.import-xyna-properties.format-csv'),
                 value: XynaPropertiesFormat.CSV
             },
             <XcOptionItem<XynaPropertiesFormat>>{
-                name: this.i18n.translate('fman.import-xyna-properties.format-yaml'),
+                name: this.i18n.translateSignal('fman.import-xyna-properties.format-yaml'),
                 value: XynaPropertiesFormat.YAML
             }
         ];

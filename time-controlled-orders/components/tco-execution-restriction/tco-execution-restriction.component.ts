@@ -1,5 +1,3 @@
-import { Subscription } from 'rxjs';
-
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -17,7 +15,9 @@ import { Subscription } from 'rxjs';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { AfterViewInit, ChangeDetectionStrategy, Component, inject, Input, input, OnDestroy, OnInit, output, viewChild } from '@angular/core';
+import { Subscription } from 'rxjs';
+
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, Input, input, OnDestroy, OnInit, output, signal, viewChild } from '@angular/core';
 import { I18nService, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcPanelComponent, XcTooltipDirective } from '@zeta/xc';
 
@@ -143,7 +143,7 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
                 this.executionRestrictionChange.emit(this.executionRestriction);
             },
             Object.keys(ExecutionTimeBehaviorOnError).map(key => ({
-                name: this.i18n.translate(ExecutionTimeBehaviorOnError[key]),
+                name: this.i18n.translateSignal(ExecutionTimeBehaviorOnError[key]),
                 value: ExecutionTimeBehaviorOnError[key]
             }))
         );
@@ -155,7 +155,7 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
                 this.executionRestriction.executionInterval = this.toMilliSeconds(this.executionInterval, value);
                 this.executionRestrictionChange.emit(this.executionRestriction);
             },
-            Object.keys(TimeRestrictionOptions).map(key => ({ name: this.i18n.translate(TimeRestrictionOptions[key]), value: TimeRestrictionOptions[key] }))
+            Object.keys(TimeRestrictionOptions).map(key => ({ name: this.i18n.translateSignal(TimeRestrictionOptions[key]), value: TimeRestrictionOptions[key] }))
         );
 
         this.schedulingTimeoutUnitDataWrapper = new XcAutocompleteDataWrapper(
@@ -165,7 +165,7 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
                 this.executionRestriction.schedulingTimeout = this.toMilliSeconds(this.schedulingTimeout, value);
                 this.executionRestrictionChange.emit(this.executionRestriction);
             },
-            Object.keys(TimeRestrictionOptions).map(key => ({ name: this.i18n.translate(TimeRestrictionOptions[key]), value: TimeRestrictionOptions[key] }))
+            Object.keys(TimeRestrictionOptions).map(key => ({ name: this.i18n.translateSignal(TimeRestrictionOptions[key]), value: TimeRestrictionOptions[key] }))
         );
 
         this.executionTimeoutUnitDataWrapper = new XcAutocompleteDataWrapper(
@@ -175,7 +175,7 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
                 this.executionRestriction.executionTimeout = this.toMilliSeconds(this.executionTimeout, value);
                 this.executionRestrictionChange.emit(this.executionRestriction);
             },
-            Object.keys(TimeRestrictionOptions).map(key => ({ name: this.i18n.translate(TimeRestrictionOptions[key]), value: TimeRestrictionOptions[key] }))
+            Object.keys(TimeRestrictionOptions).map(key => ({ name: this.i18n.translateSignal(TimeRestrictionOptions[key]), value: TimeRestrictionOptions[key] }))
         );
     }
 

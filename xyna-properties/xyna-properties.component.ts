@@ -15,16 +15,15 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { filter } from 'rxjs';
 
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { StartOrderOptionsBuilder } from '@zeta/api';
 import { XoDocumentation, XoDocumentationLanguage, XoXynaProperty, XoXynaPropertyArray, XoXynaPropertyKey } from '@zeta/auth/xo/xyna-property.model';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcButtonComponent, XcComponentTemplate, XcFormInputComponent, XcFormTextareaComponent, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
 
-import { filter } from 'rxjs';
-
-import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ExportXynaPropertiesDialogComponent } from './dialog/export-xyna-properties/export-xyna-properties-dialog.component';
 import { ImportXynaPropertiesDialogComponent } from './dialog/import-xyna-properties/import-xyna-properties-dialog.component';
 import { AddNewXynaPropertyModalComponent, AddNewXynaPropertyModalComponentData } from './modal/add-new-xyna-property-modal/add-new-xyna-property-modal.component';
@@ -107,13 +106,13 @@ export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
             {
                 class: 'delete-action-element',
                 iconName: 'delete',
-                tooltip: this.i18nService.translate('fman.xyna-properties.delete'),
+                tooltip: this.i18nService.translateSignal('fman.xyna-properties.delete'),
                 onAction: this.delete.bind(this)
             },
             {
                 class: 'copy-action-element',
                 iconName: 'copy',
-                tooltip: this.i18nService.translate('fman.xyna-properties.duplicate'),
+                tooltip: this.i18nService.translateSignal('fman.xyna-properties.duplicate'),
                 onAction: this.duplicate.bind(this)
             }
         ];
