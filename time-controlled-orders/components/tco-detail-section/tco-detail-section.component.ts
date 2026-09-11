@@ -15,16 +15,15 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, inject } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
+import { ChangeDetectionStrategy, Component, inject, input, OnDestroy, OnInit, output, viewChild } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcCheckboxComponent, XcDialogService, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcPanelComponent, XcSelectionModel } from '@zeta/xc';
 
-import { Observable, Subscription } from 'rxjs';
-import { finalize } from 'rxjs/operators';
-
-import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ExecutionTimeComponent } from '../../../cronlike-orders/components/execution-time/execution-time.component';
 import { CustomInformationFormComponent } from '../../../reuseable-components/forms/custom-information-form/custom-information-form.component';
 import { OrderTypeFormComponent } from '../../../reuseable-components/forms/order-type-form/order-type-form.component';
@@ -37,6 +36,7 @@ import { TcoExecutionRestrictionComponent } from '../tco-execution-restriction/t
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'tco-detail-section',
     templateUrl: './tco-detail-section.component.html',
     styleUrls: ['./tco-detail-section.component.scss'],
@@ -46,23 +46,16 @@ export class TcoDetailSectionComponent implements OnInit, OnDestroy {
     private readonly apiService = inject(ApiService);
     private readonly dialogService = inject(XcDialogService);
 
-    @ViewChild(XcFormDirective, { static: false })
-    xcFormDirective: XcFormDirective;
+    readonly xcFormDirective = viewChild(XcFormDirective);
 
-    @ViewChild(StorableInputParameterComponent, { static: false })
-    storableInputComponent: StorableInputParameterComponent;
+    readonly storableInputComponent = viewChild(StorableInputParameterComponent);
 
-    @Input()
-    readonly WFP_GET_TCO_DETAILS;
-    @Input()
-    readonly WFP_UPDATE_TCO;
-    @Output()
-    readonly refresh = new EventEmitter<void>();
-    @Output()
-    readonly validationChange = new EventEmitter<boolean>();
+    readonly WFP_GET_TCO_DETAILS = input(undefined);
+    readonly WFP_UPDATE_TCO = input(undefined);
+    readonly refresh = output<void>();
+    readonly validationChange = output<boolean>();
 
-    @Input()
-    selectionObservable: Observable<XcSelectionModel<XoTimeControlledOrderTableEntry>>;
+    readonly selectionObservable = input<Observable<XcSelectionModel<XoTimeControlledOrderTableEntry>>>(undefined);
 
     selectionSubscription: Subscription;
     querySelection: InputParameter;
@@ -112,7 +105,7 @@ export class TcoDetailSectionComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.selectionSubscription = this.selectionObservable.subscribe(selectionModel => {
+        this.selectionSubscription = this.selectionObservable().subscribe(selectionModel => {
             this.reset();
             this.timeControlledOrderTableEntry = selectionModel.selection[0];
         });
@@ -136,7 +129,7 @@ export class TcoDetailSectionComponent implements OnInit, OnDestroy {
 
     getDetailsAboutTableEntry(id: XoTimeControlledOrderId) {
         this.loading = true;
-        this.apiService.startOrder(FMAN_RTC, this.WFP_GET_TCO_DETAILS, id, XoTimeControlledOrder, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, this.WFP_GET_TCO_DETAILS(), id, XoTimeControlledOrder, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             finalize(() => this.loading = false)
         ).subscribe({
             next: result => {
@@ -153,9 +146,9 @@ export class TcoDetailSectionComponent implements OnInit, OnDestroy {
     }
 
     saveChanges() {
-        this.timeControlledOrder.inputPayload = this.storableInputComponent.getPayload();
+        this.timeControlledOrder.inputPayload = this.storableInputComponent().getPayload();
         this.apiService
-            .startOrder(FMAN_RTC, this.WFP_UPDATE_TCO, this.timeControlledOrder, [], StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+            .startOrder(FMAN_RTC, this.WFP_UPDATE_TCO(), this.timeControlledOrder, [], StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (result.errorMessage) {

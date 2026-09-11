@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject, InjectionToken } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, InjectionToken } from '@angular/core';
 
 import { I18nParam, I18nService, LocaleService } from '@zeta/i18n';
 import { XC_COMPONENT_DATA, XcDynamicComponent, XcFormInputComponent, XcStringIntegerDataWrapper, XcTooltipDirective } from '@zeta/xc';
@@ -31,6 +31,7 @@ export interface CapacityUsageTemplateData {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'capacity-usage-template',
     templateUrl: './capacity-usage-template.component.html',
     styleUrls: ['./capacity-usage-template.component.scss'],
@@ -73,6 +74,6 @@ export class CapacityUsageTemplateComponent extends XcDynamicComponent<CapacityU
             }
         ];
 
-        this.tooltip = this.i18n.translate('fman.capacities-usage-template.tooltip', ...values);
+        this.tooltip = this.i18n.translateInstant('fman.capacities-usage-template.tooltip', ...values);
     }
 }

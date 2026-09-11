@@ -1,16 +1,15 @@
 <div class="header" #header>
-    <label>{{ application.name }}</label>
+    <label>{{ application().name }}</label>
     <div class="active"></div>
     <div class="aside">
         @for (
-            runtimeApplication of application.runtimeApplications;
+            runtimeApplication of application().runtimeApplications;
             track runtimeApplication
         ) {
-            <runtime-context-button
-                [runtimeContext]="runtimeApplication"
+            <runtime-context-button [runtimeContext]="runtimeApplication"
                 [selected]="isSelected(runtimeApplication)"
                 (select)="select($event)"
-            ></runtime-context-button>
+             />
         }
     </div>
 </div>
@@ -19,8 +18,8 @@
         <div class="row">
             <div class="title">
                 <span xc-i18n>runtime-application</span>
-                <span>{{ details.label }}</span>
-                @if (details.isStub) {
+                <span>{{ details().label }}</span>
+                @if (details().isStub) {
                     <span class="stub">(Stub)</span>
                 }
             </div>
@@ -73,20 +72,18 @@
             </div>
         </div>
         <div class="row">
-            <xc-form-input
-                xc-i18n
+            <xc-form-input xc-i18n
                 label="documentation"
-                [value]="details.documentation"
+                [value]="details().documentation"
                 disabled
                 xc-form-field-compact
-            ></xc-form-input>
-            <xc-form-input
-                xc-i18n
+             />
+            <xc-form-input xc-i18n
                 label="version"
-                [value]="details.version"
+                [value]="details().version"
                 disabled
                 xc-form-field-compact
-            ></xc-form-input>
+             />
         </div>
         <!-- @if (issues.length > 0) { -->
         <xc-panel xc-panel-collapsable class="issues">
@@ -137,12 +134,12 @@
                 <header>
                     <h2 class="items-left" xc-i18n>requires</h2>
                     <div class="items-right">
-                        @if (details.isLocal) {
+                        @if (details().isLocal) {
                             <xc-button
                                 (click)="manageDependencies()"
                                 xc-tooltip="{{
                                     'manage-dependencies-of-runtime-context'
-                                        | xcI18n: details.name
+                                        | xcI18n: details().name
                                 }}"
                                 >{{ "manage-dependencies" | xcI18n }}</xc-button
                             >
@@ -150,12 +147,11 @@
                     </div>
                 </header>
                 <section>
-                    <xc-table
-                        [xc-table-datasource]="requiresDataSource"
+                    <xc-table [xc-table-datasource]="requiresDataSource"
                         xc-table-allowsort
                         xc-table-allowfilter
                         xc-table-lazyupdate
-                    ></xc-table>
+                     />
                 </section>
             </xc-panel>
 
@@ -168,12 +164,11 @@
                     <h2 class="items-left" xc-i18n>required-by</h2>
                 </header>
                 <section>
-                    <xc-table
-                        [xc-table-datasource]="requiredByDataSource"
+                    <xc-table [xc-table-datasource]="requiredByDataSource"
                         xc-table-allowsort
                         xc-table-allowfilter
                         xc-table-lazyupdate
-                    ></xc-table>
+                     />
                 </section>
             </xc-panel>
         </div>
@@ -186,19 +181,18 @@
                         (click)="manageContent()"
                         xc-tooltip="{{
                             'manage-content-of-runtime-context'
-                                | xcI18n: details.name
+                                | xcI18n: details().name
                         }}"
                         >{{ "view-content" | xcI18n }}</xc-button
                     >
                 </div>
             </header>
             <section>
-                <xc-table
-                    [xc-table-datasource]="contentDataSource"
+                <xc-table [xc-table-datasource]="contentDataSource"
                     xc-table-allowsort
                     xc-table-allowfilter
                     xc-table-lazyupdate
-                ></xc-table>
+                 />
             </section>
         </xc-panel>
 
@@ -207,14 +201,13 @@
                 <h2 class="items-left" xc-i18n>order-entries</h2>
             </header>
             <section class="row">
-                @for (orderEntry of details.orderEntries; track orderEntry) {
-                    <xc-checkbox
-                        [label]="orderEntry.name"
+                @for (orderEntry of details().orderEntries; track orderEntry) {
+                    <xc-checkbox [label]="orderEntry.name"
                         [(checked)]="orderEntry.isActive"
                         (checkedChange)="changeOrderEntry(orderEntry)"
                         xc-i18n
                         [xc-tooltip]="orderEntry.name"
-                    ></xc-checkbox>
+                     />
                 }
             </section>
         </xc-panel>

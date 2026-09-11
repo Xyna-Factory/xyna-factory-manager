@@ -1,3 +1,5 @@
+import { finalize } from 'rxjs/operators';
+
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -15,16 +17,13 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, input, output } from '@angular/core';
 import { Router } from '@angular/router';
-
 import { ApiService, FullQualifiedName, RuntimeContext, StartOrderOptions, XoArray, XoClassInterfaceFrom, XoDescriber, XoJson, XoObject } from '@zeta/api';
 import { AuthService } from '@zeta/auth';
-import { isArray, isString } from '@zeta/base';
+import { isArray, isString, coerceBoolean } from '@zeta/base';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcButtonComponent, XcDialogService, XcPanelComponent, XcStructureTreeDataSource, XcTreeComponent } from '@zeta/xc';
-
-import { finalize } from 'rxjs/operators';
 
 import { ORDER_INPUT_SOURCE_TYPE_CONSTANT_NAME_PREFIX, ORDER_INPUT_SOURCE_TYPE_WORKFLOW_NAME_PREFIX, ORDER_INPUT_SOURCE_TYPE_XTF_NAME_PREFIX, OrderInputSourceParameterKey } from '../../restorable-order-input-sources.component';
 import { XoOrderInputSource } from '../../xo/xo-order-input-source.model';
@@ -36,6 +35,7 @@ interface InputDataTypesTreeData {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'generate-input-component',
     templateUrl: './generate-input.component.html',
     styleUrls: ['./generate-input.component.scss'],
@@ -82,14 +82,11 @@ export class GenerateInputComponent {
         this.resetComponent(true);
     }
 
-    @Input()
-    fmanRtc: RuntimeContext;
+    readonly fmanRtc = input<RuntimeContext>(undefined);
 
-    @Input()
-    disabled = false;
+    readonly disabled = input(false, { transform: coerceBoolean });
 
-    @Output()
-    readonly generatingErrorEmitter = new EventEmitter<any>();
+    readonly generatingErrorEmitter = output<any>();
 
     errorMsg: string;
     inputParamterTreeDataSource: XcStructureTreeDataSource;

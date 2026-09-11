@@ -15,14 +15,14 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject } from '@angular/core';
+import { throwError } from 'rxjs';
+import { catchError, filter, finalize, tap } from 'rxjs/operators';
 
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcButtonComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormLabelComponent, XcFormValidatorRequiredDirective, XcOptionItem, XcOptionItemString, XcPanelComponent } from '@zeta/xc';
-
-import { throwError } from 'rxjs';
-import { catchError, filter, finalize, tap } from 'rxjs/operators';
 
 import { ORDER_TYPES } from '../../order-types';
 import { XoCreateWorkspaceRequest } from '../../xo/xo-create-workspace-request.model';
@@ -30,13 +30,13 @@ import { XoRepositoryLink } from '../../xo/xo-repository-link.model';
 import { XoSVNRepositoryLink } from '../../xo/xo-svn-repository-link.model';
 import { createWorkspace_translations_de_DE } from './locale/create-workspace-translations.de-DE';
 import { createWorkspace_translations_en_US } from './locale/create-workspace-translations.en-US';
-import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 type WorkspaceName = string;
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './create-workspace-dialog.component.html',
     styleUrls: ['./create-workspace-dialog.component.scss'],
     imports: [XcButtonComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormLabelComponent, XcFormValidatorRequiredDirective, XcPanelComponent, XcI18nContextDirective, XcI18nTranslateDirective]
@@ -81,7 +81,7 @@ export class CreateWorkspaceDialogComponent extends XcDialogComponent<WorkspaceN
                         this.repositoryLink = undefined;
                 }
             },
-            [<XcOptionItem>{name: 'None', value: undefined}, XcOptionItemString(this.SVNRepositoryAccess)]
+            [<XcOptionItem>{name: signal('None'), value: undefined}, XcOptionItemString(this.SVNRepositoryAccess)]
             /*
             this.apiService.startOrderAssertFlat<XoRepositoryLinkType>(FMAN_RTC, ORDER_TYPES., undefined, XoRepositoryLinkType).pipe(
                 map(repositoryLinkTypes => repositoryLinkTypes.map(repositoryLinkType => XcOptionItemString(repositoryLinkType.value)))

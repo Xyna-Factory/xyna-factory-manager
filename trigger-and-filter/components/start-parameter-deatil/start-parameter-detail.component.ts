@@ -15,12 +15,10 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject, Input } from '@angular/core';
-
+import { ChangeDetectionStrategy, Component, inject, Input, signal } from '@angular/core';
 import { XoStartParameterDetails } from '@fman/trigger-and-filter/xo/xo-start-parameter-details.model';
 import { coerceBoolean, Comparable } from '@zeta/base';
-import { I18nService } from '@zeta/i18n';
-import { XcI18nPipe } from '@zeta/i18n';
+import { I18nService, XcI18nPipe } from '@zeta/i18n';
 import { XcLocalTableDataSource, XcPanelComponent, XcTableComponent } from '@zeta/xc';
 
 
@@ -32,6 +30,7 @@ interface ParameterTableRow extends Comparable {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'start-parameter-detail',
     templateUrl: './start-parameter-detail.component.html',
     styleUrls: ['./start-parameter-detail.component.scss'],
@@ -68,15 +67,15 @@ export class StartParameterDetailComponent {
     set compact(compact: boolean) {
         if (coerceBoolean(compact)) {
             this.tableDataSource.localTableData.columns = [
-                { path: 'name', name: 'Name', disableFilter: true, disableSort: true, shrink: true },
-                { path: 'documentation', name: 'Documentation', disableFilter: true, disableSort: true, shrink: true }
+                { path: 'name', name: signal('Name'), disableFilter: true, disableSort: true, shrink: true },
+                { path: 'documentation', name: signal('Documentation'), disableFilter: true, disableSort: true, shrink: true }
             ];
         } else {
             this.tableDataSource.localTableData.columns = [
-                { path: 'name', name: 'Name', disableFilter: true, disableSort: true, shrink: true },
-                { path: 'documentation', name: 'Documentation', disableFilter: true, disableSort: true, shrink: true },
-                { path: 'necessity', name: 'Necessity', disableFilter: true, disableSort: true, shrink: true },
-                { path: 'type', name: 'Type', disableFilter: true, disableSort: true }
+                { path: 'name', name: signal('Name'), disableFilter: true, disableSort: true, shrink: true },
+                { path: 'documentation', name: signal('Documentation'), disableFilter: true, disableSort: true, shrink: true },
+                { path: 'necessity', name: signal('Necessity'), disableFilter: true, disableSort: true, shrink: true },
+                { path: 'type', name: signal('Type'), disableFilter: true, disableSort: true }
             ];
         }
     }

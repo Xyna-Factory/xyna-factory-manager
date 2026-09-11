@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 import { XoRuntimeContext } from '@zeta/api';
 import { LocaleService } from '@zeta/i18n';
@@ -29,6 +29,7 @@ import { XoCronLikeOrder } from './xo/xo-cronlike-order.model';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: ''
 })
 export class RestorableCronlikeOrdersComponent extends RestorableRouteComponent<XoCronLikeOrder> implements OnInit {
@@ -41,7 +42,7 @@ export class RestorableCronlikeOrdersComponent extends RestorableRouteComponent<
     protected UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR = 'fman.restorable-cronlike-orders.unspecified-get-runtime-contexts-error';
 
     protected GET_ORDER_TYPES_EMPTY_LIST_ERROR(context: XoRuntimeContext): string {
-        return this.i18nService.translate('fman.restorable-cronlike-orders.get-order-types-empty-list-error', {
+        return this.i18nService.translateInstant('fman.restorable-cronlike-orders.get-order-types-empty-list-error', {
             key: '$0',
             value: context.toString()
         });
@@ -55,13 +56,13 @@ export class RestorableCronlikeOrdersComponent extends RestorableRouteComponent<
     }
 
     private translateConstants() {
-        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translate(this.UNSPECIFIED_DETAILS_ERROR);
-        this.UNSPECIFIED_ADD_ERROR = this.i18nService.translate(this.UNSPECIFIED_ADD_ERROR);
-        this.UNSPECIFIED_SAVE_ERROR = this.i18nService.translate(this.UNSPECIFIED_SAVE_ERROR);
-        this.CONFIRM_DELETE = this.i18nService.translate(this.CONFIRM_DELETE);
+        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_DETAILS_ERROR);
+        this.UNSPECIFIED_ADD_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_ADD_ERROR);
+        this.UNSPECIFIED_SAVE_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_SAVE_ERROR);
+        this.CONFIRM_DELETE = this.i18nService.translateInstant(this.CONFIRM_DELETE);
 
-        this.UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR = this.i18nService.translate(UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR);
-        this.UNSPECIFIED_GET_ORDER_TYPES_ERROR = this.i18nService.translate(this.UNSPECIFIED_GET_ORDER_TYPES_ERROR);
+        this.UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR = this.i18nService.translateInstant(UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR);
+        this.UNSPECIFIED_GET_ORDER_TYPES_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_GET_ORDER_TYPES_ERROR);
 
         const descriptors = [
             ExecutionTimeInterval,
@@ -75,7 +76,7 @@ export class RestorableCronlikeOrdersComponent extends RestorableRouteComponent<
         ];
 
         descriptors.forEach(desc => {
-            Object.keys(desc).forEach(key => desc[key] = this.i18nService.translate(desc[key]));
+            Object.keys(desc).forEach(key => desc[key] = this.i18nService.translateInstant(desc[key]));
         });
     }
 

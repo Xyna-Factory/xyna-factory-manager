@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { XoManagedFileId } from '@fman/runtime-contexts/xo/xo-managed-file-id.model';
 import { XoRuntimeApplication } from '@fman/runtime-contexts/xo/xo-runtime-application.model';
@@ -33,6 +33,7 @@ import { ConfigService } from '@zeta/api/config.service';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './export-application-dialog.component.html',
     styleUrls: ['./export-application-dialog.component.scss'],
     imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
@@ -66,7 +67,7 @@ export class ExportApplicationDialogComponent extends XcDialogComponent<boolean,
                     if (result.errorMessage) {
                         this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n'));
                     } else {
-                        this.dialogService.error(this.i18n.translate('fman.export-application.export-failed', {key: '$0', value: this.application.name}));
+                        this.dialogService.error(this.i18n.translateInstant('fman.export-application.export-failed', {key: '$0', value: this.application.name}));
                     }
                     return false;
                 }

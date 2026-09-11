@@ -15,16 +15,16 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, OnDestroy, ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs';
 
+import { ChangeDetectionStrategy, Component, OnDestroy, signal, viewChild } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XmomObjectType } from '@pmod/api/xmom-types';
 import { XoRuntimeContext } from '@pmod/xo/runtime-context.model';
 import { FullQualifiedName, StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { QueryParameterService } from '@zeta/nav/query-parameter.service';
 import { XcAutocompleteDataWrapper, XcButtonComponent, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcRemoteTableDataSource, XcRichListComponent, XcRichListItem, XcStringIntegerDataWrapper, XcTableComponent, XcTooltipDirective } from '@zeta/xc';
-
-import { Subscription } from 'rxjs';
 
 import { XoCapacityInformation, XoCapacityInformationArray } from '../capacities/xo/xo-capacity-information.model';
 import { PROCESS_MODELLER_TAB_URL } from '../const';
@@ -39,7 +39,6 @@ import { XoOrderTypeCapacitiesTableInfo } from './xo/xo-order-type-capacities-ta
 import { XoOrderTypeName } from './xo/xo-order-type-name.model';
 import { XoOrderTypeTableFilter } from './xo/xo-order-type-table-filter.model';
 import { XoOrderType, XoOrderTypeArray } from './xo/xo-order-type.model';
-import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 export const EXECUTION_DESTINATION_DOCUMENT_TYPE = 'workflow';
@@ -50,17 +49,18 @@ export const ORDER_TYPES_URL = '/xfm/Factory-Manager/ordertypes';
 const ISWP = ORDER_TYPE_ISWP;
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './order-types.component.html',
     styleUrls: ['./order-types.component.scss'],
     imports: [XcButtonComponent, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcRichListComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class OrderTypesComponent extends RestorableOrderTypesComponent implements OnDestroy {
 
-    @ViewChild(XcFormDirective, { static: false })
-    xcFormDirective: XcFormDirective;
+    readonly xcFormDirective = viewChild(XcFormDirective);
 
     get invalid(): boolean {
-        return this.xcFormDirective ? this.xcFormDirective.invalid : false;
+        const xcFormDirective = this.xcFormDirective();
+        return xcFormDirective ? xcFormDirective.invalid : false;
     }
 
 
@@ -152,13 +152,13 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
             {
                 class: 'delete-action-element',
                 iconName: 'delete',
-                tooltip: this.i18nService.translate('fman.order-types.delete'),
+                tooltip: this.i18nService.translateSignal('fman.order-types.delete'),
                 onAction: this.delete.bind(this)
             },
             {
                 class: 'copy-action-element',
                 iconName: 'copy',
-                tooltip: this.i18nService.translate('fman.order-types.duplicate'),
+                tooltip: this.i18nService.translateSignal('fman.order-types.duplicate'),
                 onAction: this.duplicate.bind(this)
             }
         ];
@@ -181,14 +181,14 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
                 }
             },
             [
-                { name: this.i18nService.translate(this.USE_DEFAULT), value: '-1' },
-                { name: '0', value: '0' },
-                { name: '5', value: '5' },
-                { name: '10', value: '10' },
-                { name: '15', value: '15' },
-                { name: '17', value: '17' },
-                { name: '18', value: '18' },
-                { name: '20', value: '20' }
+                { name: this.i18nService.translateSignal(this.USE_DEFAULT), value: '-1' },
+                { name: signal('0'), value: '0' },
+                { name: signal('5'), value: '5' },
+                { name: signal('10'), value: '10' },
+                { name: signal('15'), value: '15' },
+                { name: signal('17'), value: '17' },
+                { name: signal('18'), value: '18' },
+                { name: signal('20'), value: '20' }
             ]
         );
 
@@ -246,8 +246,8 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
         this.handleStartOrderResult(obs, (output: any[]) => {
             const dtArr = (output[0] || { data: [] }) as XoDestinationTypeArray;
 
-            this.planningDestinationDataWrapper.values = dtArr.data.map(dt => ({ name: dt.name, value: dt }));
-            this.executionDestinationDataWrapper.values = dtArr.data.map(dt => ({ name: dt.name, value: dt }));
+            this.planningDestinationDataWrapper.values = dtArr.data.map(dt => ({ name: signal(dt.name), value: dt }));
+            this.executionDestinationDataWrapper.values = dtArr.data.map(dt => ({ name: signal(dt.name), value: dt }));
         }, 'error! ask admin!');
 
     }
@@ -266,7 +266,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
                 if (negativnumber.test(this.detailsObject.monitoringLevel)) {
                     this.detailsObject.monitoringLevel = '-1';
                 } else if (!this.monitoringLevelDataWrapper.values.find(item => item.value === this.detailsObject.monitoringLevel)) {
-                    this.monitoringLevelDataWrapper.values.push({ name: this.detailsObject.monitoringLevel, value: this.detailsObject.monitoringLevel });
+                    this.monitoringLevelDataWrapper.values.push({ name: signal(this.detailsObject.monitoringLevel), value: this.detailsObject.monitoringLevel });
                 }
             } else {
                 this.detailsObject.monitoringLevel = '-1';
@@ -358,8 +358,8 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
     delete(entry: XoOrderType) {
 
         this.dialogService.confirm(
-            this.i18nService.translate(this.FM_DELETE_ENTRY_HEADER),
-            this.i18nService.translate(this.CONFIRM_DELETE, { key: '$0', value: entry.fullQualifiedName })
+            this.i18nService.translateInstant(this.FM_DELETE_ENTRY_HEADER),
+            this.i18nService.translateInstant(this.CONFIRM_DELETE, { key: '$0', value: entry.fullQualifiedName })
         ).afterDismissResult().subscribe(
             value => {
                 if (value) {
@@ -534,7 +534,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
             return;
         }
 
-        const url = PROCESS_MODELLER_TAB_URL + QueryParameterService.createQueryValue(this.detailsObject.runtimeContext.toRuntimeContext().uniqueKey, this.executionDestinationDataWrapper.value.name, EXECUTION_DESTINATION_DOCUMENT_TYPE);
+        const url = PROCESS_MODELLER_TAB_URL + QueryParameterService.createQueryValue(this.detailsObject.runtimeContext.toRuntimeContext().uniqueKey, this.executionDestinationDataWrapper.value.name(), EXECUTION_DESTINATION_DOCUMENT_TYPE);
         void this.router.navigateByUrl(url);
     }
 

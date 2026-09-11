@@ -15,15 +15,13 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
-import { Router } from '@angular/router';
-
-import { ApiService, OrderTypeSignature, OrderTypeVariable, RuntimeContext, StartOrderOptionsBuilder, Xo, XoArray, XoObject, XoStartOrderExceptionResponse, XoStartOrderSuccessResponse, XoStructureArray, XoStructureObject, XynaMonitoringLevel, XynaPriority } from '@zeta/api';
-import { I18nService } from '@zeta/i18n';
-import { XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcAutocompleteDataWrapper, XcButtonComponent, XcDialogService, XcFormAutocompleteComponent, XcFormInputComponent, XcIconComponent, XcOptionItem, XcOptionItemUndefined, XcPanelComponent, XcStructureTreeDataSource, XcTreeComponent, XcVarDirective } from '@zeta/xc';
-
 import { finalize } from 'rxjs/operators';
+
+import { ChangeDetectionStrategy, Component, inject, Input, output, signal } from '@angular/core';
+import { Router } from '@angular/router';
+import { ApiService, OrderTypeSignature, OrderTypeVariable, RuntimeContext, StartOrderOptionsBuilder, Xo, XoArray, XoObject, XoStartOrderExceptionResponse, XoStartOrderSuccessResponse, XoStructureArray, XoStructureObject, XynaMonitoringLevel, XynaPriority } from '@zeta/api';
+import { I18nService, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcAutocompleteDataWrapper, XcButtonComponent, XcDialogService, XcFormAutocompleteComponent, XcFormInputComponent, XcIconComponent, XcOptionItem, XcOptionItemUndefined, XcPanelComponent, XcStructureTreeDataSource, XcTreeComponent, XcVarDirective } from '@zeta/xc';
 
 
 interface WorkflowTest {
@@ -45,6 +43,7 @@ interface WorkflowTest {
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'xfm-fman-workflow-tester',
     templateUrl: './workflow-tester.component.html',
     styleUrls: ['./workflow-tester.component.scss'],
@@ -82,7 +81,7 @@ export class WorkflowTesterComponent {
         ()    => this.monitoringLevel,
         value => this.monitoringLevel = value,
         [XcOptionItemUndefined()].concat(
-            [0, 5, 10, 15, 17, 18, 20].map(value => <XcOptionItem<XynaMonitoringLevel>>{name: '' + value, value})
+            [0, 5, 10, 15, 17, 18, 20].map(value => <XcOptionItem<XynaMonitoringLevel>>{name: signal('' + value), value})
         )
     );
 
@@ -90,12 +89,11 @@ export class WorkflowTesterComponent {
         ()    => this.priority,
         value => this.priority = value,
         [XcOptionItemUndefined()].concat(
-            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(value => <XcOptionItem<XynaPriority>>{name: '' + value, value})
+            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(value => <XcOptionItem<XynaPriority>>{name: signal('' + value), value})
         )
     );
 
-    @Output()
-    readonly navigate = new EventEmitter<void>();
+    readonly navigate = output<void>();
 
 
     constructor() {

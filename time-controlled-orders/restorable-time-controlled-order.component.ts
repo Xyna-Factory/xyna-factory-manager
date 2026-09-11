@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 import { LocaleService } from '@zeta/i18n';
 
@@ -26,6 +26,7 @@ import { XoTimeControlledOrderTableEntry } from './xo/xo-time-controlled-order-t
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: ''
 })
 export class RestorableTimeControlledOrderComponent extends RestorableRouteComponent<XoTimeControlledOrderTableEntry> implements OnInit {

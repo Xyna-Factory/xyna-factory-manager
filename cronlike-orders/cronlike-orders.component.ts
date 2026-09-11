@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, viewChild , signal} from '@angular/core';
 
 import { FullQualifiedName, RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoArray, XoRuntimeContext, XoWorkspace } from '@zeta/api';
 import { XcAutocompleteDataWrapper, XcButtonComponent, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective } from '@zeta/xc';
@@ -37,19 +37,20 @@ const ISWP = CRONLIKE_ORDERS_ISWP;
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './cronlike-orders.component.html',
     styleUrls: ['./cronlike-orders.component.scss'],
     imports: [XcButtonComponent, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, InputParameterComponent, ExecutionTimeComponent]
 })
 export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
 
-    @ViewChild(XcFormDirective, {static: false})
-    xcFormDirective: XcFormDirective;
+    readonly xcFormDirective = viewChild(XcFormDirective);
 
     executionTimeInvalid = false;
 
     get invalid(): boolean {
-        return this.xcFormDirective ? (this.xcFormDirective.invalid || this.executionTimeInvalid) : false;
+        const xcFormDirective = this.xcFormDirective();
+        return xcFormDirective ? (xcFormDirective.invalid || this.executionTimeInvalid) : false;
     }
 
     inputParameterRef = InputParameterRef.getInstance();
@@ -157,13 +158,13 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
             {
                 class: 'delete-action-element',
                 iconName: 'delete',
-                tooltip: this.i18nService.translate('fman.cronlike-orders.delete'),
+                tooltip: this.i18nService.translateSignal('fman.cronlike-orders.delete'),
                 onAction: this.delete.bind(this)
             },
             {
                 class: 'copy-action-element',
                 iconName: 'copy',
-                tooltip: this.i18nService.translate('fman.cronlike-orders.duplicate'),
+                tooltip: this.i18nService.translateSignal('fman.cronlike-orders.duplicate'),
                 onAction: this.duplicate.bind(this)
             }
         ];
@@ -194,7 +195,7 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
     private _getRuntimeContexts() {
         this.apiService.getRuntimeContexts(false).subscribe({
             next: rtcArr => {
-                this.runtimeContextsDataWrapper.values = rtcArr.map(rtc => ({value: rtc, name: rtc.toString()}));
+                this.runtimeContextsDataWrapper.values = rtcArr.map(rtc => ({value: rtc, name: signal(rtc.toString())}));
             },
             error: error => this.dialogService.error(error)
         });
@@ -210,7 +211,7 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
         this.handleStartOrderResult(sub, output => {
             const otarr = output && output.length ? (output[0] as XoOrderTypeArray) : null;
             if (otarr instanceof XoArray) {
-                this.orderTypeStringDataWrapper.values = otarr.data.map(ot => ({ value: ot.name, name: ot.name }));
+                this.orderTypeStringDataWrapper.values = otarr.data.map(ot => ({ value: ot.name, name: signal(ot.name) }));
                 if (otarr.data.length === 0) {
                     const error = this.GET_ORDER_TYPES_EMPTY_LIST_ERROR(this.selectedServerRuntimeContext);
                     this.dialogService.error(error);
@@ -221,8 +222,8 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
 
     delete(entry: XoCronLikeOrder) {
         this.dialogService.confirm(
-            this.i18nService.translate(this.FM_DELETE_ENTRY_HEADER),
-            this.i18nService.translate(this.CONFIRM_DELETE, { key: '$0', value: entry.name })
+            this.i18nService.translateInstant(this.FM_DELETE_ENTRY_HEADER),
+            this.i18nService.translateInstant(this.CONFIRM_DELETE, { key: '$0', value: entry.name })
         ).afterDismissResult().subscribe(
             value => {
                 if (value) {

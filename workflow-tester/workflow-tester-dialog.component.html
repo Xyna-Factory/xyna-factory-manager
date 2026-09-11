@@ -4,12 +4,11 @@
         <div>{{injectedData.orderType}}</div>
     </div>
     <section content class="zeta-scrollbar">
-        <xfm-fman-workflow-tester
-            [runtimeContext]="injectedData.runtimeContext"
+        <xfm-fman-workflow-tester [runtimeContext]="injectedData.runtimeContext"
             [orderType]="injectedData.orderType"
             [input]="injectedData.input"
             (navigate)="dismiss()"
-        ></xfm-fman-workflow-tester>
+         />
     </section>
     <ng-container footer>
         <xc-button (click)="dismiss()" xc-i18n>button-close</xc-button>

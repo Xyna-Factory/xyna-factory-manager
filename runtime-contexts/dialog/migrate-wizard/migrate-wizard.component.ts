@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -16,8 +15,10 @@ import { NgClass } from '@angular/common';
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject } from '@angular/core';
 
+import { filter, finalize } from 'rxjs/operators';
+
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { XoRTCMigrationResultArray } from '@fman/runtime-contexts/xo/xo-rtcmigration-result.model';
 import { XoRTCName } from '@fman/runtime-contexts/xo/xo-rtcname.model';
 import { XoRuntimeContextTableEntry, XoRuntimeContextTableEntryArray } from '@fman/runtime-contexts/xo/xo-runtime-context-table-entry.model';
@@ -25,8 +26,6 @@ import { ApiService, RuntimeContext, StartOrderOptionsBuilder, Xo, XoObject } fr
 import { Comparable } from '@zeta/base';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogWrapperComponent, XcIconComponent, XcLocalTableDataSource, XcPanelComponent, XcRemoteTableDataSource, XcSpinnerComponent, XcTableComponent, XcTableDataSource, XcTooltipDirective, XDSIconName, XoRemappingTableInfoClass, XoTableColumn, XoTableInfo } from '@zeta/xc';
-
-import { filter, finalize } from 'rxjs/operators';
 
 import { FactoryManagerSettingsService } from '../../../misc/services/factory-manager-settings.service';
 import { createFilterEnumOfState } from '../../dependencies';
@@ -119,10 +118,11 @@ export class RuntimeContextTableInfo extends XoTableInfo {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'migrate-wizard',
     templateUrl: './migrate-wizard.component.html',
     styleUrls: ['./migrate-wizard.component.scss'],
-    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcIconComponent, XcPanelComponent, XcSpinnerComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe, NgClass]
+    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcIconComponent, XcPanelComponent, XcSpinnerComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class MigrateWizardComponent extends XcDialogComponent<boolean, MigrationWizardData> {
     private readonly settings = inject(FactoryManagerSettingsService);
@@ -158,7 +158,7 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
 
     /** Return translated name of current step */
     get stepName(): string {
-        return this.injectedData.i18n.translate(`xfm.fman.rtcs.migrate-wizard.step.${this.migrateWizardState}`);
+        return this.injectedData.i18n.translateInstant(`xfm.fman.rtcs.migrate-wizard.step.${this.migrateWizardState}`);
     }
 
     /** Return number of the step (0-3) */
@@ -176,25 +176,25 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
         if (this.migrateWizardState === MigrateWizardStateEnum.SUMMARY || this.migrateWizardState === MigrateWizardStateEnum.RESULT) {
             return null;
         }
-        return this.getStepByOffset(-1) ? this.injectedData.i18n.translate(`xfm.fman.rtcs.migrate-wizard.step.${this.getStepByOffset(-1)}`) : null;
+        return this.getStepByOffset(-1) ? this.injectedData.i18n.translateInstant(`xfm.fman.rtcs.migrate-wizard.step.${this.getStepByOffset(-1)}`) : null;
     }
 
     /** Label for the next button */
     get stepNextButtonName(): string {
         if (this.migrateWizardState === MigrateWizardStateEnum.CHOOSENODE && this.injectedData.presetSource) {
-            return this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.step.chooseTarget');
+            return this.injectedData.i18n.translateInstant('xfm.fman.rtcs.migrate-wizard.step.chooseTarget');
         }
         if (this.migrateWizardState === MigrateWizardStateEnum.CHOOSTARGET) {
-            return this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.step.summaryButton');
+            return this.injectedData.i18n.translateInstant('xfm.fman.rtcs.migrate-wizard.step.summaryButton');
         }
         if (this.migrateWizardState === MigrateWizardStateEnum.SUMMARY) {
-            return this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.step.migrate');
+            return this.injectedData.i18n.translateInstant('xfm.fman.rtcs.migrate-wizard.step.migrate');
         }
-        return this.getStepByOffset(+1) ? this.injectedData.i18n.translate(`xfm.fman.rtcs.migrate-wizard.step.${this.getStepByOffset(+1)}`) : null;
+        return this.getStepByOffset(+1) ? this.injectedData.i18n.translateInstant(`xfm.fman.rtcs.migrate-wizard.step.${this.getStepByOffset(+1)}`) : null;
     }
 
     get closeButtonName(): string {
-        return this.injectedData.i18n.translate(
+        return this.injectedData.i18n.translateInstant(
             this.migrateWizardState === MigrateWizardStateEnum.RESULT ? 'xfm.fman.rtcs.migrate-wizard.close' : 'xfm.fman.rtcs.migrate-wizard.cancel'
         );
     }
@@ -238,8 +238,8 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
         this.tableNodesSource.localTableData = {
             rows: [],
             columns: [
-                { path: 'name', name: this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.table.name') },
-                { path: 'isLocal', name: this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.table.isLocal') }
+                { path: 'name', name: this.injectedData.i18n.translateSignal('xfm.fman.rtcs.migrate-wizard.table.name')},
+                { path: 'isLocal', name: this.injectedData.i18n.translateSignal('xfm.fman.rtcs.migrate-wizard.table.isLocal')}
             ]
         };
         this.tableNodesSource.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
@@ -249,9 +249,9 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
         this.tableMigrationSource.localTableData = {
             rows: [],
             columns: [
-                { path: 'nodeLabel', name: this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.table.node') },
-                { path: 'sourceLabel', name: this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.table.source') },
-                { path: 'targetLabel', name: this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.table.target') }
+                { path: 'nodeLabel', name: this.injectedData.i18n.translateSignal('xfm.fman.rtcs.migrate-wizard.table.node')},
+                { path: 'sourceLabel', name: this.injectedData.i18n.translateSignal('xfm.fman.rtcs.migrate-wizard.table.source')},
+                { path: 'targetLabel', name: this.injectedData.i18n.translateSignal('xfm.fman.rtcs.migrate-wizard.table.target')}
             ]
         };
 
@@ -260,7 +260,7 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
             {
                 class: 'delete-action-element',
                 iconName: 'delete',
-                tooltip: this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.delete'),
+                tooltip: this.injectedData.i18n.translateSignal('xfm.fman.rtcs.migrate-wizard.delete'),
                 onAction: this.removeMigrationObject.bind(this)
             }
         ];
@@ -438,7 +438,7 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
     /** Return a translated message if the button is disabled */
     disabledTooltipForOffset(offset: number): string {
         // Currently only a missing selection can prevent the user from going a step forth
-        return this.canStepToOffset(offset) ? null : this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.needSelecion');
+        return this.canStepToOffset(offset) ? null : this.injectedData.i18n.translateInstant('xfm.fman.rtcs.migrate-wizard.needSelecion');
     }
 
     /** Return the step name +/- a offset */

@@ -15,8 +15,9 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, input, output } from '@angular/core';
 
+import { coerceBoolean } from '@zeta/base';
 import { XcColor } from '@zeta/xc/shared/xc-themeable.component';
 
 import { XoApplicationDefinition } from '../xo/xo-application-definition.model';
@@ -27,6 +28,7 @@ import { XcButtonComponent, XcTooltipDirective } from '@zeta/xc';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'runtime-context-button',
     templateUrl: './runtime-context-button.component.html',
     styleUrls: ['./runtime-context-button.component.scss'],
@@ -34,35 +36,37 @@ import { XcButtonComponent, XcTooltipDirective } from '@zeta/xc';
 })
 export class RuntimeContextButtonComponent {
 
-    @Input()
-    runtimeContext: XoRuntimeContext;
+    readonly runtimeContext = input<XoRuntimeContext>(undefined);
+
+    readonly selected = input(false, { transform: coerceBoolean });
 
     @HostBinding('class.selected')
-    @Input()
-    selected = false;
+    get hostSelected(): boolean {
+        return this.selected();
+    }
 
-    @Output()
-    readonly select = new EventEmitter<XoRuntimeContext>();
+    readonly select = output<XoRuntimeContext>();
 
 
     click() {
-        this.select.emit(this.selected ? undefined : this.runtimeContext);
+        this.select.emit(this.selected() ? undefined : this.runtimeContext());
     }
 
 
     get hasIcon(): boolean {
-        return this.runtimeContext.state !== XoRuntimeContextState.OK;
+        return this.runtimeContext().state !== XoRuntimeContextState.OK;
     }
 
 
     get color(): XcColor {
-        return this.selected ? 'primary' : 'normal';
+        return this.selected() ? 'primary' : 'normal';
     }
 
 
     get tooltip(): string {
-        if (this.runtimeContext instanceof XoApplicationDefinition && this.runtimeContext.sourceVersion) {
-            return 'Source Version: ' + this.runtimeContext.sourceVersion;
+        const runtimeContext = this.runtimeContext();
+        if (runtimeContext instanceof XoApplicationDefinition && runtimeContext.sourceVersion) {
+            return 'Source Version: ' + runtimeContext.sourceVersion;
         }
         return '';
     }

@@ -15,16 +15,15 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, OnInit } from '@angular/core';
+import { of } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
+import { ChangeDetectionStrategy, Component, OnInit, signal } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { StartOrderOptionsBuilder } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcButtonComponent, XcCheckboxComponent, XcFormDirective, XcIconButtonComponent, XcMasterDetailComponent, XcOptionItem, XcPanelComponent, XcTableComponent, XcTooltipDirective, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
 
-import { of } from 'rxjs';
-import { finalize } from 'rxjs/operators';
-
-import { FMAN_RTC } from '@fman/factory-manager.component';
 import { TcoDetailSectionComponent } from './components/tco-detail-section/tco-detail-section.component';
 import { CreateTimeControlledOrderComponent } from './modal/create-time-controlled-order/create-time-controlled-order.component';
 import { RestorableTimeControlledOrderComponent } from './restorable-time-controlled-order.component';
@@ -34,6 +33,7 @@ import { XoTimeControlledOrder } from './xo/xo-time-controlled-order.model';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'selector-name',
     templateUrl: './time-controlled-orders.component.html',
     styleUrls: ['./time-controlled-orders.component.scss'],
@@ -71,14 +71,14 @@ export class TimeControlledOrdersComponent extends RestorableTimeControlledOrder
 
         // Filter for status
         const filterItems: XcOptionItem[] = [
-            { name: '', value: '' },
-            { name: this.i18nService.translate('fman.tco.planning'), value: 'Planning' },
-            { name: this.i18nService.translate('fman.tco.waiting'), value: 'Waiting' },
-            { name: this.i18nService.translate('fman.tco.running'), value: 'Running' },
-            { name: this.i18nService.translate('fman.tco.disabled'), value: 'Disabled' },
-            { name: this.i18nService.translate('fman.tco.cancelled'), value: 'Cancelled' },
-            { name: this.i18nService.translate('fman.tco.failed'), value: 'Failed' },
-            { name: this.i18nService.translate('fman.tco.finished'), value: 'Finished' }
+            { name: signal(''), value: '' },
+            { name: this.i18nService.translateSignal('fman.tco.planning'), value: 'Planning' },
+            { name: this.i18nService.translateSignal('fman.tco.waiting'), value: 'Waiting' },
+            { name: this.i18nService.translateSignal('fman.tco.running'), value: 'Running' },
+            { name: this.i18nService.translateSignal('fman.tco.disabled'), value: 'Disabled' },
+            { name: this.i18nService.translateSignal('fman.tco.cancelled'), value: 'Cancelled' },
+            { name: this.i18nService.translateSignal('fman.tco.failed'), value: 'Failed' },
+            { name: this.i18nService.translateSignal('fman.tco.finished'), value: 'Finished' }
         ];
         this.remoteTableDataSource.filterEnums.set(XoTimeControlledOrderTableEntry.getAccessorMap().status, of(filterItems));
         this.remoteTableDataSource.refresh();
@@ -88,15 +88,15 @@ export class TimeControlledOrdersComponent extends RestorableTimeControlledOrder
             {
                 class: 'delete-action-element',
                 iconName: 'delete',
-                tooltip: this.i18nService.translate('fman.tco.kill'),
-                onAction: this.killTCO.bind(this),
+                tooltip: this.i18nService.translateSignal('fman.tco.kill'),
+                onAction: row => this.killTCO(row),
                 onShow: tco => !tco.archived
             },
             {
                 class: 'copy-action-element',
                 iconName: 'copy',
-                tooltip: this.i18nService.translate('fman.tco.duplicate-tco'),
-                onAction: this.duplicate.bind(this)
+                tooltip: this.i18nService.translateSignal('fman.tco.duplicate-tco'),
+                onAction: row => this.duplicate(row)
             }
         ];
 
@@ -110,9 +110,9 @@ export class TimeControlledOrdersComponent extends RestorableTimeControlledOrder
         super.ngOnInit();
     }
 
-    killTCO(timeControlledOrder: XoTimeControlledOrder) {
+    killTCO(timeControlledOrder: XoTimeControlledOrderTableEntry) {
         this.dialogService
-            .confirm(this.i18nService.translate('fman.tco.warning'), this.i18nService.translate(this.CONFIRM_KILL, { key: '$0', value: timeControlledOrder.name }))
+            .confirm(this.i18nService.translateInstant('fman.tco.warning'), this.i18nService.translateInstant(this.CONFIRM_KILL, { key: '$0', value: timeControlledOrder.name }))
             .afterDismissResult()
             .subscribe(value => {
                 if (value) {

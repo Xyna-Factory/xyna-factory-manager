@@ -4,20 +4,17 @@
     <header>
       <h1 class="items-left" xc-i18n>header</h1>
       <div class="items-right">
-        <xc-icon-button (click)="refresh()" xc-tooltip="icon-refresh" xc-i18n class="refresh" xc-icon-name="reload">
-        </xc-icon-button>
-        <xc-icon-button (click)="add()" xc-tooltip="icon-add" xc-i18n class="add" xc-icon-name="add">
-        </xc-icon-button>
+        <xc-icon-button (click)="refresh()" xc-tooltip="icon-refresh" xc-i18n class="refresh" xc-icon-name="reload" />
+        <xc-icon-button (click)="add()" xc-tooltip="icon-add" xc-i18n class="add" xc-icon-name="add" />
       </div>
     </header>
     <section class="stretch scroll">
-      <xc-table
-        [xc-table-datasource]="remoteTableDataSource"
+      <xc-table [xc-table-datasource]="remoteTableDataSource"
         xc-table-allowsort
         xc-table-allowfilter
         xc-table-allowselect
         xc-table-lazyupdate
-      ></xc-table>
+       />
     </section>
     <footer></footer>
   </xc-panel>

@@ -15,19 +15,18 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output, ViewChild, inject } from '@angular/core';
-
-import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nService } from '@zeta/i18n';
-import { XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcAutocompleteDataWrapper, XcDialogService, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcOptionItem, XcPanelComponent, XcStringIntegerDataWrapper } from '@zeta/xc';
-
 import { Subscription } from 'rxjs';
+
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, Input, input, OnDestroy, output, signal, viewChild } from '@angular/core';
+import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
+import { I18nService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcAutocompleteDataWrapper, XcDialogService, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcOptionItem, XcPanelComponent, XcStringIntegerDataWrapper } from '@zeta/xc';
 
 import { XoTimezoneArray } from '../../../xo/xo-timezone.model';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'date-selector',
     templateUrl: './date-selector.component.html',
     styleUrls: ['./date-selector.component.scss'],
@@ -50,8 +49,8 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
         }
     );
 
-    @Input() header: string;
-    @Input() disableTimeZoneSelection: boolean;
+    readonly header = input<string>(undefined);
+    readonly disableTimeZoneSelection = input<boolean>(undefined);
 
     @Input('timezone')
     set timezone(value: string) {
@@ -59,16 +58,13 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
         this.timezoneDataWrapper.update();
     }
 
-    @Output('timezoneChange')
-    readonly timezoneChanged = new EventEmitter<string>();
+    readonly timezoneChanged = output<string>({ alias: 'timezoneChange' });
 
 
-    @ViewChild(XcFormDirective, {static: false})
-    form: XcFormDirective;
+    readonly form = viewChild(XcFormDirective);
     private validityChangeSubscription: Subscription;
 
-    @Output('validityChange')
-    readonly validityChangeEmitter = new EventEmitter<boolean>();
+    readonly validityChangeEmitter = output<boolean>({ alias: 'validityChange' });
 
 
 
@@ -90,8 +86,7 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
         }
     }
 
-    @Output('datetimeChange')
-    readonly datetimeChanged = new EventEmitter<number>();
+    readonly datetimeChanged = output<number>({ alias: 'datetimeChange' });
 
 
     @Input()
@@ -100,9 +95,9 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
             if (result && !result.errorMessage) {
                 const zones = result.output[0] as XoTimezoneArray;
                 if (zones && zones.length > 0) {
-                    this.timezoneDataWrapper.values = zones.data.map(zone => <XcOptionItem>{ name: zone.label, value: zone.label });
+                    this.timezoneDataWrapper.values = zones.data.map(zone => <XcOptionItem>{ name: signal(zone.label), value: zone.label });
                 } else {
-                    this.dialogService.error(this.i18n.translate('fman.date-selector.error-timezone'));
+                    this.dialogService.error(this.i18n.translateInstant('fman.date-selector.error-timezone'));
                 }
             } else {
                 this.dialogService.error(result.errorMessage);
@@ -178,7 +173,7 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
 
 
     ngAfterViewInit() {
-        this.validityChangeSubscription = this.form.validityChange.subscribe(formDirective => this.validityChangeEmitter.emit(formDirective.valid));
+        this.validityChangeSubscription = this.form().validityChange.subscribe(formDirective => this.validityChangeEmitter.emit(formDirective.valid));
     }
 
 

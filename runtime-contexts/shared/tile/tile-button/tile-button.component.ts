@@ -15,15 +15,16 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
-
+import { ChangeDetectionStrategy, Component, HostBinding, input, output } from '@angular/core';
+import { XcButtonComponent, XcTemplateComponent, XcTooltipDirective } from '@zeta/xc';
 import { XcColor } from '@zeta/xc/shared/xc-themeable.component';
+import { coerceBoolean } from '@zeta/base';
 
 import { TileItem } from '../tile-data-source';
-import { XcButtonComponent, XcTemplateComponent, XcTooltipDirective } from '@zeta/xc';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'tile-button',
     templateUrl: './tile-button.component.html',
     styleUrls: ['./tile-button.component.scss'],
@@ -31,42 +32,45 @@ import { XcButtonComponent, XcTemplateComponent, XcTooltipDirective } from '@zet
 })
 export class TileButtonComponent {
 
-    @Input()
-    item: TileItem;
+    readonly item = input<TileItem>(undefined);
+
+    readonly selected = input(false, { transform: coerceBoolean });
 
     @HostBinding('class.selected')
-    @Input()
-    selected = false;
+    get hostSelected(): boolean {
+        return this.selected();
+    }
 
-    @Output('select-item')
-    readonly selectItem = new EventEmitter<TileItem>();
+    readonly selectItem = output<TileItem>({ alias: 'select-item' });
 
 
     click() {
-        this.selectItem.emit(this.selected ? undefined : this.item);
+        this.selectItem.emit(this.selected() ? undefined : this.item());
     }
 
 
     get hasIcon(): boolean {
-        return !!this.item.getIcon;
+        return !!this.item().getIcon;
     }
 
 
     get color(): XcColor {
-        return this.selected ? 'primary' : 'normal';
+        return this.selected() ? 'primary' : 'normal';
     }
 
 
     get label(): string {
-        return this.item.getLabel();
+        return this.item().getLabel();
     }
 
     get cursiveLabel(): string {
-        return this.item.getCursiveLabel ? this.item.getCursiveLabel() : undefined;
+        const item = this.item();
+        return item.getCursiveLabel ? item.getCursiveLabel() : undefined;
     }
 
 
     get tooltip(): string {
-        return this.item.getTooltip ? this.item.getTooltip() : '';
+        const item = this.item();
+        return item.getTooltip ? item.getTooltip() : '';
     }
 }

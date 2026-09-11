@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject, InjectionToken } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, InjectionToken } from '@angular/core';
 
 import { tco_translations_de_DE } from '@fman/time-controlled-orders/locale/tco-translations.de-DE';
 import { I18nService, LocaleService, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -26,10 +26,11 @@ import { TimeControlledOrderTableEntryTemplateData } from '../../xo/xo-time-cont
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'time-controlled-order-table-entry-template',
     template: `
         @if (archived) {
-          <i xc-i18n xc-tooltip="tooltip-archived"><xc-icon color="normal" xc-icon-name="folder" xc-icon-material></xc-icon>{{id}}</i>
+          <i xc-i18n xc-tooltip="tooltip-archived"><xc-icon color="normal" xc-icon-name="folder" xc-icon-material />{{id}}</i>
         } @else {
           {{id}}
         }
