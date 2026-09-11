@@ -17,6 +17,7 @@
  */
 import { ChangeDetectionStrategy, Component, HostBinding, input, output } from '@angular/core';
 
+import { coerceBoolean } from '@zeta/base';
 import { XcColor } from '@zeta/xc/shared/xc-themeable.component';
 
 import { XoApplicationDefinition } from '../xo/xo-application-definition.model';
@@ -37,7 +38,7 @@ export class RuntimeContextButtonComponent {
 
     readonly runtimeContext = input<XoRuntimeContext>(undefined);
 
-    readonly selected = input(false);
+    readonly selected = input(false, { transform: coerceBoolean });
 
     @HostBinding('class.selected')
     get hostSelected(): boolean {

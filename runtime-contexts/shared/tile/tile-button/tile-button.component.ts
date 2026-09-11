@@ -18,6 +18,7 @@
 import { ChangeDetectionStrategy, Component, HostBinding, input, output } from '@angular/core';
 import { XcButtonComponent, XcTemplateComponent, XcTooltipDirective } from '@zeta/xc';
 import { XcColor } from '@zeta/xc/shared/xc-themeable.component';
+import { coerceBoolean } from '@zeta/base';
 
 import { TileItem } from '../tile-data-source';
 
@@ -33,7 +34,7 @@ export class TileButtonComponent {
 
     readonly item = input<TileItem>(undefined);
 
-    readonly selected = input(false);
+    readonly selected = input(false, { transform: coerceBoolean });
 
     @HostBinding('class.selected')
     get hostSelected(): boolean {

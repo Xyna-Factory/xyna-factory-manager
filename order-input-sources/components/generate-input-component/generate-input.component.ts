@@ -21,7 +21,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, i
 import { Router } from '@angular/router';
 import { ApiService, FullQualifiedName, RuntimeContext, StartOrderOptions, XoArray, XoClassInterfaceFrom, XoDescriber, XoJson, XoObject } from '@zeta/api';
 import { AuthService } from '@zeta/auth';
-import { isArray, isString } from '@zeta/base';
+import { isArray, isString, coerceBoolean } from '@zeta/base';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcButtonComponent, XcDialogService, XcPanelComponent, XcStructureTreeDataSource, XcTreeComponent } from '@zeta/xc';
 
@@ -84,7 +84,7 @@ export class GenerateInputComponent {
 
     readonly fmanRtc = input<RuntimeContext>(undefined);
 
-    readonly disabled = input(false);
+    readonly disabled = input(false, { transform: coerceBoolean });
 
     readonly generatingErrorEmitter = output<any>();
 
