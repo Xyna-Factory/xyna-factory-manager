@@ -313,8 +313,8 @@ export class WorkspaceTileComponent implements OnInit {
     deleteApplicationDefinition() {
         const details = this.details();
         if (details instanceof XoApplicationDefinitionDetails) {
-            const title = this.i18n.translate('fman.rtcs.workspaces.workspace-tile.delete-application-definition-title', { key: '$0', value: details.label });
-            const message = this.i18n.translate('fman.rtcs.workspaces.workspace-tile.delete-application-definition-message');
+            const title = this.i18n.translateInstant('fman.rtcs.workspaces.workspace-tile.delete-application-definition-title', { key: '$0', value: details.label });
+            const message = this.i18n.translateInstant('fman.rtcs.workspaces.workspace-tile.delete-application-definition-message');
 
             this.dialogService.confirm(title, message).afterDismissResult().subscribe((confirm: boolean) => {
                 if (confirm) {

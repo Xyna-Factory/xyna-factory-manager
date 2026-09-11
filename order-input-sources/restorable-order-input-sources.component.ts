@@ -53,14 +53,14 @@ export class RestorableOrderInputSourcesComponent extends RestorableRouteCompone
         super.ngOnInit();
 
         // translate constants
-        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translate(this.UNSPECIFIED_DETAILS_ERROR);
-        this.UNSPECIFIED_ADD_ERROR = this.i18nService.translate(this.UNSPECIFIED_ADD_ERROR);
-        this.UNSPECIFIED_SAVE_ERROR = this.i18nService.translate(this.UNSPECIFIED_SAVE_ERROR);
-        this.CONFIRM_DELETE = this.i18nService.translate(this.CONFIRM_DELETE);
+        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_DETAILS_ERROR);
+        this.UNSPECIFIED_ADD_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_ADD_ERROR);
+        this.UNSPECIFIED_SAVE_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_SAVE_ERROR);
+        this.CONFIRM_DELETE = this.i18nService.translateInstant(this.CONFIRM_DELETE);
 
-        this.UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR = this.i18nService.translate(this.UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR);
-        this.GET_GENERATING_ORDER_TYPES_ERROR = this.i18nService.translate(this.GET_GENERATING_ORDER_TYPES_ERROR);
-        this.UNSPECIFIED_GET_ORDER_TYPES_ERROR = this.i18nService.translate(this.UNSPECIFIED_GET_ORDER_TYPES_ERROR);
+        this.UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR);
+        this.GET_GENERATING_ORDER_TYPES_ERROR = this.i18nService.translateInstant(this.GET_GENERATING_ORDER_TYPES_ERROR);
+        this.UNSPECIFIED_GET_ORDER_TYPES_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_GET_ORDER_TYPES_ERROR);
     }
 
 
@@ -69,7 +69,7 @@ export class RestorableOrderInputSourcesComponent extends RestorableRouteCompone
             key: '$0',
             value: context.toString()
         };
-        return this.i18nService.translate('No order types found in $0', param);
+        return this.i18nService.translateInstant('No order types found in $0', param);
     }
 
 
@@ -78,7 +78,7 @@ export class RestorableOrderInputSourcesComponent extends RestorableRouteCompone
             key: '$0',
             value: context.toString()
         };
-        return this.i18nService.translate('No generating order types found in $0', param);
+        return this.i18nService.translateInstant('No generating order types found in $0', param);
     }
 }
 

@@ -55,7 +55,7 @@ export class CronlikeOrderIntervalTemplateComponent extends XcDynamicComponent<C
         super();
 
         const intervalObject = this._readIntervalAndItsValuesFromObject();
-        this.interval = this.i18n.translate(intervalObject.message, ...intervalObject.values);
+        this.interval = this.i18n.translateInstant(intervalObject.message, ...intervalObject.values);
     }
 
     private _readIntervalAndItsValuesFromObject(): IntervalData {
@@ -101,25 +101,25 @@ export class CronlikeOrderIntervalTemplateComponent extends XcDynamicComponent<C
                         for (const day of dayArr) {
                             switch (day) {
                                 case 'MON':
-                                    days.push(this.i18n.translate('monday'));
+                                    days.push(this.i18n.translateInstant('monday'));
                                     break;
                                 case 'TUE':
-                                    days.push(this.i18n.translate('tuesday'));
+                                    days.push(this.i18n.translateInstant('tuesday'));
                                     break;
                                 case 'WED':
-                                    days.push(this.i18n.translate('wednesday'));
+                                    days.push(this.i18n.translateInstant('wednesday'));
                                     break;
                                 case 'THU':
-                                    days.push(this.i18n.translate('thursday'));
+                                    days.push(this.i18n.translateInstant('thursday'));
                                     break;
                                 case 'FRI':
-                                    days.push(this.i18n.translate('friday'));
+                                    days.push(this.i18n.translateInstant('friday'));
                                     break;
                                 case 'SAT':
-                                    days.push(this.i18n.translate('saturday'));
+                                    days.push(this.i18n.translateInstant('saturday'));
                                     break;
                                 case 'SUN':
-                                    days.push(this.i18n.translate('sunday'));
+                                    days.push(this.i18n.translateInstant('sunday'));
                                     break;
                             }
                         }
@@ -153,43 +153,43 @@ export class CronlikeOrderIntervalTemplateComponent extends XcDynamicComponent<C
 
                         switch (info[1]) {
                             case '1':
-                                interval.values.push({ key: '%value2%', value: this.i18n.translate('first') });
+                                interval.values.push({ key: '%value2%', value: this.i18n.translateInstant('first') });
                                 break;
                             case '2':
-                                interval.values.push({ key: '%value2%', value: this.i18n.translate('second') });
+                                interval.values.push({ key: '%value2%', value: this.i18n.translateInstant('second') });
                                 break;
                             case '3':
-                                interval.values.push({ key: '%value2%', value: this.i18n.translate('third') });
+                                interval.values.push({ key: '%value2%', value: this.i18n.translateInstant('third') });
                                 break;
                             case '4':
-                                interval.values.push({ key: '%value2%', value: this.i18n.translate('fourth') });
+                                interval.values.push({ key: '%value2%', value: this.i18n.translateInstant('fourth') });
                                 break;
                             case '1L':
-                                interval.values.push({ key: '%value2%', value: this.i18n.translate('last') });
+                                interval.values.push({ key: '%value2%', value: this.i18n.translateInstant('last') });
                                 break;
                         }
 
                         switch (info[2]) {
                             case '1':
-                                interval.values.push({ key: '%value3%', value: this.i18n.translate('monday') });
+                                interval.values.push({ key: '%value3%', value: this.i18n.translateInstant('monday') });
                                 break;
                             case '2':
-                                interval.values.push({ key: '%value3%', value: this.i18n.translate('tuesday') });
+                                interval.values.push({ key: '%value3%', value: this.i18n.translateInstant('tuesday') });
                                 break;
                             case '3':
-                                interval.values.push({ key: '%value3%', value: this.i18n.translate('wednesday') });
+                                interval.values.push({ key: '%value3%', value: this.i18n.translateInstant('wednesday') });
                                 break;
                             case '4':
-                                interval.values.push({ key: '%value3%', value: this.i18n.translate('thursday') });
+                                interval.values.push({ key: '%value3%', value: this.i18n.translateInstant('thursday') });
                                 break;
                             case '5':
-                                interval.values.push({ key: '%value3%', value: this.i18n.translate('friday') });
+                                interval.values.push({ key: '%value3%', value: this.i18n.translateInstant('friday') });
                                 break;
                             case '6':
-                                interval.values.push({ key: '%value3%', value: this.i18n.translate('saturday') });
+                                interval.values.push({ key: '%value3%', value: this.i18n.translateInstant('saturday') });
                                 break;
                             case '7':
-                                interval.values.push({ key: '%value3%', value: this.i18n.translate('sunday') });
+                                interval.values.push({ key: '%value3%', value: this.i18n.translateInstant('sunday') });
                                 break;
                         }
                     }
@@ -213,40 +213,40 @@ export class CronlikeOrderIntervalTemplateComponent extends XcDynamicComponent<C
 
                         switch (restr1value) {
                             case '1':
-                                interval.values.push({ key: '%value3%', value: this.i18n.translate('January') });
+                                interval.values.push({ key: '%value3%', value: this.i18n.translateInstant('January') });
                                 break;
                             case '2':
-                                interval.values.push({ key: '%value3%', value: this.i18n.translate('February') });
+                                interval.values.push({ key: '%value3%', value: this.i18n.translateInstant('February') });
                                 break;
                             case '3':
-                                interval.values.push({ key: '%value3%', value: this.i18n.translate('March') });
+                                interval.values.push({ key: '%value3%', value: this.i18n.translateInstant('March') });
                                 break;
                             case '4':
-                                interval.values.push({ key: '%value3%', value: this.i18n.translate('April') });
+                                interval.values.push({ key: '%value3%', value: this.i18n.translateInstant('April') });
                                 break;
                             case '5':
-                                interval.values.push({ key: '%value3%', value: this.i18n.translate('May') });
+                                interval.values.push({ key: '%value3%', value: this.i18n.translateInstant('May') });
                                 break;
                             case '6':
-                                interval.values.push({ key: '%value3%', value: this.i18n.translate('June') });
+                                interval.values.push({ key: '%value3%', value: this.i18n.translateInstant('June') });
                                 break;
                             case '7':
-                                interval.values.push({ key: '%value3%', value: this.i18n.translate('July') });
+                                interval.values.push({ key: '%value3%', value: this.i18n.translateInstant('July') });
                                 break;
                             case '8':
-                                interval.values.push({ key: '%value3%', value: this.i18n.translate('August') });
+                                interval.values.push({ key: '%value3%', value: this.i18n.translateInstant('August') });
                                 break;
                             case '9':
-                                interval.values.push({ key: '%value3%', value: this.i18n.translate('September') });
+                                interval.values.push({ key: '%value3%', value: this.i18n.translateInstant('September') });
                                 break;
                             case '10':
-                                interval.values.push({ key: '%value3%', value: this.i18n.translate('October') });
+                                interval.values.push({ key: '%value3%', value: this.i18n.translateInstant('October') });
                                 break;
                             case '11':
-                                interval.values.push({ key: '%value3%', value: this.i18n.translate('November') });
+                                interval.values.push({ key: '%value3%', value: this.i18n.translateInstant('November') });
                                 break;
                             case '12':
-                                interval.values.push({ key: '%value3%', value: this.i18n.translate('December') });
+                                interval.values.push({ key: '%value3%', value: this.i18n.translateInstant('December') });
                                 break;
                         }
                     }
@@ -263,82 +263,82 @@ export class CronlikeOrderIntervalTemplateComponent extends XcDynamicComponent<C
 
                             switch (info[1]) {
                                 case '1':
-                                    interval.values.push({ key: '%value3%', value: this.i18n.translate('first') });
+                                    interval.values.push({ key: '%value3%', value: this.i18n.translateInstant('first') });
                                     break;
                                 case '2':
-                                    interval.values.push({ key: '%value3%', value: this.i18n.translate('second') });
+                                    interval.values.push({ key: '%value3%', value: this.i18n.translateInstant('second') });
                                     break;
                                 case '3':
-                                    interval.values.push({ key: '%value3%', value: this.i18n.translate('third') });
+                                    interval.values.push({ key: '%value3%', value: this.i18n.translateInstant('third') });
                                     break;
                                 case '4':
-                                    interval.values.push({ key: '%value3%', value: this.i18n.translate('fourth') });
+                                    interval.values.push({ key: '%value3%', value: this.i18n.translateInstant('fourth') });
                                     break;
                                 case '1L':
-                                    interval.values.push({ key: '%value3%', value: this.i18n.translate('last') });
+                                    interval.values.push({ key: '%value3%', value: this.i18n.translateInstant('last') });
                                     break;
                             }
 
                             switch (info[2]) {
                                 case '1':
-                                    interval.values.push({ key: '%value4%', value: this.i18n.translate('monday') });
+                                    interval.values.push({ key: '%value4%', value: this.i18n.translateInstant('monday') });
                                     break;
                                 case '2':
-                                    interval.values.push({ key: '%value4%', value: this.i18n.translate('tuesday') });
+                                    interval.values.push({ key: '%value4%', value: this.i18n.translateInstant('tuesday') });
                                     break;
                                 case '3':
-                                    interval.values.push({ key: '%value4%', value: this.i18n.translate('wednesday') });
+                                    interval.values.push({ key: '%value4%', value: this.i18n.translateInstant('wednesday') });
                                     break;
                                 case '4':
-                                    interval.values.push({ key: '%value4%', value: this.i18n.translate('thursday') });
+                                    interval.values.push({ key: '%value4%', value: this.i18n.translateInstant('thursday') });
                                     break;
                                 case '5':
-                                    interval.values.push({ key: '%value4%', value: this.i18n.translate('friday') });
+                                    interval.values.push({ key: '%value4%', value: this.i18n.translateInstant('friday') });
                                     break;
                                 case '6':
-                                    interval.values.push({ key: '%value4%', value: this.i18n.translate('saturday') });
+                                    interval.values.push({ key: '%value4%', value: this.i18n.translateInstant('saturday') });
                                     break;
                                 case '7':
-                                    interval.values.push({ key: '%value4%', value: this.i18n.translate('sunday') });
+                                    interval.values.push({ key: '%value4%', value: this.i18n.translateInstant('sunday') });
                                     break;
                             }
 
                             switch (restr1value) {
                                 case '1':
-                                    interval.values.push({ key: '%value5%', value: this.i18n.translate('Januar') });
+                                    interval.values.push({ key: '%value5%', value: this.i18n.translateInstant('Januar') });
                                     break;
                                 case '2':
-                                    interval.values.push({ key: '%value5%', value: this.i18n.translate('Februar') });
+                                    interval.values.push({ key: '%value5%', value: this.i18n.translateInstant('Februar') });
                                     break;
                                 case '3':
-                                    interval.values.push({ key: '%value5%', value: this.i18n.translate('March') });
+                                    interval.values.push({ key: '%value5%', value: this.i18n.translateInstant('March') });
                                     break;
                                 case '4':
-                                    interval.values.push({ key: '%value5%', value: this.i18n.translate('April') });
+                                    interval.values.push({ key: '%value5%', value: this.i18n.translateInstant('April') });
                                     break;
                                 case '5':
-                                    interval.values.push({ key: '%value5%', value: this.i18n.translate('May') });
+                                    interval.values.push({ key: '%value5%', value: this.i18n.translateInstant('May') });
                                     break;
                                 case '6':
-                                    interval.values.push({ key: '%value5%', value: this.i18n.translate('June') });
+                                    interval.values.push({ key: '%value5%', value: this.i18n.translateInstant('June') });
                                     break;
                                 case '7':
-                                    interval.values.push({ key: '%value5%', value: this.i18n.translate('July') });
+                                    interval.values.push({ key: '%value5%', value: this.i18n.translateInstant('July') });
                                     break;
                                 case '8':
-                                    interval.values.push({ key: '%value5%', value: this.i18n.translate('August') });
+                                    interval.values.push({ key: '%value5%', value: this.i18n.translateInstant('August') });
                                     break;
                                 case '9':
-                                    interval.values.push({ key: '%value5%', value: this.i18n.translate('September') });
+                                    interval.values.push({ key: '%value5%', value: this.i18n.translateInstant('September') });
                                     break;
                                 case '10':
-                                    interval.values.push({ key: '%value5%', value: this.i18n.translate('October') });
+                                    interval.values.push({ key: '%value5%', value: this.i18n.translateInstant('October') });
                                     break;
                                 case '11':
-                                    interval.values.push({ key: '%value5%', value: this.i18n.translate('November') });
+                                    interval.values.push({ key: '%value5%', value: this.i18n.translateInstant('November') });
                                     break;
                                 case '12':
-                                    interval.values.push({ key: '%value5%', value: this.i18n.translate('December') });
+                                    interval.values.push({ key: '%value5%', value: this.i18n.translateInstant('December') });
                                     break;
                             }
                         }

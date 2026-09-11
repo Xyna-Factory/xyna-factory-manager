@@ -73,8 +73,8 @@ export class DeleteDuplicatesDialogComponent extends XcDialogComponent<boolean, 
                     const deleteResponse = result.output[0] as XoDeleteDuplicatesResponse;
                     if (deleteResponse?.problematicFQNs.length > 0) {
                         const problematicFQNsStr = deleteResponse.problematicFQNs.map(fqn => fqn).join('\r\n');
-                        const title = this.i18n.translate('fman.delete-duplicates.delete-deletition-incomplete-title');
-                        const message = this.i18n.translate('fman.delete-duplicates.delete-deletition-incomplete-message') + ':\r\n' + problematicFQNsStr;
+                        const title = this.i18n.translateInstant('fman.delete-duplicates.delete-deletition-incomplete-title');
+                        const message = this.i18n.translateInstant('fman.delete-duplicates.delete-deletition-incomplete-message') + ':\r\n' + problematicFQNsStr;
                         this.dialogService.info(title, message);
                     }
                 }

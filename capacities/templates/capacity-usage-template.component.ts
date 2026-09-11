@@ -74,6 +74,6 @@ export class CapacityUsageTemplateComponent extends XcDynamicComponent<CapacityU
             }
         ];
 
-        this.tooltip = this.i18n.translate('fman.capacities-usage-template.tooltip', ...values);
+        this.tooltip = this.i18n.translateInstant('fman.capacities-usage-template.tooltip', ...values);
     }
 }

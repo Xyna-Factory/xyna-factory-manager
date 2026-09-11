@@ -172,8 +172,8 @@ export class ManageDependenciesDialogComponent extends XcDialogComponent<boolean
             filter(error => !!error),
             switchMap(error => {
                 // confirm to use the force
-                const title = this.i18n.translate('Confirm');
-                const message = this.i18n.translate('xfm.fman.rtcs.manage-dependencies.force-message', { key: '$0', value: error });
+                const title = this.i18n.translateInstant('Confirm');
+                const message = this.i18n.translateInstant('xfm.fman.rtcs.manage-dependencies.force-message', { key: '$0', value: error });
                 return this.dialogService.confirm(title, message).afterDismissResult().pipe(
                     filter(confirmed => !!confirmed),
                     switchMap(() => this.apply(true))

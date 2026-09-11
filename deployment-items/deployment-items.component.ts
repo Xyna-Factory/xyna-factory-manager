@@ -257,8 +257,8 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
 
         if (confirmFirst) {
             this.dialogService.confirm(
-                this.i18nService.translate(this.FM_DELETE_ENTRY_HEADER),
-                this.i18nService.translate(this.CONFIRM_DELETE)
+                this.i18nService.translateInstant(this.FM_DELETE_ENTRY_HEADER),
+                this.i18nService.translateInstant(this.CONFIRM_DELETE)
             ).afterDismissResult().subscribe(
                 value => {
                     if (value) {

@@ -67,7 +67,7 @@ export class ExportApplicationDialogComponent extends XcDialogComponent<boolean,
                     if (result.errorMessage) {
                         this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n'));
                     } else {
-                        this.dialogService.error(this.i18n.translate('fman.export-application.export-failed', {key: '$0', value: this.application.name}));
+                        this.dialogService.error(this.i18n.translateInstant('fman.export-application.export-failed', {key: '$0', value: this.application.name}));
                     }
                     return false;
                 }

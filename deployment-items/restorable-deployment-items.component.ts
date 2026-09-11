@@ -80,14 +80,14 @@ export class RestorableDeploymentItemsComponent extends RestorableRouteComponent
     }
 
     private translateConstants() {
-        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translate(this.UNSPECIFIED_DETAILS_ERROR);
-        this.UNSPECIFIED_DEPLOY_ERROR = this.i18nService.translate(this.UNSPECIFIED_DEPLOY_ERROR);
-        this.UNSPECIFIED_UNDEPLOY_ERROR = this.i18nService.translate(this.UNSPECIFIED_UNDEPLOY_ERROR);
-        this.CONFIRM_DELETE = this.i18nService.translate(this.CONFIRM_DELETE);
-        this.UNSPECIFIED_DELETE_ERROR = this.i18nService.translate(this.UNSPECIFIED_DELETE_ERROR);
+        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_DETAILS_ERROR);
+        this.UNSPECIFIED_DEPLOY_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_DEPLOY_ERROR);
+        this.UNSPECIFIED_UNDEPLOY_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_UNDEPLOY_ERROR);
+        this.CONFIRM_DELETE = this.i18nService.translateInstant(this.CONFIRM_DELETE);
+        this.UNSPECIFIED_DELETE_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_DELETE_ERROR);
 
-        Object.keys(DeployResolution).forEach(key => DeployResolution[key] = this.i18nService.translate(DeployResolution[key]));
-        Object.keys(DeleteDeploymentItemResolution).forEach(key => DeleteDeploymentItemResolution[key] = this.i18nService.translate(DeleteDeploymentItemResolution[key]));
+        Object.keys(DeployResolution).forEach(key => DeployResolution[key] = this.i18nService.translateInstant(DeployResolution[key]));
+        Object.keys(DeleteDeploymentItemResolution).forEach(key => DeleteDeploymentItemResolution[key] = this.i18nService.translateInstant(DeleteDeploymentItemResolution[key]));
     }
 
     ngOnInit() {

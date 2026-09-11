@@ -358,8 +358,8 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
     delete(entry: XoOrderType) {
 
         this.dialogService.confirm(
-            this.i18nService.translate(this.FM_DELETE_ENTRY_HEADER),
-            this.i18nService.translate(this.CONFIRM_DELETE, { key: '$0', value: entry.fullQualifiedName })
+            this.i18nService.translateInstant(this.FM_DELETE_ENTRY_HEADER),
+            this.i18nService.translateInstant(this.CONFIRM_DELETE, { key: '$0', value: entry.fullQualifiedName })
         ).afterDismissResult().subscribe(
             value => {
                 if (value) {

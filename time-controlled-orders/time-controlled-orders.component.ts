@@ -112,7 +112,7 @@ export class TimeControlledOrdersComponent extends RestorableTimeControlledOrder
 
     killTCO(timeControlledOrder: XoTimeControlledOrderTableEntry) {
         this.dialogService
-            .confirm(this.i18nService.translate('fman.tco.warning'), this.i18nService.translate(this.CONFIRM_KILL, { key: '$0', value: timeControlledOrder.name }))
+            .confirm(this.i18nService.translateInstant('fman.tco.warning'), this.i18nService.translateInstant(this.CONFIRM_KILL, { key: '$0', value: timeControlledOrder.name }))
             .afterDismissResult()
             .subscribe(value => {
                 if (value) {

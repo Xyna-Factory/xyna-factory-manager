@@ -197,7 +197,7 @@ class StorableTableDataSource extends XcLocalTableDataSource<XoObject> {
             // fill rows
             tap(result => {
                 if (result.errorMessage) {
-                    this.dialogs.error(this.i18n.translate('fman.storable-instances.query-storable-error', { key: '$0', value: result.errorMessage }));
+                    this.dialogs.error(this.i18n.translateInstant('fman.storable-instances.query-storable-error', { key: '$0', value: result.errorMessage }));
                 }
 
                 this._loadedStorables = result.output?.[0]?.data ?? [];
@@ -393,7 +393,7 @@ export class StorableInstancesComponent implements OnInit {
      */
     private deleteStorable(storableRow: any): void {
         this.dialogService
-            .confirm(this.i18nService.translate('fman.storable-instances.delete'), this.i18nService.translate('fman.storable-instances.delete-confirm-message'))
+            .confirm(this.i18nService.translateInstant('fman.storable-instances.delete'), this.i18nService.translateInstant('fman.storable-instances.delete-confirm-message'))
             .afterDismiss().pipe(filter(isConfirmed => isConfirmed))
             .subscribe(() => {
                 const deleteProxy = storableRow.proxy();
@@ -450,9 +450,9 @@ export class StorableInstancesComponent implements OnInit {
 
     getFQNPlaceholder(): string {
         if (!this.fqnDataWrapper.values.length && this.selectedRTC && !this.isLoadingFQNs) {
-            return this.i18nService.translate(this.NO_STORABLES_FOUND);
+            return this.i18nService.translateInstant(this.NO_STORABLES_FOUND);
         }
-        return this.i18nService.translate(this.SELECT_STORABLE_PLACEHOLDER);
+        return this.i18nService.translateInstant(this.SELECT_STORABLE_PLACEHOLDER);
     }
 
     /**

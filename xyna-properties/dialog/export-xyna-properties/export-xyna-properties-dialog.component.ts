@@ -86,7 +86,7 @@ export class ExportXynaPropertiesDialogComponent extends XcDialogComponent<boole
                     if (result.errorMessage) {
                         this.dialogService.error(result.errorMessage, null, result.stackTrace?.join('\r\n'));
                     } else {
-                        this.dialogService.error(this.i18n.translate('fman.export-xyna-properties.export-failed'));
+                        this.dialogService.error(this.i18n.translateInstant('fman.export-xyna-properties.export-failed'));
                     }
                     return false;
                 }

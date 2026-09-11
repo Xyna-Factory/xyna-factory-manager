@@ -79,7 +79,7 @@ export class AddNewXynaPropertyModalComponent extends XcDialogComponent<boolean,
     }
 
     get documentationLabel(): string {
-        return this.i18n.translate('Documentation for $0', {key: '$0', value: this.i18n.translate(this._languageTag)});
+        return this.i18n.translateInstant('Documentation for $0', {key: '$0', value: this.i18n.translateInstant(this._languageTag)});
     }
 
     constructor() {

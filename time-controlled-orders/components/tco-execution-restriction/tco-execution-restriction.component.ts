@@ -87,7 +87,7 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
     }
 
     get timeoutTooltip(): string {
-        return this.hasTooltip() ? this.i18n.translate('fman.tco.detail-section.tco-execution-restriction.tooltip-timeout') : null;
+        return this.hasTooltip() ? this.i18n.translateInstant('fman.tco.detail-section.tco-execution-restriction.tooltip-timeout') : null;
     }
 
     set executionInterval(value: number) {

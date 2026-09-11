@@ -77,7 +77,7 @@ export class StorableInstanceCreationComponent extends XcDialogComponent<any, an
         if (!this.structureTreeDataSource.container.data[0]) {
             this.error = true;
             this.isLoading = false;
-            this.errorMessage = this.i18nService.translate(this.EMPTY_STORABLE);
+            this.errorMessage = this.i18nService.translateInstant(this.EMPTY_STORABLE);
         } else {
             this.apiService
                 .startOrder(this.rtc, this.storeOrderType, [this.structureTreeDataSource.container.data[0], this.storeParameter], null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
@@ -86,7 +86,7 @@ export class StorableInstanceCreationComponent extends XcDialogComponent<any, an
                         this.isLoading = false;
                         if (!completed) {
                             this.error = true;
-                            this.errorMessage = this.i18nService.translate(this.DEFAULT_ERROR);
+                            this.errorMessage = this.i18nService.translateInstant(this.DEFAULT_ERROR);
                         }
                     })
                 )
@@ -100,7 +100,7 @@ export class StorableInstanceCreationComponent extends XcDialogComponent<any, an
                     error: (error: any) => {
                         console.error(error);
                         this.error = true;
-                        this.errorMessage = this.i18nService.translate(this.DEFAULT_ERROR);
+                        this.errorMessage = this.i18nService.translateInstant(this.DEFAULT_ERROR);
                     }
                 });
         }

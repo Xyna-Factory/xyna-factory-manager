@@ -158,7 +158,7 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
 
     /** Return translated name of current step */
     get stepName(): string {
-        return this.injectedData.i18n.translate(`xfm.fman.rtcs.migrate-wizard.step.${this.migrateWizardState}`);
+        return this.injectedData.i18n.translateInstant(`xfm.fman.rtcs.migrate-wizard.step.${this.migrateWizardState}`);
     }
 
     /** Return number of the step (0-3) */
@@ -176,25 +176,25 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
         if (this.migrateWizardState === MigrateWizardStateEnum.SUMMARY || this.migrateWizardState === MigrateWizardStateEnum.RESULT) {
             return null;
         }
-        return this.getStepByOffset(-1) ? this.injectedData.i18n.translate(`xfm.fman.rtcs.migrate-wizard.step.${this.getStepByOffset(-1)}`) : null;
+        return this.getStepByOffset(-1) ? this.injectedData.i18n.translateInstant(`xfm.fman.rtcs.migrate-wizard.step.${this.getStepByOffset(-1)}`) : null;
     }
 
     /** Label for the next button */
     get stepNextButtonName(): string {
         if (this.migrateWizardState === MigrateWizardStateEnum.CHOOSENODE && this.injectedData.presetSource) {
-            return this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.step.chooseTarget');
+            return this.injectedData.i18n.translateInstant('xfm.fman.rtcs.migrate-wizard.step.chooseTarget');
         }
         if (this.migrateWizardState === MigrateWizardStateEnum.CHOOSTARGET) {
-            return this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.step.summaryButton');
+            return this.injectedData.i18n.translateInstant('xfm.fman.rtcs.migrate-wizard.step.summaryButton');
         }
         if (this.migrateWizardState === MigrateWizardStateEnum.SUMMARY) {
-            return this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.step.migrate');
+            return this.injectedData.i18n.translateInstant('xfm.fman.rtcs.migrate-wizard.step.migrate');
         }
-        return this.getStepByOffset(+1) ? this.injectedData.i18n.translate(`xfm.fman.rtcs.migrate-wizard.step.${this.getStepByOffset(+1)}`) : null;
+        return this.getStepByOffset(+1) ? this.injectedData.i18n.translateInstant(`xfm.fman.rtcs.migrate-wizard.step.${this.getStepByOffset(+1)}`) : null;
     }
 
     get closeButtonName(): string {
-        return this.injectedData.i18n.translate(
+        return this.injectedData.i18n.translateInstant(
             this.migrateWizardState === MigrateWizardStateEnum.RESULT ? 'xfm.fman.rtcs.migrate-wizard.close' : 'xfm.fman.rtcs.migrate-wizard.cancel'
         );
     }
@@ -438,7 +438,7 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
     /** Return a translated message if the button is disabled */
     disabledTooltipForOffset(offset: number): string {
         // Currently only a missing selection can prevent the user from going a step forth
-        return this.canStepToOffset(offset) ? null : this.injectedData.i18n.translate('xfm.fman.rtcs.migrate-wizard.needSelecion');
+        return this.canStepToOffset(offset) ? null : this.injectedData.i18n.translateInstant('xfm.fman.rtcs.migrate-wizard.needSelecion');
     }
 
     /** Return the step name +/- a offset */

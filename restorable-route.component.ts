@@ -84,7 +84,7 @@ export class RestorableRouteComponent<T extends XoObject = XoObject, D = T> exte
 
     ngOnInit() {
         super.ngOnInit();
-        this.FM_DELETE_ENTRY_HEADER = this.i18nService.translate(this.FM_DELETE_ENTRY_HEADER);
+        this.FM_DELETE_ENTRY_HEADER = this.i18nService.translateInstant(this.FM_DELETE_ENTRY_HEADER);
     }
 
 
@@ -190,7 +190,7 @@ export class RestorableRouteComponent<T extends XoObject = XoObject, D = T> exte
                 }
             },
             error: error => {
-                this.dialogService.error(this.i18nService.translate(undefinedErrorMessage));
+                this.dialogService.error(this.i18nService.translateInstant(undefinedErrorMessage));
                 if (onError) {
                     onError(undefinedErrorMessage);
                 }

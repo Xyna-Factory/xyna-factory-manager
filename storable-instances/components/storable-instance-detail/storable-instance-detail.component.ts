@@ -84,7 +84,7 @@ export class StorableInstanceDetailComponent implements OnDestroy {
                 .pipe(
                     finalize(() => {
                         if (!isSucceeded) {
-                            this.dialogService.error(this.i18n.translate(this.ERROR_MESSAGE));
+                            this.dialogService.error(this.i18n.translateInstant(this.ERROR_MESSAGE));
                         }
                     })
                 )

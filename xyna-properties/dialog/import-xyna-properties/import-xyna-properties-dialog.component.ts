@@ -154,7 +154,7 @@ export class ImportXynaPropertiesDialogComponent extends XcDialogComponent<boole
         const isYaml = name.endsWith('.yaml') || name.endsWith('.yml');
 
         if (!isCsv && !isYaml) {
-            this.dialogService.error(this.i18n.translate('fman.import-xyna-properties.invalid-file-type'));
+            this.dialogService.error(this.i18n.translateInstant('fman.import-xyna-properties.invalid-file-type'));
             this.erroneousFilename = true;
             return false;
         }
@@ -164,7 +164,7 @@ export class ImportXynaPropertiesDialogComponent extends XcDialogComponent<boole
             || (format === XynaPropertiesFormat.YAML && isYaml);
 
         if (!formatMatches) {
-            this.dialogService.error(this.i18n.translate('fman.import-xyna-properties.format-mismatch'));
+            this.dialogService.error(this.i18n.translateInstant('fman.import-xyna-properties.format-mismatch'));
             this.erroneousFilename = true;
             return false;
         }

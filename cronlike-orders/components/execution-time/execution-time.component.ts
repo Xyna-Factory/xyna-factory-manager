@@ -412,10 +412,10 @@ export class ExecutionTimeComponent {
                     if (tzArr.length) {
                         this.timeZoneDataWrapper.values = tzArr.data.map(tz => ({ name: signal(tz.label), value: tz.label }));
                     } else {
-                        this.dialogService.error(this.i18nService.translate(GET_TIMEZONE_EMPTY_ERROR));
+                        this.dialogService.error(this.i18nService.translateInstant(GET_TIMEZONE_EMPTY_ERROR));
                     }
                 } else {
-                    this.dialogService.error(this.i18nService.translate(UNSPECIFIED_GET_TIMEZONE_ERROR));
+                    this.dialogService.error(this.i18nService.translateInstant(UNSPECIFIED_GET_TIMEZONE_ERROR));
                 }
             } else {
                 this.dialogService.error(result.errorMessage);
