@@ -31,7 +31,7 @@
           [(value)]="detailsObject.cardinality"
           xc-form-validator-required
           xc-form-validator-number
-          xc-form-validator-minvalue="0"
+          [xc-form-validator-minvalue]="0"
           xc-i18n
          />
         <xc-checkbox [(checked)]="state" label="checkbox-isactive" xc-i18n />

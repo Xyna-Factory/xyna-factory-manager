@@ -63,9 +63,9 @@ export class StartParameterDetailComponent {
         return this._startParameter;
     }
 
-    @Input('compact')
+    @Input({ alias: 'compact', transform: coerceBoolean })
     set compact(compact: boolean) {
-        if (coerceBoolean(compact)) {
+        if (compact) {
             this.tableDataSource.localTableData.columns = [
                 { path: 'name', name: signal('Name'), disableFilter: true, disableSort: true, shrink: true },
                 { path: 'documentation', name: signal('Documentation'), disableFilter: true, disableSort: true, shrink: true }

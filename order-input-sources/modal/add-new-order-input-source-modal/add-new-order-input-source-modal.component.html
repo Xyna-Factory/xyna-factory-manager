@@ -95,8 +95,8 @@
               [(value)]="priority"
               xc-form-validator-required
               xc-form-validator-number
-              xc-form-validator-minvalue="0"
-              xc-form-validator-maxvalue="10"
+              [xc-form-validator-minvalue]="0"
+              [xc-form-validator-maxvalue]="10"
              />
             <xc-form-autocomplete label="label-monitoring-level"
               placeholder="tooltip-select"

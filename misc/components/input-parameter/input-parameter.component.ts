@@ -15,8 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, Input, OnInit, inject, input, output } from '@angular/core';
-
+import { ChangeDetectionStrategy, Component, inject, Input, input, OnInit, output } from '@angular/core';
 import { ApiService, FullQualifiedName, RuntimeContext, XoArray, XoClassInterfaceFrom, XoDescriber, XoJson, XoObject } from '@zeta/api';
 import { coerceBoolean, isArray } from '@zeta/base';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
@@ -58,9 +57,9 @@ export class InputParameterComponent implements OnInit {
         return this._collapsable;
     }
 
-    @Input('collapsable')
+    @Input({ alias: 'collapsable', transform: coerceBoolean })
     set collapsed(value: boolean) {
-        this._collapsable = coerceBoolean(value);
+        this._collapsable = value;
     }
 
     private _inputString: string;

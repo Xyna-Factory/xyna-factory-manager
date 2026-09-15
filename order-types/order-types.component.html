@@ -61,12 +61,12 @@
           <div class="items-row equal-width-2">
             @if (defaultPriority) {
               <xc-form-input label="label-priority" value="" xc-i18n disabled xc-form-validator-number
-              xc-form-validator-minvalue="1" xc-form-validator-maxvalue="10" />
+              [xc-form-validator-minvalue]="1" [xc-form-validator-maxvalue]="10" />
             }
             @if (!defaultPriority) {
               <xc-form-input label="label-priority" [(value)]="priorityDataWrapper.value" xc-i18n
-                xc-form-validator-required xc-form-validator-number xc-form-validator-minvalue="1"
-              xc-form-validator-maxvalue="10" />
+                xc-form-validator-required xc-form-validator-number [xc-form-validator-minvalue]="1"
+              [xc-form-validator-maxvalue]="10" />
             }
             <xc-checkbox [(checked)]="defaultPriority" label="label-default-priority" xc-i18n />
           </div>
