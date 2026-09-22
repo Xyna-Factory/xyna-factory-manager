@@ -89,7 +89,7 @@ export class TimeControlledOrdersComponent extends RestorableTimeControlledOrder
                 class: 'delete-action-element',
                 iconName: 'delete',
                 tooltip: this.i18nService.translateSignal('fman.tco.kill'),
-                onAction: row => this.killTCO(row),
+                onAction: this.killTCO.bind(this),
                 onShow: tco => !tco.archived
             },
             {
