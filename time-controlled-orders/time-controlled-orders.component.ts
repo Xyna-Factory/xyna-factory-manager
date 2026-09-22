@@ -96,7 +96,7 @@ export class TimeControlledOrdersComponent extends RestorableTimeControlledOrder
                 class: 'copy-action-element',
                 iconName: 'copy',
                 tooltip: this.i18nService.translateSignal('fman.tco.duplicate-tco'),
-                onAction: row => this.duplicate(row)
+                onAction: this.duplicate.bind(this),
             }
         ];
 
