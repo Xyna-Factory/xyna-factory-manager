@@ -15,8 +15,9 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, InjectionToken, Injector } from '@angular/core';
+import { filter } from 'rxjs';
 
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, InjectionToken, Injector, signal } from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ORDER_TYPES } from '@fman/trigger-and-filter/order-types';
 import { XoFilterInstance } from '@fman/trigger-and-filter/xo/xo-filter-instance.model';
@@ -24,11 +25,8 @@ import { XoTriggerInstanceDetail } from '@fman/trigger-and-filter/xo/xo-trigger-
 import { XoTriggerInstance } from '@fman/trigger-and-filter/xo/xo-trigger-instance.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { Comparable } from '@zeta/base';
-import { I18nService } from '@zeta/i18n';
-import { XcI18nTranslateDirective } from '@zeta/i18n';
+import { I18nService, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XC_COMPONENT_DATA, XcButtonComponent, XcDialogService, XcDynamicComponent, XcIconComponent, XcLocalTableDataSource, XcPanelComponent, XcSpinnerComponent, XcTableComponent, XcTooltipDirective, XDSIconName } from '@zeta/xc';
-
-import { filter } from 'rxjs';
 
 
 export interface TriggerInstanceDetailsData {
@@ -134,7 +132,7 @@ export class TriggerInstanceDetailComponent extends XcDynamicComponent<TriggerIn
     }
 
     undeploy() {
-        this.dialogService.confirm(this.i18nService.translate('fman.taf.trigger.tile.undeploy.confirm-title'), this.i18nService.translate('fman.taf.trigger.tile.undeploy.confirm-message')).afterDismiss()
+        this.dialogService.confirm(this.i18nService.translateInstant('fman.taf.trigger.tile.undeploy.confirm-title'), this.i18nService.translateInstant('fman.taf.trigger.tile.undeploy.confirm-message')).afterDismiss()
             .pipe(filter(res => !!res)).subscribe({
                 next: () => {
                     this.busy = true;
@@ -159,9 +157,9 @@ export class TriggerInstanceDetailComponent extends XcDynamicComponent<TriggerIn
     private fillDatasource(data: XoFilterInstance[]) {
         this.datasource.localTableData = {
             columns: [
-                { path: 'filterName', name: 'fman.taf.trigger.tile.table.filter' },
-                { path: 'instance', name: 'fman.taf.trigger.tile.table.instance' },
-                { path: 'context', name: 'fman.taf.trigger.tile.table.context' }
+                { path: 'filterName', name: signal('fman.taf.trigger.tile.table.filter') },
+                { path: 'instance', name: signal('fman.taf.trigger.tile.table.instance') },
+                { path: 'context', name: signal('fman.taf.trigger.tile.table.context') }
             ],
             rows: data.map(xo => new FilterInstanceData(xo.filter, xo.filterInstance, xo.runtimeContext.label))
         };

@@ -15,11 +15,10 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, Input, Output, ViewChild, inject } from '@angular/core';
-
+import { ChangeDetectionStrategy, Component, inject, Input, input, output, viewChild , signal} from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nService } from '@zeta/i18n';
-import { XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
+import { I18nService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcCheckboxComponent, XcDialogService, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIdentityDataWrapper, XcPanelComponent, XcStringIntegerDataWrapper } from '@zeta/xc';
 
 import { FM_WF_GET_TIMEZONES, GET_TIMEZONE_EMPTY_ERROR, UNSPECIFIED_GET_TIMEZONE_ERROR } from '../../../const';
@@ -29,10 +28,10 @@ import { XoTimeUnit, XoTimeUnitArray } from '../../../xo/xo-timeunit.model';
 import { XoRestrictionBasedTimeWindow } from '../../../xo/xo-timewindow.model';
 import { XoTimezoneArray } from '../../../xo/xo-timezone.model';
 import { ExecutionTimeInterval, ExecutionTimeMonth, ExecutionTimeMonthlyAtWhichDayOfTheMonth, ExecutionTimeMonthlyBy, ExecutionTimeWeekday, ExecutionTimeWeekdayPositionInMonth, ExecutionTimeYearlyBy, ExecutionTypes, WindowLengths } from './execution-time.constant';
-import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'execution-time',
     templateUrl: './execution-time.component.html',
     styleUrls: ['./execution-time.component.scss'],
@@ -43,16 +42,13 @@ export class ExecutionTimeComponent {
     private readonly dialogService = inject(XcDialogService);
     private readonly i18nService = inject(I18nService);
 
-    @ViewChild(XcFormDirective, { static: false })
-    xcFormDirective: XcFormDirective;
+    readonly xcFormDirective = viewChild(XcFormDirective);
 
-    @Output()
-    private readonly invalidChange = new EventEmitter<boolean>();
-    @Output()
-    private readonly executionTimeChange = new EventEmitter<XoOrderExecutionTime>();
+    readonly invalidChange = output<boolean>();
+    readonly executionTimeChange = output<XoOrderExecutionTime>();
 
     /** Changes the header of the xc-panel */
-    @Input() header: string;
+    readonly header = input<string>(undefined);
 
     /** @description Decides if the form can have a time window and therefore a:
      *  - execution type
@@ -60,7 +56,7 @@ export class ExecutionTimeComponent {
      *  - end time
      * @usecase Using this component to build a TCOExecutionRestriction, you need a time window.
      */
-    @Input() hasTimeWindow: boolean;
+    readonly hasTimeWindow = input<boolean>(undefined);
 
     private _executionTime: XoOrderExecutionTime;
     private _year: number;
@@ -235,7 +231,8 @@ export class ExecutionTimeComponent {
     }
 
     get invalid(): boolean {
-        return this.xcFormDirective ? this.xcFormDirective.invalid : false;
+        const xcFormDirective = this.xcFormDirective();
+        return xcFormDirective ? xcFormDirective.invalid : false;
     }
 
     get fmanRTC(): RuntimeContext {
@@ -273,7 +270,7 @@ export class ExecutionTimeComponent {
     }
 
     get enableInterval(): boolean {
-        return this.hasTimeWindow ? this.executionType === ExecutionTypes.TIME_WINDOW : true;
+        return this.hasTimeWindow() ? this.executionType === ExecutionTypes.TIME_WINDOW : true;
     }
 
     get allowCustomWindowLength(): boolean {
@@ -396,7 +393,7 @@ export class ExecutionTimeComponent {
                 this.executionType = value;
                 this._updateBoundObject();
             },
-            Object.values(ExecutionTypes).map(value => ({ name: this.i18nService.translate(value), value }))
+            Object.values(ExecutionTypes).map(value => ({ name: this.i18nService.translateSignal(value), value }))
         );
 
         this.windowLengthDataWrapper = new XcAutocompleteDataWrapper(
@@ -405,7 +402,7 @@ export class ExecutionTimeComponent {
                 this.windowLengthSelection = value;
                 this._updateBoundObject();
             },
-            Object.values(WindowLengths).map(value => ({ name: this.i18nService.translate(value), value }))
+            Object.values(WindowLengths).map(value => ({ name: this.i18nService.translateSignal(value), value }))
         );
 
         this.apiService.startOrder(FMAN_RTC, FM_WF_GET_TIMEZONES, [], XoTimezoneArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).subscribe(result => {
@@ -413,12 +410,12 @@ export class ExecutionTimeComponent {
                 const tzArr = result.output[0] as XoTimezoneArray;
                 if (tzArr) {
                     if (tzArr.length) {
-                        this.timeZoneDataWrapper.values = tzArr.data.map(tz => ({ name: tz.label, value: tz.label }));
+                        this.timeZoneDataWrapper.values = tzArr.data.map(tz => ({ name: signal(tz.label), value: tz.label }));
                     } else {
-                        this.dialogService.error(this.i18nService.translate(GET_TIMEZONE_EMPTY_ERROR));
+                        this.dialogService.error(this.i18nService.translateInstant(GET_TIMEZONE_EMPTY_ERROR));
                     }
                 } else {
-                    this.dialogService.error(this.i18nService.translate(UNSPECIFIED_GET_TIMEZONE_ERROR));
+                    this.dialogService.error(this.i18nService.translateInstant(UNSPECIFIED_GET_TIMEZONE_ERROR));
                 }
             } else {
                 this.dialogService.error(result.errorMessage);
@@ -581,7 +578,7 @@ export class ExecutionTimeComponent {
     private _updateComponentView() {
         this._readStartTimeFromObject();
         this._readIntervalAndItsValuesFromObject();
-        if (this.hasTimeWindow) {
+        if (this.hasTimeWindow()) {
             this._readEndTimeFromObject();
             this._readWindowLengthFromObject();
         }
@@ -1030,7 +1027,7 @@ export class ExecutionTimeComponent {
 
     private _writeIntervalAndItsValuesToObject() {
         // If the execution type is set to always there is no time window
-        if (this.hasTimeWindow && this.executionType === ExecutionTypes.ALWAYS) {
+        if (this.hasTimeWindow() && this.executionType === ExecutionTypes.ALWAYS) {
             this.executionTime.timeWindow = null;
         } else {
             const tw = this.executionTime.timeWindow;

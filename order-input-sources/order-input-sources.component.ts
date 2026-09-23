@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject , signal} from '@angular/core';
 
 import { StartOrderOptionsBuilder, XoApplication, XoArray, XoDescriber } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -43,6 +43,7 @@ export interface InputDataTypesTreeData {
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './order-input-sources.component.html',
     styleUrls: ['./order-input-sources.component.scss'],
     imports: [XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, OrderInputSourceDetailsComponent]
@@ -68,13 +69,13 @@ export class OrderInputSourcesComponent extends RestorableOrderInputSourcesCompo
             {
                 class: 'delete-action-element',
                 iconName: 'delete',
-                tooltip: this.i18nService.translate('fman.ois.delete'),
+                tooltip: this.i18nService.translateSignal('fman.ois.delete'),
                 onAction: this.delete.bind(this)
             },
             {
                 class: 'copy-action-element',
                 iconName: 'copy',
-                tooltip: this.i18nService.translate('fman.ois.duplicate'),
+                tooltip: this.i18nService.translateSignal('fman.ois.duplicate'),
                 onAction: this.duplicate.bind(this)
             }
         ];
@@ -204,8 +205,8 @@ export class OrderInputSourcesComponent extends RestorableOrderInputSourcesCompo
 
     delete(entry: XoOrderInputSource) {
         this.dialogService.confirm(
-            this.i18nService.translate(this.FM_DELETE_ENTRY_HEADER),
-            this.i18nService.translate(this.CONFIRM_DELETE, { key: '$0', value: entry.name })
+            this.i18nService.translateInstant(this.FM_DELETE_ENTRY_HEADER),
+            this.i18nService.translateInstant(this.CONFIRM_DELETE, { key: '$0', value: entry.name })
         ).afterDismissResult().subscribe(
             value => {
                 if (value) {

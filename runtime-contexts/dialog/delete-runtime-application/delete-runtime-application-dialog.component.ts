@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -33,6 +33,7 @@ import { deleteRuntimeApplication_translations_en_US } from './locale/delete-run
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './delete-runtime-application-dialog.component.html',
     styleUrls: ['./delete-runtime-application-dialog.component.scss'],
     imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]

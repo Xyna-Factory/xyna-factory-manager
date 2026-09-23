@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 import { LocaleService } from '@zeta/i18n';
 
@@ -26,6 +26,7 @@ import { XoAdministrativeVeto } from './xo/xo-administrative-veto.model';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'restorable-administrative-veto',
     template: ''
 })
@@ -44,10 +45,10 @@ export class RestorableAdministrativeVetoComponent extends RestorableRouteCompon
     }
 
     private translateConstants() {
-        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translate(this.UNSPECIFIED_DETAILS_ERROR);
-        this.UNSPECIFIED_ADD_ERROR = this.i18nService.translate(this.UNSPECIFIED_ADD_ERROR);
-        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translate(this.UNSPECIFIED_SAVE_ERROR);
-        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translate(this.CONFIRM_DELETE);
+        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_DETAILS_ERROR);
+        this.UNSPECIFIED_ADD_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_ADD_ERROR);
+        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_SAVE_ERROR);
+        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translateInstant(this.CONFIRM_DELETE);
     }
 
     ngOnInit() {

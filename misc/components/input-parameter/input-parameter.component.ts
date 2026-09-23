@@ -15,8 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
-
+import { ChangeDetectionStrategy, Component, inject, Input, input, OnInit, output } from '@angular/core';
 import { ApiService, FullQualifiedName, RuntimeContext, XoArray, XoClassInterfaceFrom, XoDescriber, XoJson, XoObject } from '@zeta/api';
 import { coerceBoolean, isArray } from '@zeta/base';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
@@ -43,6 +42,7 @@ export interface InputDataTypesTreeData {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'input-parameter',
     templateUrl: './input-parameter.component.html',
     styleUrls: ['./input-parameter.component.scss'],
@@ -57,9 +57,9 @@ export class InputParameterComponent implements OnInit {
         return this._collapsable;
     }
 
-    @Input('collapsable')
+    @Input({ alias: 'collapsable', transform: coerceBoolean })
     set collapsed(value: boolean) {
-        this._collapsable = coerceBoolean(value);
+        this._collapsable = value;
     }
 
     private _inputString: string;
@@ -108,11 +108,9 @@ export class InputParameterComponent implements OnInit {
         this.updateComponentView();
     }
 
-    @Input()
-    ref: InputParameterRef;
+    readonly ref = input<InputParameterRef>(undefined);
 
-    @Output()
-    readonly markForChange = new EventEmitter<void>();
+    readonly markForChange = output<void>();
 
     inputParamterTreeDataSource: XcStructureTreeDataSource;
 
@@ -127,8 +125,9 @@ export class InputParameterComponent implements OnInit {
 
     ngOnInit() {
 
-        if (this.ref) {
-            this.ref.setComponent(this);
+        const ref = this.ref();
+        if (ref) {
+            ref.setComponent(this);
         } else {
             console.warn('No Reference set for InputParameterComponent');
         }

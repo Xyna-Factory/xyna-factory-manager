@@ -15,27 +15,27 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject } from '@angular/core';
+import { filter, finalize } from 'rxjs/operators';
 
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoManagedFileId } from '@fman/runtime-contexts/xo/xo-managed-file-id.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
+import { ConfigService } from '@zeta/api/config.service';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcOptionItem } from '@zeta/xc';
 
-import { filter, finalize } from 'rxjs/operators';
-
-import { FMAN_RTC } from '@fman/factory-manager.component';
-import { XynaPropertiesFormat, XYNA_PROPERTY_ISWP } from '../../restorable-xyna-properties.component';
+import { XYNA_PROPERTY_ISWP, XynaPropertiesFormat } from '../../restorable-xyna-properties.component';
 import { XoExportSettings } from '../../xo/xo-export-settings.model';
 import { exportXynaProperties_translations_de_DE } from './locale/export-xyna-properties-translations.de-DE';
 import { exportXynaProperties_translations_en_US } from './locale/export-xyna-properties-translations.en-US';
-import { ConfigService } from '@zeta/api/config.service';
 
 
 const ISWP = XYNA_PROPERTY_ISWP;
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './export-xyna-properties-dialog.component.html',
     styleUrls: ['./export-xyna-properties-dialog.component.scss'],
     imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcI18nContextDirective, XcI18nTranslateDirective]
@@ -66,11 +66,11 @@ export class ExportXynaPropertiesDialogComponent extends XcDialogComponent<boole
 
         this.formatDataWrapper.values = [
             <XcOptionItem<string>>{
-                name: this.i18n.translate('fman.export-xyna-properties.format-csv'),
+                name: this.i18n.translateSignal('fman.export-xyna-properties.format-csv'),
                 value: XynaPropertiesFormat.CSV
             },
             <XcOptionItem<string>>{
-                name: this.i18n.translate('fman.export-xyna-properties.format-yaml'),
+                name: this.i18n.translateSignal('fman.export-xyna-properties.format-yaml'),
                 value: XynaPropertiesFormat.YAML
             }
         ];
@@ -86,7 +86,7 @@ export class ExportXynaPropertiesDialogComponent extends XcDialogComponent<boole
                     if (result.errorMessage) {
                         this.dialogService.error(result.errorMessage, null, result.stackTrace?.join('\r\n'));
                     } else {
-                        this.dialogService.error(this.i18n.translate('fman.export-xyna-properties.export-failed'));
+                        this.dialogService.error(this.i18n.translateInstant('fman.export-xyna-properties.export-failed'));
                     }
                     return false;
                 }

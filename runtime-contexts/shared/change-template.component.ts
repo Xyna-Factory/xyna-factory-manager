@@ -15,17 +15,18 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, InjectionToken } from '@angular/core';
+import { ChangeDetectionStrategy, Component, InjectionToken } from '@angular/core';
 
 import { XC_COMPONENT_DATA, XcDynamicComponent, XcIconComponent, XcCheckboxComponent } from '@zeta/xc';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: `
         <div (click)="$event.preventDefault()">
-            <xc-checkbox [checked]="from"></xc-checkbox>
-            <xc-icon xc-icon-name="trending_flat" color="normal" xc-icon-material xc-icon-size="large"></xc-icon>
-            <xc-checkbox [checked]="to" color="primary"></xc-checkbox>
+            <xc-checkbox [checked]="from" />
+            <xc-icon xc-icon-name="trending_flat" color="normal" xc-icon-material xc-icon-size="large" />
+            <xc-checkbox [checked]="to" color="primary" />
         </div>
     `,
     styleUrls: ['change-template.component.scss'],

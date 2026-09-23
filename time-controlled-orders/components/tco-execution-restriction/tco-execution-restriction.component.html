@@ -1,50 +1,45 @@
 <xc-panel>
     <header><h3 xc-i18n>header</h3></header>
     <section xc-form>
-        <xc-form-input
-            label="label-maximum-xecutions"
+        <xc-form-input label="label-maximum-xecutions"
             xc-i18n
             xc-form-validator-number
             xc-form-field-compact
             xc-form-validator-required
             [(value)]="maximumExcecutions"
-        ></xc-form-input>
+         />
         <div class="items-row">
-            <xc-form-input label="label-execution-interval" xc-i18n xc-form-field-compact xc-form-validator-number [(value)]="executionInterval"></xc-form-input>
-            <xc-form-autocomplete
-                xc-form-field-compact
+            <xc-form-input label="label-execution-interval" xc-i18n xc-form-field-compact xc-form-validator-number [(value)]="executionInterval" />
+            <xc-form-autocomplete xc-form-field-compact
                 xc-form-autocomplete-asdropdown
                 [(xc-form-autocomplete-option)]="executionIntervalUnitDataWrapper.value"
                 [xc-form-autocomplete-options]="executionIntervalUnitDataWrapper.values"
                 xc-form-autocomplete-fulltextsearch
-            ></xc-form-autocomplete>
+             />
         </div>
         <div class="items-row" [xc-tooltip]="timeoutTooltip">
-            <xc-form-input label="label-scheduling-timeout" xc-i18n xc-form-field-compact xc-form-validator-number [(value)]="schedulingTimeout"></xc-form-input>
-            <xc-form-autocomplete
-                xc-form-field-compact
+            <xc-form-input label="label-scheduling-timeout" xc-i18n xc-form-field-compact xc-form-validator-number [(value)]="schedulingTimeout" />
+            <xc-form-autocomplete xc-form-field-compact
                 xc-form-autocomplete-asdropdown
                 [(xc-form-autocomplete-option)]="schedulingTimeoutUnitDataWrapper.value"
                 [xc-form-autocomplete-options]="schedulingTimeoutUnitDataWrapper.values"
                 xc-form-autocomplete-fulltextsearch
-            ></xc-form-autocomplete>
+             />
         </div>
 
         <div class="items-row" [xc-tooltip]="timeoutTooltip">
-            <xc-form-input label="label-execution-timeout" xc-i18n xc-form-field-compact xc-form-validator-number [(value)]="executionTimeout"></xc-form-input>
-            <xc-form-autocomplete
-                xc-form-field-compact
+            <xc-form-input label="label-execution-timeout" xc-i18n xc-form-field-compact xc-form-validator-number [(value)]="executionTimeout" />
+            <xc-form-autocomplete xc-form-field-compact
                 xc-form-autocomplete-asdropdown
                 [(xc-form-autocomplete-option)]="executionTimeoutUnitDataWrapper.value"
                 [xc-form-autocomplete-options]="executionTimeoutUnitDataWrapper.values"
                 xc-form-autocomplete-fulltextsearch
-            ></xc-form-autocomplete>
+             />
         </div>
 
-        <xc-checkbox label="label-treat-timeouts-as-error" xc-i18n [(checked)]="treatTimeoutsAsError"></xc-checkbox>
+        <xc-checkbox label="label-treat-timeouts-as-error" xc-i18n [(checked)]="treatTimeoutsAsError" />
 
-        <xc-form-autocomplete
-            label="label-behavior-on-error"
+        <xc-form-autocomplete label="label-behavior-on-error"
             placeholder="placeholder-select"
             [(xc-form-autocomplete-option)]="behaviorOnErrorDataWrapper.value"
             [xc-form-autocomplete-options]="behaviorOnErrorDataWrapper.values"
@@ -55,7 +50,7 @@
             xc-form-autocomplete-asdropdown
             xc-i18n
             readonly
-        ></xc-form-autocomplete>
+         />
         <small xc-i18n>not-supported</small>
     </section>
 </xc-panel>

@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Input, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
 
 import { dateTimeString } from '@zeta/base';
 import { XcI18nTranslateDirective } from '@zeta/i18n';
@@ -25,6 +25,7 @@ import { XoDeploymentItem } from '../../xo/xo-deployment-item.model';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'deployment-state-detail',
     templateUrl: './deployment-state-detail.component.html',
     styleUrls: ['./deployment-state-detail.component.scss'],

@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, InjectionToken } from '@angular/core';
+import { ChangeDetectionStrategy, Component, InjectionToken } from '@angular/core';
 
 import { XC_COMPONENT_DATA, XcDynamicComponent, XcIconComponent } from '@zeta/xc';
 
@@ -26,6 +26,7 @@ export interface DeploymentItemAttentionTemplateData {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: '<span>{{injectedData.value}}</span>@if (injectedData.attention) {<xc-icon xc-icon-style="modeller" xc-icon-name="mini-catch" />}',
     styleUrls: ['./deployment-item-attention-template.component.scss'],
     imports: [XcIconComponent]

@@ -15,24 +15,23 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, HostBinding, InjectionToken, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, InjectionToken, input } from '@angular/core';
 
 import { repeat } from '@zeta/base';
 import { XC_COMPONENT_DATA, XcDynamicComponent } from '@zeta/xc';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'runtime-context-name',
     templateUrl: './runtime-context-name.component.html',
     styleUrls: ['./runtime-context-name.component.scss']
 })
 export class RuntimeContextNameComponent extends XcDynamicComponent<{ name: string; hierarchyLevel: number }> {
 
-    @Input()
-    name: string;
+    readonly name = input<string>(undefined);
 
-    @Input()
-    hierarchyLevel: number;
+    readonly hierarchyLevel = input<number>(undefined);
 
 
     protected getToken(): InjectionToken<string> {
@@ -41,13 +40,13 @@ export class RuntimeContextNameComponent extends XcDynamicComponent<{ name: stri
 
 
     get internalName(): string {
-        return this.name || this.injectedData.name;
+        return this.name() || this.injectedData.name;
     }
 
 
     @HostBinding('attr.hierarchy-level')
     get internalHierarchyLevel(): number {
-        return this.hierarchyLevel || this.injectedData.hierarchyLevel;
+        return this.hierarchyLevel() || this.injectedData.hierarchyLevel;
     }
 
 

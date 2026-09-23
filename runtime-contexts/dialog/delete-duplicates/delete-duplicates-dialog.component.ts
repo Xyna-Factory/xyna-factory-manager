@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { XoDeleteDuplicatesResponse } from '@fman/runtime-contexts/xo/xo-delete-duplicates-response.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
@@ -33,6 +33,7 @@ import { deleteDuplicates_translations_en_US } from './locale/delete-duplicates-
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './delete-duplicates-dialog.component.html',
     styleUrls: ['./delete-duplicates-dialog.component.scss'],
     imports: [XcButtonComponent, XcDialogWrapperComponent, XcIconComponent, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
@@ -72,8 +73,8 @@ export class DeleteDuplicatesDialogComponent extends XcDialogComponent<boolean, 
                     const deleteResponse = result.output[0] as XoDeleteDuplicatesResponse;
                     if (deleteResponse?.problematicFQNs.length > 0) {
                         const problematicFQNsStr = deleteResponse.problematicFQNs.map(fqn => fqn).join('\r\n');
-                        const title = this.i18n.translate('fman.delete-duplicates.delete-deletition-incomplete-title');
-                        const message = this.i18n.translate('fman.delete-duplicates.delete-deletition-incomplete-message') + ':\r\n' + problematicFQNsStr;
+                        const title = this.i18n.translateInstant('fman.delete-duplicates.delete-deletition-incomplete-title');
+                        const message = this.i18n.translateInstant('fman.delete-duplicates.delete-deletition-incomplete-message') + ':\r\n' + problematicFQNsStr;
                         this.dialogService.info(title, message);
                     }
                 }

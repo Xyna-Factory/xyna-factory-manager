@@ -1,14 +1,12 @@
 <xc-dialog-wrapper xc-i18n-context="fman.deploy-trigger-dialog">
     <ng-container header><span xc-i18n>title</span></ng-container>
     <section class="zeta-scrollbar" content xc-form #form="xc-form">
-        <xc-form-input
-            xc-form-validator-required
+        <xc-form-input xc-form-validator-required
             [(value)]="instance"
             xc-i18n
             label="instance-name"
-        ></xc-form-input>
-        <xc-form-autocomplete
-            xc-form-validator-required
+         />
+        <xc-form-autocomplete xc-form-validator-required
             [(xc-form-autocomplete-option)]="runtimeContextDataWrapper.value"
             [xc-form-autocomplete-options]="runtimeContextDataWrapper.values"
             xc-form-autocomplete-sortdirection="asc"
@@ -16,18 +14,16 @@
             xc-form-autocomplete-fulltextsearch
             xc-i18n
             label="context"
-        ></xc-form-autocomplete>
-        <xc-form-input
-            [(value)]="documentation"
+         />
+        <xc-form-input [(value)]="documentation"
             xc-i18n
             label="documentation"
-        ></xc-form-input>
+         />
         @if(legacy) {
-            <xc-form-input
-                [(value)]="parameter"
+            <xc-form-input [(value)]="parameter"
                 xc-i18n
                 label="parameter"
-            ></xc-form-input>
+             />
         }
         @if (!legacy) {
             <div class="startparameter">
@@ -35,34 +31,31 @@
                 <xc-icon-button class="icon"
                     (click)="appendStartparameter()"
                     [xc-icon-name]="XDSIconName.ADD"
-                ></xc-icon-button>
+                 />
             </div>
             @for(para of startparameter; track para) {
                 <div class="startparameter">
-                    <xc-form-autocomplete
-                        class="item"
+                    <xc-form-autocomplete class="item"
                         [(xc-form-autocomplete-option)]="para.wrapper.value"
                         [xc-form-autocomplete-options]="para.wrapper.values"
                         xc-form-field-suffix="clear"
                         xc-form-autocomplete-fulltextsearch
                         xc-i18n
                         label="parameter"
-                    ></xc-form-autocomplete>
-                    <xc-form-input
-                        class="item"
+                     />
+                    <xc-form-input class="item"
                         [(value)]="para.parameter.value"
                         xc-i18n
                         label="Value"
-                    ></xc-form-input>
-                    <xc-icon-button
-                        class="icon"
+                     />
+                    <xc-icon-button class="icon"
                         (click)="deleteStartParameter($index)"
                         [xc-icon-name]="XDSIconName.DELETE"
-                    ></xc-icon-button>
+                     />
                 </div>
             }
         }
-        <start-parameter-detail [start-parameter]="startParameter"></start-parameter-detail>
+        <start-parameter-detail [start-parameter]="startParameter" />
     </section>
     <ng-container footer>
         <xc-button (click)="dismiss()" xc-i18n>cancel</xc-button>

@@ -15,13 +15,11 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, inject } from '@angular/core';
-
-import { I18nService } from '@zeta/i18n';
-import { XcI18nTranslateDirective } from '@zeta/i18n';
-import { XcAutocompleteDataWrapper, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcPanelComponent, XcTooltipDirective } from '@zeta/xc';
-
 import { Subscription } from 'rxjs';
+
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, Input, input, OnDestroy, OnInit, output, signal, viewChild } from '@angular/core';
+import { I18nService, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcAutocompleteDataWrapper, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcPanelComponent, XcTooltipDirective } from '@zeta/xc';
 
 import { ExecutionTimeBehaviorOnError } from '../../../cronlike-orders/components/execution-time/execution-time.constant';
 import { XoTCOExecutionRestriction } from '../../xo/xo-tcoexecution-restriction.model';
@@ -45,6 +43,7 @@ export const TimeConversion = {
 };
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'tco-execution-restriction',
     templateUrl: './tco-execution-restriction.component.html',
     styleUrls: ['./tco-execution-restriction.component.scss'],
@@ -53,8 +52,7 @@ export const TimeConversion = {
 export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, AfterViewInit {
     private readonly i18n = inject(I18nService);
 
-    @ViewChild(XcFormDirective, { static: false })
-    xcFormDirective: XcFormDirective;
+    readonly xcFormDirective = viewChild(XcFormDirective);
 
     behaviorOnErrorDataWrapper: XcAutocompleteDataWrapper;
     selectedBehaviorOnError: ExecutionTimeBehaviorOnError;
@@ -73,13 +71,10 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
     private validityChangeSubscription: Subscription;
     private _executionRestriction: XoTCOExecutionRestriction;
 
-    @Output()
-    private readonly validationChange = new EventEmitter<boolean>();
-    @Output()
-    private readonly executionRestrictionChange = new EventEmitter<XoTCOExecutionRestriction>();
+    readonly validationChange = output<boolean>();
+    readonly executionRestrictionChange = output<XoTCOExecutionRestriction>();
 
-    @Input()
-    private readonly hasTooltip: boolean;
+    readonly hasTooltip = input<boolean>(undefined);
 
     @Input()
     get executionRestriction(): XoTCOExecutionRestriction {
@@ -92,7 +87,7 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
     }
 
     get timeoutTooltip(): string {
-        return this.hasTooltip ? this.i18n.translate('fman.tco.detail-section.tco-execution-restriction.tooltip-timeout') : null;
+        return this.hasTooltip() ? this.i18n.translateInstant('fman.tco.detail-section.tco-execution-restriction.tooltip-timeout') : null;
     }
 
     set executionInterval(value: number) {
@@ -148,7 +143,7 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
                 this.executionRestrictionChange.emit(this.executionRestriction);
             },
             Object.keys(ExecutionTimeBehaviorOnError).map(key => ({
-                name: this.i18n.translate(ExecutionTimeBehaviorOnError[key]),
+                name: this.i18n.translateSignal(ExecutionTimeBehaviorOnError[key]),
                 value: ExecutionTimeBehaviorOnError[key]
             }))
         );
@@ -160,7 +155,7 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
                 this.executionRestriction.executionInterval = this.toMilliSeconds(this.executionInterval, value);
                 this.executionRestrictionChange.emit(this.executionRestriction);
             },
-            Object.keys(TimeRestrictionOptions).map(key => ({ name: this.i18n.translate(TimeRestrictionOptions[key]), value: TimeRestrictionOptions[key] }))
+            Object.keys(TimeRestrictionOptions).map(key => ({ name: this.i18n.translateSignal(TimeRestrictionOptions[key]), value: TimeRestrictionOptions[key] }))
         );
 
         this.schedulingTimeoutUnitDataWrapper = new XcAutocompleteDataWrapper(
@@ -170,7 +165,7 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
                 this.executionRestriction.schedulingTimeout = this.toMilliSeconds(this.schedulingTimeout, value);
                 this.executionRestrictionChange.emit(this.executionRestriction);
             },
-            Object.keys(TimeRestrictionOptions).map(key => ({ name: this.i18n.translate(TimeRestrictionOptions[key]), value: TimeRestrictionOptions[key] }))
+            Object.keys(TimeRestrictionOptions).map(key => ({ name: this.i18n.translateSignal(TimeRestrictionOptions[key]), value: TimeRestrictionOptions[key] }))
         );
 
         this.executionTimeoutUnitDataWrapper = new XcAutocompleteDataWrapper(
@@ -180,7 +175,7 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
                 this.executionRestriction.executionTimeout = this.toMilliSeconds(this.executionTimeout, value);
                 this.executionRestrictionChange.emit(this.executionRestriction);
             },
-            Object.keys(TimeRestrictionOptions).map(key => ({ name: this.i18n.translate(TimeRestrictionOptions[key]), value: TimeRestrictionOptions[key] }))
+            Object.keys(TimeRestrictionOptions).map(key => ({ name: this.i18n.translateSignal(TimeRestrictionOptions[key]), value: TimeRestrictionOptions[key] }))
         );
     }
 
@@ -223,11 +218,11 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
 
     ngAfterViewInit() {
         // Setting up an observable to detect validity change in parent
-        this.validityChangeSubscription = this.xcFormDirective.validityChange.subscribe(form => {
+        this.validityChangeSubscription = this.xcFormDirective().validityChange.subscribe(form => {
             this.validationChange.emit(form.valid);
         });
         // Because validityChange is not a behavior subject
-        this.validationChange.emit(this.xcFormDirective.valid);
+        this.validationChange.emit(this.xcFormDirective().valid);
     }
 
     ngOnDestroy() {

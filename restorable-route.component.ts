@@ -15,15 +15,14 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject, Injector, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, NavigationExtras, Router } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
 
+import { ChangeDetectionStrategy, Component, inject, Injector, OnInit } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, NavigationExtras, Router } from '@angular/router';
 import { ApiService, RuntimeContext, StartOrderResult, Xo, XoArray, XoArrayClassInterface, XoObject, XoObjectClassInterface } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
 import { RouteComponent } from '@zeta/nav';
 import { XcDialogService, XcRemoteDataSource, XcRemoteTableDataSource, XcSelectionDataSource } from '@zeta/xc';
-
-import { Observable, Subject } from 'rxjs';
 
 import { FactoryManagerSettingsService } from './misc/services/factory-manager-settings.service';
 
@@ -38,6 +37,7 @@ export interface InputScreenWorkflowPackage {
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: ''
 })
 export class RestorableRouteComponent<T extends XoObject = XoObject, D = T> extends RouteComponent implements OnInit {
@@ -84,7 +84,7 @@ export class RestorableRouteComponent<T extends XoObject = XoObject, D = T> exte
 
     ngOnInit() {
         super.ngOnInit();
-        this.FM_DELETE_ENTRY_HEADER = this.i18nService.translate(this.FM_DELETE_ENTRY_HEADER);
+        this.FM_DELETE_ENTRY_HEADER = this.i18nService.translateInstant(this.FM_DELETE_ENTRY_HEADER);
     }
 
 
@@ -190,7 +190,7 @@ export class RestorableRouteComponent<T extends XoObject = XoObject, D = T> exte
                 }
             },
             error: error => {
-                this.dialogService.error(this.i18nService.translate(undefinedErrorMessage));
+                this.dialogService.error(this.i18nService.translateInstant(undefinedErrorMessage));
                 if (onError) {
                     onError(undefinedErrorMessage);
                 }

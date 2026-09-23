@@ -15,16 +15,15 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component } from '@angular/core';
+import { filter } from 'rxjs';
 
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { StartOrderOptionsBuilder } from '@zeta/api';
 import { XoDocumentation, XoDocumentationLanguage, XoXynaProperty, XoXynaPropertyArray, XoXynaPropertyKey } from '@zeta/auth/xo/xyna-property.model';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcButtonComponent, XcComponentTemplate, XcFormInputComponent, XcFormTextareaComponent, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
 
-import { filter } from 'rxjs';
-
-import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ExportXynaPropertiesDialogComponent } from './dialog/export-xyna-properties/export-xyna-properties-dialog.component';
 import { ImportXynaPropertiesDialogComponent } from './dialog/import-xyna-properties/import-xyna-properties-dialog.component';
 import { AddNewXynaPropertyModalComponent, AddNewXynaPropertyModalComponentData } from './modal/add-new-xyna-property-modal/add-new-xyna-property-modal.component';
@@ -36,6 +35,7 @@ const ISWP = XYNA_PROPERTY_ISWP;
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './xyna-properties.component.html',
     styleUrls: ['./xyna-properties.component.scss'],
     imports: [XcButtonComponent, XcFormInputComponent, XcFormTextareaComponent, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective]
@@ -66,8 +66,8 @@ export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
     }
 
     get documentationLabel(): string {
-        return this.i18nService.translate(
-            'fman.xyna-properties.documentation-label', {key: '$0', value: this.i18nService.translate(this.detailsObjectLanguageTag)}
+        return this.i18nService.translateInstant(
+            'fman.xyna-properties.documentation-label', {key: '$0', value: this.i18nService.translateInstant(this.detailsObjectLanguageTag)}
         );
     }
 
@@ -106,13 +106,13 @@ export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
             {
                 class: 'delete-action-element',
                 iconName: 'delete',
-                tooltip: this.i18nService.translate('fman.xyna-properties.delete'),
+                tooltip: this.i18nService.translateSignal('fman.xyna-properties.delete'),
                 onAction: this.delete.bind(this)
             },
             {
                 class: 'copy-action-element',
                 iconName: 'copy',
-                tooltip: this.i18nService.translate('fman.xyna-properties.duplicate'),
+                tooltip: this.i18nService.translateSignal('fman.xyna-properties.duplicate'),
                 onAction: this.duplicate.bind(this)
             }
         ];
@@ -172,8 +172,8 @@ export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
 
     delete(entry: XoXynaProperty) {
         this.dialogService.confirm(
-            this.i18nService.translate(this.FM_DELETE_ENTRY_HEADER),
-            this.i18nService.translate(this.CONFIRM_DELETE, {key: '$0', value: entry.key})
+            this.i18nService.translateInstant(this.FM_DELETE_ENTRY_HEADER),
+            this.i18nService.translateInstant(this.CONFIRM_DELETE, {key: '$0', value: entry.key})
         ).afterDismissResult().subscribe(
             value => {
                 if (value) {
@@ -219,7 +219,7 @@ export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
         };
 
         const title = 'Confirmation';
-        const message = this.i18nService.translate(this.CONFIRM_RESTORE, {key: '$0', value: this.detailsObject.key});
+        const message = this.i18nService.translateInstant(this.CONFIRM_RESTORE, {key: '$0', value: this.detailsObject.key});
 
         this.dialogService.confirm(title, message).afterDismissResult().subscribe(
             confirmation => {

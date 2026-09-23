@@ -15,10 +15,12 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
+import { Observable, of } from 'rxjs';
+
+import { computed, signal } from '@angular/core';
 import { XoObjectClassInterface } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
 import { XcOptionItem, XoRemappingTableInfoClass, XoSplicingTableInfoClass, XoTableInfo } from '@zeta/xc';
-import { Observable, of } from 'rxjs';
 
 import { XoDependency } from './xo/xo-dependency.model';
 import { XoGetDependentRTCsRequest } from './xo/xo-get-dependent-rtcs-request.model';
@@ -71,11 +73,11 @@ export function createDependenciesTableInfoClass(selectable: boolean): XoObjectC
 
 export function createFilterEnumOfState(i18n?: I18nService): Observable<XcOptionItem[]> {
     return of([
-        { name: '', value: '' },
+        { name: signal(''), value: '' },
         ...XoRuntimeContextStateEnum.map(
             state =>
                 <XcOptionItem>{
-                    name: i18n ? i18n.translate(`xfm.fman.rtcs.state.${state}`) : state,
+                    name: i18n ? computed(() => i18n.translateSignal(`xfm.fman.rtcs.state.${state}`)()) : signal(state),
                     value: state
                     // Icons are not supported because the table uses material icons and the dropdown doesn't yet support that
                     // icon: getStateiconName(state),

@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, InjectionToken } from '@angular/core';
+import { ChangeDetectionStrategy, Component, InjectionToken } from '@angular/core';
 
 import { XoArray, XoObject } from '@zeta/api';
 import { XcI18nPipe } from '@zeta/i18n';
@@ -27,6 +27,7 @@ import { XoComplexStorableTemplateData } from '../../xo/xo-complex-storable.mode
 // FIXME: Must be named "XcComplex..." instead of "XoComplex..."
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'xo-complex-storable-template',
     templateUrl: './xo-complex-storable-template.component.html',
     styleUrls: ['./xo-complex-storable-template.component.scss'],

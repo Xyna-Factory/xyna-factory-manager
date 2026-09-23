@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, inject, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, viewChild } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { XoDocumentation, XoDocumentationLanguage, XoXynaProperty } from '@zeta/auth/xo/xyna-property.model';
@@ -36,6 +36,7 @@ export interface AddNewXynaPropertyModalComponentData {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './add-new-xyna-property-modal.component.html',
     styleUrls: ['./add-new-xyna-property-modal.component.scss'],
     imports: [XcButtonComponent, XcDialogWrapperComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcFormValidatorRequiredDirective, XcIconComponent, XcI18nContextDirective, XcI18nTranslateDirective, FMFocusCandidateDirective]
@@ -44,11 +45,11 @@ export class AddNewXynaPropertyModalComponent extends XcDialogComponent<boolean,
     private readonly i18n = inject(I18nService);
 
 
-    @ViewChild(XcFormDirective, {static: false})
-    xcFormDirective: XcFormDirective;
+    readonly xcFormDirective = viewChild(XcFormDirective);
 
     get invalid(): boolean {
-        return this.xcFormDirective ? this.xcFormDirective.invalid : true;
+        const xcFormDirective = this.xcFormDirective();
+        return xcFormDirective ? xcFormDirective.invalid : true;
     }
 
     errorBoxFocusCandidateRef = FMFocusCandidateRef.getInstance();
@@ -78,7 +79,7 @@ export class AddNewXynaPropertyModalComponent extends XcDialogComponent<boolean,
     }
 
     get documentationLabel(): string {
-        return this.i18n.translate('Documentation for $0', {key: '$0', value: this.i18n.translate(this._languageTag)});
+        return this.i18n.translateInstant('Documentation for $0', {key: '$0', value: this.i18n.translateInstant(this._languageTag)});
     }
 
     constructor() {

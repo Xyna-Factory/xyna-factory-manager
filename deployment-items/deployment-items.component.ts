@@ -15,16 +15,16 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component } from '@angular/core';
+import { Subject } from 'rxjs';
+import { filter, map, takeUntil } from 'rxjs/operators';
 
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { RuntimeContext, RuntimeContextType, StartOrderOptionsBuilder, XoRuntimeContext } from '@zeta/api';
 import { dateTimeString } from '@zeta/base';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { QueryParameterService } from '@zeta/nav/query-parameter.service';
 import { XcAutocompleteDataWrapper, XcButtonComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcIconButtonComponent, XcMasterDetailComponent, XcOptionItem, XcPanelComponent, XcTableComponent, XcTooltipDirective, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
-
-import { Subject } from 'rxjs';
-import { filter, map, takeUntil } from 'rxjs/operators';
 
 import { PROCESS_MODELLER_TAB_URL } from '../const';
 import { WorkflowTesterDialogComponent } from '../workflow-tester/workflow-tester-dialog.component';
@@ -38,13 +38,13 @@ import { XoDeleteDeploymentItemResultArray } from './xo/xo-delete-deployment-ite
 import { XoDeploymentItem, XoDeploymentItemArray } from './xo/xo-deployment-item.model';
 import { XoUndeployDeploymentItemResultArray } from './xo/xo-undeploy-deployment-item-result.model';
 import { XoUndeployDeploymentItemParam, XoUndeployDeploymentItemParamArray } from './xo/xo-undeployment-deployment-item-param.model';
-import { FMAN_RTC } from '@fman/factory-manager.component';
 
 
 const ISWP = DEPLOYMENT_ITEMS_ISWP;
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './deployment-items.component.html',
     styleUrls: ['./deployment-items.component.scss'],
     imports: [XcButtonComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, DeploymentStateDetailComponent]
@@ -68,10 +68,10 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
         this.initRemoteTableDataSource(XoDeploymentItem, XoDeploymentItemArray, FMAN_RTC, ISWP.List);
 
         // const deploymentItemStates: XcOptionItem[] = [
-        //     {icon: XDSIconName.ARROWRIGHT, name: '', value: ''},
-        //     {icon: XDSIconName.ARROWRIGHT, name: 'DEPLOYED', value: 'DEPLOYED'},
-        //     {icon: XDSIconName.ARROWRIGHT, name: 'SAVED', value: 'SAVED'},
-        //     {icon: XDSIconName.ARROWRIGHT, name: 'INVALID', value: 'INVALID'},
+        //     {icon: XDSIconName.ARROWRIGHT, name: signal(''), value: ''},
+        //     {icon: XDSIconName.ARROWRIGHT, name: signal('DEPLOYED'), value: 'DEPLOYED'},
+        //     {icon: XDSIconName.ARROWRIGHT, name: signal('SAVED'), value: 'SAVED'},
+        //     {icon: XDSIconName.ARROWRIGHT, name: signal('INVALID'), value: 'INVALID'},
         // ];
         // this.remoteTableDataSource.filterEnums.set(XoDeploymentItem.getAccessorMap().state, of(deploymentItemStates));
 
@@ -95,7 +95,7 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
             {
                 class: 'delete-action-element',
                 iconName: 'delete',
-                tooltip: this.i18nService.translate('fman.deployment-items.delete'),
+                tooltip: this.i18nService.translateSignal('fman.deployment-items.delete'),
                 onAction: row => {
                     const paramArr = new XoDeleteDeploymentItemParamArray();
                     const param = new XoDeleteDeploymentItemParam();
@@ -128,7 +128,7 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
         this.runtimeContextsLoading = true;
         this.apiService.getRuntimeContexts().subscribe({
             next: rtcs => {
-                this.runtimeContextsDataWrapper.values = rtcs.map(rtc => (<XcOptionItem>{ value: rtc, name: rtc.toString() }));
+                this.runtimeContextsDataWrapper.values = rtcs.map(rtc => (<XcOptionItem>{ value: rtc, name: signal(rtc.toString()) }));
                 this.setDefaultRTC();
             },
             error: error => this.dialogService.error(error),
@@ -257,8 +257,8 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
 
         if (confirmFirst) {
             this.dialogService.confirm(
-                this.i18nService.translate(this.FM_DELETE_ENTRY_HEADER),
-                this.i18nService.translate(this.CONFIRM_DELETE)
+                this.i18nService.translateInstant(this.FM_DELETE_ENTRY_HEADER),
+                this.i18nService.translateInstant(this.CONFIRM_DELETE)
             ).afterDismissResult().subscribe(
                 value => {
                     if (value) {

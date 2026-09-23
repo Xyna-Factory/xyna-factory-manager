@@ -3,16 +3,15 @@
 
     <section content>
 
-        <xc-rich-list [xc-rich-list-items]="resultListItems" xc-i18n-context="delete-report-item"></xc-rich-list>
+        <xc-rich-list [xc-rich-list-items]="resultListItems" xc-i18n-context="delete-report-item" />
 
-        <xc-form-textarea
-            label="label-stacktrace"
+        <xc-form-textarea label="label-stacktrace"
             [value]="stacktrace"
             xc-form-textarea-lines="6"
             xc-form-field-compact
             readonly
             xc-i18n
-        ></xc-form-textarea>
+         />
 
     </section>
 

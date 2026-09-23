@@ -125,7 +125,7 @@ export class FilterInstanceDetailComponent extends XcDynamicComponent<FilterInst
     }
 
     undeploy() {
-        this.dialogService.confirm(this.i18nService.translate('fman.taf.filter.tile.undeploy.confirm-title'), this.i18nService.translate('fman.taf.filter.tile.undeploy.confirm-message')).afterDismiss()
+        this.dialogService.confirm(this.i18nService.translateInstant('fman.taf.filter.tile.undeploy.confirm-title'), this.i18nService.translateInstant('fman.taf.filter.tile.undeploy.confirm-message')).afterDismiss()
             .pipe(filter(res => !!res)).subscribe({
                 next: () => {
                     this.busy = true;

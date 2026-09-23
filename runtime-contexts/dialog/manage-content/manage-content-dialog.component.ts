@@ -18,8 +18,8 @@
 import { of, Subscription, throwError } from 'rxjs';
 import { catchError, filter, finalize, first, skip, tap } from 'rxjs/operators';
 
-import { NgClass } from '@angular/common';
-import { Component, inject, OnDestroy } from '@angular/core';
+
+import { ChangeDetectionStrategy, Component, inject, OnDestroy , signal} from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoDependencyType } from '@fman/runtime-contexts/xo/xo-dependency.model';
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
@@ -55,9 +55,10 @@ enum ElementType {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './manage-content-dialog.component.html',
     styleUrls: ['./manage-content-dialog.component.scss'],
-    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcIconComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe, NgClass]
+    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcIconComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class ManageContentDialogComponent extends XcDialogComponent<boolean, XoRuntimeContext> implements OnDestroy {
     private readonly apiService = inject(ApiService);
@@ -90,11 +91,11 @@ export class ManageContentDialogComponent extends XcDialogComponent<boolean, XoR
         //     {
         //         class: 'delete-action-element',
         //         iconName: 'delete',
-        //         tooltip: this.i18n.translate('xfm.fman.rtcs.manage-content-table-open'),
+        //         tooltip: this.i18n.translateSignal('xfm.fman.rtcs.manage-content-table-open'),
         //         onAction: this.openInProcessModeller.bind(this)
         //     }
         // ];
-        const elementTypes = Object.values(ElementType).map(value => ({ name: value, value }));
+        const elementTypes = Object.values(ElementType).map(value => ({ name: signal(value), value }));
         this.dataSource.filterEnums.set(XoApplicationElement.getAccessorMap().elementType, of(elementTypes));
         this.dataSource.filterEnumsAsMultiselect.add(XoApplicationElement.getAccessorMap().elementType);
         this.updateDataSource();
@@ -105,9 +106,9 @@ export class ManageContentDialogComponent extends XcDialogComponent<boolean, XoR
         this.changedContentTable.localTableData = {
             rows: [],
             columns: [
-                { path: 'changeTemplate', name: this.i18n.translate('xfm.fman.rtcs.manage-content.table.changes'), disableFilter: true, disableSort: true, shrink: true },
-                { path: 'name', name: this.i18n.translate('xfm.fman.rtcs.manage-content.table.name') },
-                { path: 'elementType', name: this.i18n.translate('xfm.fman.rtcs.manage-content.table.rtc') }
+                { path: 'changeTemplate', name: this.i18n.translateSignal('xfm.fman.rtcs.manage-content.table.changes'), disableFilter: true, disableSort: true, shrink: true },
+                { path: 'name', name: this.i18n.translateSignal('xfm.fman.rtcs.manage-content.table.name')},
+                { path: 'elementType', name: this.i18n.translateSignal('xfm.fman.rtcs.manage-content.table.rtc')}
             ]
         };
         this.changedContentTable.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
