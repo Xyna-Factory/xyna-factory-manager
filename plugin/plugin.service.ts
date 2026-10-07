@@ -30,12 +30,6 @@ export class PluginService {
     private readonly _plugins = new BehaviorSubject<Map<string, XoPlugin>>(null);
     private pending = false;
 
-    PLUGIN_TITLES = [
-        FACTORY_MANAGER.PLUGIN_00, FACTORY_MANAGER.PLUGIN_01, FACTORY_MANAGER.PLUGIN_02, FACTORY_MANAGER.PLUGIN_03,
-        FACTORY_MANAGER.PLUGIN_04, FACTORY_MANAGER.PLUGIN_05, FACTORY_MANAGER.PLUGIN_06, FACTORY_MANAGER.PLUGIN_07,
-        FACTORY_MANAGER.PLUGIN_08, FACTORY_MANAGER.PLUGIN_09
-    ];
-
     constructor(private readonly api: ApiService) {
     }
 
@@ -60,12 +54,8 @@ export class PluginService {
                 filter(response => !!response.output),
                 map(response => {
                     const pluginList = response.output[0] as XoPluginArray;
-                    if (pluginList.length > this.PLUGIN_TITLES.length) {
-                        console.warn('Not supporting more than ' + this.PLUGIN_TITLES.length + ' plugins at the moment but got ' + pluginList.length);
-                    }
-
                     const pluginMap = new Map<string, XoPlugin>();
-                    pluginList.data.forEach((plugin: XoPlugin, index) => pluginMap.set(this.PLUGIN_TITLES[index], plugin));
+                    pluginList.data.forEach((plugin: XoPlugin, index) => pluginMap.set(FACTORY_MANAGER.PLUGIN + '-' + index, plugin));
                     this._plugins.next(pluginMap);
                 }),
                 finalize(() => this.pending = false)

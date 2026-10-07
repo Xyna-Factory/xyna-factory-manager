@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { RouterModule } from '@angular/router';
+import { RouterModule, UrlMatchResult, UrlSegment } from '@angular/router';
 
 import { RedirectComponent, redirectGuardCanActivate, redirectGuardCanDeactivate, RedirectGuardConfigProvider, RedirectGuardProvider, XynaRoutes } from '@zeta/nav';
 import { rightGuardCanActivate } from '@zeta/nav/right.guard';
@@ -39,6 +39,13 @@ import { XynaPropertiesComponent } from './xyna-properties/xyna-properties.compo
 
 
 const ROOT = 'Factory-Manager';
+
+// matcher instead of a route param, because the RedirectGuard strips route params from the stored url
+export function pluginMatcher(segments: UrlSegment[]): UrlMatchResult {
+    return segments.length === 1 && segments[0].path.startsWith(FACTORY_MANAGER.PLUGIN)
+        ? { consumed: segments }
+        : null;
+}
 
 export const FactoryManagerRoutes: XynaRoutes = [
     {
@@ -101,12 +108,12 @@ export const FactoryManagerRoutes: XynaRoutes = [
                 data : {right: RIGHT_FACTORY_MANAGER_ORDER_TYPES, reuse: FACTORY_MANAGER.ORDERTYPES + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.ORDERTYPES}
             },
             {
-                path: FACTORY_MANAGER.CRONLIKE_ORDRES,
+                path: FACTORY_MANAGER.CRONLIKE_ORDERS,
                 component: CronlikeOrdersComponent,
                 canActivate: [rightGuardCanActivate],
                 canDeactivate: [redirectGuardCanDeactivate],
                 pathMatch: 'full',
-                data : {right: RIGHT_FACTORY_MANAGER_CRON_LIKE_ORDERS, reuse: FACTORY_MANAGER.CRONLIKE_ORDRES + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.CRONLIKE_ORDRES}
+                data : {right: RIGHT_FACTORY_MANAGER_CRON_LIKE_ORDERS, reuse: FACTORY_MANAGER.CRONLIKE_ORDERS + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.CRONLIKE_ORDERS}
             },
             {
                 path: FACTORY_MANAGER.TIMECONTROLLED_ORDERS,
@@ -170,81 +177,10 @@ export const FactoryManagerRoutes: XynaRoutes = [
                 data : {right: RIGHT_FACTORY_MANAGER_XYNA_PROPERTIES, reuse: FACTORY_MANAGER.XYNA_PROPERTIES + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.XYNA_PROPERTIES}
             },
             {
-                path: 'plugin/:rtc/:name',
+                matcher: pluginMatcher,
                 component: PluginComponent,
                 canDeactivate: [redirectGuardCanDeactivate],
-                pathMatch: 'full',
-                data : {reuse: 'plugin' + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.PLUGIN_00}
-            },
-            {
-                path: FACTORY_MANAGER.PLUGIN_00,
-                component: PluginComponent,
-                canDeactivate: [redirectGuardCanDeactivate],
-                pathMatch: 'full',
-                data : {reuse: FACTORY_MANAGER.PLUGIN_00 + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.PLUGIN_00}
-            },
-            {
-                path: FACTORY_MANAGER.PLUGIN_01,
-                component: PluginComponent,
-                canDeactivate: [redirectGuardCanDeactivate],
-                pathMatch: 'full',
-                data : {reuse: FACTORY_MANAGER.PLUGIN_01 + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.PLUGIN_01}
-            },
-            {
-                path: FACTORY_MANAGER.PLUGIN_02,
-                component: PluginComponent,
-                canDeactivate: [redirectGuardCanDeactivate],
-                pathMatch: 'full',
-                data : {reuse: FACTORY_MANAGER.PLUGIN_02 + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.PLUGIN_02}
-            },
-            {
-                path: FACTORY_MANAGER.PLUGIN_03,
-                component: PluginComponent,
-                canDeactivate: [redirectGuardCanDeactivate],
-                pathMatch: 'full',
-                data : {reuse: FACTORY_MANAGER.PLUGIN_03 + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.PLUGIN_03}
-            },
-            {
-                path: FACTORY_MANAGER.PLUGIN_04,
-                component: PluginComponent,
-                canDeactivate: [redirectGuardCanDeactivate],
-                pathMatch: 'full',
-                data : {reuse: FACTORY_MANAGER.PLUGIN_04 + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.PLUGIN_04}
-            },
-            {
-                path: FACTORY_MANAGER.PLUGIN_05,
-                component: PluginComponent,
-                canDeactivate: [redirectGuardCanDeactivate],
-                pathMatch: 'full',
-                data : {reuse: FACTORY_MANAGER.PLUGIN_05 + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.PLUGIN_05}
-            },
-            {
-                path: FACTORY_MANAGER.PLUGIN_06,
-                component: PluginComponent,
-                canDeactivate: [redirectGuardCanDeactivate],
-                pathMatch: 'full',
-                data : {reuse: FACTORY_MANAGER.PLUGIN_06 + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.PLUGIN_06}
-            },
-            {
-                path: FACTORY_MANAGER.PLUGIN_07,
-                component: PluginComponent,
-                canDeactivate: [redirectGuardCanDeactivate],
-                pathMatch: 'full',
-                data : {reuse: FACTORY_MANAGER.PLUGIN_07 + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.PLUGIN_07}
-            },
-            {
-                path: FACTORY_MANAGER.PLUGIN_08,
-                component: PluginComponent,
-                canDeactivate: [redirectGuardCanDeactivate],
-                pathMatch: 'full',
-                data : {reuse: FACTORY_MANAGER.PLUGIN_08 + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.PLUGIN_08}
-            },
-            {
-                path: FACTORY_MANAGER.PLUGIN_09,
-                component: PluginComponent,
-                canDeactivate: [redirectGuardCanDeactivate],
-                pathMatch: 'full',
-                data : {reuse: FACTORY_MANAGER.PLUGIN_09 + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.PLUGIN_09}
+                data : {reuse: FACTORY_MANAGER.PLUGIN + '_reuse_id', redirectKey: ROOT, title:FACTORY_MANAGER.PLUGIN}
             }
         ]
     }
