@@ -25,33 +25,70 @@
     flex-direction: column;
     overflow: hidden;
     border-radius: 4px;
-    border: $application-tile-border;
+
+    xc-panel {
+        border: none;
+        background-color: $color-gray-0;
+
+        section {
+            padding: 0;
+
+            xc-table {
+                border: none;
+
+                ::ng-deep tfoot {
+                    display: none;
+                }
+            }
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            column-gap: 32px;
+
+            xc-checkbox {
+                margin-bottom: 0;
+            }
+
+        }
+    }
 
     &.runtime-application {
-        box-shadow: +4px 0 0 -0.5px $color-primary;
+        border-left: 4px solid $color-primary;
 
-        > .header {
+        >.header {
             background: $application-tile-selected-header-background-color !important;
         }
     }
 
-    > .header {
+    >.header {
         display: flex;
         flex: 1 1 auto;
         background: $application-tile-header-background-color;
         align-items: flex-start;
 
-        &:hover {
-            background: $application-tile-details-background-color;
-        }
-
-        > label {
+        >label {
             padding: 7px 16px;
             margin-right: auto;
             color: $application-tile-header-color;
         }
 
-        > .aside {
+        &:hover {
+            background: $application-tile-details-background-color;
+        }
+
+        >.active {
+            color: $color-gray-4;
+            text-transform: uppercase;
+            margin: 0 auto;
+            padding: 7px 12px;
+            white-space: pre;
+            align-self: flex-start;
+        }
+
+        >.aside {
             display: flex;
             flex-wrap: wrap;
             justify-content: flex-end;
@@ -59,29 +96,27 @@
         }
     }
 
-    > .detail {
+    >.detail {
         display: flex;
         flex: 1 1 auto;
         flex-direction: column;
         background: $application-tile-details-background-color;
+        padding: 8px;
+        row-gap: 16px;
 
-        > .row {
+        >.row {
             display: flex;
-            padding: 12px;
 
-            &:first-child {
-                background: $application-tile-details-button-row-background-color;
-                border-top: $application-tile-details-button-row-border-top;
-                border-bottom: $application-tile-details-button-row-border-bottom;
-                padding: 12px;
-            }
-
-            > .title {
+            >.title {
                 white-space: pre;
                 align-self: center;
 
-                > span:first-child:after {
+                >span:first-child:after {
                     content: ": ";
+                }
+
+                >span:not(:first-child):after {
+                    content: " ";
                 }
 
                 .stub {
@@ -91,15 +126,15 @@
                 }
             }
 
-            > .actions {
+            >.actions {
                 margin-left: auto;
                 display: flex;
-                flex: 0 0 auto;
+                gap: 4px;
+                overflow: auto;
             }
 
-            > .repository-link {
-
-                > label {
+            >.repository-link {
+                >label {
                     margin-left: 12px;
                     color: $color-gray-4;
 
@@ -113,22 +148,24 @@
                 }
             }
 
-            > xc-form-input:first-child {
+            >xc-form-input:first-child {
                 margin-right: 6px;
             }
 
-            > xc-form-input:last-child {
+            >xc-form-input:last-child {
                 margin-left: 6px;
             }
 
-            > .dependencies, > .application {
+            >.dependencies,
+            >.application,
+            >.issues {
                 display: flex;
                 flex: 1 1 auto;
 
-                > .requires,
-                > .required-by,
-                > .content,
-                > .issues {
+                >.requires,
+                >.required-by,
+                >.content,
+                & {
                     flex: 1 1 50%;
 
                     &:first-child:not(:last-child) {
@@ -143,39 +180,32 @@
                         margin-top: 14px;
                     }
 
-                    > .row {
+                    >.row {
                         display: flex;
                         align-items: flex-end;
 
-                        > xc-button {
+                        >xc-button {
                             margin-left: auto;
-                        }
-                    }
-                }
-            }
-
-            > .order-entries {
-                display: flex;
-                flex: 1 1 auto;
-                flex-direction: column;
-
-                > .list {
-                    display: flex;
-
-                    > * {
-                        margin-left: 32px;
-
-                        &:first-child {
-                            margin-left: 0;
                         }
                     }
                 }
             }
         }
 
+        .requires {
+            column-gap: 4px;
+
+            >xc-panel {
+                flex: 1 1 50%;
+                max-width: 50%;
+            }
+
+        }
+
         .issues {
             flex-direction: column;
-            .row {
+
+            .issue-row {
                 display: flex;
                 margin: 2px;
                 padding: 2px 4px;

@@ -15,9 +15,9 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, InjectionToken, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, InjectionToken } from '@angular/core';
 
-import { FM_RTC } from '@fman/const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoRuntimeApplication } from '@fman/runtime-contexts/xo/xo-runtime-application.model';
 import { XoWorkspace } from '@fman/runtime-contexts/xo/xo-workspace.model';
 import { ORDER_TYPES } from '@fman/trigger-and-filter/order-types';
@@ -26,7 +26,10 @@ import { XoStartParameterDetails, XoStartParameterDetailsArray } from '@fman/tri
 import { XoTriggerDetail } from '@fman/trigger-and-filter/xo/xo-trigger-detail.model';
 import { XoTrigger } from '@fman/trigger-and-filter/xo/xo-trigger.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-import { XC_COMPONENT_DATA, XcDialogService, XcDynamicComponent } from '@zeta/xc';
+import { XcI18nTranslateDirective } from '@zeta/i18n';
+import { XC_COMPONENT_DATA, XcDialogService, XcDynamicComponent, XcPanelComponent } from '@zeta/xc';
+
+import { StartParameterDetailComponent } from '../start-parameter-deatil/start-parameter-detail.component';
 
 
 @Component({
@@ -34,9 +37,13 @@ import { XC_COMPONENT_DATA, XcDialogService, XcDynamicComponent } from '@zeta/xc
     templateUrl: './trigger-detail.component.html',
     styleUrls: ['./trigger-detail.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [XcPanelComponent, XcI18nTranslateDirective, StartParameterDetailComponent]
 })
 export class TriggerDetailComponent extends XcDynamicComponent<XoTrigger> {
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly cdr = inject(ChangeDetectorRef);
+
 
     startParameter: XoStartParameterDetails[];
 
@@ -47,17 +54,14 @@ export class TriggerDetailComponent extends XcDynamicComponent<XoTrigger> {
     detail: XoTriggerDetail;
     busy = false;
 
-    constructor(injector: Injector,
-        private readonly apiService: ApiService,
-        private readonly dialogService: XcDialogService,
-        private readonly cdr: ChangeDetectorRef) {
-        super(injector);
+    constructor() {
+        super();
         this.getStartParameter();
         this.refresh();
     }
 
     getStartParameter() {
-        this.apiService.startOrderAssertFlat<XoStartParameterDetails>(FM_RTC, ORDER_TYPES.POSSIBLE_START_PARAMETER_TRIGGER, this.injectedData, XoStartParameterDetailsArray).subscribe({
+        this.apiService.startOrderAssertFlat<XoStartParameterDetails>(FMAN_RTC, ORDER_TYPES.POSSIBLE_START_PARAMETER_TRIGGER, this.injectedData, XoStartParameterDetailsArray).subscribe({
             next: result => {
                 this.startParameter = result;
                 this.cdr.markForCheck();
@@ -70,7 +74,7 @@ export class TriggerDetailComponent extends XcDynamicComponent<XoTrigger> {
 
     refresh() {
         this.busy = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.TRIGGER_DETAIL, this.buildRequest(this.injectedData), XoTriggerDetail, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.TRIGGER_DETAIL, this.buildRequest(this.injectedData), XoTriggerDetail, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (!result.errorMessage) {

@@ -15,41 +15,42 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, viewChild , signal} from '@angular/core';
 
-import { ApiService, FullQualifiedName, RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoArray, XoRuntimeContext, XoWorkspace } from '@zeta/api';
-import { I18nService } from '@zeta/i18n';
-import { XcAutocompleteDataWrapper, XcDialogService, XcFormDirective } from '@zeta/xc';
+import { FullQualifiedName, RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoArray, XoRuntimeContext, XoWorkspace } from '@zeta/api';
+import { XcAutocompleteDataWrapper, XcButtonComponent, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective } from '@zeta/xc';
 
-import { FM_RTC } from '../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { InputParameterRef } from '../misc/components/input-parameter/input-parameter-ref.class';
-import { FactoryManagerSettingsService } from '../misc/services/factory-manager-settings.service';
+import { InputParameterComponent } from '../misc/components/input-parameter/input-parameter.component';
 import { XoOrderTypeArray } from '../xo/xo-order-type.model';
+import { ExecutionTimeComponent } from './components/execution-time/execution-time.component';
 import { ExecutionTimeBehaviorOnError } from './components/execution-time/execution-time.constant';
 import { AddNewCronlikeOrderModalComponent, AddNewCronLikeOrderModalComponentData } from './modal/add-new-cronlike-order-modal/add-new-cronlike-order-modal.component';
 import { CRONLIKE_ORDERS_ISWP, RestorableCronlikeOrdersComponent } from './restorable-cronlike-orders.component';
 import { XoCronLikeOrderId } from './xo/xo-cronlike-order-id.model';
 import { CronlikeOrderTableInfo, XoCronLikeOrder, XoCronLikeOrderArray } from './xo/xo-cronlike-order.model';
+import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 
 
 const ISWP = CRONLIKE_ORDERS_ISWP;
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './cronlike-orders.component.html',
     styleUrls: ['./cronlike-orders.component.scss'],
-    standalone: false
+    imports: [XcButtonComponent, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, InputParameterComponent, ExecutionTimeComponent]
 })
 export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
 
-    @ViewChild(XcFormDirective, {static: false})
-    xcFormDirective: XcFormDirective;
+    readonly xcFormDirective = viewChild(XcFormDirective);
 
     executionTimeInvalid = false;
 
     get invalid(): boolean {
-        return this.xcFormDirective ? (this.xcFormDirective.invalid || this.executionTimeInvalid) : false;
+        const xcFormDirective = this.xcFormDirective();
+        return xcFormDirective ? (xcFormDirective.invalid || this.executionTimeInvalid) : false;
     }
 
     inputParameterRef = InputParameterRef.getInstance();
@@ -136,18 +137,10 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
         }
     }
 
-    constructor(
-        apiService: ApiService,
-        dialogService: XcDialogService,
-        route: ActivatedRoute,
-        router: Router,
-        i18nService: I18nService,
-        settings: FactoryManagerSettingsService,
-        injector: Injector
-    ) {
-        super(apiService, dialogService, route, router, i18nService, injector, settings);
+    constructor() {
+        super();
 
-        this.initRemoteTableDataSource(XoCronLikeOrder, XoCronLikeOrderArray, FM_RTC, ISWP.List);
+        this.initRemoteTableDataSource(XoCronLikeOrder, XoCronLikeOrderArray, FMAN_RTC, ISWP.List);
 
         this.remoteTableDataSource.tableInfoClass = CronlikeOrderTableInfo;
 
@@ -165,13 +158,13 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
             {
                 class: 'delete-action-element',
                 iconName: 'delete',
-                tooltip: this.i18nService.translate('fman.cronlike-orders.delete'),
+                tooltip: this.i18nService.translateSignal('fman.cronlike-orders.delete'),
                 onAction: this.delete.bind(this)
             },
             {
                 class: 'copy-action-element',
                 iconName: 'copy',
-                tooltip: this.i18nService.translate('fman.cronlike-orders.duplicate'),
+                tooltip: this.i18nService.translateSignal('fman.cronlike-orders.duplicate'),
                 onAction: this.duplicate.bind(this)
             }
         ];
@@ -202,7 +195,7 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
     private _getRuntimeContexts() {
         this.apiService.getRuntimeContexts(false).subscribe({
             next: rtcArr => {
-                this.runtimeContextsDataWrapper.values = rtcArr.map(rtc => ({value: rtc, name: rtc.toString()}));
+                this.runtimeContextsDataWrapper.values = rtcArr.map(rtc => ({value: rtc, name: signal(rtc.toString())}));
             },
             error: error => this.dialogService.error(error)
         });
@@ -218,7 +211,7 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
         this.handleStartOrderResult(sub, output => {
             const otarr = output && output.length ? (output[0] as XoOrderTypeArray) : null;
             if (otarr instanceof XoArray) {
-                this.orderTypeStringDataWrapper.values = otarr.data.map(ot => ({ value: ot.name, name: ot.name }));
+                this.orderTypeStringDataWrapper.values = otarr.data.map(ot => ({ value: ot.name, name: signal(ot.name) }));
                 if (otarr.data.length === 0) {
                     const error = this.GET_ORDER_TYPES_EMPTY_LIST_ERROR(this.selectedServerRuntimeContext);
                     this.dialogService.error(error);
@@ -229,15 +222,15 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
 
     delete(entry: XoCronLikeOrder) {
         this.dialogService.confirm(
-            this.i18nService.translate(this.FM_DELETE_ENTRY_HEADER),
-            this.i18nService.translate(this.CONFIRM_DELETE, { key: '$0', value: entry.name })
+            this.i18nService.translateInstant(this.FM_DELETE_ENTRY_HEADER),
+            this.i18nService.translateInstant(this.CONFIRM_DELETE, { key: '$0', value: entry.name })
         ).afterDismissResult().subscribe(
             value => {
                 if (value) {
                     if (entry instanceof XoCronLikeOrder) {
                         const id = new XoCronLikeOrderId();
                         id.id = entry.iD;
-                        const obs = this.apiService.startOrder(FM_RTC, ISWP.Delete, id, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+                        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Delete, id, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
                         this.handleStartOrderResult(obs, () => {
                             this.detailsObject = null;
                             this.clearSelection();
@@ -251,7 +244,7 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
 
     duplicate(entry: XoCronLikeOrder) {
 
-        const obs = this.apiService.startOrder(FM_RTC, ISWP.Details, entry, XoCronLikeOrder, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, entry, XoCronLikeOrder, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             const detailedEntry = (output[0] || null) as XoCronLikeOrder;
             this.add(detailedEntry);
@@ -265,7 +258,7 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
             addWorkflow: ISWP.Add,
             getOrderTypes: ISWP.GetOrderTypes,
             i18nService: this.i18nService,
-            rtc: FM_RTC,
+            rtc: FMAN_RTC,
             duplicate: duplicated,
              
             GET_ORDER_TYPES_EMPTY_LIST_ERROR: this.GET_ORDER_TYPES_EMPTY_LIST_ERROR,
@@ -293,7 +286,7 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
             }
         }
 
-        const obs = this.apiService.startOrder(FM_RTC, ISWP.Save, this.detailsObject, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Save, this.detailsObject, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, () => {
             // console.log('save was successful?', output);
             this.dismiss();
@@ -304,7 +297,7 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
 
     private getDetails(entry: XoCronLikeOrder) {
 
-        const obs = this.apiService.startOrder(FM_RTC, ISWP.Details, entry, XoCronLikeOrder, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, entry, XoCronLikeOrder, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             this.detailsObject = (output[0] || null) as XoCronLikeOrder;
             this._getRuntimeContexts();

@@ -15,14 +15,15 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { RuntimeContext, Xo } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { XcDialogComponent } from '@zeta/xc';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcButtonComponent, XcDialogComponent, XcDialogWrapperComponent, XcIconComponent } from '@zeta/xc';
 
 import { workflowTester_translations_de_DE } from './locale/workflow-tester-translations.de-DE';
 import { workflowTester_translations_en_US } from './locale/workflow-tester-translations.en-US';
+import { WorkflowTesterComponent } from './workflow-tester.component';
 
 
 export interface WorkflowTesterData {
@@ -33,14 +34,17 @@ export interface WorkflowTesterData {
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './workflow-tester-dialog.component.html',
     styleUrls: ['./workflow-tester-dialog.component.scss'],
-    standalone: false
+    imports: [XcButtonComponent, XcDialogWrapperComponent, XcIconComponent, XcI18nContextDirective, XcI18nTranslateDirective, WorkflowTesterComponent]
 })
 export class WorkflowTesterDialogComponent extends XcDialogComponent<void, WorkflowTesterData> {
+    private readonly i18nService = inject(I18nService);
 
-    constructor(injector: Injector, private readonly i18nService: I18nService) {
-        super(injector);
+
+    constructor() {
+        super();
 
         this.i18nService.setTranslations(LocaleService.DE_DE, workflowTester_translations_de_DE);
         this.i18nService.setTranslations(LocaleService.EN_US, workflowTester_translations_en_US);

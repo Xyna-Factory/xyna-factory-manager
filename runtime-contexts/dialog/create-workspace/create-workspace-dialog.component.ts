@@ -15,16 +15,15 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector } from '@angular/core';
-
-import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { XcAutocompleteDataWrapper, XcDialogComponent, XcDialogService, XcOptionItem, XcOptionItemString } from '@zeta/xc';
-
 import { throwError } from 'rxjs';
 import { catchError, filter, finalize, tap } from 'rxjs/operators';
 
-import { FM_RTC } from '../../../const';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
+import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcAutocompleteDataWrapper, XcButtonComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormLabelComponent, XcFormValidatorRequiredDirective, XcOptionItem, XcOptionItemString, XcPanelComponent } from '@zeta/xc';
+
 import { ORDER_TYPES } from '../../order-types';
 import { XoCreateWorkspaceRequest } from '../../xo/xo-create-workspace-request.model';
 import { XoRepositoryLink } from '../../xo/xo-repository-link.model';
@@ -37,11 +36,17 @@ type WorkspaceName = string;
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './create-workspace-dialog.component.html',
     styleUrls: ['./create-workspace-dialog.component.scss'],
-    standalone: false
+    imports: [XcButtonComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormLabelComponent, XcFormValidatorRequiredDirective, XcPanelComponent, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class CreateWorkspaceDialogComponent extends XcDialogComponent<WorkspaceName, void> {
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly i18n = inject(I18nService);
+    private readonly api = inject(ApiService);
+
 
     readonly SVNRepositoryAccess = 'SVNRepositoryAccess';
 
@@ -50,10 +55,11 @@ export class CreateWorkspaceDialogComponent extends XcDialogComponent<WorkspaceN
     repositoryLink: XoRepositoryLink;
     loading: boolean;
     name = '';
+    plainPassword = '';
 
 
-    constructor(injector: Injector, private readonly apiService: ApiService, private readonly dialogService: XcDialogService, private readonly i18n: I18nService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.i18n.setTranslations(LocaleService.DE_DE, createWorkspace_translations_de_DE);
         this.i18n.setTranslations(LocaleService.EN_US, createWorkspace_translations_en_US);
@@ -65,6 +71,7 @@ export class CreateWorkspaceDialogComponent extends XcDialogComponent<WorkspaceN
                 switch (this.repositoryLinkType) {
                     case this.SVNRepositoryAccess: {
                         const svnRepositoryLink = new XoSVNRepositoryLink();
+                        svnRepositoryLink.name = this.name;
                         svnRepositoryLink.linkType = this.SVNRepositoryAccess;
                         svnRepositoryLink.hookManagerPort = '3690';
                         this.repositoryLink = svnRepositoryLink;
@@ -74,22 +81,35 @@ export class CreateWorkspaceDialogComponent extends XcDialogComponent<WorkspaceN
                         this.repositoryLink = undefined;
                 }
             },
-            [<XcOptionItem>{name: 'None', value: undefined}, XcOptionItemString(this.SVNRepositoryAccess)]
+            [<XcOptionItem>{name: signal('None'), value: undefined}, XcOptionItemString(this.SVNRepositoryAccess)]
             /*
-            this.apiService.startOrderAssertFlat<XoRepositoryLinkType>(FM_RTC, ORDER_TYPES., undefined, XoRepositoryLinkType).pipe(
+            this.apiService.startOrderAssertFlat<XoRepositoryLinkType>(FMAN_RTC, ORDER_TYPES., undefined, XoRepositoryLinkType).pipe(
                 map(repositoryLinkTypes => repositoryLinkTypes.map(repositoryLinkType => XcOptionItemString(repositoryLinkType.value)))
             )
             */
         );
     }
 
-
     create() {
+        if (this.repositoryLink instanceof XoSVNRepositoryLink) {
+            // encode password before sending
+            const svnRepositoryLink = this.repositoryLink as XoSVNRepositoryLink;
+            this.api.encode([this.plainPassword]).subscribe(encodedValues => {
+                const encodedPw = encodedValues[0];
+                svnRepositoryLink.password = encodedPw;
+                this.sendCreateRequest();
+            });
+        } else {
+            this.sendCreateRequest();
+        }
+    }
+
+    sendCreateRequest() {
         const request = new XoCreateWorkspaceRequest();
         request.name = this.name;
         request.repositoryLink = this.repositoryLink;
         this.loading = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.CREATE_WORKSPACE, request, undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.CREATE_WORKSPACE, request, undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             catchError((error: any) => {
                 this.dismiss();
                 return throwError(error);

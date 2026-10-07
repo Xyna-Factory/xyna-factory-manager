@@ -3,19 +3,17 @@
   <section content xc-form #form="xc-form">
     @if (!injectedData.runtimeApplication) {
       <xc-form-label required xc-i18n>load-runtime-application-runtime-application</xc-form-label>
-      <xc-table [xc-table-datasource]="dataSource" xc-table-allowselect xc-table-allowsort xc-table-allowfilter xc-table-lazyupdate></xc-table>
+      <xc-table [xc-table-datasource]="dataSource" xc-table-allowselect xc-table-allowsort xc-table-allowfilter xc-table-lazyupdate />
     }
     @if (injectedData.runtimeApplication) {
-      <xc-form-input
-        [value]="injectedData.runtimeApplication.label"
+      <xc-form-input [value]="injectedData.runtimeApplication.label"
         label="load-runtime-application-runtime-application"
         xc-i18n
         xc-form-validator-required
         disabled
-      ></xc-form-input>
+       />
     }
-    <xc-form-autocomplete
-      xc-form-validator-required
+    <xc-form-autocomplete xc-form-validator-required
       (xc-form-autocomplete-optionChange)="changeWorkspace($event?.value)"
       [xc-form-autocomplete-option]="workspaceDataWrapper.value"
       [xc-form-autocomplete-options]="workspaceDataWrapper.values"
@@ -24,17 +22,15 @@
       xc-form-field-suffix="clear"
       label="load-runtime-application-workspace"
       xc-i18n
-    ></xc-form-autocomplete>
-    <xc-form-input
-      [(value)]="documentation"
+     />
+    <xc-form-input [(value)]="documentation"
       label="load-runtime-application-documentation"
       xc-i18n
-    ></xc-form-input>
-    <xc-checkbox
-      [(checked)]="overwrite"
+     />
+    <xc-checkbox [(checked)]="overwrite"
       label="load-runtime-application-overwrite"
       xc-i18n
-    ></xc-checkbox>
+     />
   </section>
   <ng-container footer>
     <xc-button (click)="dismiss()" xc-i18n>load-runtime-application-cancel</xc-button>

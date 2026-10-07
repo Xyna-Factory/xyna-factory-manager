@@ -83,9 +83,7 @@ export const trigger_and_filter_translations_de_DE: I18nTranslation[] = [
     { key: 'fman.deploy-trigger-dialog.Possible start parameter combinations', value: 'Mögliche Startparameter Kombinationen' },
     { key: 'fman.deploy-trigger-dialog.Combination', value: 'Kombination' },
     { key: 'Necessity', value: 'Notwendigkeit' },
-    { key: 'fman.deploy-trigger-dialog.Parameter', value: 'Parameter' },
-
-
+    { key: 'fman.deploy-trigger-dialog.Value', value: 'Wert' },
 
     { key: 'fman.taf.filter.tile.name', value: 'Name' },
     { key: 'fman.taf.filter.tile.instance.name', value: 'Instanzname' },

@@ -15,16 +15,16 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { XcDialogComponent, XcDialogService } from '@zeta/xc';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent } from '@zeta/xc';
 
 import { throwError } from 'rxjs';
 import { catchError, filter, finalize, tap } from 'rxjs/operators';
 
-import { FM_RTC } from '../../../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ORDER_TYPES } from '../../order-types';
 import { XoDeleteRTARequest } from '../../xo/xo-delete-rtarequest.model';
 import { XoRuntimeApplication } from '../../xo/xo-runtime-application.model';
@@ -33,17 +33,22 @@ import { deleteRuntimeApplication_translations_en_US } from './locale/delete-run
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './delete-runtime-application-dialog.component.html',
     styleUrls: ['./delete-runtime-application-dialog.component.scss'],
-    standalone: false
+    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class DeleteRuntimeApplicationDialogComponent extends XcDialogComponent<boolean, XoRuntimeApplication> {
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly i18n = inject(I18nService);
+
 
     stopRunningOrders = false;
     loading: boolean;
 
-    constructor(injector: Injector, private readonly apiService: ApiService, private readonly dialogService: XcDialogService, private readonly i18n: I18nService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.i18n.setTranslations(LocaleService.DE_DE, deleteRuntimeApplication_translations_de_DE);
         this.i18n.setTranslations(LocaleService.EN_US, deleteRuntimeApplication_translations_en_US);
@@ -55,7 +60,7 @@ export class DeleteRuntimeApplicationDialogComponent extends XcDialogComponent<b
         request.runtimeApplication = this.injectedData.proxy();
         request.stopRunningOrders = this.stopRunningOrders;
         this.loading = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.DELETE_RUNTIME_APPLICATION, request, undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.DELETE_RUNTIME_APPLICATION, request, undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             catchError((error: any) => {
                 this.dismiss();
                 return throwError(error);

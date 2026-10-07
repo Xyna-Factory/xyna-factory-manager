@@ -15,18 +15,17 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, Input, NgZone, OnInit, Output, ViewChild } from '@angular/core';
+import { debounceTime, filter, finalize, first, skip } from 'rxjs/operators';
+
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, inject, Input, input, linkedSignal, NgZone, OnInit, output, viewChild } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ShowWorkspaceContentDialogComponent } from '@fman/runtime-contexts/dialog/show-workspace-content/show-workspace-content-dialog.component';
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
 import { XoGetWorkspaceContentRequest } from '@fman/runtime-contexts/xo/xo-get-workspace-content-request.model';
-
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nService } from '@zeta/i18n';
-import { XcDialogService, XcRemoteTableDataSource, XDSIconName } from '@zeta/xc';
+import { I18nService, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcButtonComponent, XcDialogService, XcFormInputComponent, XcFormLabelComponent, XcIconButtonComponent, XcIconComponent, XcPanelComponent, XcRemoteTableDataSource, XcTableComponent, XcTooltipDirective, XcVarDirective, XDSIconName } from '@zeta/xc';
 
-import { debounceTime, filter, finalize, first, skip } from 'rxjs/operators';
-
-import { FM_RTC } from '../../../const';
 import { FactoryManagerSettingsService } from '../../../misc/services/factory-manager-settings.service';
 import { createContentTableInfoClass } from '../../content';
 import { createDependenciesTableInfoClass, createDependenciesTableInput, createFilterEnumOfState } from '../../dependencies';
@@ -40,6 +39,7 @@ import { ManageContentDialogComponent } from '../../dialog/manage-content/manage
 import { ManageDependenciesDialogComponent } from '../../dialog/manage-dependencies/manage-dependencies-dialog.component';
 import { MigrateWizardComponent, MigrationWizardData } from '../../dialog/migrate-wizard/migrate-wizard.component';
 import { ORDER_TYPES } from '../../order-types';
+import { RuntimeContextButtonComponent } from '../../shared/runtime-context-button.component';
 import { XoApplicationDefinitionDetails } from '../../xo/xo-application-definition-details.model';
 import { XoApplicationDefinition } from '../../xo/xo-application-definition.model';
 import { XoApplicationElementArray } from '../../xo/xo-application-element.model';
@@ -56,25 +56,34 @@ import { XoWorkspace } from '../../xo/xo-workspace.model';
 export const DUPLICATE_ELEMENT_IDENTIFIER = 'duplicate element';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'workspace-tile',
     templateUrl: './workspace-tile.component.html',
     styleUrls: ['./workspace-tile.component.scss'],
-    standalone: false
+    imports: [RuntimeContextButtonComponent, XcI18nTranslateDirective, XcI18nPipe, XcButtonComponent, XcFormInputComponent, XcFormLabelComponent, XcIconButtonComponent, XcIconComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcVarDirective]
 })
 export class WorkspaceTileComponent implements OnInit {
-    @ViewChild('header', { static: false })
-    headerRef: ElementRef;
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly i18n = inject(I18nService);
+    private readonly cdref = inject(ChangeDetectorRef);
+    private readonly zone = inject(NgZone);
+    private readonly settings = inject(FactoryManagerSettingsService);
+
+    readonly headerRef = viewChild<ElementRef>('header');
 
     readonly XDSIconName = XDSIconName;
 
-    @Input()
-    workspace: XoWorkspace;
+    readonly workspaceInput = input<XoWorkspace>(undefined, { alias: 'workspace' });
+    readonly workspace = linkedSignal(() => this.workspaceInput());
 
-    @Input()
-    selection: XoWorkspace;
+    readonly selectionInput = input<XoWorkspace>(undefined, { alias: 'selection' });
+    readonly selection = linkedSignal(() => this.selectionInput());
 
-    @Input()
-    details: XoWorkspaceDetails | XoApplicationDefinitionDetails;
+    readonly detailsInput = input<XoWorkspaceDetails | XoApplicationDefinitionDetails>(undefined, { alias: 'details' });
+    readonly details = linkedSignal(() => this.detailsInput());
+
+    collapsedRequiredRow = false;
 
     private _forceRefresh: boolean;
 
@@ -89,14 +98,11 @@ export class WorkspaceTileComponent implements OnInit {
         }
     }
 
-    @Output()
-    readonly validationChange = new EventEmitter<void>();
+    readonly validationChange = output<void>();
 
-    @Output()
-    readonly selectionChange = new EventEmitter<XoWorkspace>();
+    readonly selectionChange = output<XoWorkspace>();
 
-    @Output()
-    readonly selectionDetailsChange = new EventEmitter<XoRuntimeContext>();
+    readonly selectionDetailsChange = output<XoRuntimeContext>();
 
     requiresDataSource: XcRemoteTableDataSource;
 
@@ -115,28 +121,17 @@ export class WorkspaceTileComponent implements OnInit {
     truncateIssues = true;
 
 
-    constructor(
-        private readonly apiService: ApiService,
-        private readonly dialogService: XcDialogService,
-        private readonly i18n: I18nService,
-        private readonly cdref: ChangeDetectorRef,
-        private readonly zone: NgZone,
-        private readonly settings: FactoryManagerSettingsService
-    ) {
-    }
-
-
     ngOnInit() {
         // create requires data source
-        this.requiresDataSource = new XcRemoteTableDataSource(this.apiService, undefined, FM_RTC, ORDER_TYPES.GET_DEPENDENT_RTCS, createDependenciesTableInfoClass(false));
+        this.requiresDataSource = new XcRemoteTableDataSource(this.apiService, undefined, FMAN_RTC, ORDER_TYPES.GET_DEPENDENT_RTCS, createDependenciesTableInfoClass(false));
         this.requiresDataSource.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
         this.requiresDataSource.output = XoDependencyArray;
         // create required-by data source
-        this.requiredByDataSource = new XcRemoteTableDataSource(this.apiService, undefined, FM_RTC, ORDER_TYPES.GET_DEPENDENT_RTCS, createDependenciesTableInfoClass(false));
+        this.requiredByDataSource = new XcRemoteTableDataSource(this.apiService, undefined, FMAN_RTC, ORDER_TYPES.GET_DEPENDENT_RTCS, createDependenciesTableInfoClass(false));
         this.requiredByDataSource.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
         this.requiredByDataSource.output = XoDependencyArray;
         // create content data source
-        this.contentDataSource = new XcRemoteTableDataSource(this.apiService, undefined, FM_RTC, undefined, createContentTableInfoClass(false));
+        this.contentDataSource = new XcRemoteTableDataSource(this.apiService, undefined, FMAN_RTC, undefined, createContentTableInfoClass(false));
         this.contentDataSource.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
         this.contentDataSource.output = XoApplicationElementArray;
 
@@ -152,7 +147,7 @@ export class WorkspaceTileComponent implements OnInit {
         );
         // If this component gets built but was selected before, the forceRefresh flag is set and the component will load its content immediately
         if (this.forceRefresh) {
-            this.updateDataSources(this.details);
+            this.updateDataSources(this.details());
             this._forceRefresh = false;
         }
     }
@@ -169,7 +164,7 @@ export class WorkspaceTileComponent implements OnInit {
         this.requiredByDataSource.refresh();
         // update content data source
         if (runtimeContext instanceof XoApplicationDefinition) {
-            this.contentDataSource.input = XoGetApplicationContentRequest.create(runtimeContext, false, false, false);
+            this.contentDataSource.input = XoGetApplicationContentRequest.create(runtimeContext, false, false, false, true);
             this.contentDataSource.orderType = ORDER_TYPES.GET_APPLICATION_CONTENT;
         } else if (runtimeContext instanceof XoWorkspace) {
             this.contentDataSource.input = XoGetWorkspaceContentRequest.create(runtimeContext, false);
@@ -180,7 +175,7 @@ export class WorkspaceTileComponent implements OnInit {
         this.contentDataSource.refresh();
         // request issues
         this.issues = [];
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.GET_ISSUES, runtimeContext, XoIssueArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.GET_ISSUES, runtimeContext, XoIssueArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe(result => {
                 if (result.errorMessage) {
                     this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n'));
@@ -194,7 +189,7 @@ export class WorkspaceTileComponent implements OnInit {
 
     select(runtimeContext: XoRuntimeContext) {
         if (runtimeContext) {
-            this.selectionChange.emit(this.workspace);
+            this.selectionChange.emit(this.workspace());
             this.selectionDetailsChange.emit(runtimeContext);
             this.updateDataSources(runtimeContext);
             this.scrollTo();
@@ -206,19 +201,19 @@ export class WorkspaceTileComponent implements OnInit {
 
 
     get hasDetails(): boolean {
-        return this.workspace.equals(this.selection);
+        return this.workspace().equals(this.selection());
     }
 
 
     @HostBinding('class.workspace')
     get hasWorkspaceDetails(): boolean {
-        return this.hasDetails && this.details instanceof XoWorkspaceDetails;
+        return this.hasDetails && this.details() instanceof XoWorkspaceDetails;
     }
 
 
     @HostBinding('class.application-definition')
     get hasApplicationDefinitionDetails(): boolean {
-        return this.hasDetails && this.details instanceof XoApplicationDefinitionDetails;
+        return this.hasDetails && this.details() instanceof XoApplicationDefinitionDetails;
     }
 
 
@@ -226,18 +221,18 @@ export class WorkspaceTileComponent implements OnInit {
         // Workaround because angular material has no observer that completes when data is loaded and the table is rendered.
         // See https://github.com/angular/components/issues/8068
         this.zone.onStable.pipe(skip(2), first(), debounceTime(100)).subscribe(() => {
-            this.headerRef.nativeElement.scrollIntoView(true);
+            this.headerRef().nativeElement.scrollIntoView(true);
             // The parent is the scroll section. Used to get a margin of 8px at the top of the card.
-            const parent = this.headerRef.nativeElement.parentElement.parentElement;
+            const parent = this.headerRef().nativeElement.parentElement.parentElement;
             if (parent) {
-                this.headerRef.nativeElement.parentElement.parentElement.scrollTop -= 8;
+                this.headerRef().nativeElement.parentElement.parentElement.scrollTop -= 8;
             }
         });
     }
 
 
     isSelected(runtimeContext: XoRuntimeContext): boolean {
-        return (runtimeContext.equals(this.details) && (
+        return (runtimeContext.equals(this.details()) && (
             (this.hasWorkspaceDetails && runtimeContext instanceof XoWorkspace) ||
             (this.hasApplicationDefinitionDetails && runtimeContext instanceof XoApplicationDefinition)
         ));
@@ -245,20 +240,21 @@ export class WorkspaceTileComponent implements OnInit {
 
 
     isActive(): boolean {
-        return RuntimeContext.fromWorkspace(this.workspace.name).equals(this.apiService.runtimeContext);
+        return RuntimeContext.fromWorkspace(this.workspace().name).equals(this.apiService.runtimeContext);
     }
 
 
     setAsActive() {
-        this.apiService.runtimeContext = RuntimeContext.fromWorkspace(this.workspace.name);
+        this.apiService.runtimeContext = RuntimeContext.fromWorkspace(this.workspace().name);
     }
 
 
     startMigration() {
         let presetApplicationDefinition: XoApplicationDefinition;
         // find application definition
-        if (this.details instanceof XoApplicationDefinitionDetails) {
-            const applicationDefinition = this.workspace.applicationDefinitions.data.find(ad => ad.uniqueKey === this.details.uniqueKey);
+        const details = this.details();
+        if (details instanceof XoApplicationDefinitionDetails) {
+            const applicationDefinition = this.workspace().applicationDefinitions.data.find(ad => ad.uniqueKey === this.details().uniqueKey);
             if (applicationDefinition) {
                 presetApplicationDefinition = applicationDefinition.clone();
                 presetApplicationDefinition.workspaceName = null;
@@ -268,40 +264,40 @@ export class WorkspaceTileComponent implements OnInit {
         this.dialogService.custom(MigrateWizardComponent, <MigrationWizardData>{
             apiService: this.apiService,
             i18n: this.i18n,
-            rtc: FM_RTC,
-            presetSource: presetApplicationDefinition ?? this.details
+            rtc: FMAN_RTC,
+            presetSource: presetApplicationDefinition ?? details
         });
     }
 
 
     createApplicationDefinition() {
-        this.dialogService.custom(CreateApplicationDefinitionDialogComponent, this.workspace.name).afterDismissResult().subscribe(
-            () => this.validationChange.next()
+        this.dialogService.custom(CreateApplicationDefinitionDialogComponent, this.workspace().name).afterDismissResult().subscribe(
+            () => this.validationChange.emit()
         );
     }
 
 
     loadRuntimeApplication() {
-        this.dialogService.custom(LoadRuntimeApplicationDialogComponent, { workspaceName: this.workspace.name, runtimeApplication: undefined }).afterDismissResult().subscribe(
-            () => this.validationChange.next()
+        this.dialogService.custom(LoadRuntimeApplicationDialogComponent, { workspaceName: this.workspace().name, runtimeApplication: undefined }).afterDismissResult().subscribe(
+            () => this.validationChange.emit()
         );
     }
 
 
     clearWorkspace() {
-        this.dialogService.custom(ClearWorkspaceDialogComponent, this.workspace).afterDismissResult().subscribe(
-            () => this.validationChange.next()
+        this.dialogService.custom(ClearWorkspaceDialogComponent, this.workspace()).afterDismissResult().subscribe(
+            () => this.validationChange.emit()
         );
     }
 
 
     deleteWorkspace() {
-        this.dialogService.custom(DeleteWorkspaceDialogComponent, this.workspace).afterDismissResult().subscribe(
+        this.dialogService.custom(DeleteWorkspaceDialogComponent, this.workspace()).afterDismissResult().subscribe(
             () => {
-                this.validationChange.next();
-                this.selection = null;
-                this.workspace = null;
-                this.details = null;
+                this.validationChange.emit();
+                this.selection.set(null);
+                this.workspace.set(null);
+                this.details.set(null);
                 this.select(null);
             }
         );
@@ -309,25 +305,26 @@ export class WorkspaceTileComponent implements OnInit {
 
 
     buildNewVersion() {
-        this.dialogService.custom(CreateRuntimeApplicationDialogComponent, { workspaceName: this.workspace.name, applicationDefinitionName: this.details.name }).afterDismissResult().subscribe(
+        this.dialogService.custom(CreateRuntimeApplicationDialogComponent, { workspaceName: this.workspace().name, applicationDefinitionName: this.details().name }).afterDismissResult().subscribe(
         );
     }
 
 
     deleteApplicationDefinition() {
-        if (this.details instanceof XoApplicationDefinitionDetails) {
-            const title = this.i18n.translate('fman.rtcs.workspaces.workspace-tile.delete-application-definition-title', { key: '$0', value: this.details.label });
-            const message = this.i18n.translate('fman.rtcs.workspaces.workspace-tile.delete-application-definition-message');
+        const details = this.details();
+        if (details instanceof XoApplicationDefinitionDetails) {
+            const title = this.i18n.translateInstant('fman.rtcs.workspaces.workspace-tile.delete-application-definition-title', { key: '$0', value: details.label });
+            const message = this.i18n.translateInstant('fman.rtcs.workspaces.workspace-tile.delete-application-definition-message');
 
             this.dialogService.confirm(title, message).afterDismissResult().subscribe((confirm: boolean) => {
                 if (confirm) {
-                    this.apiService.startOrder(FM_RTC, ORDER_TYPES.DELETE_APPLICATION_DEFINITION, this.details.proxy(), undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+                    this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.DELETE_APPLICATION_DEFINITION, this.details().proxy(), undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
                         filter(result => result.errorMessage ? (this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n')), false) : true)
                     ).subscribe(() => {
-                        this.validationChange.next();
-                        this.selection = null;
-                        this.workspace = null;
-                        this.details = null;
+                        this.validationChange.emit();
+                        this.selection.set(null);
+                        this.workspace.set(null);
+                        this.details.set(null);
                         this.select(null);
                     });
                 }
@@ -337,12 +334,13 @@ export class WorkspaceTileComponent implements OnInit {
 
 
     changeDocumentation(value: string) {
-        if (this.details instanceof XoApplicationDefinitionDetails && value !== this.details.documentation) {
-            const applicationDefinitionDetails = this.details;
+        const details = this.details();
+        if (details instanceof XoApplicationDefinitionDetails && value !== details.documentation) {
+            const applicationDefinitionDetails = details;
             const documentation = new XoDocumentation();
             documentation.value = value;
             this.documentationPending = true;
-            this.apiService.startOrder(FM_RTC, ORDER_TYPES.SET_APPLICATION_DEFINITION_DOCUMENTATION, [this.details.proxy(), documentation], null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+            this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.SET_APPLICATION_DEFINITION_DOCUMENTATION, [details.proxy(), documentation], null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
                 finalize(() => {
                     // trigger change detection even with an unchanged value to reset input field
                     const currentValue = applicationDefinitionDetails.documentation;
@@ -360,27 +358,31 @@ export class WorkspaceTileComponent implements OnInit {
 
 
     manageDependencies() {
-        this.dialogService.custom(ManageDependenciesDialogComponent, this.details as XoRuntimeContext).afterDismissResult().subscribe(
+        this.dialogService.custom(ManageDependenciesDialogComponent, this.details() as XoRuntimeContext).afterDismissResult().subscribe(
             () => this.requiresDataSource.refresh()
         );
     }
 
 
     manageContent() {
-        this.dialogService.custom(ManageContentDialogComponent, this.details as XoRuntimeContext).afterDismissResult().subscribe(
+        this.dialogService.custom(ManageContentDialogComponent, this.details() as XoRuntimeContext).afterDismissResult().subscribe(
             () => this.contentDataSource.refresh()
         );
     }
 
 
     showWorkspaceContent() {
-        this.dialogService.custom(ShowWorkspaceContentDialogComponent, this.details as XoRuntimeContext);
+        this.dialogService.custom(ShowWorkspaceContentDialogComponent, this.details() as XoRuntimeContext);
     }
 
 
     deleteDuplicates() {
-        this.dialogService.custom(DeleteDuplicatesDialogComponent, this.workspace).afterDismissResult().subscribe(
-            () => this.validationChange.next()
+        this.dialogService.custom(DeleteDuplicatesDialogComponent, this.workspace()).afterDismissResult().subscribe(
+            () => this.validationChange.emit()
         );
+    }
+
+    collapsedChange(collapsed: boolean) {
+        this.collapsedRequiredRow = collapsed;
     }
 }

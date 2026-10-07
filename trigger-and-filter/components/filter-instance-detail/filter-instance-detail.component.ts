@@ -15,15 +15,16 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, InjectionToken, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, InjectionToken } from '@angular/core';
 
-import { FM_RTC } from '@fman/const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ORDER_TYPES } from '@fman/trigger-and-filter/order-types';
 import { XoFilterInstanceDetails } from '@fman/trigger-and-filter/xo/xo-filter-instance-details.model';
 import { XoFilterInstance } from '@fman/trigger-and-filter/xo/xo-filter-instance.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService } from '@zeta/i18n';
-import { XC_COMPONENT_DATA, XcDialogService, XcDynamicComponent, XDSIconName } from '@zeta/xc';
+import { XcI18nTranslateDirective } from '@zeta/i18n';
+import { XC_COMPONENT_DATA, XcButtonComponent, XcDialogService, XcDynamicComponent, XcIconComponent, XcPanelComponent, XcSpinnerComponent, XcTooltipDirective, XDSIconName } from '@zeta/xc';
 
 import { filter } from 'rxjs';
 
@@ -37,9 +38,14 @@ export interface FilterInstanceDetailsData {
     templateUrl: './filter-instance-detail.component.html',
     styleUrls: ['./filter-instance-detail.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [XcButtonComponent, XcIconComponent, XcPanelComponent, XcSpinnerComponent, XcTooltipDirective, XcI18nTranslateDirective]
 })
 export class FilterInstanceDetailComponent extends XcDynamicComponent<FilterInstanceDetailsData> {
+    private readonly apiService = inject(ApiService);
+    private readonly i18nService = inject(I18nService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly cdr = inject(ChangeDetectorRef);
+
 
     readonly XDSIconName = XDSIconName;
 
@@ -50,18 +56,14 @@ export class FilterInstanceDetailComponent extends XcDynamicComponent<FilterInst
     detail: XoFilterInstanceDetails = new XoFilterInstanceDetails();
     busy = false;
 
-    constructor(injector: Injector,
-        private readonly apiService: ApiService,
-        private readonly i18nService: I18nService,
-        private readonly dialogService: XcDialogService,
-        private readonly cdr: ChangeDetectorRef) {
-        super(injector);
+    constructor() {
+        super();
         this.refresh();
     }
 
     refresh() {
         this.busy = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.FILTER_INSTANCE_DETAIL, this.injectedData.filterinstance, XoFilterInstanceDetails, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.FILTER_INSTANCE_DETAIL, this.injectedData.filterinstance, XoFilterInstanceDetails, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (!result.errorMessage) {
@@ -82,7 +84,7 @@ export class FilterInstanceDetailComponent extends XcDynamicComponent<FilterInst
 
     enable() {
         this.busy = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.ENABLE_FILTER, this.injectedData.filterinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.ENABLE_FILTER, this.injectedData.filterinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (!result.errorMessage) {
@@ -103,7 +105,7 @@ export class FilterInstanceDetailComponent extends XcDynamicComponent<FilterInst
 
     disable() {
         this.busy = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.DISABLE_FILTER, this.injectedData.filterinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.DISABLE_FILTER, this.injectedData.filterinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (!result.errorMessage) {
@@ -123,11 +125,11 @@ export class FilterInstanceDetailComponent extends XcDynamicComponent<FilterInst
     }
 
     undeploy() {
-        this.dialogService.confirm(this.i18nService.translate('fman.taf.filter.tile.undeploy.confirm-title'), this.i18nService.translate('fman.taf.filter.tile.undeploy.confirm-message')).afterDismiss()
+        this.dialogService.confirm(this.i18nService.translateInstant('fman.taf.filter.tile.undeploy.confirm-title'), this.i18nService.translateInstant('fman.taf.filter.tile.undeploy.confirm-message')).afterDismiss()
             .pipe(filter(res => !!res)).subscribe({
                 next: () => {
                     this.busy = true;
-                    this.apiService.startOrder(FM_RTC, ORDER_TYPES.UNDEPLOY_FILTER, this.injectedData.filterinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+                    this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.UNDEPLOY_FILTER, this.injectedData.filterinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
                         .subscribe({
                             next: result => {
                                 if (!result.errorMessage) {

@@ -15,28 +15,31 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject , signal} from '@angular/core';
 
-import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-import { XcAutocompleteDataWrapper, XcDialogComponent, XcDialogService, XcOptionItem, XcOptionItemString } from '@zeta/xc';
-
-import { FM_RTC } from '../../../const';
-import { ORDER_TYPES } from '../../order-types';
-import { XoFilterInstance } from '@fman/trigger-and-filter/xo/xo-filter-instance.model';
-import { XoDeployFilterRequest } from '@fman/trigger-and-filter/xo/xo-deploy-filter-request.model';
-import { XoFilter } from '@fman/trigger-and-filter/xo/xo-filter.model';
 import { XoRuntimeContext, XoRuntimeContextArray } from '@fman/runtime-contexts/xo/xo-runtime-context.model';
+import { XoDeployFilterRequest } from '@fman/trigger-and-filter/xo/xo-deploy-filter-request.model';
+import { XoFilterInstance } from '@fman/trigger-and-filter/xo/xo-filter-instance.model';
+import { XoFilter } from '@fman/trigger-and-filter/xo/xo-filter.model';
 import { XoTriggerInstance, XoTriggerInstanceArray } from '@fman/trigger-and-filter/xo/xo-trigger-instance.model';
+import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
+import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcAutocompleteDataWrapper, XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcOptionItem, XcOptionItemString } from '@zeta/xc';
 
+import { FMAN_RTC } from '@fman/factory-manager.component';
+import { ORDER_TYPES } from '../../order-types';
 
 
 @Component({
     templateUrl: './deploy-filter-dialog.component.html',
     styleUrls: ['./deploy-filter-dialog.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class DeployFilterDialogComponent extends XcDialogComponent<XoFilterInstance, XoFilter> {
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+
 
     instance: string;
     parameter: string;
@@ -44,7 +47,7 @@ export class DeployFilterDialogComponent extends XcDialogComponent<XoFilterInsta
     optional: boolean;
     busy: boolean;
 
-    context: XoRuntimeContext = this.injectedData.runtimeContext;
+    context: XoRuntimeContext;
     triggerInstance: string;
 
     runtimeContextDataWrapper: XcAutocompleteDataWrapper<XoRuntimeContext> = new XcAutocompleteDataWrapper<XoRuntimeContext>(
@@ -60,20 +63,18 @@ export class DeployFilterDialogComponent extends XcDialogComponent<XoFilterInsta
             this.triggerInstance = value;
         });
 
-    constructor(injector: Injector,
-        private readonly apiService: ApiService,
-        private readonly dialogService: XcDialogService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.fillContextWrapper();
         this.fillTriggerInstanceWrapper();
     }
 
     fillContextWrapper() {
-        this.apiService.startOrderAssertFlat<XoRuntimeContext>(FM_RTC, ORDER_TYPES.POSSIBLE_CONTEXT_FILTER, this.injectedData, XoRuntimeContextArray)
+        this.apiService.startOrderAssertFlat<XoRuntimeContext>(FMAN_RTC, ORDER_TYPES.POSSIBLE_CONTEXT_FILTER, this.injectedData, XoRuntimeContextArray)
             .subscribe({
                 next: result => {
-                    this.runtimeContextDataWrapper.values = result.map(rtc => <XcOptionItem<XoRuntimeContext>>{ name: rtc.label, value: rtc });
+                    this.runtimeContextDataWrapper.values = result.map(rtc => <XcOptionItem<XoRuntimeContext>>{ name: signal(rtc.label), value: rtc });
                 },
                 error: err => {
                     this.dialogService.error(err);
@@ -82,15 +83,19 @@ export class DeployFilterDialogComponent extends XcDialogComponent<XoFilterInsta
     }
 
     fillTriggerInstanceWrapper() {
-        this.apiService.startOrderAssertFlat<XoTriggerInstance>(FM_RTC, ORDER_TYPES.POSSIBLE_TRIGGER_INSTANCES, [this.injectedData, this.context], XoTriggerInstanceArray)
-            .subscribe({
-                next: result => {
-                    this.triggerInstanceDataWrapper.values = result.map(triggerInstance => XcOptionItemString(triggerInstance.triggerInstance));
-                },
-                error: err => {
-                    this.dialogService.error(err);
-                }
-            });
+        if (this.context) {
+            this.apiService.startOrderAssertFlat<XoTriggerInstance>(FMAN_RTC, ORDER_TYPES.POSSIBLE_TRIGGER_INSTANCES, [this.injectedData, this.context], XoTriggerInstanceArray)
+                .subscribe({
+                    next: result => {
+                        this.triggerInstanceDataWrapper.values = result.map(triggerInstance => XcOptionItemString(triggerInstance.triggerInstance));
+                    },
+                    error: err => {
+                        this.dialogService.error(err);
+                    }
+                });
+        } else {
+            this.triggerInstanceDataWrapper.values = [];
+        }
     }
 
     deploy() {
@@ -105,7 +110,7 @@ export class DeployFilterDialogComponent extends XcDialogComponent<XoFilterInsta
         request.documentation = this.documentation;
         request.optional = this.optional;
 
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.DEPLOY_FILTER, request, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.DEPLOY_FILTER, request, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (!result.errorMessage) {

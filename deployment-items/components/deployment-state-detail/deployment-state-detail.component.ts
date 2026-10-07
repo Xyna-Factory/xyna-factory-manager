@@ -15,25 +15,26 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
 
 import { dateTimeString } from '@zeta/base';
-import { XcDialogService } from '@zeta/xc';
+import { XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcButtonComponent, XcDialogService, XcIconComponent, XcTooltipDirective } from '@zeta/xc';
 
 import { XoDeploymentItem } from '../../xo/xo-deployment-item.model';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'deployment-state-detail',
     templateUrl: './deployment-state-detail.component.html',
     styleUrls: ['./deployment-state-detail.component.scss'],
-    standalone: false
+    imports: [XcI18nTranslateDirective, XcButtonComponent, XcIconComponent, XcTooltipDirective]
 })
 export class DeploymentStateDetailComponent {
-    private _deploymentItem: XoDeploymentItem;
+    private readonly dialogService = inject(XcDialogService);
 
-    constructor(private readonly dialogService: XcDialogService) {
-    }
+    private _deploymentItem: XoDeploymentItem;
 
 
     @Input()

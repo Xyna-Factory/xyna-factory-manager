@@ -15,14 +15,18 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectorRef, Component, ElementRef, HostBinding, Input, NgZone, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, NgZone, OnInit, inject, viewChild } from '@angular/core';
 
-import { I18nService } from '@zeta/i18n';
-
-import { XDSIconName, XcDialogService } from '@zeta/xc';
 import { ApiService } from '@zeta/api';
-import { TileDataSource, TileItem } from './tile-data-source';
+import { I18nService } from '@zeta/i18n';
+import { XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcDialogService, XDSIconName, XcIconButtonComponent, XcTemplateComponent, XcTooltipDirective } from '@zeta/xc';
+
 import { debounceTime, first, skip } from 'rxjs';
+
+import { TileButtonComponent } from './tile-button/tile-button.component';
+import { TileDataSource, TileItem } from './tile-data-source';
+
 
 export interface ActionButtonData {
     iconName: string;
@@ -30,14 +34,20 @@ export interface ActionButtonData {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'tile',
     templateUrl: './tile.component.html',
     styleUrls: ['./tile.component.scss'],
-    standalone: false
+    imports: [TileButtonComponent, XcI18nTranslateDirective, XcIconButtonComponent, XcTemplateComponent, XcTooltipDirective]
 })
 export class TileComponent  implements OnInit {
-    @ViewChild('header', { static: false })
-    headerRef: ElementRef;
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly i18n = inject(I18nService);
+    private readonly cdref = inject(ChangeDetectorRef);
+    private readonly zone = inject(NgZone);
+
+    readonly headerRef = viewChild<ElementRef>('header');
 
     readonly XDSIconName = XDSIconName;
 
@@ -60,15 +70,6 @@ export class TileComponent  implements OnInit {
 
     get actionButton(): ActionButtonData {
         return this._actionButton;
-    }
-
-    constructor(
-        private readonly apiService: ApiService,
-        private readonly dialogService: XcDialogService,
-        private readonly i18n: I18nService,
-        private readonly cdref: ChangeDetectorRef,
-        private readonly zone: NgZone
-    ) {
     }
     ngOnInit(): void {
         this.cdref.markForCheck();
@@ -114,11 +115,11 @@ export class TileComponent  implements OnInit {
         // Workaround because angular material has no observer that completes when data is loaded and the table is rendered.
         // See https://github.com/angular/components/issues/8068
         this.zone.onStable.pipe(skip(2), first(), debounceTime(100)).subscribe(() => {
-            this.headerRef.nativeElement.scrollIntoView(true);
+            this.headerRef().nativeElement.scrollIntoView(true);
             // The parent is the scroll section. Used to get a margin of 8px at the top of the card.
-            const parent = this.headerRef.nativeElement.parentElement.parentElement;
+            const parent = this.headerRef().nativeElement.parentElement.parentElement;
             if (parent) {
-                this.headerRef.nativeElement.parentElement.parentElement.scrollTop -= 8;
+                this.headerRef().nativeElement.parentElement.parentElement.scrollTop -= 8;
             }
         });
     }

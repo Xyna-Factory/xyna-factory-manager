@@ -43,6 +43,10 @@ export class XoDeployTriggerRequest extends XoObject {
     startParameter: string;
 
 
+    @XoProperty()
+    startParameterArray: string[];
+
+
 }
 
 @XoArrayClass(XoDeployTriggerRequest)

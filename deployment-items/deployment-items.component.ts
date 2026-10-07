@@ -15,20 +15,20 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { filter, map, takeUntil } from 'rxjs/operators';
 
-import { ApiService, RuntimeContext, RuntimeContextType, StartOrderOptionsBuilder, XoRuntimeContext } from '@zeta/api';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
+import { RuntimeContext, RuntimeContextType, StartOrderOptionsBuilder, XoRuntimeContext } from '@zeta/api';
 import { dateTimeString } from '@zeta/base';
-import { I18nService } from '@zeta/i18n';
+import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { QueryParameterService } from '@zeta/nav/query-parameter.service';
-import { XcAutocompleteDataWrapper, XcDialogService, XcOptionItem, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
+import { XcAutocompleteDataWrapper, XcButtonComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcIconButtonComponent, XcMasterDetailComponent, XcOptionItem, XcPanelComponent, XcTableComponent, XcTooltipDirective, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
 
-import { filter, map } from 'rxjs/operators';
-
-import { FM_RTC, PROCESS_MODELLER_TAB_URL } from '../const';
-import { FactoryManagerSettingsService } from '../misc/services/factory-manager-settings.service';
+import { PROCESS_MODELLER_TAB_URL } from '../const';
 import { WorkflowTesterDialogComponent } from '../workflow-tester/workflow-tester-dialog.component';
+import { DeploymentStateDetailComponent } from './components/deployment-state-detail/deployment-state-detail.component';
 import { DeleteReportComponent, DeleteReportComponentData } from './modal/delete-report/delete-report.component';
 import { DeployModalComponent, DeployModalComponentData } from './modal/deploy-modal/deploy-modal.component';
 import { UndeployReportComponent, UndeployReportComponentData } from './modal/undeploy-report/undeploy-report.component';
@@ -44,9 +44,10 @@ const ISWP = DEPLOYMENT_ITEMS_ISWP;
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './deployment-items.component.html',
     styleUrls: ['./deployment-items.component.scss'],
-    standalone: false
+    imports: [XcButtonComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, DeploymentStateDetailComponent]
 })
 export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent {
 
@@ -59,24 +60,18 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
     selectedRuntimeContext: XoRuntimeContext;
     detailsRuntimeContext: XoRuntimeContext;
 
+    private destroy$ = new Subject<void>();
 
-    constructor(
-        apiService: ApiService,
-        dialogService: XcDialogService,
-        route: ActivatedRoute,
-        router: Router,
-        i18nService: I18nService,
-        settings: FactoryManagerSettingsService,
-        injector: Injector
-    ) {
-        super(apiService, dialogService, route, router, i18nService, injector, settings);
-        this.initRemoteTableDataSource(XoDeploymentItem, XoDeploymentItemArray, FM_RTC, ISWP.List);
+    constructor() {
+        super();
+
+        this.initRemoteTableDataSource(XoDeploymentItem, XoDeploymentItemArray, FMAN_RTC, ISWP.List);
 
         // const deploymentItemStates: XcOptionItem[] = [
-        //     {icon: XDSIconName.ARROWRIGHT, name: '', value: ''},
-        //     {icon: XDSIconName.ARROWRIGHT, name: 'DEPLOYED', value: 'DEPLOYED'},
-        //     {icon: XDSIconName.ARROWRIGHT, name: 'SAVED', value: 'SAVED'},
-        //     {icon: XDSIconName.ARROWRIGHT, name: 'INVALID', value: 'INVALID'},
+        //     {icon: XDSIconName.ARROWRIGHT, name: signal(''), value: ''},
+        //     {icon: XDSIconName.ARROWRIGHT, name: signal('DEPLOYED'), value: 'DEPLOYED'},
+        //     {icon: XDSIconName.ARROWRIGHT, name: signal('SAVED'), value: 'SAVED'},
+        //     {icon: XDSIconName.ARROWRIGHT, name: signal('INVALID'), value: 'INVALID'},
         // ];
         // this.remoteTableDataSource.filterEnums.set(XoDeploymentItem.getAccessorMap().state, of(deploymentItemStates));
 
@@ -100,7 +95,7 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
             {
                 class: 'delete-action-element',
                 iconName: 'delete',
-                tooltip: this.i18nService.translate('fman.deployment-items.delete'),
+                tooltip: this.i18nService.translateSignal('fman.deployment-items.delete'),
                 onAction: row => {
                     const paramArr = new XoDeleteDeploymentItemParamArray();
                     const param = new XoDeleteDeploymentItemParam();
@@ -129,32 +124,48 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
             []
         );
 
+        // fetch runtime contexts for auto complete
+        this.runtimeContextsLoading = true;
+        this.apiService.getRuntimeContexts().subscribe({
+            next: rtcs => {
+                this.runtimeContextsDataWrapper.values = rtcs.map(rtc => (<XcOptionItem>{ value: rtc, name: signal(rtc.toString()) }));
+                this.setDefaultRTC();
+            },
+            error: error => this.dialogService.error(error),
+            complete: () => this.runtimeContextsLoading = false
+        });
+    }
+
+    override onShow(): void {
+        super.onShow();
+
+        // destroy$ neu erzeugen
+        this.destroy$ = new Subject<void>();
+
+        // Subscription nur aktiv, wenn die Komponente tatsächlich "sichtbar" ist
         this.apiService.runtimeContextChange.pipe(
-            // current runtime context must be set
             filter(rtc => rtc && this.runtimeContextsDataWrapper.values.length > 0),
-            // map to option with xo runtime context that equals current runtime context
-            map(rtc => this.runtimeContextsDataWrapper.values.filter(option => rtc.equals(option.value.toRuntimeContext()))[0]),
-            // option must be set
+            map(rtc =>
+                this.runtimeContextsDataWrapper.values.find(option =>
+                    rtc.equals(option.value.toRuntimeContext())
+                )
+            ),
             filter(option => !!option),
-            // map to xo runtime context
-            map(option => option.value)
+            map(option => option.value),
+            takeUntil(this.destroy$)
         ).subscribe(rtc => {
             this.selectedRuntimeContext = rtc;
             this.runtimeContextsDataWrapper.update();
             this.remoteTableDataSource.input = rtc;
             this.refresh();
         });
+    }
 
-        // fetch runtime contexts for auto complete
-        this.runtimeContextsLoading = true;
-        this.apiService.getRuntimeContexts().subscribe({
-            next: rtcs  => {
-                this.runtimeContextsDataWrapper.values = rtcs.map(rtc => (<XcOptionItem>{value: rtc, name: rtc.toString()}));
-                this.setDefaultRTC();
-            },
-            error: error => this.dialogService.error(error),
-            complete: () => this.runtimeContextsLoading = false
-        });
+    override onHide(): void {
+        super.onHide();
+
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 
 
@@ -163,11 +174,10 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
      */
     private setDefaultRTC() {
         // Because you can only choose workspaces this can be used to find the XoRuntimeContext in the datawrapper
-        const uniqueKey = `${RuntimeContextType.Workspace},${
-            this.apiService.runtimeContext && this.apiService.runtimeContext.ws && this.apiService.runtimeContext.ws.workspace
-                ? this.apiService.runtimeContext.ws.workspace
-                : XoRuntimeContext.fromType('Workspace', RuntimeContext.defaultWorkspace.ws.workspace, -1).uniqueKey
-        }`;
+        const uniqueKey = `${RuntimeContextType.Workspace},${this.apiService.runtimeContext && this.apiService.runtimeContext.ws && this.apiService.runtimeContext.ws.workspace
+            ? this.apiService.runtimeContext.ws.workspace
+            : XoRuntimeContext.fromType('Workspace', RuntimeContext.defaultWorkspace.ws.workspace, -1).uniqueKey
+            }`;
         const optionItem = this.runtimeContextsDataWrapper.values
             .find(item => item.value?.uniqueKey === uniqueKey);
         if (optionItem) {
@@ -180,13 +190,13 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
 
 
     private getDetails(entry: XoDeploymentItem) {
-        const obs = this.apiService.startOrder(FM_RTC, ISWP.Details, [entry.id, this.selectedRuntimeContext], XoDeploymentItem, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, [entry.id, this.selectedRuntimeContext], XoDeploymentItem, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             this.detailsObject = (output[0] || null) as XoDeploymentItem;
-            this.detailsRuntimeContext  = this.selectedRuntimeContext.clone();
+            this.detailsRuntimeContext = this.selectedRuntimeContext.clone();
             this.detailsLastStateChange = dateTimeString(this.detailsObject.lastStateChange, false);
-            this.detailsLastModified    = dateTimeString(this.detailsObject.lastModified, false);
-        }, this.UNSPECIFIED_DETAILS_ERROR, null, error => {
+            this.detailsLastModified = dateTimeString(this.detailsObject.lastModified, false);
+        }, this.UNSPECIFIED_DETAILS_ERROR, null, () => {
             this.detailsRuntimeContext = null;
             this.dismiss();
         });
@@ -210,7 +220,7 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
             }
 
             const obs = this.apiService.startOrder(
-                FM_RTC, ISWP.Delete,
+                FMAN_RTC, ISWP.Delete,
                 [params, this.selectedRuntimeContext],
                 XoDeleteDeploymentItemResultArray,
                 StartOrderOptionsBuilder.defaultOptionsWithErrorMessage
@@ -231,7 +241,7 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
 
                     this.dialogService.custom<XoDeleteDeploymentItemParamArray, DeleteReportComponentData>(
                         DeleteReportComponent,
-                        {results: resInputArr, i18nService: this.i18nService}
+                        { results: resInputArr, i18nService: this.i18nService }
                     ).afterDismissResult().subscribe(paramArr => {
                         if (paramArr) {
                             this.delete(paramArr, false);
@@ -242,13 +252,13 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
                     // console.log('Undeploying was successful');
                     this.remoteTableDataSource.refresh();
                 }
-            }, this.UNSPECIFIED_DELETE_ERROR, () => { }, msg => { });
+            }, this.UNSPECIFIED_DELETE_ERROR, () => { }, () => { });
         };
 
         if (confirmFirst) {
             this.dialogService.confirm(
-                this.i18nService.translate(this.FM_DELETE_ENTRY_HEADER),
-                this.i18nService.translate(this.CONFIRM_DELETE)
+                this.i18nService.translateInstant(this.FM_DELETE_ENTRY_HEADER),
+                this.i18nService.translateInstant(this.CONFIRM_DELETE)
             ).afterDismissResult().subscribe(
                 value => {
                     if (value) {
@@ -297,7 +307,7 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
         const data: DeployModalComponentData = {
             apiService: this.apiService,
             i18nService: this.i18nService,
-            rtc: FM_RTC,
+            rtc: FMAN_RTC,
             deployWorkflow: forceDeploy ? ISWP.ForceDeploy : ISWP.Deploy,
             items: items,
             runtimeContext: this.selectedRuntimeContext,
@@ -329,7 +339,7 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
         }
 
         const obs = this.apiService.startOrder(
-            FM_RTC, ISWP.Undeploy,
+            FMAN_RTC, ISWP.Undeploy,
             [params, this.selectedRuntimeContext],
             XoUndeployDeploymentItemResultArray,
             StartOrderOptionsBuilder.defaultOptionsWithErrorMessage
@@ -348,19 +358,19 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
                 // console.log('Undeploying was (partially/completely) unsuccessful - starting "Undeploy Report"');
 
                 this.dialogService.custom<XoUndeployDeploymentItemParamArray, UndeployReportComponentData>
-                (UndeployReportComponent, {results: resInputArr, i18nService: this.i18nService}).afterDismissResult().subscribe(
-                    paramArr => {
-                        if (paramArr) {
-                            this.undeploy(paramArr);
+                    (UndeployReportComponent, { results: resInputArr, i18nService: this.i18nService }).afterDismissResult().subscribe(
+                        paramArr => {
+                            if (paramArr) {
+                                this.undeploy(paramArr);
+                            }
                         }
-                    }
-                );
+                    );
 
             } else {
                 // console.log('Undeploying was successful');
                 this.remoteTableDataSource.refresh();
             }
-        }, this.UNSPECIFIED_UNDEPLOY_ERROR, () => {}, msg => {});
+        }, this.UNSPECIFIED_UNDEPLOY_ERROR, () => { }, () => { });
     }
 
 

@@ -15,18 +15,18 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Injector, Input, Output, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-
-import { FM_RTC } from '@fman/const';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, output, signal, viewChild } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { InputParameterRef } from '@fman/misc/components/input-parameter/input-parameter-ref.class';
-import { FactoryManagerSettingsService } from '@fman/misc/services/factory-manager-settings.service';
 import { XoOrderType, XoOrderTypeArray } from '@fman/xo/xo-order-type.model';
-import { ApiService, RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoArray, XoRuntimeContext, XoWorkspace } from '@zeta/api';
+import { RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoArray, XoRuntimeContext, XoWorkspace } from '@zeta/api';
 import { isNumber } from '@zeta/base';
-import { I18nService } from '@zeta/i18n';
-import { XcAutocompleteDataWrapper, XcDialogService, XcFormDirective, XcIntegerStringDataWrapper, XcStringFloatDataWrapper, XcStringIntegerDataWrapper } from '@zeta/xc';
+import { XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcAutocompleteDataWrapper, XcButtonComponent, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIntegerStringDataWrapper, XcPanelComponent, XcStringFloatDataWrapper, XcStringIntegerDataWrapper } from '@zeta/xc';
 
+import { DateSelectorComponent } from '../../misc/components/date-selector/date-selector.component';
+import { InputParameterComponent } from '../../misc/components/input-parameter/input-parameter.component';
+import { GenerateInputComponent } from '../components/generate-input-component/generate-input.component';
 import { ORDER_INPUT_SOURCE_ISWP, ORDER_INPUT_SOURCE_TYPE_CONSTANT_NAME_PREFIX, ORDER_INPUT_SOURCE_TYPE_WORKFLOW_NAME_PREFIX, ORDER_INPUT_SOURCE_TYPE_XTF_NAME_PREFIX, OrderInputSourceParameterKey, RestorableOrderInputSourcesComponent } from '../restorable-order-input-sources.component';
 import { XoFrequencyControlledTaskId } from '../xo/xo-frequency-controlled-task-id.model';
 import { XoGetOrderInputSourceRequest } from '../xo/xo-get-order-input-source-request.model';
@@ -55,6 +55,7 @@ export class FrequencyControlledTaskRatePreset extends FrequencyControlledTaskPr
 
     constructor(rate: number, duration: number) {
         super();
+        
         this.rate = rate;
         this.duration = duration;
     }
@@ -99,9 +100,11 @@ export class FrequencyControlledTaskLoadPreset extends FrequencyControlledTaskPr
     templateUrl: './order-input-source-details.component.html',
     styleUrls: ['./order-input-source-details.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [XcButtonComponent, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcPanelComponent, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe, InputParameterComponent, GenerateInputComponent, DateSelectorComponent]
 })
 export class OrderInputSourceDetailsComponent extends RestorableOrderInputSourcesComponent {
+    private readonly cdr = inject(ChangeDetectorRef);
+
 
     // FIXME: USE CODE FROM ADD NEW ORDER INPUT SOURCE MODAL !!!!!
 
@@ -121,18 +124,16 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
         }
     }
 
-    @Output('closed')
-    readonly closed = new EventEmitter<OrderInputSourceCloseEvent>();
+    readonly closed = output<OrderInputSourceCloseEvent>({ alias: 'closed' });
 
-    @Output('navigated')
-    readonly navigated = new EventEmitter<string>();
+    readonly navigated = output<string>({ alias: 'navigated' });
 
 
-    @ViewChild(XcFormDirective, {static: false})
-    xcFormDirective: XcFormDirective;
+    readonly xcFormDirective = viewChild(XcFormDirective);
 
     get invalid(): boolean {
-        return this.xcFormDirective ? (this.xcFormDirective.invalid || this.noOrderTypes) : false;
+        const xcFormDirective = this.xcFormDirective();
+        return xcFormDirective ? (xcFormDirective.invalid || this.noOrderTypes) : false;
     }
 
     get isSourceTypeConstant(): boolean {
@@ -148,7 +149,7 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
     }
 
     get fmanRTC(): RuntimeContext {
-        return FM_RTC;
+        return FMAN_RTC;
     }
 
     dateValid = true;
@@ -304,17 +305,8 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
         value => this.fctParameters.dataPointDistance = value
     );
 
-    constructor(
-        apiService: ApiService,
-        dialogService: XcDialogService,
-        route: ActivatedRoute,
-        router: Router,
-        i18nService: I18nService,
-        settings: FactoryManagerSettingsService,
-        injector: Injector,
-        private readonly cdr: ChangeDetectorRef
-    ) {
-        super(apiService, dialogService, route, router, i18nService, injector, settings);
+    constructor() {
+        super();
 
         this.runtimeContextsDataWrapper = new XcAutocompleteDataWrapper(
             () => this.selectedServerRuntimeContext,
@@ -343,13 +335,13 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
         );
 
         this.monitoringLevelDataWrapper.values = [
-            { name: '0', value: '0' },
-            { name: '5', value: '5' },
-            { name: '10', value: '10' },
-            { name: '15', value: '15' },
-            { name: '17', value: '17' },
-            { name: '18', value: '18' },
-            { name: '20', value: '20' }
+            { name: signal('0'), value: '0' },
+            { name: signal('5'), value: '5' },
+            { name: signal('10'), value: '10' },
+            { name: signal('15'), value: '15' },
+            { name: signal('17'), value: '17' },
+            { name: signal('18'), value: '18' },
+            { name: signal('20'), value: '20' }
         ];
 
         this.frequencyControlledTaskTypes = new XcAutocompleteDataWrapper(
@@ -358,8 +350,8 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
         );
 
         this.frequencyControlledTaskTypes.values = [
-            { name: 'Load', value: 'Load' },
-            { name: 'Rate (in Hz)', value: 'Rate' }
+            { name: signal('Load'), value: 'Load' },
+            { name: signal('Rate (in Hz)'), value: 'Rate' }
         ];
 
         this.selectedGeneratingOrderType = new XoOrderType();
@@ -380,7 +372,7 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
         request.inputSourceName = entry.name;
         request.revision = entry.revision;
 
-        const obs = this.apiService.startOrder(FM_RTC, ISWP.Details, request, XoOrderInputSource, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, request, XoOrderInputSource, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             this.detailsObject = (output[0] || null) as XoOrderInputSource;
 
@@ -407,7 +399,7 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
     save() {
         this._writeToDetailsObjectParameters();
 
-        const obs = this.apiService.startOrder(FM_RTC, ISWP.Save, this.detailsObject.clone(), null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Save, this.detailsObject.clone(), null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, _ => {
             this.closed.emit({ dataChanged: true });
         }, this.UNSPECIFIED_SAVE_ERROR);
@@ -417,7 +409,7 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
     private _getRuntimeContexts() {
         this.apiService.getRuntimeContexts(false).subscribe({
             next: rtcArr => {
-                this.runtimeContextsDataWrapper.values = rtcArr.map(rtc => ({value: rtc, name: rtc.toString()}));
+                this.runtimeContextsDataWrapper.values = rtcArr.map(rtc => ({value: rtc, name: signal(rtc.toString())}));
             },
             error: error => this.dialogService.error(error)
         });
@@ -432,11 +424,11 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
             return false;
         }
 
-        const sub = this.apiService.startOrder(FM_RTC, ISWP.GetOrderTypes, this.selectedServerRuntimeContext, XoOrderTypeArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const sub = this.apiService.startOrder(FMAN_RTC, ISWP.GetOrderTypes, this.selectedServerRuntimeContext, XoOrderTypeArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(sub, output => {
             const otarr = output && output.length ? (output[0] as XoOrderTypeArray) : null;
             if (otarr instanceof XoArray) {
-                this.orderTypeDataWrapper.values = otarr.data.map(ot => ({ value: ot, name: ot.name }));
+                this.orderTypeDataWrapper.values = otarr.data.map(ot => ({ value: ot, name: signal(ot.name) }));
             } else {
                 this.orderTypeDataWrapper.values = [];
                 let error: string;
@@ -456,10 +448,10 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
     }
 
     private _getSourceTypes() {
-        const sub = this.apiService.startOrder(FM_RTC, ISWP.GetOrderSourceTypes, [], XoSourceTypeArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const sub = this.apiService.startOrder(FMAN_RTC, ISWP.GetOrderSourceTypes, [], XoSourceTypeArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(sub, output => {
             const stArr = output[0] as XoSourceTypeArray;
-            this.sourceTypeDataWrapper.values = stArr.data.map(st => ({ name: st.label, value: st }));
+            this.sourceTypeDataWrapper.values = stArr.data.map(st => ({ name: signal(st.label), value: st }));
             this.cdr.markForCheck();
         }, 'get Source Type Error');
     }
@@ -554,12 +546,12 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
         if (this.selectedServerRuntimeContext && this.selectedOrderType && !!this.selectedOrderType.name && this.selectedOrderType.name !== '') {
             const sub =
             this.apiService.startOrder(
-                FM_RTC, ISWP.GetGeneratingOrderTypes, [this.selectedServerRuntimeContext, this.selectedOrderType], XoOrderTypeArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+                FMAN_RTC, ISWP.GetGeneratingOrderTypes, [this.selectedServerRuntimeContext, this.selectedOrderType], XoOrderTypeArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
 
             this.handleStartOrderResult(sub, output => {
                 const otArr = (output[0] || []) as XoOrderTypeArray;
                 if (otArr) {
-                    this.generatingOrderTypeDataWrapper.values = otArr.data.map(ot => ({ value: ot, name: ot.name }));
+                    this.generatingOrderTypeDataWrapper.values = otArr.data.map(ot => ({ value: ot, name: signal(ot.name) }));
                 }
 
                 if (!otArr.length) {
@@ -605,7 +597,7 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
             this.fctParameters.delay = null;
         }
 
-        const obs = this.apiService.startOrder(FM_RTC, ISWP.StartFrequencyControlledTaskRequest, this.fctParameters, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.StartFrequencyControlledTaskRequest, this.fctParameters, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
 
         this.startingTask = true;
         this.frequencyId = null;
@@ -627,11 +619,11 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
     }
 
     get fmRtc(): RuntimeContext {
-        return FM_RTC;
+        return FMAN_RTC;
     }
 
     onGeneratingError(error: any) {
-        const msg = this.i18nService.translate('fman.ois.generating-error-message');
+        const msg = this.i18nService.translateInstant('fman.ois.generating-error-message');
         this.dialogService.error(msg);
     }
 

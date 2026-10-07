@@ -6,16 +6,14 @@
       <xc-checkbox [(checked)]="includeImplicit" xc-i18n (checkedChange)="updateDataSource()" label="manage-dependencies-include-implicit" xc-tooltip="manage-dependencies-include-implicit-tooltip" style="margin-left: 16px;" />
     </ng-container>
   }
-  <section content class="content" [ngClass]="{'two-items': !!changedDependencies.size}">
-    <xc-table class="zeta-scrollbar scroll" [xc-table-datasource]="dataSource" xc-table-allowsort xc-table-allowfilter xc-table-lazyupdate></xc-table>
+  <section content class="content" [class.two-items]="!!changedDependencies.size">
+    <xc-table class="zeta-scrollbar scroll" [xc-table-datasource]="dataSource" xc-table-allowsort xc-table-allowfilter xc-table-lazyupdate />
     @if (!!changedDependencies.size) {
       <div>
-        <span class="row" xc-i18n><xc-icon xc-icon-name="msginfo"></xc-icon>manage-dependencies-apply-info</span>
-        <xc-table
-          class="zeta-scrollbar scroll"
+        <span class="row" xc-i18n><xc-icon xc-icon-name="msginfo" />manage-dependencies-apply-info</span>
+        <xc-table class="zeta-scrollbar scroll"
           [xc-table-datasource]="changedDependencyTable"
-          xc-table-allowsort>
-        </xc-table>
+          xc-table-allowsort />
       </div>
     }
   </section>

@@ -15,11 +15,11 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder, StartOrderResult } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { XcDialogComponent, XcStructureTreeDataSource } from '@zeta/xc';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcButtonComponent, XcDialogComponent, XcDialogWrapperComponent, XcStructureTreeDataSource, XcTreeComponent } from '@zeta/xc';
 
 import { finalize } from 'rxjs/operators';
 
@@ -29,10 +29,11 @@ import { storableInstanceCreation_translations_en_US } from './locale/storable-i
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'storable-instance-creation',
     templateUrl: './storable-instance-creation.component.html',
     styleUrls: ['./storable-instance-creation.component.scss'],
-    standalone: false
+    imports: [XcButtonComponent, XcDialogWrapperComponent, XcTreeComponent, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class StorableInstanceCreationComponent extends XcDialogComponent<any, any> {
     error = false;
@@ -63,8 +64,8 @@ export class StorableInstanceCreationComponent extends XcDialogComponent<any, an
         return this.injectedData.i18nService;
     }
 
-    constructor(injector: Injector) {
-        super(injector);
+    constructor() {
+        super();
 
         this.i18nService.setTranslations(LocaleService.DE_DE, storableInstanceCreation_translations_de_DE);
         this.i18nService.setTranslations(LocaleService.EN_US, storableInstanceCreation_translations_en_US);
@@ -76,7 +77,7 @@ export class StorableInstanceCreationComponent extends XcDialogComponent<any, an
         if (!this.structureTreeDataSource.container.data[0]) {
             this.error = true;
             this.isLoading = false;
-            this.errorMessage = this.i18nService.translate(this.EMPTY_STORABLE);
+            this.errorMessage = this.i18nService.translateInstant(this.EMPTY_STORABLE);
         } else {
             this.apiService
                 .startOrder(this.rtc, this.storeOrderType, [this.structureTreeDataSource.container.data[0], this.storeParameter], null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
@@ -85,7 +86,7 @@ export class StorableInstanceCreationComponent extends XcDialogComponent<any, an
                         this.isLoading = false;
                         if (!completed) {
                             this.error = true;
-                            this.errorMessage = this.i18nService.translate(this.DEFAULT_ERROR);
+                            this.errorMessage = this.i18nService.translateInstant(this.DEFAULT_ERROR);
                         }
                     })
                 )
@@ -99,7 +100,7 @@ export class StorableInstanceCreationComponent extends XcDialogComponent<any, an
                     error: (error: any) => {
                         console.error(error);
                         this.error = true;
-                        this.errorMessage = this.i18nService.translate(this.DEFAULT_ERROR);
+                        this.errorMessage = this.i18nService.translateInstant(this.DEFAULT_ERROR);
                     }
                 });
         }

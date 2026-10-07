@@ -9,9 +9,8 @@
         <div xc-i18n>no-input-parameter</div>
       }
       @if (inputParamterTreeDataSource && !noInputData) {
-        <xc-tree
-          [xc-tree-datasource]="inputParamterTreeDataSource"
-        ></xc-tree>
+        <xc-tree [xc-tree-datasource]="inputParamterTreeDataSource"
+         />
       }
       <xc-button [disabled]="!inputParamterTreeDataSource || startOrderBusy" [busy]="startOrderBusy" (click)="startOrderHandler()" xc-i18n>button-start-order</xc-button>
       @if (processOrderId) {

@@ -20,22 +20,9 @@ import { RouterModule, UrlMatchResult, UrlSegment } from '@angular/router';
 import { RedirectComponent, redirectGuardCanActivate, redirectGuardCanDeactivate, RedirectGuardConfigProvider, RedirectGuardProvider, XynaRoutes } from '@zeta/nav';
 import { rightGuardCanActivate } from '@zeta/nav/right.guard';
 
-import { AdministrativeVetoesComponent } from './administrative-vetoes/administrative-vetoes.component';
-import { CapacitiesComponent } from './capacities/capacities.component';
 import { FACTORY_MANAGER, RIGHT_FACTORY_MANAGER, RIGHT_FACTORY_MANAGER_ADMINISTRATIVE_VETOES, RIGHT_FACTORY_MANAGER_CAPACITIES, RIGHT_FACTORY_MANAGER_CRON_LIKE_ORDERS, RIGHT_FACTORY_MANAGER_DEPLOYMENT_ITEMS, RIGHT_FACTORY_MANAGER_FILTER, RIGHT_FACTORY_MANAGER_ORDER_INPUT_SOURCES, RIGHT_FACTORY_MANAGER_ORDER_TYPES, RIGHT_FACTORY_MANAGER_STORABLE_INSTANCES, RIGHT_FACTORY_MANAGER_TIME_CONTROLLED_ORDERS, RIGHT_FACTORY_MANAGER_TRIGGER, RIGHT_FACTORY_MANAGER_WORKSPACES_AND_APPLICATIONS, RIGHT_FACTORY_MANAGER_XYNA_PROPERTIES } from './const';
-import { CronlikeOrdersComponent } from './cronlike-orders/cronlike-orders.component';
-import { DeploymentItemsComponent } from './deployment-items/deployment-items.component';
-import { FactoryManagerComponent } from './factory-manager.component';
-import { OrderInputSourcesComponent } from './order-input-sources/order-input-sources.component';
-import { OrderTypesComponent } from './order-types/order-types.component';
 import { PluginComponent } from './plugin/plugin.component';
-import { ApplicationsComponent } from './runtime-contexts/applications/applications.component';
-import { WorkspacesComponent } from './runtime-contexts/workspaces/workspaces.component';
-import { StorableInstancesComponent } from './storable-instances/storable-instances.component';
-import { TimeControlledOrdersComponent } from './time-controlled-orders/time-controlled-orders.component';
-import { FilterComponent } from './trigger-and-filter/filter.component';
-import { TriggerComponent } from './trigger-and-filter/trigger.component';
-import { XynaPropertiesComponent } from './xyna-properties/xyna-properties.component';
+import { CronlikeOrdersComponent } from './cronlike-orders/cronlike-orders.component';
 
 
 const ROOT = 'Factory-Manager';
@@ -55,7 +42,7 @@ export const FactoryManagerRoutes: XynaRoutes = [
     },
     {
         path: ROOT,
-        component: FactoryManagerComponent,
+        loadComponent: () => import('./factory-manager.component').then(m => m.FactoryManagerComponent),
         canActivate: [rightGuardCanActivate],
         data: { right: RIGHT_FACTORY_MANAGER, reuse: ROOT, title: ROOT },
         children: [
@@ -69,7 +56,7 @@ export const FactoryManagerRoutes: XynaRoutes = [
             // ++++++++++++++++++++++++++++++++++++++ FACTORY MANAGER
             {
                 path: FACTORY_MANAGER.WORKSPACES,
-                component: WorkspacesComponent,
+                loadComponent: () => import('./runtime-contexts/workspaces/workspaces.component').then(m => m.WorkspacesComponent),
                 canActivate: [rightGuardCanActivate],
                 canDeactivate: [redirectGuardCanDeactivate],
                 pathMatch: 'full',
@@ -77,7 +64,7 @@ export const FactoryManagerRoutes: XynaRoutes = [
             },
             {
                 path: FACTORY_MANAGER.APPLICATIONS,
-                component: ApplicationsComponent,
+                loadComponent: () => import('./runtime-contexts/applications/applications.component').then(m => m.ApplicationsComponent),
                 canActivate: [rightGuardCanActivate],
                 canDeactivate: [redirectGuardCanDeactivate],
                 pathMatch: 'full',
@@ -85,7 +72,7 @@ export const FactoryManagerRoutes: XynaRoutes = [
             },
             {
                 path: FACTORY_MANAGER.TRIGGER,
-                component: TriggerComponent,
+                loadComponent: () => import('./trigger-and-filter/trigger.component').then(m => m.TriggerComponent),
                 canActivate: [rightGuardCanActivate],
                 canDeactivate: [redirectGuardCanDeactivate],
                 pathMatch: 'full',
@@ -93,7 +80,7 @@ export const FactoryManagerRoutes: XynaRoutes = [
             },
             {
                 path: FACTORY_MANAGER.FILTER,
-                component: FilterComponent,
+                loadComponent: () => import('./trigger-and-filter/filter.component').then(m => m.FilterComponent),
                 canActivate: [rightGuardCanActivate],
                 canDeactivate: [redirectGuardCanDeactivate],
                 pathMatch: 'full',
@@ -101,7 +88,7 @@ export const FactoryManagerRoutes: XynaRoutes = [
             },
             {
                 path: FACTORY_MANAGER.ORDERTYPES,
-                component: OrderTypesComponent,
+                loadComponent: () => import('./order-types/order-types.component').then(m => m.OrderTypesComponent),
                 canActivate: [rightGuardCanActivate],
                 canDeactivate: [redirectGuardCanDeactivate],
                 pathMatch: 'full',
@@ -117,7 +104,7 @@ export const FactoryManagerRoutes: XynaRoutes = [
             },
             {
                 path: FACTORY_MANAGER.TIMECONTROLLED_ORDERS,
-                component: TimeControlledOrdersComponent,
+                loadComponent: () => import('./time-controlled-orders/time-controlled-orders.component').then(m => m.TimeControlledOrdersComponent),
                 canActivate: [rightGuardCanActivate],
                 canDeactivate: [redirectGuardCanDeactivate],
                 pathMatch: 'full',
@@ -125,7 +112,7 @@ export const FactoryManagerRoutes: XynaRoutes = [
             },
             {
                 path: FACTORY_MANAGER.ORDER_INPUT_SOURCES,
-                component: OrderInputSourcesComponent,
+                loadComponent: () => import('./order-input-sources/order-input-sources.component').then(m => m.OrderInputSourcesComponent),
                 canActivate: [rightGuardCanActivate],
                 canDeactivate: [redirectGuardCanDeactivate],
                 pathMatch: 'full',
@@ -133,7 +120,7 @@ export const FactoryManagerRoutes: XynaRoutes = [
             },
             {
                 path: FACTORY_MANAGER.CAPACITIES,
-                component: CapacitiesComponent,
+                loadComponent: () => import('./capacities/capacities.component').then(m => m.CapacitiesComponent),
                 canActivate: [rightGuardCanActivate],
                 canDeactivate: [redirectGuardCanDeactivate],
                 pathMatch: 'full',
@@ -141,7 +128,7 @@ export const FactoryManagerRoutes: XynaRoutes = [
             },
             {
                 path: FACTORY_MANAGER.ADMINISTRATIVE_VETOES,
-                component: AdministrativeVetoesComponent,
+                loadComponent: () => import('./administrative-vetoes/administrative-vetoes.component').then(m => m.AdministrativeVetoesComponent),
                 canActivate: [rightGuardCanActivate],
                 canDeactivate: [redirectGuardCanDeactivate],
                 pathMatch: 'full',
@@ -149,7 +136,7 @@ export const FactoryManagerRoutes: XynaRoutes = [
             },
             {
                 path: FACTORY_MANAGER.DEPLOYMENT_ITEMS,
-                component: DeploymentItemsComponent,
+                loadComponent: () => import('./deployment-items/deployment-items.component').then(m => m.DeploymentItemsComponent),
                 canActivate: [rightGuardCanActivate],
                 canDeactivate: [redirectGuardCanDeactivate],
                 pathMatch: 'full',
@@ -157,7 +144,7 @@ export const FactoryManagerRoutes: XynaRoutes = [
             },
             {
                 path: FACTORY_MANAGER.STORABLE_INSTANCES,
-                component: StorableInstancesComponent,
+                loadComponent: () => import('./storable-instances/storable-instances.component').then(m => m.StorableInstancesComponent),
                 canActivate: [rightGuardCanActivate],
                 canDeactivate: [redirectGuardCanDeactivate],
                 pathMatch: 'full',
@@ -170,7 +157,7 @@ export const FactoryManagerRoutes: XynaRoutes = [
             // },
             {
                 path: FACTORY_MANAGER.XYNA_PROPERTIES,
-                component: XynaPropertiesComponent,
+                loadComponent: () => import('./xyna-properties/xyna-properties.component').then(m => m.XynaPropertiesComponent),
                 canActivate: [rightGuardCanActivate],
                 canDeactivate: [redirectGuardCanDeactivate],
                 pathMatch: 'full',

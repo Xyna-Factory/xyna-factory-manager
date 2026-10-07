@@ -15,10 +15,10 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { XcDialogComponent, XcRichListItem } from '@zeta/xc';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcButtonComponent, XcDialogComponent, XcDialogWrapperComponent, XcFormDirective, XcFormTextareaComponent, XcRichListComponent, XcRichListItem } from '@zeta/xc';
 
 import { Subject } from 'rxjs';
 
@@ -36,11 +36,14 @@ export interface UndeployReportComponentData {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './undeploy-report.component.html',
     styleUrls: ['./undeploy-report.component.scss'],
-    standalone: false
+    imports: [XcButtonComponent, XcDialogWrapperComponent, XcFormDirective, XcFormTextareaComponent, XcRichListComponent, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class UndeployReportComponent extends XcDialogComponent<XoUndeployDeploymentItemParamArray, UndeployReportComponentData> {
+    private readonly i18n = inject(I18nService);
+
 
     resultListItems: XcRichListItem<UndeployReportItemComponentData>[] = [];
 
@@ -51,8 +54,8 @@ export class UndeployReportComponent extends XcDialogComponent<XoUndeployDeploym
         return this.selectedResult ? this.selectedResult.exceptionInformation.stacktrace : '';
     }
 
-    constructor(injector: Injector, private readonly i18n: I18nService)  {
-        super(injector);
+    constructor()  {
+        super();
 
         this.i18n.setTranslations(LocaleService.DE_DE, undeployReport_translations_de_DE);
         this.i18n.setTranslations(LocaleService.EN_US, undeployReport_translations_en_US);

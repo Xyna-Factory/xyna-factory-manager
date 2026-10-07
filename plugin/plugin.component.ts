@@ -15,12 +15,12 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { RouteComponent } from '@zeta/nav';
-import { DefinitionStackItemComponentData, XcComponentTemplate, XcDefinitionStackItemComponent } from '@zeta/xc';
+import { DefinitionStackItemComponentData, XcComponentTemplate, XcDefinitionStackItemComponent, XcStackComponent } from '@zeta/xc';
 import { XoFormDefinition } from '@zeta/xc/xc-form/definitions/xo/containers.model';
 import { XcStackDataSource } from '@zeta/xc/xc-stack/xc-stack-data-source';
 import { XcStackItem } from '@zeta/xc/xc-stack/xc-stack-item/xc-stack-item';
@@ -31,12 +31,17 @@ import { PluginService } from './plugin.service';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'plugin',
     templateUrl: './plugin.component.html',
     styleUrls: ['./plugin.component.scss'],
-    standalone: false
+    imports: [XcStackComponent]
 })
 export class PluginComponent extends RouteComponent implements OnDestroy {
+    protected cdr = inject(ChangeDetectorRef);
+    protected api = inject(ApiService);
+    protected pluginService = inject(PluginService);
+    protected route = inject(ActivatedRoute);
 
     readonly stackDataSource = new XcStackDataSource();
     private readonly subscription: Subscription;
@@ -44,21 +49,16 @@ export class PluginComponent extends RouteComponent implements OnDestroy {
     active = false;
 
 
-    constructor(
-        api: ApiService,
-        pluginService: PluginService,
-        protected cdr: ChangeDetectorRef,
-        route: ActivatedRoute
-    ) {
+    constructor() {
         super();
 
         // get plugin for route
-        const pluginId = route.snapshot.url[0].path;
-        pluginService.plugins.pipe(filter(plugins => !!plugins)).subscribe(plugins => {
+        const pluginId = this.route.snapshot.url[0].path;
+        this.pluginService.plugins.pipe(filter(plugins => !!plugins)).subscribe(plugins => {
             const plugin = plugins.get(pluginId);
             if (plugin) {
                 // get definition
-                api.startOrder(
+                this.api.startOrder(
                     plugin.pluginRTC.toRuntimeContext(),
                     plugin.definitionWorkflowFQN,
                     null,
@@ -80,7 +80,7 @@ export class PluginComponent extends RouteComponent implements OnDestroy {
         });
 
         this.subscription = this.stackDataSource.stackItemsChange.subscribe(() =>
-            cdr.markForCheck()
+            this.cdr.markForCheck()
         );
     }
 

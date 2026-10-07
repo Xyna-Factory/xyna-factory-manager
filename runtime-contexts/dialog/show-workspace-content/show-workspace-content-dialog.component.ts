@@ -15,14 +15,14 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { XoGetWorkspaceContentRequest } from '@fman/runtime-contexts/xo/xo-get-workspace-content-request.model';
 import { ApiService } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { XcDialogComponent, XcRemoteTableDataSource } from '@zeta/xc';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogWrapperComponent, XcRemoteTableDataSource, XcTableComponent, XcTooltipDirective } from '@zeta/xc';
 
-import { FM_RTC } from '../../../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { FactoryManagerSettingsService } from '../../../misc/services/factory-manager-settings.service';
 import { createContentTableInfoClass } from '../../content';
 import { ORDER_TYPES } from '../../order-types';
@@ -33,24 +33,29 @@ import { showWorkspaceContent_translations_en_US } from './locale/show-workspace
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './show-workspace-content-dialog.component.html',
     styleUrls: ['./show-workspace-content-dialog.component.scss'],
-    standalone: false
+    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class ShowWorkspaceContentDialogComponent extends XcDialogComponent<boolean, XoRuntimeContext> {
+    private readonly apiService = inject(ApiService);
+    private readonly i18n = inject(I18nService);
+    private readonly settings = inject(FactoryManagerSettingsService);
+
 
     dataSource: XcRemoteTableDataSource<XoApplicationElement>;
     onlyUnassigned = false;
 
 
-    constructor(injector: Injector, private readonly apiService: ApiService, private readonly i18n: I18nService, private readonly settings: FactoryManagerSettingsService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.i18n.setTranslations(LocaleService.EN_US, showWorkspaceContent_translations_en_US);
         this.i18n.setTranslations(LocaleService.DE_DE, showWorkspaceContent_translations_de_DE);
 
         // create data source
-        this.dataSource = new XcRemoteTableDataSource(this.apiService, undefined, FM_RTC, ORDER_TYPES.GET_WORKSPACE_CONTENT, createContentTableInfoClass(false));
+        this.dataSource = new XcRemoteTableDataSource(this.apiService, undefined, FMAN_RTC, ORDER_TYPES.GET_WORKSPACE_CONTENT, createContentTableInfoClass(false));
         this.updateDataSource();
     }
 

@@ -15,14 +15,10 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
-import { FactoryManagerSettingsService } from '@fman/misc/services/factory-manager-settings.service';
-import { ApiService } from '@zeta/api';
 import { XoXynaProperty } from '@zeta/auth/xo/xyna-property.model';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { XcDialogService } from '@zeta/xc';
+import { LocaleService } from '@zeta/i18n';
 
 import { InputScreenWorkflowPackage, RestorableRouteComponent } from '../restorable-route.component';
 import { xyna_properties_translations_de_DE } from './locale/xyna-properties-translations.de-DE';
@@ -31,6 +27,8 @@ import { xyna_properties_translations_en_US } from './locale/xyna-properties-tra
 
 export interface XynaPropertiesInputScreenWorkflowPackage extends InputScreenWorkflowPackage {
     dummy?: string;
+    Import: string;
+    Export: string;
 }
 
 
@@ -39,13 +37,20 @@ export const XYNA_PROPERTY_ISWP: XynaPropertiesInputScreenWorkflowPackage = {
     Details: 'xmcp.factorymanager.xynaproperties.GetXynaPropertyDetails',
     Add: 'xmcp.factorymanager.xynaproperties.CreateXynaProperty',
     Save: 'xmcp.factorymanager.xynaproperties.ChangeXynaProperty',
-    Delete: 'xmcp.factorymanager.xynaproperties.RemoveXynaProperty'
+    Delete: 'xmcp.factorymanager.xynaproperties.RemoveXynaProperty',
+    Import: 'xmcp.factorymanager.xynaproperties.ImportXynaProperties',
+    Export: 'xmcp.factorymanager.xynaproperties.ExportPropertiesToFile'
 };
 
 
+export enum XynaPropertiesFormat {
+    CSV = 'CSV',
+    YAML = 'YAML'
+}
+
 @Component({
-    template: '',
-    standalone: false
+    changeDetection: ChangeDetectionStrategy.Eager,
+    template: ''
 })
 export class RestorableXynaPropertiesComponent extends RestorableRouteComponent<XoXynaProperty> implements OnInit {
 
@@ -55,25 +60,19 @@ export class RestorableXynaPropertiesComponent extends RestorableRouteComponent<
     protected CONFIRM_DELETE = 'fman.restorable-xyna-properties.confirm-delete';
     protected CONFIRM_RESTORE = 'fman.restorable-xyna-properties.confirm-restore';
 
-    constructor(
-        apiService: ApiService,
-        dialogService: XcDialogService,
-        route: ActivatedRoute,
-        router: Router,
-        i18nService: I18nService,
-        injector: Injector,
-        settings: FactoryManagerSettingsService
-    ) {
-        super(apiService, dialogService, route, router, i18nService, injector, settings);
+    constructor() {
+        super();
 
         this.i18nService.setTranslations(LocaleService.DE_DE, xyna_properties_translations_de_DE);
         this.i18nService.setTranslations(LocaleService.EN_US, xyna_properties_translations_en_US);
     }
 
     private translateConstants() {
-        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translate(this.UNSPECIFIED_DETAILS_ERROR);
-        this.UNSPECIFIED_ADD_ERROR = this.i18nService.translate(this.UNSPECIFIED_ADD_ERROR);
-        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translate(this.UNSPECIFIED_SAVE_ERROR);
+        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_DETAILS_ERROR);
+        this.UNSPECIFIED_ADD_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_ADD_ERROR);
+        this.UNSPECIFIED_SAVE_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_SAVE_ERROR);
+        this.CONFIRM_DELETE = this.i18nService.translateInstant(this.CONFIRM_DELETE);
+        this.CONFIRM_RESTORE = this.i18nService.translateInstant(this.CONFIRM_RESTORE);
     }
 
     ngOnInit() {

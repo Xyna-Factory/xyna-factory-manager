@@ -15,34 +15,37 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-
+import { ChangeDetectionStrategy, Component, inject, Input, input, output, viewChild , signal} from '@angular/core';
+import { FM_WF_GET_ORDER_TYPES } from '@fman/const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService, StartOrderOptionsBuilder, XoArray, XoRuntimeContext } from '@zeta/api';
-import { XcAutocompleteDataWrapper, XcFormDirective } from '@zeta/xc';
+import { XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcAutocompleteDataWrapper, XcFormAutocompleteComponent, XcFormDirective, XcFormValidatorRequiredDirective, XcPanelComponent } from '@zeta/xc';
 
-import { FM_RTC, FM_WF_GET_ORDER_TYPES } from '../../../const';
 import { XoOrderTypeArray } from '../../../xo/xo-order-type.model';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'order-type-form',
     templateUrl: './order-type-form.component.html',
     styleUrls: ['./order-type-form.component.scss'],
-    standalone: false
+    imports: [XcFormAutocompleteComponent, XcFormDirective, XcFormValidatorRequiredDirective, XcPanelComponent, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class OrderTypeFormComponent {
-    @ViewChild(XcFormDirective, { static: false })
-    xcFormDirective: XcFormDirective;
+    private readonly apiService = inject(ApiService);
 
-    @Output() readonly selectedRuntimeContextChange = new EventEmitter<XoRuntimeContext>();
-    @Output() readonly selectedOrderTypeChange = new EventEmitter<string>();
-    @Output() readonly validationChange = new EventEmitter<boolean>();
+    readonly xcFormDirective = viewChild(XcFormDirective);
 
-    @Input() readonly masterWorkflowInfoText: boolean;
+    readonly selectedRuntimeContextChange = output<XoRuntimeContext>();
+    readonly selectedOrderTypeChange = output<string>();
+    readonly validationChange = output<boolean>();
+
+    readonly masterWorkflowInfoText = input<boolean>(undefined);
     /** Error key which gets translated */
     error: string;
 
-    readonly runtimeContext = FM_RTC;
+    readonly runtimeContext = FMAN_RTC;
 
     orderTypeStringDataWrapper: XcAutocompleteDataWrapper;
     runtimeContextsDataWrapper: XcAutocompleteDataWrapper;
@@ -75,7 +78,7 @@ export class OrderTypeFormComponent {
         this.validationChange.emit(this.isValid());
     }
 
-    constructor(private readonly apiService: ApiService) {
+    constructor() {
         this.runtimeContextsDataWrapper = new XcAutocompleteDataWrapper(
             () => this.selectedRuntimeContext,
             (value: XoRuntimeContext) => {
@@ -99,7 +102,7 @@ export class OrderTypeFormComponent {
         this.apiService.getRuntimeContexts(false).subscribe({
             next: rtcArr => {
                 if (rtcArr && rtcArr.length) {
-                    this.runtimeContextsDataWrapper.values = rtcArr.map(rtc => ({ value: rtc, name: rtc.toString() }));
+                    this.runtimeContextsDataWrapper.values = rtcArr.map(rtc => ({ value: rtc, name: signal(rtc.toString()) }));
                     this.error = '';
                 } else {
                     this.error = 'unexpectedError';
@@ -120,7 +123,7 @@ export class OrderTypeFormComponent {
                 if (result && !result.errorMessage) {
                     const orderTypeArray = result.output[0] as XoOrderTypeArray;
                     if (orderTypeArray instanceof XoArray) {
-                        this.orderTypeStringDataWrapper.values = orderTypeArray.data.map(ot => ({ value: ot.name, name: ot.name }));
+                        this.orderTypeStringDataWrapper.values = orderTypeArray.data.map(ot => ({ value: ot.name, name: signal(ot.name) }));
                         if (orderTypeArray.data.length === 0) {
                             this.error = 'error-emty';
                         }

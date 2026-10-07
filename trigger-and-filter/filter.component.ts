@@ -15,25 +15,29 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
-import { TileDataSource, TileItem } from '@fman/runtime-contexts/shared/tile/tile-data-source';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 
+import { TileDataSource, TileItem } from '@fman/runtime-contexts/shared/tile/tile-data-source';
+import { ActionButtonData } from '@fman/runtime-contexts/shared/tile/tile.component';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { XcComponentTemplate, XcDialogService, XcSelectionModel, XcTemplate } from '@zeta/xc';
 import { Comparable } from '@zeta/base';
-import { ORDER_TYPES } from './order-types';
-import { FM_RTC } from '@fman/const';
-import { XoFilter, XoFilterArray } from './xo/xo-filter.model';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
+import { RouteComponent } from '@zeta/nav';
+import { XcComponentTemplate, XcDialogService, XcIconButtonComponent, XcPanelComponent, XcSelectionModel, XcSpinnerComponent, XcTemplate, XcTooltipDirective } from '@zeta/xc';
+
+import { Subscription } from 'rxjs';
+
+import { TileComponent } from '../runtime-contexts/shared/tile/tile.component';
+import { DeployFilterDialogComponent } from './components/deploy-filter-dialog/deploy-filter-dialog.component';
 import { FilterDetailComponent } from './components/filter-detail/filter-detail.component';
 import { FilterInstanceDetailComponent } from './components/filter-instance-detail/filter-instance-detail.component';
-import { XoFilterInstance } from './xo/xo-filter-instance.model';
-import { Subscription } from 'rxjs';
-import { ActionButtonData } from '@fman/runtime-contexts/shared/tile/tile.component';
-import { DeployFilterDialogComponent } from './components/deploy-filter-dialog/deploy-filter-dialog.component';
 import { trigger_and_filter_translations_de_DE } from './locale/trigger-and-filter-translations.de-DE';
 import { trigger_and_filter_translations_en_US } from './locale/trigger-and-filter-translations.en-US';
-import { RouteComponent } from '@zeta/nav';
+import { ORDER_TYPES } from './order-types';
+import { XoFilterInstance } from './xo/xo-filter-instance.model';
+import { XoFilter, XoFilterArray } from './xo/xo-filter.model';
+import { FMAN_RTC } from '@fman/factory-manager.component';
+
 
 class FilterTile extends Comparable implements TileItem {
 
@@ -95,9 +99,14 @@ class FilterInstanceTile extends Comparable implements TileItem {
     templateUrl: './filter.component.html',
     styleUrls: ['./filter.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [XcIconButtonComponent, XcPanelComponent, XcSpinnerComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, TileComponent]
 })
 export class FilterComponent extends RouteComponent {
+    private readonly apiService = inject(ApiService);
+    private readonly cdr = inject(ChangeDetectorRef);
+    private readonly i18nService = inject(I18nService);
+    private readonly dialogService = inject(XcDialogService);
+
 
     refreshing = false;
     datasources: TileDataSource[];
@@ -105,11 +114,7 @@ export class FilterComponent extends RouteComponent {
     deployButton: ActionButtonData = {  iconName: 'add', tooltip: 'deploy'  };
     selectionModel: XcSelectionModel<TileItem> = new XcSelectionModel<TileItem>();
 
-    constructor(
-        private readonly apiService: ApiService,
-        private readonly cdr: ChangeDetectorRef,
-        private readonly i18nService: I18nService,
-        private readonly dialogService: XcDialogService) {
+    constructor() {
         super();
 
         this.i18nService.setTranslations(LocaleService.DE_DE, trigger_and_filter_translations_de_DE);
@@ -120,7 +125,7 @@ export class FilterComponent extends RouteComponent {
 
     refresh() {
         this.refreshing = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.FILTER_OVERVIEW, [], XoFilterArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.FILTER_OVERVIEW, [], XoFilterArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (result && !result.errorMessage) {

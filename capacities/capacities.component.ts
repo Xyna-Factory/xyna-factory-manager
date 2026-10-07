@@ -15,17 +15,14 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-
-import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nService } from '@zeta/i18n';
-import { XcDialogService, XcFormDirective, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
-
 import { filter } from 'rxjs';
 
-import { FM_RTC } from '../const';
-import { FactoryManagerSettingsService } from '../misc/services/factory-manager-settings.service';
+import { ChangeDetectionStrategy, Component, viewChild } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
+import { StartOrderOptionsBuilder } from '@zeta/api';
+import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcButtonComponent, XcCheckboxComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
+
 import { AddNewCapacityModalComponent, AddNewCapacityModalComponentData } from './modal/add-new-capacity-modal/add-new-capacity-modal.component';
 import { CAPACITY_ISWP, RestorableCapacitiesComponent } from './restorable-capacities.component';
 import { XoCapacityInformation, XoCapacityInformationArray } from './xo/xo-capacity-information.model';
@@ -36,17 +33,18 @@ const ISWP = CAPACITY_ISWP;
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './capacities.component.html',
     styleUrls: ['./capacities.component.scss'],
-    standalone: false
+    imports: [XcButtonComponent, XcCheckboxComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class CapacitiesComponent extends RestorableCapacitiesComponent {
 
-    @ViewChild(XcFormDirective, {static: false})
-    xcFormDirective: XcFormDirective;
+    readonly xcFormDirective = viewChild(XcFormDirective);
 
     get invalid(): boolean {
-        return this.xcFormDirective ? this.xcFormDirective.invalid : false;
+        const xcFormDirective = this.xcFormDirective();
+        return xcFormDirective ? xcFormDirective.invalid : false;
     }
 
     get state(): boolean {
@@ -57,17 +55,9 @@ export class CapacitiesComponent extends RestorableCapacitiesComponent {
         this.detailsObject.state = value ? 'ACTIVE' : 'DISABLED';
     }
 
-    constructor(
-        apiService: ApiService,
-        dialogService: XcDialogService,
-        route: ActivatedRoute,
-        router: Router,
-        i18nService: I18nService,
-        injector: Injector,
-        settings: FactoryManagerSettingsService
-    ) {
-        super(apiService, dialogService, route, router, i18nService, injector, settings);
-        this.initRemoteTableDataSource(XoCapacityInformation, XoCapacityInformationArray, FM_RTC, ISWP.List);
+    constructor() {
+        super();
+        this.initRemoteTableDataSource(XoCapacityInformation, XoCapacityInformationArray, FMAN_RTC, ISWP.List);
 
         this.remoteTableDataSource.tableInfoClass = XoRemappingTableInfoClass(
             XoTableInfo, XoCapacityInformation,
@@ -86,13 +76,13 @@ export class CapacitiesComponent extends RestorableCapacitiesComponent {
             {
                 class: 'delete-action-element',
                 iconName: 'delete',
-                tooltip: this.i18nService.translate('fman.capacities.delete'),
+                tooltip: this.i18nService.translateSignal('fman.capacities.delete'),
                 onAction: this.delete.bind(this)
             },
             {
                 class: 'copy-action-element',
                 iconName: 'copy',
-                tooltip: this.i18nService.translate('fman.capacities.duplicate'),
+                tooltip: this.i18nService.translateSignal('fman.capacities.duplicate'),
                 onAction: this.duplicate.bind(this)
             }
         ];
@@ -103,7 +93,7 @@ export class CapacitiesComponent extends RestorableCapacitiesComponent {
         const name = new XoCapacityName();
         name.name = entry.name;
 
-        const obs = this.apiService.startOrder(FM_RTC, ISWP.Details, name, XoCapacityInformation, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, name, XoCapacityInformation, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             this.detailsObject = (output[0] || null) as XoCapacityInformation;
         }, this.UNSPECIFIED_DETAILS_ERROR, null);
@@ -115,7 +105,7 @@ export class CapacitiesComponent extends RestorableCapacitiesComponent {
             addWorkflow: ISWP.Add,
             apiService: this.apiService,
             i18nService: this.i18nService,
-            rtc: FM_RTC,
+            rtc: FMAN_RTC,
             duplicate: duplicatedProperty
         };
 
@@ -130,15 +120,15 @@ export class CapacitiesComponent extends RestorableCapacitiesComponent {
 
     delete(entry: XoCapacityInformation) {
         this.dialogService.confirm(
-            this.i18nService.translate(this.FM_DELETE_ENTRY_HEADER),
-            this.i18nService.translate(this.CONFIRM_DELETE, {key: '$0', value: entry.name})
+            this.i18nService.translateInstant(this.FM_DELETE_ENTRY_HEADER),
+            this.i18nService.translateInstant(this.CONFIRM_DELETE, { key: '$0', value: entry.name })
         ).afterDismissResult().subscribe(
             value => {
                 if (value) {
                     if (entry instanceof XoCapacityInformation) {
                         const name = new XoCapacityName();
                         name.name = entry.name;
-                        const obs = this.apiService.startOrder(FM_RTC, ISWP.Delete, name, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+                        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Delete, name, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
                         this.handleStartOrderResult(obs, output => {
                             this.detailsObject = null;
                             this.clearSelection();
@@ -156,7 +146,7 @@ export class CapacitiesComponent extends RestorableCapacitiesComponent {
     }
 
     save() {
-        const obs = this.apiService.startOrder(FM_RTC, ISWP.Save, this.detailsObject.clone(), null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Save, this.detailsObject.clone(), null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             this.dismiss();
             this.refresh();

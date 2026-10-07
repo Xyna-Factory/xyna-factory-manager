@@ -15,9 +15,9 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector } from '@angular/core';
-
-import { XcRichListItemComponent } from '@zeta/xc';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcIconButtonComponent, XcRichListItemComponent, XcTooltipDirective } from '@zeta/xc';
 
 import { XoParameterInheritanceRule } from '../../../xo/xo-parameter-inheritance-rule.model';
 
@@ -28,13 +28,11 @@ export interface ChildOrderInheritanceRuleComponentData {
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './child-order-inheritance-rule.component.html',
     styleUrls: ['./child-order-inheritance-rule.component.scss'],
-    standalone: false
+    imports: [XcIconButtonComponent, XcTooltipDirective, XcI18nTranslateDirective]
 })
 export class ChildOrderInheritanceRuleComponent extends XcRichListItemComponent<void, ChildOrderInheritanceRuleComponentData> {
 
-    constructor(injector: Injector) {
-        super(injector);
-    }
 }

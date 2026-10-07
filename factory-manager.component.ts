@@ -15,13 +15,16 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component } from '@angular/core';
+import { filter } from 'rxjs/operators';
 
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { RuntimeContext } from '@zeta/api';
+import { ConfigService } from '@zeta/api/config.service';
 import { AuthService } from '@zeta/auth';
 import { I18nService, LocaleService } from '@zeta/i18n';
 import { RouteComponent } from '@zeta/nav';
-import { XcNavListItem, XcNavListOrientation } from '@zeta/xc';
-import { filter } from 'rxjs';
+import { XcNavListComponent, XcNavListItem, XcNavListOrientation } from '@zeta/xc';
 
 import { RIGHT_FACTORY_MANAGER_ADMINISTRATIVE_VETOES, RIGHT_FACTORY_MANAGER_CAPACITIES, RIGHT_FACTORY_MANAGER_DEPLOYMENT_ITEMS, RIGHT_FACTORY_MANAGER_FILTER, RIGHT_FACTORY_MANAGER_ORDER_INPUT_SOURCES, RIGHT_FACTORY_MANAGER_ORDER_TYPES, RIGHT_FACTORY_MANAGER_STORABLE_INSTANCES, RIGHT_FACTORY_MANAGER_TIME_CONTROLLED_ORDERS, RIGHT_FACTORY_MANAGER_TRIGGER, RIGHT_FACTORY_MANAGER_WORKSPACES_AND_APPLICATIONS, RIGHT_FACTORY_MANAGER_XYNA_PROPERTIES } from './const';
 import { fman_error_code_translations_de_DE } from './locale/fman-error-code-translations.de-DE';
@@ -31,17 +34,24 @@ import { fman_translations_en_US } from './locale/fman-translations.en-US';
 import { PluginService } from './plugin/plugin.service';
 
 
+export let FMAN_RTC = RuntimeContext.guiHttpApplication;
+
 interface XcRighteousNavListItem extends XcNavListItem {
     right?: string;
 }
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './factory-manager.component.html',
     styleUrls: ['./factory-manager.component.scss'],
-    standalone: false
+    imports: [XcNavListComponent, RouterOutlet]
 })
 export class FactoryManagerComponent extends RouteComponent {
+    private readonly i18n = inject(I18nService);
+    private readonly authService = inject(AuthService);
+    private readonly pluginService = inject(PluginService);
+
 
     private readonly _fmNames = {
         WORKSPACES: 'Workspaces',
@@ -61,26 +71,41 @@ export class FactoryManagerComponent extends RouteComponent {
     };
 
     navListItems: XcRighteousNavListItem[] = [
-        { name: this._fmNames.WORKSPACES, link: 'workspaces', right: RIGHT_FACTORY_MANAGER_WORKSPACES_AND_APPLICATIONS },
-        { name: this._fmNames.APPLICATIONS, link: 'applications', right: RIGHT_FACTORY_MANAGER_WORKSPACES_AND_APPLICATIONS },
-        { name: this._fmNames.TRIGGER, link: 'trigger', right: RIGHT_FACTORY_MANAGER_TRIGGER },
-        { name: this._fmNames.FILTER, link: 'filter', right: RIGHT_FACTORY_MANAGER_FILTER },
-        { name: this._fmNames.ORDERTYPES, link: 'ordertypes', right: RIGHT_FACTORY_MANAGER_ORDER_TYPES },
-        { name: this._fmNames.CRONLIKE_ORDRES, link: 'cron-like-orders', right: RIGHT_FACTORY_MANAGER_WORKSPACES_AND_APPLICATIONS },
-        { name: this._fmNames.TIMECONTROLLED_ORDERS, link: 'time-controlled-orders', right: RIGHT_FACTORY_MANAGER_TIME_CONTROLLED_ORDERS },
-        { name: this._fmNames.ORDER_INPUT_SOURCES, link: 'order-input-sources', right: RIGHT_FACTORY_MANAGER_ORDER_INPUT_SOURCES },
-        { name: this._fmNames.CAPACITIES, link: 'capacities', right: RIGHT_FACTORY_MANAGER_CAPACITIES },
-        { name: this._fmNames.ADMINISTRATIVE_VETOES, link: 'administrative-vetoes', right: RIGHT_FACTORY_MANAGER_ADMINISTRATIVE_VETOES },
-        { name: this._fmNames.DEPLOYMENT_ITEMS, link: 'deployment-items', right: RIGHT_FACTORY_MANAGER_DEPLOYMENT_ITEMS },
-        { name: this._fmNames.STORABLE_INSTANCES, link: 'storable-instances', right: RIGHT_FACTORY_MANAGER_STORABLE_INSTANCES },
-        // { name: this._fmNames.DATA_MODELS, link: 'data-models', disabled: true, right: RIGHT_FACTORY_MANAGER_DATA_MODELS },
-        { name: this._fmNames.XYNA_PROPERTIES, link: 'xyna-properties', right: RIGHT_FACTORY_MANAGER_XYNA_PROPERTIES }
+        { name: signal(this._fmNames.WORKSPACES), link: 'workspaces', right: RIGHT_FACTORY_MANAGER_WORKSPACES_AND_APPLICATIONS },
+        { name: signal(this._fmNames.APPLICATIONS), link: 'applications', right: RIGHT_FACTORY_MANAGER_WORKSPACES_AND_APPLICATIONS },
+        { name: signal(this._fmNames.TRIGGER), link: 'trigger', right: RIGHT_FACTORY_MANAGER_TRIGGER },
+        { name: signal(this._fmNames.FILTER), link: 'filter', right: RIGHT_FACTORY_MANAGER_FILTER },
+        { name: signal(this._fmNames.ORDERTYPES), link: 'ordertypes', right: RIGHT_FACTORY_MANAGER_ORDER_TYPES },
+        { name: signal(this._fmNames.CRONLIKE_ORDRES), link: 'cron-like-orders', right: RIGHT_FACTORY_MANAGER_WORKSPACES_AND_APPLICATIONS },
+        { name: signal(this._fmNames.TIMECONTROLLED_ORDERS), link: 'time-controlled-orders', right: RIGHT_FACTORY_MANAGER_TIME_CONTROLLED_ORDERS },
+        { name: signal(this._fmNames.ORDER_INPUT_SOURCES), link: 'order-input-sources', right: RIGHT_FACTORY_MANAGER_ORDER_INPUT_SOURCES },
+        { name: signal(this._fmNames.CAPACITIES), link: 'capacities', right: RIGHT_FACTORY_MANAGER_CAPACITIES },
+        { name: signal(this._fmNames.ADMINISTRATIVE_VETOES), link: 'administrative-vetoes', right: RIGHT_FACTORY_MANAGER_ADMINISTRATIVE_VETOES },
+        { name: signal(this._fmNames.DEPLOYMENT_ITEMS), link: 'deployment-items', right: RIGHT_FACTORY_MANAGER_DEPLOYMENT_ITEMS },
+        { name: signal(this._fmNames.STORABLE_INSTANCES), link: 'storable-instances', right: RIGHT_FACTORY_MANAGER_STORABLE_INSTANCES },
+        // { name: signal(this._fmNames.DATA_MODELS), link: 'data-models', disabled: true, right: RIGHT_FACTORY_MANAGER_DATA_MODELS },
+        { name: signal(this._fmNames.XYNA_PROPERTIES), link: 'xyna-properties', right: RIGHT_FACTORY_MANAGER_XYNA_PROPERTIES }
     ];
 
     navListOrientation = XcNavListOrientation.LEFT;
 
-    constructor(private readonly i18n: I18nService, authService: AuthService, pluginService: PluginService) {
+    constructor() {
         super();
+        const configService = inject(ConfigService);
+        if (configService.config['modeller']?.runtimeContext)  {
+            if (configService.config['modeller'].runtimeContext.application) {
+                FMAN_RTC = RuntimeContext.fromApplicationVersion(
+                    configService.config['modeller'].runtimeContext.application,
+                    configService.config['modeller'].runtimeContext.version
+                );
+            } else if (configService.config['modeller'].runtimeContext.workspace) {
+                FMAN_RTC = RuntimeContext.fromWorkspace(
+                    configService.config['modeller'].runtimeContext.workspace
+                );
+            }
+        }
+
+
 
         this.i18n.contextDismantlingSearch = true;
         this.i18n.setTranslations(LocaleService.DE_DE, fman_translations_de_DE);
@@ -90,17 +115,17 @@ export class FactoryManagerComponent extends RouteComponent {
 
 
         this.navListItems.forEach(item => {
-            item.disabled = item.disabled || !!item.right && !authService.hasRight(item.right);
-            item.name = i18n.translate(item.name);
+            item.disabled = item.disabled || !!item.right && !this.authService.hasRight(item.right);
+            item.name = this.i18n.translateSignal(item.name());
         });
 
 
         // add items for plugins
-        pluginService.plugins.pipe(filter(plugins => !!plugins)).subscribe(plugins => {
+        this.pluginService.plugins.pipe(filter(plugins => !!plugins)).subscribe(plugins => {
 
             for (const [link, plugin] of plugins) {
                 this.navListItems.push(
-                    { name: plugin.navigationEntryLabel, link: link }
+                    { name: signal(plugin.navigationEntryLabel), link: link }
                 );
             }
             // let entry = plugins.entries().next();

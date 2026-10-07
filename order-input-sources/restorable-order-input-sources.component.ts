@@ -15,13 +15,10 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
-import { FactoryManagerSettingsService } from '@fman/misc/services/factory-manager-settings.service';
-import { ApiService, XoRuntimeContext } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { XcDialogService } from '@zeta/xc';
+import { XoRuntimeContext } from '@zeta/api';
+import { LocaleService } from '@zeta/i18n';
 
 import { InputScreenWorkflowPackage, RestorableRouteComponent } from '../restorable-route.component';
 import { order_input_sources_translations_de_DE } from './locale/ois-translations.de-DE';
@@ -30,8 +27,8 @@ import { XoOrderInputSource } from './xo/xo-order-input-source.model';
 
 
 @Component({
-    template: '',
-    standalone: false
+    changeDetection: ChangeDetectionStrategy.Eager,
+    template: ''
 })
 export class RestorableOrderInputSourcesComponent extends RestorableRouteComponent<XoOrderInputSource> implements OnInit {
 
@@ -45,16 +42,8 @@ export class RestorableOrderInputSourcesComponent extends RestorableRouteCompone
     protected UNSPECIFIED_GET_ORDER_TYPES_ERROR = 'fman.ois.unspecified-get-order-types-error';
     protected UNSPECIFIED_START_FREQUENCY_CONTROLLED_TASK_ERROR = 'fman.ois.unspecified-start-frequency-controlled-task-error';
 
-    constructor(
-        apiService: ApiService,
-        dialogService: XcDialogService,
-        route: ActivatedRoute,
-        router: Router,
-        i18nService: I18nService,
-        injector: Injector,
-        settings: FactoryManagerSettingsService
-    ) {
-        super(apiService, dialogService, route, router, i18nService, injector, settings);
+    constructor() {
+        super();
 
         this.i18nService.setTranslations(LocaleService.DE_DE, order_input_sources_translations_de_DE);
         this.i18nService.setTranslations(LocaleService.EN_US, order_input_sources_translations_en_US);
@@ -64,14 +53,14 @@ export class RestorableOrderInputSourcesComponent extends RestorableRouteCompone
         super.ngOnInit();
 
         // translate constants
-        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translate(this.UNSPECIFIED_DETAILS_ERROR);
-        this.UNSPECIFIED_ADD_ERROR = this.i18nService.translate(this.UNSPECIFIED_ADD_ERROR);
-        this.UNSPECIFIED_SAVE_ERROR = this.i18nService.translate(this.UNSPECIFIED_SAVE_ERROR);
-        this.CONFIRM_DELETE = this.i18nService.translate(this.CONFIRM_DELETE);
+        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_DETAILS_ERROR);
+        this.UNSPECIFIED_ADD_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_ADD_ERROR);
+        this.UNSPECIFIED_SAVE_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_SAVE_ERROR);
+        this.CONFIRM_DELETE = this.i18nService.translateInstant(this.CONFIRM_DELETE);
 
-        this.UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR = this.i18nService.translate(this.UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR);
-        this.GET_GENERATING_ORDER_TYPES_ERROR = this.i18nService.translate(this.GET_GENERATING_ORDER_TYPES_ERROR);
-        this.UNSPECIFIED_GET_ORDER_TYPES_ERROR = this.i18nService.translate(this.UNSPECIFIED_GET_ORDER_TYPES_ERROR);
+        this.UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR);
+        this.GET_GENERATING_ORDER_TYPES_ERROR = this.i18nService.translateInstant(this.GET_GENERATING_ORDER_TYPES_ERROR);
+        this.UNSPECIFIED_GET_ORDER_TYPES_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_GET_ORDER_TYPES_ERROR);
     }
 
 
@@ -80,7 +69,7 @@ export class RestorableOrderInputSourcesComponent extends RestorableRouteCompone
             key: '$0',
             value: context.toString()
         };
-        return this.i18nService.translate('No order types found in $0', param);
+        return this.i18nService.translateInstant('No order types found in $0', param);
     }
 
 
@@ -89,7 +78,7 @@ export class RestorableOrderInputSourcesComponent extends RestorableRouteCompone
             key: '$0',
             value: context.toString()
         };
-        return this.i18nService.translate('No generating order types found in $0', param);
+        return this.i18nService.translateInstant('No generating order types found in $0', param);
     }
 }
 

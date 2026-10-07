@@ -15,14 +15,14 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, viewChild } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { XoDocumentation, XoDocumentationLanguage, XoXynaProperty } from '@zeta/auth/xo/xyna-property.model';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { XcDialogComponent, XcFormDirective } from '@zeta/xc';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcButtonComponent, XcDialogComponent, XcDialogWrapperComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcFormValidatorRequiredDirective, XcIconComponent } from '@zeta/xc';
 
-import { FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
+import { FMFocusCandidateDirective, FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
 import { addNewXynaProperty_translations_de_DE } from './locale/add-new-xyna-property-translations.de-DE';
 import { addNewXynaProperty_translations_en_US } from './locale/add-new-xyna-property-translations.en-US';
 
@@ -36,17 +36,20 @@ export interface AddNewXynaPropertyModalComponentData {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './add-new-xyna-property-modal.component.html',
     styleUrls: ['./add-new-xyna-property-modal.component.scss'],
-    standalone: false
+    imports: [XcButtonComponent, XcDialogWrapperComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcFormValidatorRequiredDirective, XcIconComponent, XcI18nContextDirective, XcI18nTranslateDirective, FMFocusCandidateDirective]
 })
 export class AddNewXynaPropertyModalComponent extends XcDialogComponent<boolean, AddNewXynaPropertyModalComponentData> {
+    private readonly i18n = inject(I18nService);
 
-    @ViewChild(XcFormDirective, {static: false})
-    xcFormDirective: XcFormDirective;
+
+    readonly xcFormDirective = viewChild(XcFormDirective);
 
     get invalid(): boolean {
-        return this.xcFormDirective ? this.xcFormDirective.invalid : true;
+        const xcFormDirective = this.xcFormDirective();
+        return xcFormDirective ? xcFormDirective.invalid : true;
     }
 
     errorBoxFocusCandidateRef = FMFocusCandidateRef.getInstance();
@@ -76,11 +79,11 @@ export class AddNewXynaPropertyModalComponent extends XcDialogComponent<boolean,
     }
 
     get documentationLabel(): string {
-        return this.i18n.translate('Documentation for $0', {key: '$0', value: this.i18n.translate(this._languageTag)});
+        return this.i18n.translateInstant('Documentation for $0', {key: '$0', value: this.i18n.translateInstant(this._languageTag)});
     }
 
-    constructor(injector: Injector, private readonly i18n: I18nService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.i18n.setTranslations(LocaleService.DE_DE, addNewXynaProperty_translations_de_DE);
         this.i18n.setTranslations(LocaleService.EN_US, addNewXynaProperty_translations_en_US);

@@ -15,19 +15,18 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, InjectionToken, Injector } from '@angular/core';
+import { filter } from 'rxjs';
 
-import { FM_RTC } from '@fman/const';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, InjectionToken, Injector, signal } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ORDER_TYPES } from '@fman/trigger-and-filter/order-types';
 import { XoFilterInstance } from '@fman/trigger-and-filter/xo/xo-filter-instance.model';
 import { XoTriggerInstanceDetail } from '@fman/trigger-and-filter/xo/xo-trigger-instance-detail.model';
 import { XoTriggerInstance } from '@fman/trigger-and-filter/xo/xo-trigger-instance.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { Comparable } from '@zeta/base';
-import { I18nService } from '@zeta/i18n';
-import { XC_COMPONENT_DATA, XcDialogService, XcDynamicComponent, XcLocalTableDataSource, XDSIconName } from '@zeta/xc';
-
-import { filter } from 'rxjs';
+import { I18nService, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XC_COMPONENT_DATA, XcButtonComponent, XcDialogService, XcDynamicComponent, XcIconComponent, XcLocalTableDataSource, XcPanelComponent, XcSpinnerComponent, XcTableComponent, XcTooltipDirective, XDSIconName } from '@zeta/xc';
 
 
 export interface TriggerInstanceDetailsData {
@@ -50,9 +49,14 @@ class FilterInstanceData extends Comparable {
     templateUrl: './trigger-instance-detail.component.html',
     styleUrls: ['./trigger-instance-detail.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [XcButtonComponent, XcIconComponent, XcPanelComponent, XcSpinnerComponent, XcTableComponent, XcTooltipDirective, XcI18nTranslateDirective]
 })
 export class TriggerInstanceDetailComponent extends XcDynamicComponent<TriggerInstanceDetailsData> {
+    private readonly apiService = inject(ApiService);
+    private readonly i18nService = inject(I18nService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly cdr = inject(ChangeDetectorRef);
+
 
     readonly XDSIconName = XDSIconName;
 
@@ -64,18 +68,14 @@ export class TriggerInstanceDetailComponent extends XcDynamicComponent<TriggerIn
     datasource: XcLocalTableDataSource<FilterInstanceData> = new XcLocalTableDataSource<FilterInstanceData>(this.i18nService);
     busy = false;
 
-    constructor(injector: Injector,
-        private readonly apiService: ApiService,
-        private readonly i18nService: I18nService,
-        private readonly dialogService: XcDialogService,
-        private readonly cdr: ChangeDetectorRef) {
-        super(injector);
+    constructor() {
+        super();
         this.refresh();
     }
 
     refresh() {
         this.busy = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.TRIGGER_INSTANCE_DETAIL, this.injectedData.triggerinstance, XoTriggerInstanceDetail, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.TRIGGER_INSTANCE_DETAIL, this.injectedData.triggerinstance, XoTriggerInstanceDetail, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (!result.errorMessage) {
@@ -97,7 +97,7 @@ export class TriggerInstanceDetailComponent extends XcDynamicComponent<TriggerIn
 
     enable() {
         this.busy = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.ENABLE_TRIGGER, this.injectedData.triggerinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.ENABLE_TRIGGER, this.injectedData.triggerinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (!result.errorMessage) {
@@ -115,7 +115,7 @@ export class TriggerInstanceDetailComponent extends XcDynamicComponent<TriggerIn
 
     disable() {
         this.busy = true;
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.DISABLE_TRIGGER, this.injectedData.triggerinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.DISABLE_TRIGGER, this.injectedData.triggerinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (!result.errorMessage) {
@@ -132,11 +132,11 @@ export class TriggerInstanceDetailComponent extends XcDynamicComponent<TriggerIn
     }
 
     undeploy() {
-        this.dialogService.confirm(this.i18nService.translate('fman.taf.trigger.tile.undeploy.confirm-title'), this.i18nService.translate('fman.taf.trigger.tile.undeploy.confirm-message')).afterDismiss()
+        this.dialogService.confirm(this.i18nService.translateInstant('fman.taf.trigger.tile.undeploy.confirm-title'), this.i18nService.translateInstant('fman.taf.trigger.tile.undeploy.confirm-message')).afterDismiss()
             .pipe(filter(res => !!res)).subscribe({
                 next: () => {
                     this.busy = true;
-                    this.apiService.startOrder(FM_RTC, ORDER_TYPES.UNDEPLOY_TRIGGER, this.injectedData.triggerinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+                    this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.UNDEPLOY_TRIGGER, this.injectedData.triggerinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
                         .subscribe({
                             next: result => {
                                 if (!result.errorMessage) {
@@ -157,9 +157,9 @@ export class TriggerInstanceDetailComponent extends XcDynamicComponent<TriggerIn
     private fillDatasource(data: XoFilterInstance[]) {
         this.datasource.localTableData = {
             columns: [
-                { path: 'filterName', name: 'fman.taf.trigger.tile.table.filter' },
-                { path: 'instance', name: 'fman.taf.trigger.tile.table.instance' },
-                { path: 'context', name: 'fman.taf.trigger.tile.table.context' }
+                { path: 'filterName', name: signal('fman.taf.trigger.tile.table.filter') },
+                { path: 'instance', name: signal('fman.taf.trigger.tile.table.instance') },
+                { path: 'context', name: signal('fman.taf.trigger.tile.table.context') }
             ],
             rows: data.map(xo => new FilterInstanceData(xo.filter, xo.filterInstance, xo.runtimeContext.label))
         };

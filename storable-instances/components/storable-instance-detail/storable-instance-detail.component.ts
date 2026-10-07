@@ -15,27 +15,30 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
-
-import { ApiService, FullQualifiedName, RuntimeContext, StartOrderOptionsBuilder, XoArray, XoObject, XoRuntimeContext } from '@zeta/api';
-import { I18nService } from '@zeta/i18n';
-import { XcDialogService, XcStructureTreeDataSource } from '@zeta/xc';
-
 import { Subject, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+
+import { ChangeDetectionStrategy, Component, inject, Input, OnDestroy, output } from '@angular/core';
+import { ApiService, FullQualifiedName, RuntimeContext, StartOrderOptionsBuilder, XoArray, XoObject, XoRuntimeContext } from '@zeta/api';
+import { I18nService } from '@zeta/i18n';
+import { XcDialogService, XcStructureTreeDataSource, XcTreeComponent } from '@zeta/xc';
 
 import { XoStoreParameter } from '../../xo/xo-storeparameter.model';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'storable-instance-detail',
     templateUrl: './storable-instance-detail.component.html',
     styleUrls: ['./storable-instance-detail.component.scss'],
-    standalone: false
+    imports: [XcTreeComponent]
 })
 export class StorableInstanceDetailComponent implements OnDestroy {
-    @Output()
-    readonly valueChange = new EventEmitter<void>();
+    private readonly i18n = inject(I18nService);
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+
+    readonly valueChange = output<void>();
 
     @Input()
     set xoRtc(xoRtc: XoRuntimeContext) {
@@ -81,7 +84,7 @@ export class StorableInstanceDetailComponent implements OnDestroy {
                 .pipe(
                     finalize(() => {
                         if (!isSucceeded) {
-                            this.dialogService.error(this.i18n.translate(this.ERROR_MESSAGE));
+                            this.dialogService.error(this.i18n.translateInstant(this.ERROR_MESSAGE));
                         }
                     })
                 )
@@ -104,17 +107,9 @@ export class StorableInstanceDetailComponent implements OnDestroy {
     private _fqn: FullQualifiedName;
     private _selectedStorable: XoObject;
 
-    structureTreeDataSource: XcStructureTreeDataSource = new XcStructureTreeDataSource(this.apiService, this.i18n, null, []);
+    structureTreeDataSource: XcStructureTreeDataSource = new XcStructureTreeDataSource(this.apiService, this.i18n, null, [], undefined, false);
 
     ERROR_MESSAGE = 'fman.storable-instances.storable-instances-details.error-message';
-
-
-    constructor(
-        private readonly i18n: I18nService,
-        private readonly apiService: ApiService,
-        private readonly dialogService: XcDialogService
-    ) {
-    }
 
 
     ngOnDestroy() {
@@ -124,7 +119,7 @@ export class StorableInstanceDetailComponent implements OnDestroy {
 
     private updateTree() {
         if (this._rtc && this._fqn && this._selectedStorable) {
-            this.structureTreeDataSource = new XcStructureTreeDataSource(this.apiService, this.i18n, this._rtc, [{ rtc: this._rtc, fqn: this._fqn }]);
+            this.structureTreeDataSource = new XcStructureTreeDataSource(this.apiService, this.i18n, this._rtc, [{ rtc: this._rtc, fqn: this._fqn }], undefined, false);
             this.structureTreeDataSource.container = new XoArray();
             this.structureTreeDataSource.container.append(this._selectedStorable);
             this.structureTreeDataSource.refresh();

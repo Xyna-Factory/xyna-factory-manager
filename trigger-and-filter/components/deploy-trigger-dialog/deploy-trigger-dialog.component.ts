@@ -15,18 +15,20 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector } from '@angular/core';
-
-import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-import { XcAutocompleteDataWrapper, XcDialogComponent, XcDialogService, XcOptionItem, XDSIconName } from '@zeta/xc';
-
-import { FM_RTC } from '../../../const';
-import { ORDER_TYPES } from '../../order-types';
-import { XoTrigger } from '@fman/trigger-and-filter/xo/xo-trigger.model';
-import { XoTriggerInstance } from '@fman/trigger-and-filter/xo/xo-trigger-instance.model';
-import { XoDeployTriggerRequest } from '@fman/trigger-and-filter/xo/xo-deploy-trigger-request.model';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoRuntimeContext, XoRuntimeContextArray } from '@fman/runtime-contexts/xo/xo-runtime-context.model';
+import { XoDeployTriggerRequest } from '@fman/trigger-and-filter/xo/xo-deploy-trigger-request.model';
 import { XoStartParameterDetails, XoStartParameterDetailsArray } from '@fman/trigger-and-filter/xo/xo-start-parameter-details.model';
+import { XoTriggerInstance } from '@fman/trigger-and-filter/xo/xo-trigger-instance.model';
+import { XoTrigger } from '@fman/trigger-and-filter/xo/xo-trigger.model';
+import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
+import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcAutocompleteDataWrapper, XcButtonComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcOptionItem, XDSIconName } from '@zeta/xc';
+
+import { ORDER_TYPES } from '../../order-types';
+import { StartParameterDetailComponent } from '../start-parameter-deatil/start-parameter-detail.component';
+
 
 interface StartParameter {
     key: string;
@@ -35,11 +37,15 @@ interface StartParameter {
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './deploy-trigger-dialog.component.html',
     styleUrls: ['./deploy-trigger-dialog.component.scss'],
-    standalone: false
+    imports: [XcButtonComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcI18nContextDirective, XcI18nTranslateDirective, StartParameterDetailComponent]
 })
 export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerInstance, XoTrigger> {
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+
 
     readonly XDSIconName = XDSIconName;
 
@@ -49,9 +55,9 @@ export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerIns
     busy: boolean;
     startParameter: XoStartParameterDetails[];
     legacy: boolean;
-    startparameter: {parameter: StartParameter; wrapper: XcAutocompleteDataWrapper<string>}[] = [];
+    startparameter: { parameter: StartParameter; wrapper: XcAutocompleteDataWrapper<string> }[] = [];
 
-    context: XoRuntimeContext = this.injectedData.runtimeContext;
+    context: XoRuntimeContext;
 
     runtimeContextDataWrapper: XcAutocompleteDataWrapper<XoRuntimeContext> = new XcAutocompleteDataWrapper<XoRuntimeContext>(
         () => this.context,
@@ -59,10 +65,8 @@ export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerIns
             this.context = value;
         });
 
-    constructor(injector: Injector,
-        private readonly apiService: ApiService,
-        private readonly dialogService: XcDialogService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.fillContextWrapper();
         this.getStartParameter();
@@ -73,7 +77,7 @@ export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerIns
     }
 
     appendStartparameter() {
-        const param = {key: '', value: ''};
+        const param = { key: '', value: '' };
         this.startparameter.push({
             parameter: param,
             wrapper: new XcAutocompleteDataWrapper<string>(
@@ -82,24 +86,23 @@ export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerIns
                     param.key = value;
                 },
                 this.startParameter.map(para =>
-                    <XcOptionItem<string>>{name: para.name, value: para.name}
+                    <XcOptionItem<string>>{ name: signal(para.name), value: para.name }
                 )
             )
         });
     }
 
-    private buildStartparameterRequest(): string {
+    private buildStartparameterRequest(): string[] {
         return this.startparameter.
             filter(para => !!para.parameter.key).
-            map(para => para.parameter.key + '=' + para.parameter.value).
-            reduce((pre, cur) => pre + ' ' + cur);
+            map(para => para.parameter.key + '=' + para.parameter.value);
     }
 
     fillContextWrapper() {
-        this.apiService.startOrderAssertFlat<XoRuntimeContext>(FM_RTC, ORDER_TYPES.POSSIBLE_CONTEXT_TRIGGER, this.injectedData, XoRuntimeContextArray)
+        this.apiService.startOrderAssertFlat<XoRuntimeContext>(FMAN_RTC, ORDER_TYPES.POSSIBLE_CONTEXT_TRIGGER, this.injectedData, XoRuntimeContextArray)
             .subscribe({
                 next: result => {
-                    this.runtimeContextDataWrapper.values = result.map(rtc => <XcOptionItem<XoRuntimeContext>>{ name: rtc.label, value: rtc });
+                    this.runtimeContextDataWrapper.values = result.map(rtc => <XcOptionItem<XoRuntimeContext>>{ name: signal(rtc.label), value: rtc });
                 },
                 error: err => {
                     this.dialogService.error(err);
@@ -108,7 +111,7 @@ export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerIns
     }
 
     getStartParameter() {
-        this.apiService.startOrderAssertFlat<XoStartParameterDetails>(FM_RTC, ORDER_TYPES.POSSIBLE_START_PARAMETER_TRIGGER, this.injectedData, XoStartParameterDetailsArray).subscribe({
+        this.apiService.startOrderAssertFlat<XoStartParameterDetails>(FMAN_RTC, ORDER_TYPES.POSSIBLE_START_PARAMETER_TRIGGER, this.injectedData, XoStartParameterDetailsArray).subscribe({
             next: result => {
                 this.startParameter = result;
                 this.legacy = result.length > 0 && result[0].lagacyParameterCombination?.length > 0;
@@ -127,10 +130,14 @@ export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerIns
         request.triggerName = this.injectedData.name;
         request.triggerInstanceName = this.instance;
         request.runtimeContext = this.context;
-        request.startParameter = this.legacy ? this.parameter : this.buildStartparameterRequest();
+        if (this.legacy) {
+            request.startParameter = this.parameter;
+        } else {
+            request.startParameterArray = this.buildStartparameterRequest();
+        }
         request.documentation = this.documentation;
 
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.DEPLOY_TRIGGER, request, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.DEPLOY_TRIGGER, request, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (!result.errorMessage) {

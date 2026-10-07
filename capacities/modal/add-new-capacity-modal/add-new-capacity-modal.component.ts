@@ -15,13 +15,13 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, viewChild } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { XcDialogComponent, XcFormDirective } from '@zeta/xc';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogWrapperComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIconComponent } from '@zeta/xc';
 
-import { FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
+import { FMFocusCandidateDirective, FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
 import { XoCapacityInformation } from '../../xo/xo-capacity-information.model';
 import { addNewCapacityModal_translations_de_DE } from './locale/add-new-capacity-modal-translations.de-DE';
 import { addNewCapacityModal_translations_en_US } from './locale/add-new-capacity-modal-translations.en-US';
@@ -36,17 +36,20 @@ export interface AddNewCapacityModalComponentData {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './add-new-capacity-modal.component.html',
     styleUrls: ['./add-new-capacity-modal.component.scss'],
-    standalone: false
+    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIconComponent, XcI18nContextDirective, XcI18nTranslateDirective, FMFocusCandidateDirective]
 })
 export class AddNewCapacityModalComponent extends XcDialogComponent<boolean, AddNewCapacityModalComponentData> {
+    private readonly i18n = inject(I18nService);
 
-    @ViewChild(XcFormDirective, {static: false})
-    xcFormDirective: XcFormDirective;
+
+    readonly xcFormDirective = viewChild(XcFormDirective);
 
     get invalid(): boolean {
-        return this.xcFormDirective ? this.xcFormDirective.invalid : true;
+        const xcFormDirective = this.xcFormDirective();
+        return xcFormDirective ? xcFormDirective.invalid : true;
     }
 
     busy = false;
@@ -73,8 +76,8 @@ export class AddNewCapacityModalComponent extends XcDialogComponent<boolean, Add
 
     capacity: XoCapacityInformation;
 
-    constructor(injector: Injector, private readonly i18n: I18nService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.i18n.setTranslations(LocaleService.DE_DE, addNewCapacityModal_translations_de_DE);
         this.i18n.setTranslations(LocaleService.EN_US, addNewCapacityModal_translations_en_US);

@@ -15,13 +15,13 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, viewChild } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { XcDialogComponent, XcFormDirective } from '@zeta/xc';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcButtonComponent, XcDialogComponent, XcDialogWrapperComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcFormValidatorRequiredDirective, XcIconComponent } from '@zeta/xc';
 
-import { FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
+import { FMFocusCandidateDirective, FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
 import { XoAdministrativeVeto } from '../../xo/xo-administrative-veto.model';
 import { addNewAdministrativeVetoModal_translations_de_DE } from './locale/add-new-administrative-veto-modal-translations.de-DE';
 import { addNewAdministrativeVetoModal_translations_en_US } from './locale/add-new-administrative-veto-modal-translations.en-US';
@@ -36,18 +36,21 @@ export interface AddNewAdministrativeVetoModalData {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'app-add-new-administrative-veto-modal',
     templateUrl: './add-new-administrative-veto-modal.component.html',
     styleUrls: ['./add-new-administrative-veto-modal.component.scss'],
-    standalone: false
+    imports: [XcButtonComponent, XcDialogWrapperComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcFormValidatorRequiredDirective, XcIconComponent, XcI18nContextDirective, XcI18nTranslateDirective, FMFocusCandidateDirective]
 })
 export class AddNewAdministrativeVetoModalComponent extends XcDialogComponent<boolean, AddNewAdministrativeVetoModalData> {
+    private readonly i18nService = inject(I18nService);
 
-    @ViewChild(XcFormDirective, {static: false})
-    xcFormDirective: XcFormDirective;
+
+    readonly xcFormDirective = viewChild(XcFormDirective);
 
     get invalid(): boolean {
-        return this.xcFormDirective ? this.xcFormDirective.invalid : true;
+        const xcFormDirective = this.xcFormDirective();
+        return xcFormDirective ? xcFormDirective.invalid : true;
     }
 
     private _error: string;
@@ -65,11 +68,11 @@ export class AddNewAdministrativeVetoModalComponent extends XcDialogComponent<bo
 
     administrativeVeto: XoAdministrativeVeto;
 
-    constructor(injector: Injector, i18nService: I18nService) {
-        super(injector);
+    constructor() {
+        super();
 
-        i18nService.setTranslations(LocaleService.DE_DE, addNewAdministrativeVetoModal_translations_de_DE);
-        i18nService.setTranslations(LocaleService.EN_US, addNewAdministrativeVetoModal_translations_en_US);
+        this.i18nService.setTranslations(LocaleService.DE_DE, addNewAdministrativeVetoModal_translations_de_DE);
+        this.i18nService.setTranslations(LocaleService.EN_US, addNewAdministrativeVetoModal_translations_en_US);
 
         this.administrativeVeto = new XoAdministrativeVeto();
 

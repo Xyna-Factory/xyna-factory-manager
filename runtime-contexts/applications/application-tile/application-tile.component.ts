@@ -1,3 +1,5 @@
+import { debounceTime, filter, first, skip } from 'rxjs/operators';
+
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -15,17 +17,14 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, ElementRef, EventEmitter, HostBinding, Input, NgZone, OnInit, Output, ViewChild } from '@angular/core';
-
+import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, inject, Input, input, linkedSignal, NgZone, OnInit, output, viewChild } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ExportApplicationDialogComponent } from '@fman/runtime-contexts/dialog/export-application/export-application-dialog.component';
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nService } from '@zeta/i18n';
-import { XcDialogService, XcRemoteTableDataSource, XDSIconName } from '@zeta/xc';
+import { I18nService, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcButtonComponent, XcCheckboxComponent, XcDialogService, XcFormInputComponent, XcIconComponent, XcPanelComponent, XcRemoteTableDataSource, XcTableComponent, XcTooltipDirective, XDSIconName } from '@zeta/xc';
 
-import { debounceTime, filter, first, skip } from 'rxjs/operators';
-
-import { FM_RTC } from '../../../const';
 import { FactoryManagerSettingsService } from '../../../misc/services/factory-manager-settings.service';
 import { createContentTableInfoClass } from '../../content';
 import { createDependenciesTableInfoClass, createDependenciesTableInput, createFilterEnumOfState } from '../../dependencies';
@@ -35,6 +34,7 @@ import { ManageContentDialogComponent } from '../../dialog/manage-content/manage
 import { ManageDependenciesDialogComponent } from '../../dialog/manage-dependencies/manage-dependencies-dialog.component';
 import { MigrateWizardComponent, MigrationWizardData } from '../../dialog/migrate-wizard/migrate-wizard.component';
 import { ORDER_TYPES } from '../../order-types';
+import { RuntimeContextButtonComponent } from '../../shared/runtime-context-button.component';
 import { XoApplicationElementArray } from '../../xo/xo-application-element.model';
 import { XoDependency, XoDependencyArray } from '../../xo/xo-dependency.model';
 import { XoIssue, XoIssueArray } from '../../xo/xo-issue.model';
@@ -49,25 +49,33 @@ import { Application } from '../application-data-source';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'application-tile',
     templateUrl: './application-tile.component.html',
     styleUrls: ['./application-tile.component.scss'],
-    standalone: false
+    imports: [RuntimeContextButtonComponent, XcI18nTranslateDirective, XcI18nPipe, XcButtonComponent, XcCheckboxComponent, XcFormInputComponent, XcIconComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective]
 })
 export class ApplicationTileComponent implements OnInit {
-    @ViewChild('header', {static: false})
-    headerRef: ElementRef;
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly i18n = inject(I18nService);
+    private readonly zone = inject(NgZone);
+    private readonly settings = inject(FactoryManagerSettingsService);
+
+    readonly headerRef = viewChild<ElementRef>('header');
 
     readonly XDSIconName = XDSIconName;
 
-    @Input()
-    application: Application;
+    readonly applicationInput = input<Application>(undefined, { alias: 'application' });
+    readonly application = linkedSignal(() => this.applicationInput());
 
-    @Input()
-    selection: Application;
+    readonly selectionInput = input<Application>(undefined, { alias: 'selection' });
+    readonly selection = linkedSignal(() => this.selectionInput());
 
-    @Input()
-    details: XoRuntimeApplicationDetails;
+    readonly detailsInput = input<XoRuntimeApplicationDetails>(undefined, { alias: 'details' });
+    readonly details = linkedSignal(() => this.detailsInput());
+
+    collapsedRequiredRow = false;
 
     private _forceRefresh: boolean;
 
@@ -82,14 +90,11 @@ export class ApplicationTileComponent implements OnInit {
         }
     }
 
-    @Output()
-    readonly validationChange = new EventEmitter<void>();
+    readonly validationChange = output<void>();
 
-    @Output()
-    readonly selectionChange = new EventEmitter<Application>();
+    readonly selectionChange = output<Application>();
 
-    @Output()
-    readonly selectionDetailsChange = new EventEmitter<XoRuntimeApplication>();
+    readonly selectionDetailsChange = output<XoRuntimeApplication>();
 
     requiresDataSource: XcRemoteTableDataSource;
 
@@ -100,27 +105,18 @@ export class ApplicationTileComponent implements OnInit {
     issues = new Array<XoIssue>();
     truncateIssues = true;
 
-    constructor(
-        private readonly apiService: ApiService,
-        private readonly dialogService: XcDialogService,
-        private readonly i18n: I18nService,
-        private readonly zone: NgZone,
-        private readonly settings: FactoryManagerSettingsService
-    ) {
-    }
-
 
     ngOnInit() {
         // create requires data source
-        this.requiresDataSource = new XcRemoteTableDataSource(this.apiService, undefined, FM_RTC, ORDER_TYPES.GET_DEPENDENT_RTCS, createDependenciesTableInfoClass(false));
+        this.requiresDataSource = new XcRemoteTableDataSource(this.apiService, undefined, FMAN_RTC, ORDER_TYPES.GET_DEPENDENT_RTCS, createDependenciesTableInfoClass(false));
         this.requiresDataSource.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
         this.requiresDataSource.output = XoDependencyArray;
         // create required-by data source
-        this.requiredByDataSource = new XcRemoteTableDataSource(this.apiService, undefined, FM_RTC, ORDER_TYPES.GET_DEPENDENT_RTCS, createDependenciesTableInfoClass(false));
+        this.requiredByDataSource = new XcRemoteTableDataSource(this.apiService, undefined, FMAN_RTC, ORDER_TYPES.GET_DEPENDENT_RTCS, createDependenciesTableInfoClass(false));
         this.requiredByDataSource.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
         this.requiredByDataSource.output = XoDependencyArray;
         // create content data source
-        this.contentDataSource = new XcRemoteTableDataSource(this.apiService, undefined, FM_RTC, ORDER_TYPES.GET_APPLICATION_CONTENT, createContentTableInfoClass(false));
+        this.contentDataSource = new XcRemoteTableDataSource(this.apiService, undefined, FMAN_RTC, ORDER_TYPES.GET_APPLICATION_CONTENT, createContentTableInfoClass(false));
         this.contentDataSource.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
         this.contentDataSource.output = XoApplicationElementArray;
         // add filter for state
@@ -135,7 +131,7 @@ export class ApplicationTileComponent implements OnInit {
         );
         // If this component gets built but was selected before, the forceRefresh flag is set and the component will load its content immediately
         if (this.forceRefresh) {
-            this.updateDataSources(this.details);
+            this.updateDataSources(this.details());
             this._forceRefresh = false;
         }
     }
@@ -151,13 +147,13 @@ export class ApplicationTileComponent implements OnInit {
         this.requiresDataSource.clear();
         this.requiredByDataSource.refresh();
         // update content data source
-        this.contentDataSource.input = XoGetApplicationContentRequest.create(runtimeApplication, false, false, false);
+        this.contentDataSource.input = XoGetApplicationContentRequest.create(runtimeApplication, false, false, false, true);
         this.contentDataSource.clear();
         this.contentDataSource.refresh();
 
         // request issues
         this.issues = [];
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.GET_ISSUES, runtimeApplication, XoIssueArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).subscribe(result => {
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.GET_ISSUES, runtimeApplication, XoIssueArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).subscribe(result => {
             if (result.errorMessage) {
                 this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n'));
             } else {
@@ -169,7 +165,7 @@ export class ApplicationTileComponent implements OnInit {
 
     select(runtimeApplication: XoRuntimeApplication) {
         if (runtimeApplication) {
-            this.selectionChange.emit(this.application);
+            this.selectionChange.emit(this.application());
             this.selectionDetailsChange.emit(runtimeApplication);
             this.updateDataSources(runtimeApplication);
             this.scrollTo();
@@ -184,11 +180,11 @@ export class ApplicationTileComponent implements OnInit {
         // Workaround because angular material has no observer that completes when data is loaded and the table is rendered.
         // See https://github.com/angular/components/issues/8068
         this.zone.onStable.pipe(skip(2), first(), debounceTime(100)).subscribe(() => {
-            this.headerRef.nativeElement.scrollIntoView(true);
+            this.headerRef().nativeElement.scrollIntoView(true);
             // The parent is the scroll section. Used to get a margin of 8px at the top of the card.
-            const parent = this.headerRef.nativeElement.parentElement.parentElement;
+            const parent = this.headerRef().nativeElement.parentElement.parentElement;
             if (parent) {
-                this.headerRef.nativeElement.parentElement.parentElement.scrollTop -= 8;
+                this.headerRef().nativeElement.parentElement.parentElement.scrollTop -= 8;
             }
         });
     }
@@ -196,29 +192,29 @@ export class ApplicationTileComponent implements OnInit {
 
     @HostBinding('class.runtime-application')
     get hasDetails(): boolean {
-        return this.application.equals(this.selection) && this.details instanceof XoRuntimeApplicationDetails;
+        return this.application().equals(this.selection()) && this.details() instanceof XoRuntimeApplicationDetails;
     }
 
 
     isSelected(runtimeApplication: XoRuntimeApplication): boolean {
-        return runtimeApplication.equals(this.details);
+        return runtimeApplication.equals(this.details());
     }
 
 
     loadRuntimeApplication() {
-        this.dialogService.custom(LoadRuntimeApplicationDialogComponent, {workspaceName: undefined, runtimeApplication: this.details as XoRuntimeApplication}).afterDismissResult().subscribe(
-            () => {}
+        this.dialogService.custom(LoadRuntimeApplicationDialogComponent, { workspaceName: undefined, runtimeApplication: this.details() as XoRuntimeApplication }).afterDismissResult().subscribe(
+            () => { }
         );
     }
 
 
     deleteRuntimeApplication() {
-        this.dialogService.custom(DeleteRuntimeApplicationDialogComponent, this.details as XoRuntimeApplication).afterDismissResult().subscribe(
+        this.dialogService.custom(DeleteRuntimeApplicationDialogComponent, this.details() as XoRuntimeApplication).afterDismissResult().subscribe(
             () => {
-                this.validationChange.next();
-                this.selection = null;
-                this.application = null;
-                this.details = null;
+                this.validationChange.emit();
+                this.selection.set(null);
+                this.application.set(null);
+                this.details.set(null);
                 this.select(null);
             }
         );
@@ -226,10 +222,10 @@ export class ApplicationTileComponent implements OnInit {
 
 
     start() {
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.START_RUNTIME_APPLICATION, this.details.proxy(), undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.START_RUNTIME_APPLICATION, this.details().proxy(), undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             filter(result => result.errorMessage ? (this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n')), false) : true)
         ).subscribe(() => {
-            const runtimeApplication = this.application.runtimeApplications.find(value => value.equals(this.details));
+            const runtimeApplication = this.application().runtimeApplications.find(value => value.equals(this.details()));
             runtimeApplication.state = XoRuntimeContextState.RUNNING;
             this.selectionDetailsChange.emit(runtimeApplication);
         });
@@ -237,10 +233,10 @@ export class ApplicationTileComponent implements OnInit {
 
 
     stop() {
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.STOP_RUNTIME_APPLICATION, this.details.proxy(), undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.STOP_RUNTIME_APPLICATION, this.details().proxy(), undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             filter(result => result.errorMessage ? (this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n')), false) : true)
         ).subscribe(() => {
-            const runtimeApplication = this.application.runtimeApplications.find(value => value.equals(this.details));
+            const runtimeApplication = this.application().runtimeApplications.find(value => value.equals(this.details()));
             runtimeApplication.state = XoRuntimeContextState.STOPPED;
             this.selectionDetailsChange.emit(runtimeApplication);
         });
@@ -251,47 +247,53 @@ export class ApplicationTileComponent implements OnInit {
         this.dialogService.custom(MigrateWizardComponent, <MigrationWizardData>{
             i18n: this.i18n,
             apiService: this.apiService,
-            rtc: FM_RTC,
-            presetSource: this.application.runtimeApplications.find(value => value.equals(this.details))
+            rtc: FMAN_RTC,
+            presetSource: this.application().runtimeApplications.find(value => value.equals(this.details()))
         });
     }
 
 
     export() {
-        this.dialogService.custom(ExportApplicationDialogComponent, this.application.runtimeApplications.find(value => value.equals(this.details)));
+        this.dialogService.custom(ExportApplicationDialogComponent, this.application().runtimeApplications.find(value => value.equals(this.details())));
     }
 
 
     get isRunning() {
-        return this.details && this.details.state === XoRuntimeContextState.RUNNING;
+        const details = this.details();
+        return details && details.state === XoRuntimeContextState.RUNNING;
     }
 
 
     get isStopped() {
-        return this.details && this.details.state === XoRuntimeContextState.STOPPED;
+        const details = this.details();
+        return details && details.state === XoRuntimeContextState.STOPPED;
     }
 
 
     manageDependencies() {
-        this.dialogService.custom(ManageDependenciesDialogComponent, this.details as XoRuntimeContext).afterDismissResult().subscribe(
+        this.dialogService.custom(ManageDependenciesDialogComponent, this.details() as XoRuntimeContext).afterDismissResult().subscribe(
             () => this.requiresDataSource.refresh()
         );
     }
 
 
     manageContent() {
-        this.dialogService.custom(ManageContentDialogComponent, this.details as XoRuntimeContext).afterDismissResult().subscribe(
+        this.dialogService.custom(ManageContentDialogComponent, this.details() as XoRuntimeContext).afterDismissResult().subscribe(
             () => this.contentDataSource.refresh()
         );
     }
 
 
     changeOrderEntry(orderEntry: XoOrderEntry) {
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.SET_RUNTIME_APPLICATION_ORDER_ENTRY, [this.details.proxy(), orderEntry], undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.SET_RUNTIME_APPLICATION_ORDER_ENTRY, [this.details().proxy(), orderEntry], undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             filter(result => result.errorMessage ? (this.dialogService.error(result.errorMessage), false) : true)
         ).subscribe(() => {
-            const runtimeApplication = this.application.runtimeApplications.find(value => value.equals(this.details));
+            const runtimeApplication = this.application().runtimeApplications.find(value => value.equals(this.details()));
             this.selectionDetailsChange.emit(runtimeApplication);
         });
+    }
+
+    collapsedChange(collapsed: boolean) {
+        this.collapsedRequiredRow = collapsed;
     }
 }

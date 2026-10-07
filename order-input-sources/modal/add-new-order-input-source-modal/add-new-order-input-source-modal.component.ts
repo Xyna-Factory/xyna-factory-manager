@@ -15,16 +15,17 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectorRef, Component, Injector, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, viewChild , signal} from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoRuntimeContext, XoWorkspace } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { XcAutocompleteDataWrapper, XcDialogComponent, XcFormDirective, XcOptionItemString } from '@zeta/xc';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcAutocompleteDataWrapper, XcButtonComponent, XcDialogComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIconComponent, XcOptionItemString, XcPanelComponent } from '@zeta/xc';
 
 import { finalize } from 'rxjs/operators';
 
 import { InputParameterRef } from '../../../misc/components/input-parameter/input-parameter-ref.class';
-import { FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
+import { InputParameterComponent } from '../../../misc/components/input-parameter/input-parameter.component';
+import { FMFocusCandidateDirective, FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
 import { XoOrderType, XoOrderTypeArray } from '../../../xo/xo-order-type.model';
 import { ORDER_INPUT_SOURCE_TYPE_CONSTANT_NAME_PREFIX, ORDER_INPUT_SOURCE_TYPE_WORKFLOW_NAME_PREFIX, ORDER_INPUT_SOURCE_TYPE_XTF_NAME_PREFIX, OrderInputSourceParameterKey } from '../../restorable-order-input-sources.component';
 import { XoCreateOrderInputSourceRequest } from '../../xo/xo-create-order-input-source-request.model';
@@ -52,14 +53,18 @@ export interface AddNewOrderInputSourceModalComponentData {
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './add-new-order-input-source-modal.component.html',
     styleUrls: ['./add-new-order-input-source-modal.component.scss'],
-    standalone: false
+    imports: [XcButtonComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIconComponent, XcPanelComponent, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe, FMFocusCandidateDirective, InputParameterComponent]
 })
 export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<boolean, AddNewOrderInputSourceModalComponentData> {
+    private readonly i18n = inject(I18nService);
+    private readonly cdr = inject(ChangeDetectorRef);
+    private readonly apiService = inject(ApiService);
 
-    @ViewChild(XcFormDirective, {static: false})
-    xcFormDirective: XcFormDirective;
+
+    readonly xcFormDirective = viewChild(XcFormDirective);
 
     busy = false;
 
@@ -218,8 +223,8 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
     xTFTestCaseName: string;
 
 
-    constructor(injector: Injector, private readonly i18n: I18nService, private readonly cdr: ChangeDetectorRef, private readonly apiService: ApiService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.i18n.setTranslations(LocaleService.DE_DE, addNewOrderInputSourceModal_translations_de_DE);
         this.i18n.setTranslations(LocaleService.EN_US, addNewOrderInputSourceModal_translations_en_US);
@@ -293,7 +298,7 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
         this.apiService.getRuntimeContexts(false).subscribe({
             next: runtimeContexts => {
                 if (runtimeContexts.length > 0) {
-                    this.runtimeContextsDataWrapper.values = runtimeContexts.map(rtc => ({value: rtc, name: rtc.toString()}));
+                    this.runtimeContextsDataWrapper.values = runtimeContexts.map(rtc => ({value: rtc, name: signal(rtc.toString())}));
                     this.error = '';
                 } else {
                     this.error = this.injectedData.UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR;
@@ -315,7 +320,7 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
                 const output = result.output[0] as XoSourceTypeArray;
                 this.sourceTypeDataWrapper.values = output.data
                     .filter(sourceType => !this.isSourceTypeXTF(sourceType))
-                    .map   (sourceType => ({name: sourceType.label, value: sourceType}));
+                    .map   (sourceType => ({name: signal(sourceType.label), value: sourceType}));
             } else {
                 this.error = this.injectedData.i18nService.translateErrorCode(result.errorMessage);
             }
@@ -340,7 +345,7 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
                     const output = result.output[0] as XoOrderTypeArray;
                     if (output?.length > 0) {
                         this.error = '';
-                        this.generatingOrderTypeDataWrapper.values = output.data.map(orderType => ({value: orderType, name: orderType.name}));
+                        this.generatingOrderTypeDataWrapper.values = output.data.map(orderType => ({value: orderType, name: signal(orderType.name)}));
                     } else {
                         this.error = output
                             ? this.injectedData.GET_GENERATING_ORDER_TYPES_EMPTY_LIST_ERROR(this.selectedServerRuntimeContext)
@@ -371,7 +376,7 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
                 const output = result.output[0] as XoOrderTypeArray;
                 if (output?.length > 0) {
                     this.error = '';
-                    this.orderTypeDataWrapper.values = output.data.map(orderType => ({value: orderType, name: orderType.name}));
+                    this.orderTypeDataWrapper.values = output.data.map(orderType => ({value: orderType, name: signal(orderType.name)}));
                 } else if (this.isSourceTypeConstantSelected) {
                     this.error = output
                         ? this.injectedData.GET_ORDER_TYPES_EMPTY_LIST_ERROR(this.selectedServerRuntimeContext)
@@ -504,7 +509,7 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
 
 
     get invalid(): boolean {
-        return this.xcFormDirective?.invalid || this.noOrderTypes || this.noSourceTypes;
+        return this.xcFormDirective()?.invalid || this.noOrderTypes || this.noSourceTypes;
     }
 
 

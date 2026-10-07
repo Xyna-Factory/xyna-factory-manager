@@ -15,193 +15,226 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
- @use '../../../const' as *;
+@use '../../../const' as *;
 
+:host {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 4px;
 
- :host {
-     display: flex;
-     flex: 0 0 auto;
-     flex-direction: column;
-     overflow: hidden;
-     border-radius: 4px;
- 
-     &.application-definition {
-         box-shadow: 4px 0 0 -0.5px $color-primary;
- 
-         > .header {
-             background: $color-invert !important;
-         }
-     }
- 
-     &.workspace {
-         box-shadow: -4px 0 0 -0.5px $color-primary;
- 
-         > .header {
-             background: $color-invert !important;
-         }
-     }
- 
-     > .header {
-         display: flex;
-         flex: 1 1 auto;
-         background: $color-gray-1;
-         align-items: center;
- 
-         &:hover {
-             background: $color-gray-0;
-         }
- 
-         > runtime-context-button {
-             align-self: flex-start;
-         }
- 
-         > .active {
-             color: $color-gray-4;
-             text-transform: uppercase;
-             margin: 0 auto;
-             padding: 7px 12px;
-             white-space: pre;
-             align-self: flex-start;
-         }
- 
-         > .aside {
-             display: flex;
-             flex-wrap: wrap;
-             justify-content: flex-end;
-             align-items: center;
-         }
-     }
- 
-     > .detail {
-         display: flex;
-         flex: 1 1 auto;
-         flex-direction: column;
-         background: $color-gray-0;
- 
-         > .row {
-             display: flex;
-             padding: 12px;
- 
-             &:first-child {
-                 background: $color-gray-0;
-                 border-bottom: 2px solid $color-invert;
-                 padding: 12px;
-             }
- 
-             > .title {
-                 white-space: pre;
-                 align-self: center;
- 
-                 > span:first-child:after {
-                     content: ": ";
-                 }
- 
-                 > span:not(:first-child):after {
-                     content: " ";
-                 }
-             }
- 
-             > .actions {
-                 margin-left: auto;
-                 display: flex;
-                 flex: 0 0 auto;
-             }
- 
-             > .repository-link {
- 
-                 > label {
-                     margin-left: 12px;
-                     color: $color-gray-4;
- 
-                     &:first-of-type {
-                         margin-left: 0;
-                     }
- 
-                     &:after {
-                         content: ": ";
-                     }
-                 }
-             }
- 
-             > xc-form-input:first-child {
-                 margin-right: 6px;
-             }
- 
-             > xc-form-input:last-child {
-                 margin-left: 6px;
-             }
- 
-             > .dependencies, > .application, > .issues {
-                 display: flex;
-                 flex: 1 1 auto;
- 
-                 > .requires,
-                 > .required-by,
-                 > .content,
-                 & {
-                     flex: 1 1 50%;
- 
-                     &:first-child:not(:last-child) {
-                         margin-right: 6px;
-                     }
- 
-                     &:last-child:not(:first-child) {
-                         margin-left: 6px;
-                     }
- 
-                     xc-form-label {
-                         margin-top: 14px;
-                     }
- 
-                     > .row {
-                         display: flex;
-                         align-items: flex-end;
- 
-                         > xc-button {
-                             margin-left: auto;
-                         }
-                     }
-                 }
-             }
-         }
- 
-         .issues {
-             flex-direction: column;
-             .issue-row {
-                 display: flex;
-                 margin: 2px;
-                 padding: 2px 4px;
-                 background-color: $color-gray-1;
-                 overflow: auto;
- 
-                 .issue-identifier {
-                     flex: 0 0 160px;
- 
-                     &::after {
-                         content: ':';
-                     }
-                 }
- 
-                 .issue-entries {
-                     display: flex;
-                     flex-wrap: wrap;
- 
-                     .issue-entry {
-                         display: flex;
- 
-                         .issue-entry-key {
-                             margin-left: 8px;
-                             color: $color-gray-4;
-                             font-size: $font-size-tiny;
-                         }
- 
-                         .issue-entry-value {
-                             margin-left: 4px;
-                         }
-                     }
-                 }
-             }
-         }
-     }
- }
- 
+    xc-panel {
+        border: none;
+        background-color: $color-gray-0;
+
+        section {
+            padding: 0;
+
+            xc-table {
+                border: none;
+
+                ::ng-deep tfoot {
+                    display: none;
+                }
+            }
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+    }
+
+    &.application-definition {
+        border-left: 4px solid $color-primary;
+
+        >.header {
+            background: $color-invert !important;
+        }
+    }
+
+    &.workspace {
+        border-left: 4px solid $color-primary;
+
+        >.header {
+            background: $color-invert !important;
+        }
+    }
+
+    >.header {
+        display: flex;
+        flex: 1 1 auto;
+        background: $color-gray-1;
+        align-items: center;
+
+        &:hover {
+            background: $color-gray-0;
+        }
+
+        >runtime-context-button {
+            align-self: flex-start;
+
+            ::ng-deep .mat-mdc-button {
+                border-radius: 0 4px 4px 0;
+            }
+        }
+
+        >.active {
+            color: $color-gray-4;
+            text-transform: uppercase;
+            margin: 0 auto;
+            padding: 7px 12px;
+            white-space: pre;
+            align-self: flex-start;
+        }
+
+        >.aside {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            align-items: center;
+        }
+    }
+
+    >.detail {
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        background: $color-gray-0;
+        padding: 8px;
+        row-gap: 16px;
+
+        >.row {
+            display: flex;
+
+            >.title {
+                white-space: pre;
+                align-self: center;
+
+                >span:first-child:after {
+                    content: ": ";
+                }
+
+                >span:not(:first-child):after {
+                    content: " ";
+                }
+            }
+
+            >.actions {
+                margin-left: auto;
+                display: flex;
+                gap: 4px;
+                overflow: auto;
+            }
+
+            >.repository-link {
+                >label {
+                    margin-left: 12px;
+                    color: $color-gray-4;
+
+                    &:first-of-type {
+                        margin-left: 0;
+                    }
+
+                    &:after {
+                        content: ": ";
+                    }
+                }
+            }
+
+            >xc-form-input:first-child {
+                margin-right: 6px;
+            }
+
+            >xc-form-input:last-child {
+                margin-left: 6px;
+            }
+
+            >.dependencies,
+            >.application,
+            >.issues {
+                display: flex;
+                flex: 1 1 auto;
+
+                >.requires,
+                >.required-by,
+                >.content,
+                & {
+                    flex: 1 1 50%;
+
+                    &:first-child:not(:last-child) {
+                        margin-right: 6px;
+                    }
+
+                    &:last-child:not(:first-child) {
+                        margin-left: 6px;
+                    }
+
+                    xc-form-label {
+                        margin-top: 14px;
+                    }
+
+                    >.row {
+                        display: flex;
+                        align-items: flex-end;
+
+                        >xc-button {
+                            margin-left: auto;
+                        }
+                    }
+                }
+            }
+        }
+
+        .requires {
+            column-gap: 4px;
+
+            >xc-panel {
+                flex: 1 1 50%;
+                max-width: 50%;
+            }
+
+        }
+
+        .issues {
+            flex-direction: column;
+
+            .issue-row {
+                display: flex;
+                margin: 2px;
+                padding: 2px 4px;
+                background-color: $color-gray-1;
+                overflow: auto;
+
+                .issue-identifier {
+                    flex: 0 0 160px;
+
+                    &::after {
+                        content: ':';
+                    }
+                }
+
+                .issue-entries {
+                    display: flex;
+                    flex-wrap: wrap;
+
+                    .issue-entry {
+                        display: flex;
+
+                        .issue-entry-key {
+                            margin-left: 8px;
+                            color: $color-gray-4;
+                            font-size: $font-size-tiny;
+                        }
+
+                        .issue-entry-value {
+                            margin-left: 4px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

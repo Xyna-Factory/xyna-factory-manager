@@ -15,13 +15,10 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
-import { FactoryManagerSettingsService } from '@fman/misc/services/factory-manager-settings.service';
-import { ApiService, XoRuntimeContext } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { XcDialogService } from '@zeta/xc';
+import { XoRuntimeContext } from '@zeta/api';
+import { LocaleService } from '@zeta/i18n';
 
 import { FM_WF_GET_ORDER_TYPES, UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR } from '../const';
 import { InputScreenWorkflowPackage, RestorableRouteComponent } from '../restorable-route.component';
@@ -32,8 +29,8 @@ import { XoCronLikeOrder } from './xo/xo-cronlike-order.model';
 
 
 @Component({
-    template: '',
-    standalone: false
+    changeDetection: ChangeDetectionStrategy.Eager,
+    template: ''
 })
 export class RestorableCronlikeOrdersComponent extends RestorableRouteComponent<XoCronLikeOrder> implements OnInit {
     protected UNSPECIFIED_DETAILS_ERROR = 'fman.restorable-cronlike-orders.unspecified-details-error';
@@ -45,35 +42,27 @@ export class RestorableCronlikeOrdersComponent extends RestorableRouteComponent<
     protected UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR = 'fman.restorable-cronlike-orders.unspecified-get-runtime-contexts-error';
 
     protected GET_ORDER_TYPES_EMPTY_LIST_ERROR(context: XoRuntimeContext): string {
-        return this.i18nService.translate('fman.restorable-cronlike-orders.get-order-types-empty-list-error', {
+        return this.i18nService.translateInstant('fman.restorable-cronlike-orders.get-order-types-empty-list-error', {
             key: '$0',
             value: context.toString()
         });
     }
 
-    constructor(
-        apiService: ApiService,
-        dialogService: XcDialogService,
-        route: ActivatedRoute,
-        router: Router,
-        i18nService: I18nService,
-        injector: Injector,
-        settings: FactoryManagerSettingsService
-    ) {
-        super(apiService, dialogService, route, router, i18nService, injector, settings);
+    constructor() {
+        super();
 
         this.i18nService.setTranslations(LocaleService.DE_DE, cronlike_orders_translations_de_DE);
         this.i18nService.setTranslations(LocaleService.EN_US, cronlike_orders_translations_en_US);
     }
 
     private translateConstants() {
-        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translate(this.UNSPECIFIED_DETAILS_ERROR);
-        this.UNSPECIFIED_ADD_ERROR = this.i18nService.translate(this.UNSPECIFIED_ADD_ERROR);
-        this.UNSPECIFIED_SAVE_ERROR = this.i18nService.translate(this.UNSPECIFIED_SAVE_ERROR);
-        this.CONFIRM_DELETE = this.i18nService.translate(this.CONFIRM_DELETE);
+        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_DETAILS_ERROR);
+        this.UNSPECIFIED_ADD_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_ADD_ERROR);
+        this.UNSPECIFIED_SAVE_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_SAVE_ERROR);
+        this.CONFIRM_DELETE = this.i18nService.translateInstant(this.CONFIRM_DELETE);
 
-        this.UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR = this.i18nService.translate(UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR);
-        this.UNSPECIFIED_GET_ORDER_TYPES_ERROR = this.i18nService.translate(this.UNSPECIFIED_GET_ORDER_TYPES_ERROR);
+        this.UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR = this.i18nService.translateInstant(UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR);
+        this.UNSPECIFIED_GET_ORDER_TYPES_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_GET_ORDER_TYPES_ERROR);
 
         const descriptors = [
             ExecutionTimeInterval,
@@ -87,7 +76,7 @@ export class RestorableCronlikeOrdersComponent extends RestorableRouteComponent<
         ];
 
         descriptors.forEach(desc => {
-            Object.keys(desc).forEach(key => desc[key] = this.i18nService.translate(desc[key]));
+            Object.keys(desc).forEach(key => desc[key] = this.i18nService.translateInstant(desc[key]));
         });
     }
 

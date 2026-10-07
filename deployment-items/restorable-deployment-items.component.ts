@@ -15,13 +15,9 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
-import { FactoryManagerSettingsService } from '@fman/misc/services/factory-manager-settings.service';
-import { ApiService } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { XcDialogService } from '@zeta/xc';
+import { LocaleService } from '@zeta/i18n';
 
 import { InputScreenWorkflowPackage, RestorableRouteComponent } from '../restorable-route.component';
 import { deployment_items_translations_de_DE } from './locale/deployment-items-translations.de-DE';
@@ -64,9 +60,9 @@ export enum DeleteDeploymentItemResolution {
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'restorable-deployment-items',
-    template: '',
-    standalone: false
+    template: ''
 })
 export class RestorableDeploymentItemsComponent extends RestorableRouteComponent<XoDeploymentItem> implements OnInit {
 
@@ -76,30 +72,22 @@ export class RestorableDeploymentItemsComponent extends RestorableRouteComponent
     protected UNSPECIFIED_UNDEPLOY_ERROR = 'fman.restorable-deployment-items.unspecified-undeploy-error';
     protected UNSPECIFIED_DELETE_ERROR = 'fman.restorable-deployment-items.unspecified-delete-error';
 
-    constructor(
-        apiService: ApiService,
-        dialogService: XcDialogService,
-        route: ActivatedRoute,
-        router: Router,
-        i18nService: I18nService,
-        injector: Injector,
-        settings: FactoryManagerSettingsService
-    ) {
-        super(apiService, dialogService, route, router, i18nService, injector, settings);
+    constructor() {
+        super();
 
         this.i18nService.setTranslations(LocaleService.DE_DE, deployment_items_translations_de_DE);
         this.i18nService.setTranslations(LocaleService.EN_US, deployment_items_translations_en_US);
     }
 
     private translateConstants() {
-        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translate(this.UNSPECIFIED_DETAILS_ERROR);
-        this.UNSPECIFIED_DEPLOY_ERROR = this.i18nService.translate(this.UNSPECIFIED_DEPLOY_ERROR);
-        this.UNSPECIFIED_UNDEPLOY_ERROR = this.i18nService.translate(this.UNSPECIFIED_UNDEPLOY_ERROR);
-        this.CONFIRM_DELETE = this.i18nService.translate(this.CONFIRM_DELETE);
-        this.UNSPECIFIED_DELETE_ERROR = this.i18nService.translate(this.UNSPECIFIED_DELETE_ERROR);
+        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_DETAILS_ERROR);
+        this.UNSPECIFIED_DEPLOY_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_DEPLOY_ERROR);
+        this.UNSPECIFIED_UNDEPLOY_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_UNDEPLOY_ERROR);
+        this.CONFIRM_DELETE = this.i18nService.translateInstant(this.CONFIRM_DELETE);
+        this.UNSPECIFIED_DELETE_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_DELETE_ERROR);
 
-        Object.keys(DeployResolution).forEach(key => DeployResolution[key] = this.i18nService.translate(DeployResolution[key]));
-        Object.keys(DeleteDeploymentItemResolution).forEach(key => DeleteDeploymentItemResolution[key] = this.i18nService.translate(DeleteDeploymentItemResolution[key]));
+        Object.keys(DeployResolution).forEach(key => DeployResolution[key] = this.i18nService.translateInstant(DeployResolution[key]));
+        Object.keys(DeleteDeploymentItemResolution).forEach(key => DeleteDeploymentItemResolution[key] = this.i18nService.translateInstant(DeleteDeploymentItemResolution[key]));
     }
 
     ngOnInit() {

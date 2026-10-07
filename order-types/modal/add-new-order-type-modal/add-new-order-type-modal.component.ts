@@ -15,15 +15,14 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector, ViewChild } from '@angular/core';
-
+import { ChangeDetectionStrategy, Component, inject, signal, viewChild } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder, XoRuntimeContext } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { XcAutocompleteDataWrapper, XcDialogComponent, XcFormDirective, XcRemoteTableDataSource, XcRichListItem, XcStringIntegerDataWrapper } from '@zeta/xc';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcAutocompleteDataWrapper, XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcIconComponent, XcPanelComponent, XcRemoteTableDataSource, XcRichListComponent, XcRichListItem, XcStringIntegerDataWrapper, XcTableComponent, XcTooltipDirective } from '@zeta/xc';
 
 import { XoCapacityInformation, XoCapacityInformationArray } from '../../../capacities/xo/xo-capacity-information.model';
-import { FM_RTC } from '../../../const';
-import { FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
+import { FMFocusCandidateDirective, FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
 import { FactoryManagerSettingsService } from '../../../misc/services/factory-manager-settings.service';
 import { XoDestinationTypeArray } from '../../../xo/xo-destination-type.model';
 import { XoParameterInheritanceRule } from '../../../xo/xo-parameter-inheritance-rule.model';
@@ -47,17 +46,22 @@ export interface AddNewOrderTypeModalComponentData {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './add-new-order-type-modal.component.html',
     styleUrls: ['./add-new-order-type-modal.component.scss'],
-    standalone: false
+    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormTextareaComponent, XcFormValidatorMaxValueDirective, XcFormValidatorMinValueDirective, XcFormValidatorNumberDirective, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcIconComponent, XcPanelComponent, XcRichListComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe, FMFocusCandidateDirective]
 })
 export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, AddNewOrderTypeModalComponentData> {
+    private readonly i18n = inject(I18nService);
+    private readonly apiService = inject(ApiService);
+    private readonly settings = inject(FactoryManagerSettingsService);
 
-    @ViewChild(XcFormDirective, {static: false})
-    xcFormDirective: XcFormDirective;
+
+    readonly xcFormDirective = viewChild(XcFormDirective);
 
     get invalid(): boolean {
-        return this.xcFormDirective ? this.xcFormDirective.invalid : true;
+        const xcFormDirective = this.xcFormDirective();
+        return xcFormDirective ? xcFormDirective.invalid : true;
     }
 
     busy = false;
@@ -151,8 +155,8 @@ export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, Ad
 
     dsOrderTypeCapacitiesDataSource: XcRemoteTableDataSource<XoCapacityInformation>;
 
-    constructor(injector: Injector, private readonly i18n: I18nService, private readonly apiService: ApiService, private readonly settings: FactoryManagerSettingsService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.i18n.setTranslations(LocaleService.DE_DE, addNewOrderTypeModal_translations_de_DE);
         this.i18n.setTranslations(LocaleService.EN_US, addNewOrderTypeModal_translations_en_US);
@@ -186,14 +190,14 @@ export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, Ad
             () => this.orderType.monitoringLevel,
             (value: string) => this.orderType.monitoringLevel = value,
             [
-                {name: this.injectedData.USE_DEFAULT, value: '-1'},
-                {name: '0', value: '0'},
-                {name: '5', value: '5'},
-                {name: '10', value: '10'},
-                {name: '15', value: '15'},
-                {name: '17', value: '17'},
-                {name: '18', value: '18'},
-                {name: '20', value: '20'}
+                {name: signal(this.injectedData.USE_DEFAULT), value: '-1'},
+                {name: signal('0'), value: '0'},
+                {name: signal('5'), value: '5'},
+                {name: signal('10'), value: '10'},
+                {name: signal('15'), value: '15'},
+                {name: signal('17'), value: '17'},
+                {name: signal('18'), value: '18'},
+                {name: signal('20'), value: '20'}
             ]
         );
 
@@ -228,7 +232,7 @@ export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, Ad
         this.dsOrderTypeCapacitiesDataSource = new XcRemoteTableDataSource<XoCapacityInformation>(
             this.apiService,
             this.injectedData.i18nService,
-            FM_RTC,
+            FMAN_RTC,
             this.injectedData.GetOrdertypeCapacitiesWorkflow,
             XoOrderTypeCapacitiesTableInfo
         );
@@ -253,7 +257,7 @@ export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, Ad
         this.apiService.getRuntimeContexts(false).subscribe({
             next: rtcArr => {
                 if (rtcArr && rtcArr.length) {
-                    this.runtimeContextsDataWrapper.values = rtcArr.map(rtc => ({value: rtc, name: rtc.toString()}));
+                    this.runtimeContextsDataWrapper.values = rtcArr.map(rtc => ({value: rtc, name: signal(rtc.toString())}));
                     this.error = '';
                 } else {
                     this.error = this.injectedData.UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR;
@@ -271,7 +275,7 @@ export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, Ad
         }
 
         const obs = this.apiService.startOrder(
-            FM_RTC, this.injectedData.GetDestinationsWorkflow,
+            FMAN_RTC, this.injectedData.GetDestinationsWorkflow,
             [this.selectedServerRuntimeContext],
             XoDestinationTypeArray,
             StartOrderOptionsBuilder.defaultOptionsWithErrorMessage
@@ -280,8 +284,8 @@ export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, Ad
             next: result => {
                 if (result && !result.errorMessage) {
                     const dtArr = (result.output[0] || { data: []}) as XoDestinationTypeArray;
-                    this.planningDestinationDataWrapper.values = dtArr.data.map(dt => ({name: dt.name, value: dt}));
-                    this.executionDestinationDataWrapper.values = dtArr.data.map(dt => ({name: dt.name, value: dt}));
+                    this.planningDestinationDataWrapper.values = dtArr.data.map(dt => ({name: signal(dt.name), value: dt}));
+                    this.executionDestinationDataWrapper.values = dtArr.data.map(dt => ({name: signal(dt.name), value: dt}));
                 } else {
                     // console.log('_getDestinations\' result error: ', result);
                 }

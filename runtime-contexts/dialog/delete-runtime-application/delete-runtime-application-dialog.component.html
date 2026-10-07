@@ -1,11 +1,10 @@
 <xc-dialog-wrapper xc-i18n-context="fman.delete-runtime-application-dialog">
     <ng-container header>{{'delete-runtime-application-title' | xcI18n:injectedData.name:injectedData.version}}</ng-container>
     <section content>
-        <xc-checkbox
-            [(checked)]="stopRunningOrders"
+        <xc-checkbox [(checked)]="stopRunningOrders"
             label="delete-runtime-application-stop-running-orders"
             xc-i18n
-        ></xc-checkbox>
+         />
     </section>
     <ng-container footer>
         <xc-button (click)="dismiss()" xc-i18n>delete-runtime-application-cancel</xc-button>

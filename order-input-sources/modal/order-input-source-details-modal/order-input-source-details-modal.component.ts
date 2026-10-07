@@ -15,10 +15,12 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component } from '@angular/core';
-import { FrequencyControlledTaskPreset, OrderInputSourceCloseEvent } from '../../order-input-source-details/order-input-source-details.component';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
+import { XcI18nContextDirective } from '@zeta/i18n';
 import { XcDialogComponent } from '@zeta/xc';
+
+import { FrequencyControlledTaskPreset, OrderInputSourceCloseEvent, OrderInputSourceDetailsComponent } from '../../order-input-source-details/order-input-source-details.component';
 import { XoOrderInputSource } from '../../xo/xo-order-input-source.model';
 
 
@@ -29,9 +31,10 @@ export interface OrderInputSourceDetailsModalComponentData {
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './order-input-source-details-modal.component.html',
     styleUrls: ['./order-input-source-details-modal.component.scss'],
-    standalone: false
+    imports: [XcI18nContextDirective, OrderInputSourceDetailsComponent]
 })
 export class OrderInputSourceDetailsModalComponent extends XcDialogComponent<boolean, OrderInputSourceDetailsModalComponentData> {
     close(event?: OrderInputSourceCloseEvent) {

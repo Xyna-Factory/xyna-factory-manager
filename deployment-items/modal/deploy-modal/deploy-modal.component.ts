@@ -15,13 +15,13 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder, XoRuntimeContext } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { XcDialogComponent } from '@zeta/xc';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcButtonComponent, XcDialogComponent, XcDialogWrapperComponent, XcFormDirective, XcIconComponent } from '@zeta/xc';
 
-import { FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
+import { FMFocusCandidateDirective, FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
 import { XoDeploymentItemIdArray } from '../../xo/xo-deployment-item-id.model';
 import { XoDeploymentItemArray } from '../../xo/xo-deployment-item.model';
 import { deployModal_translations_de_DE } from './locale/deploy-modal-translations.de-DE';
@@ -40,9 +40,10 @@ export interface DeployModalComponentData {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './deploy-modal.component.html',
     styleUrls: ['./deploy-modal.component.scss'],
-    standalone: false
+    imports: [XcButtonComponent, XcDialogWrapperComponent, XcFormDirective, XcIconComponent, XcI18nContextDirective, XcI18nTranslateDirective, FMFocusCandidateDirective]
 })
 export class DeployModalComponent extends XcDialogComponent<boolean, DeployModalComponentData> {
 
@@ -61,8 +62,8 @@ export class DeployModalComponent extends XcDialogComponent<boolean, DeployModal
 
     errorBoxFocusCandidateRef = FMFocusCandidateRef.getInstance();
 
-    constructor(injector: Injector) {
-        super(injector);
+    constructor() {
+        super();
 
         this.injectedData.i18nService.setTranslations(LocaleService.DE_DE, deployModal_translations_de_DE);
         this.injectedData.i18nService.setTranslations(LocaleService.EN_US, deployModal_translations_en_US);

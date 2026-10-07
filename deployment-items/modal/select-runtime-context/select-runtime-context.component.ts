@@ -15,13 +15,13 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { XoRuntimeContext } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { XcAutocompleteDataWrapper, XcDialogComponent } from '@zeta/xc';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcAutocompleteDataWrapper, XcButtonComponent, XcDialogComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcIconComponent, XcSpinnerComponent } from '@zeta/xc';
 
-import { FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
+import { FMFocusCandidateDirective, FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
 import { FactoryManagerSettingsService } from '../../../misc/services/factory-manager-settings.service';
 import { selectRuntimeContext_translations_de_DE } from './locale/select-runtime-context-translations.de-DE';
 import { selectRuntimeContext_translations_en_US } from './locale/select-runtime-context-translations.en-US';
@@ -35,9 +35,10 @@ export interface SelectRuntimeContextComponentData {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './select-runtime-context.component.html',
     styleUrls: ['./select-runtime-context.component.scss'],
-    standalone: false
+    imports: [XcButtonComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcIconComponent, XcSpinnerComponent, XcI18nContextDirective, XcI18nTranslateDirective, FMFocusCandidateDirective]
 })
 export class SelectRuntimeContextComponent extends XcDialogComponent<boolean, SelectRuntimeContextComponentData> {
 
@@ -58,8 +59,8 @@ export class SelectRuntimeContextComponent extends XcDialogComponent<boolean, Se
     runtimeContextsDataWrapper: XcAutocompleteDataWrapper;
     selectedServerRuntimeContext: XoRuntimeContext;
 
-    constructor(injector: Injector, private readonly i18n: I18nService) {
-        super(injector);
+    constructor(private readonly i18n: I18nService) {
+        super();
 
         this.i18n.setTranslations(LocaleService.DE_DE, selectRuntimeContext_translations_de_DE);
         this.i18n.setTranslations(LocaleService.EN_US, selectRuntimeContext_translations_en_US);

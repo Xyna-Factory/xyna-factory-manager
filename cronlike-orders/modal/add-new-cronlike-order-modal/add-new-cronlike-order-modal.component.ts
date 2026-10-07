@@ -15,16 +15,19 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, viewChild } from '@angular/core';
 
 import { ApiService, FullQualifiedName, RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoRuntimeContext, XoWorkspace } from '@zeta/api';
 import { isString } from '@zeta/base';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { XcAutocompleteDataWrapper, XcDialogComponent, XcFormDirective } from '@zeta/xc';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcAutocompleteDataWrapper, XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcIconComponent, XcPanelComponent } from '@zeta/xc';
 
 import { InputParameterRef } from '../../../misc/components/input-parameter/input-parameter-ref.class';
-import { FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
+import { InputParameterComponent } from '../../../misc/components/input-parameter/input-parameter.component';
+import { FMFocusCandidateDirective, FMFocusCandidateRef } from '../../../misc/directives/fm-focus-candidate.directive';
+import { OrderTypeFormComponent } from '../../../reuseable-components/forms/order-type-form/order-type-form.component';
 import { XoRestrictionBasedTimeWindow } from '../../../xo/xo-timewindow.model';
+import { ExecutionTimeComponent } from '../../components/execution-time/execution-time.component';
 import { ExecutionTimeBehaviorOnError } from '../../components/execution-time/execution-time.constant';
 import { XoCronLikeOrder } from '../../xo/xo-cronlike-order.model';
 import { addNewCronlikeOrderModal_translations_de_DE } from './locale/add-new-cronlike-order-modal-translations.de-DE';
@@ -43,14 +46,17 @@ export interface AddNewCronLikeOrderModalComponentData {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'app-add-new-cronlike-order-modal',
     templateUrl: './add-new-cronlike-order-modal.component.html',
     styleUrls: ['./add-new-cronlike-order-modal.component.scss'],
-    standalone: false
+    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcIconComponent, XcPanelComponent, XcI18nContextDirective, XcI18nTranslateDirective, FMFocusCandidateDirective, OrderTypeFormComponent, InputParameterComponent, ExecutionTimeComponent]
 })
 export class AddNewCronlikeOrderModalComponent extends XcDialogComponent<boolean, AddNewCronLikeOrderModalComponentData> {
-    @ViewChild(XcFormDirective, { static: false })
-    xcFormDirective: XcFormDirective;
+    private readonly apiService = inject(ApiService);
+    private readonly i18n = inject(I18nService);
+
+    readonly xcFormDirective = viewChild(XcFormDirective);
 
     executionTimeInvalid = false;
     orderTypeValid = false;
@@ -60,7 +66,8 @@ export class AddNewCronlikeOrderModalComponent extends XcDialogComponent<boolean
         if (!this.orderTypeValid || this.executionTimeInvalid) {
             return true;
         }
-        return this.xcFormDirective ? this.xcFormDirective.invalid : false;
+        const xcFormDirective = this.xcFormDirective();
+        return xcFormDirective ? xcFormDirective.invalid : false;
     }
 
     cronlikeOrder: XoCronLikeOrder;
@@ -159,8 +166,8 @@ export class AddNewCronlikeOrderModalComponent extends XcDialogComponent<boolean
         }
     }
 
-    constructor(injector: Injector, private readonly apiService: ApiService, private readonly i18n: I18nService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.i18n.setTranslations(LocaleService.DE_DE, addNewCronlikeOrderModal_translations_de_DE);
         this.i18n.setTranslations(LocaleService.EN_US, addNewCronlikeOrderModal_translations_en_US);

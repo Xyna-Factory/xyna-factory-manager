@@ -15,15 +15,14 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Directive, ElementRef, Host, Input, OnDestroy, OnInit, Optional } from '@angular/core';
+import { Directive, ElementRef, Input, OnDestroy, OnInit, inject } from '@angular/core';
 
 import { coerceBoolean } from '@zeta/base';
 
 
-@Directive({
+@Directive({ 
     // tslint:disable-next-line: directive-selector
-    selector: '[fm-focus-candidate]',
-    standalone: false
+    selector: '[fm-focus-candidate]' 
 })
 export class FMFocusCandidateDirective implements OnInit, OnDestroy {
 
@@ -49,7 +48,9 @@ export class FMFocusCandidateDirective implements OnInit, OnDestroy {
     }
 
 
-    constructor(@Optional() @Host() elementRef: ElementRef) {
+    constructor() {
+        const elementRef = inject(ElementRef, { optional: true, host: true });
+
         this.element = elementRef.nativeElement;
         if (!(this.element.tabIndex >= 0)) {
             this.element.tabIndex = -1;

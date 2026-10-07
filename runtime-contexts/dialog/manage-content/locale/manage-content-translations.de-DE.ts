@@ -28,6 +28,14 @@ export const manageContent_translations_de_DE: I18nTranslation[] = [
         value: 'Inhalt der Anwendungsdefinition \'$0\' verwalten'
     },
     {
+        key: 'fman.manage-content.manage-content-include-assigned',
+        value: 'Zugewiesen anzeigen'
+    },
+    {
+        key: 'fman.manage-content.manage-content-include-assigned-tooltip',
+        value: 'Derzeit zugewiesenen Inhalt anzeigen'
+    },
+    {
         key: 'fman.manage-content.manage-content-include-independent',
         value: 'Nicht zugewiesen anzeigen'
     },

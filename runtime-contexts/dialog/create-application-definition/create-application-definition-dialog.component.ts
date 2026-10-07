@@ -15,16 +15,16 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject , signal} from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { XcAutocompleteDataWrapper, XcDialogComponent, XcDialogService, XcOptionItem } from '@zeta/xc';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcAutocompleteDataWrapper, XcButtonComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcOptionItem } from '@zeta/xc';
 
 import { throwError } from 'rxjs';
 import { catchError, filter, map, tap } from 'rxjs/operators';
 
-import { FM_RTC } from '../../../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ORDER_TYPES } from '../../order-types';
 import { XoCreateADRequest } from '../../xo/xo-create-adrequest.model';
 import { XoWorkspace, XoWorkspaceArray } from '../../xo/xo-workspace.model';
@@ -37,11 +37,16 @@ type WorkspaceName = string;
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './create-application-definition-dialog.component.html',
     styleUrls: ['./create-application-definition-dialog.component.scss'],
-    standalone: false
+    imports: [XcButtonComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class CreateApplicationDefinitionDialogComponent extends XcDialogComponent<ApplicationDefinitionName, WorkspaceName> {
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly i18n = inject(I18nService);
+
 
     workspaceDataWrapper: XcAutocompleteDataWrapper<XoWorkspace>;
     workspace: XoWorkspace;
@@ -50,8 +55,8 @@ export class CreateApplicationDefinitionDialogComponent extends XcDialogComponen
     documentation = '';
 
 
-    constructor(injector: Injector, private readonly apiService: ApiService, private readonly dialogService: XcDialogService, private readonly i18n: I18nService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.i18n.setTranslations(LocaleService.DE_DE, createApplicationDefinition_translations_de_DE);
         this.i18n.setTranslations(LocaleService.EN_US, createApplicationDefinition_translations_en_US);
@@ -59,9 +64,9 @@ export class CreateApplicationDefinitionDialogComponent extends XcDialogComponen
         this.workspaceDataWrapper = new XcAutocompleteDataWrapper(
             () => this.workspace,
             () => {},
-            this.apiService.startOrderAssertFlat<XoWorkspace>(FM_RTC, ORDER_TYPES.GET_WORKSPACES, undefined, XoWorkspaceArray).pipe(
+            this.apiService.startOrderAssertFlat<XoWorkspace>(FMAN_RTC, ORDER_TYPES.GET_WORKSPACES, undefined, XoWorkspaceArray).pipe(
                 tap(workspaces => this.changeWorkspace(workspaces.find(workspace => workspace.name === this.injectedData))),
-                map(workspaces => workspaces.map(workspace => <XcOptionItem>{name: workspace.name, value: workspace}))
+                map(workspaces => workspaces.map(workspace => <XcOptionItem>{name: signal(workspace.name), value: workspace}))
             )
         );
     }
@@ -80,7 +85,7 @@ export class CreateApplicationDefinitionDialogComponent extends XcDialogComponen
         request.name = this.name;
         request.documentation = this.documentation;
 
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.CREATE_APPLICATION_DEFINITION, request, undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.CREATE_APPLICATION_DEFINITION, request, undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             catchError((error: any) => {
                 this.dismiss();
                 return throwError(error);

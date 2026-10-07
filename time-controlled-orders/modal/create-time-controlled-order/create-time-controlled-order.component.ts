@@ -15,20 +15,25 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, ElementRef, Injector, ViewChild } from '@angular/core';
+
+import { ChangeDetectionStrategy, Component, ElementRef, inject, viewChild } from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder, XoRuntimeContext } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { XcDialogComponent, XcFormDirective } from '@zeta/xc';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogWrapperComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcPanelComponent } from '@zeta/xc';
 
 import { finalize } from 'rxjs/operators';
 
-import { FM_RTC } from '../../../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
+import { ExecutionTimeComponent } from '../../../cronlike-orders/components/execution-time/execution-time.component';
 import { ExecutionTimeBehaviorOnError } from '../../../cronlike-orders/components/execution-time/execution-time.constant';
+import { CustomInformationFormComponent } from '../../../reuseable-components/forms/custom-information-form/custom-information-form.component';
+import { OrderTypeFormComponent } from '../../../reuseable-components/forms/order-type-form/order-type-form.component';
 import { XoOrderCustoms } from '../../../xo/xo-ordercustoms.model';
 import { XoOrderDestination } from '../../../xo/xo-orderdestination.model';
 import { XoOrderExecutionTime } from '../../../xo/xo-orderexecutiontime.model';
 import { InputParameter, StorableInputParameterComponent } from '../../components/storable-input-parameter/storable-input-parameter.component';
+import { TcoExecutionRestrictionComponent } from '../../components/tco-execution-restriction/tco-execution-restriction.component';
 import { XoTCOExecutionRestriction } from '../../xo/xo-tcoexecution-restriction.model';
 import { XoTimeControlledOrderId } from '../../xo/xo-time-controlled-order-id.model';
 import { XoTimeControlledOrder } from '../../xo/xo-time-controlled-order.model';
@@ -40,20 +45,21 @@ export interface TCODefaultData {
     default: XoTimeControlledOrder;
 }
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'create-time-controlled-order',
     templateUrl: './create-time-controlled-order.component.html',
     styleUrls: ['./create-time-controlled-order.component.scss'],
-    standalone: false
+    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcPanelComponent, XcI18nContextDirective, XcI18nTranslateDirective, OrderTypeFormComponent, StorableInputParameterComponent, ExecutionTimeComponent, TcoExecutionRestrictionComponent, CustomInformationFormComponent]
 })
 export class CreateTimeControlledOrderComponent extends XcDialogComponent<boolean, TCODefaultData> {
-    @ViewChild(XcFormDirective, { static: false })
-    xcFormDirective: XcFormDirective;
+    private readonly i18nService = inject(I18nService);
+    private readonly apiService = inject(ApiService);
 
-    @ViewChild(StorableInputParameterComponent, { static: false })
-    storableInputComponent: StorableInputParameterComponent;
+    readonly xcFormDirective = viewChild(XcFormDirective);
 
-    @ViewChild('errorMessage', { static: true })
-    errorMessageRef: ElementRef;
+    readonly storableInputComponent = viewChild(StorableInputParameterComponent);
+
+    readonly errorMessageRef = viewChild<ElementRef>('errorMessage');
 
     selectedExecutionRestriction = new XoTCOExecutionRestriction();
     selectedBehaviorOnError: ExecutionTimeBehaviorOnError;
@@ -75,12 +81,11 @@ export class CreateTimeControlledOrderComponent extends XcDialogComponent<boolea
     loading: boolean;
 
     private readonly CREATE_TCO_WP = 'xmcp.factorymanager.timecontrolledorders.CreateTCO';
-    private readonly apiService: ApiService;
 
     private _querySelection: InputParameter;
 
     get valid(): boolean {
-        return this.executionTimeValid && this.orderTypeValid && this.executionRestrictionValid && this.xcFormDirective.valid;
+        return this.executionTimeValid && this.orderTypeValid && this.executionRestrictionValid && this.xcFormDirective().valid;
     }
 
     set querySelection(value: InputParameter) {
@@ -92,9 +97,8 @@ export class CreateTimeControlledOrderComponent extends XcDialogComponent<boolea
         return this._querySelection;
     }
 
-    constructor(injector: Injector, private readonly i18nService: I18nService) {
-        super(injector);
-        this.apiService = injector.get(ApiService);
+    constructor() {
+        super();
 
         this.i18nService.setTranslations(LocaleService.DE_DE, createTimeControlledOrder_translations_de_DE);
         this.i18nService.setTranslations(LocaleService.EN_US, createTimeControlledOrder_translations_en_US);
@@ -133,13 +137,13 @@ export class CreateTimeControlledOrderComponent extends XcDialogComponent<boolea
         tmpTCO.planningHorizon = this.selectedExecutionTime;
         tmpTCO.tCOExecutionRestriction = this.selectedExecutionRestriction;
         tmpTCO.orderCustoms = this.selectedCustomFields;
-        tmpTCO.inputPayload = this.storableInputComponent.getPayload();
+        tmpTCO.inputPayload = this.storableInputComponent().getPayload();
         tmpTCO.filterCriteria = this.selectedfilterCriteria;
         tmpTCO.sortCriteria = this.selectedSortCriteria;
         tmpTCO.storableFqn = this.selectedStorableFqn;
         this.loading = true;
         this.apiService
-            .startOrder(FM_RTC, this.CREATE_TCO_WP, tmpTCO, XoTimeControlledOrderId, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
+            .startOrder(FMAN_RTC, this.CREATE_TCO_WP, tmpTCO, XoTimeControlledOrderId, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .pipe(finalize(() => {
                 this.loading = false;
             }))
@@ -147,7 +151,7 @@ export class CreateTimeControlledOrderComponent extends XcDialogComponent<boolea
                 if (result.errorMessage) {
                     console.error(result.errorMessage);
                     this.error = result.errorMessage;
-                    this.errorMessageRef.nativeElement.scrollIntoView({ block: 'center' });
+                    this.errorMessageRef().nativeElement.scrollIntoView({ block: 'center' });
                 } else {
                     this.dismiss(true);
                 }

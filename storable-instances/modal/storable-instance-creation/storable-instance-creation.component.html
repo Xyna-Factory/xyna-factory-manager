@@ -2,7 +2,7 @@
   <ng-container header><span xc-i18n>header-create-storable</span></ng-container>
   <ng-container content>
     <div class="column">
-      <div><xc-tree [xc-tree-datasource]="structureTreeDataSource" xc-tree-autoexpand="first"> </xc-tree></div>
+      <div><xc-tree [xc-tree-datasource]="structureTreeDataSource" xc-tree-autoexpand="first" /></div>
       @if (error) {
         <div class="error-message">{{ errorMessage }}</div>
       }

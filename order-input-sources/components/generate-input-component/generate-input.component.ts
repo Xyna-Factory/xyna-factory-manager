@@ -1,3 +1,5 @@
+import { finalize } from 'rxjs/operators';
+
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -15,15 +17,13 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, input, output } from '@angular/core';
 import { Router } from '@angular/router';
-
 import { ApiService, FullQualifiedName, RuntimeContext, StartOrderOptions, XoArray, XoClassInterfaceFrom, XoDescriber, XoJson, XoObject } from '@zeta/api';
 import { AuthService } from '@zeta/auth';
-import { isArray, isString } from '@zeta/base';
-import { XcDialogService, XcStructureTreeDataSource } from '@zeta/xc';
-
-import { finalize } from 'rxjs/operators';
+import { isArray, isString, coerceBoolean } from '@zeta/base';
+import { XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcButtonComponent, XcDialogService, XcPanelComponent, XcStructureTreeDataSource, XcTreeComponent } from '@zeta/xc';
 
 import { ORDER_INPUT_SOURCE_TYPE_CONSTANT_NAME_PREFIX, ORDER_INPUT_SOURCE_TYPE_WORKFLOW_NAME_PREFIX, ORDER_INPUT_SOURCE_TYPE_XTF_NAME_PREFIX, OrderInputSourceParameterKey } from '../../restorable-order-input-sources.component';
 import { XoOrderInputSource } from '../../xo/xo-order-input-source.model';
@@ -35,12 +35,19 @@ interface InputDataTypesTreeData {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'generate-input-component',
     templateUrl: './generate-input.component.html',
     styleUrls: ['./generate-input.component.scss'],
-    standalone: false
+    imports: [XcButtonComponent, XcPanelComponent, XcTreeComponent, XcI18nTranslateDirective]
 })
 export class GenerateInputComponent {
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly authService = inject(AuthService);
+    private readonly router = inject(Router);
+    private readonly cdr = inject(ChangeDetectorRef);
+
 
     startOrderBusy: boolean;
     rtc: RuntimeContext;
@@ -75,21 +82,14 @@ export class GenerateInputComponent {
         this.resetComponent(true);
     }
 
-    @Input()
-    fmanRtc: RuntimeContext;
+    readonly fmanRtc = input<RuntimeContext>(undefined);
 
-    @Input()
-    disabled = false;
+    readonly disabled = input(false, { transform: coerceBoolean });
 
-    @Output()
-    readonly generatingErrorEmitter = new EventEmitter<any>();
+    readonly generatingErrorEmitter = output<any>();
 
     errorMsg: string;
     inputParamterTreeDataSource: XcStructureTreeDataSource;
-
-
-    constructor(private readonly apiService: ApiService, private readonly dialogService: XcDialogService, private readonly authService: AuthService, private readonly router: Router, private readonly cdr: ChangeDetectorRef) {
-    }
 
 
     generateInputHandler() {

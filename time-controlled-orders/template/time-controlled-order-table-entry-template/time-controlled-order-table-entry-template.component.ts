@@ -15,29 +15,32 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, InjectionToken, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, InjectionToken } from '@angular/core';
 
 import { tco_translations_de_DE } from '@fman/time-controlled-orders/locale/tco-translations.de-DE';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { XC_COMPONENT_DATA, XcDynamicComponent } from '@zeta/xc';
+import { I18nService, LocaleService, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XC_COMPONENT_DATA, XcDynamicComponent, XcIconComponent } from '@zeta/xc';
 
 import { tco_translations_en_US } from '../../locale/tco-translations.en-US';
 import { TimeControlledOrderTableEntryTemplateData } from '../../xo/xo-time-controlled-order-table-entry.model';
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'time-controlled-order-table-entry-template',
     template: `
         @if (archived) {
-          <i xc-i18n xc-tooltip="tooltip-archived"><xc-icon color="normal" xc-icon-name="folder" xc-icon-material></xc-icon>{{id}}</i>
+          <i xc-i18n xc-tooltip="tooltip-archived"><xc-icon color="normal" xc-icon-name="folder" xc-icon-material />{{id}}</i>
         } @else {
           {{id}}
         }
         `,
     styleUrls: ['./time-controlled-order-table-entry-template.component.scss'],
-    standalone: false
+    imports: [XcI18nTranslateDirective, XcIconComponent]
 })
 export class TimeControlledOrderTableEntryTemplateComponent extends XcDynamicComponent<TimeControlledOrderTableEntryTemplateData> {
+    readonly i18n = inject(I18nService);
+
     get id(): string {
         return this.injectedData.id;
     }
@@ -46,8 +49,8 @@ export class TimeControlledOrderTableEntryTemplateComponent extends XcDynamicCom
         return this.injectedData.archived;
     }
 
-    constructor(readonly injector: Injector, readonly i18n: I18nService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.i18n.setTranslations(LocaleService.DE_DE, tco_translations_de_DE);
         this.i18n.setTranslations(LocaleService.EN_US, tco_translations_en_US);

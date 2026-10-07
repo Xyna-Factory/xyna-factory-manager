@@ -15,13 +15,9 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
-import { FactoryManagerSettingsService } from '@fman/misc/services/factory-manager-settings.service';
-import { ApiService } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { XcDialogService } from '@zeta/xc';
+import { LocaleService } from '@zeta/i18n';
 
 import { InputScreenWorkflowPackage, RestorableRouteComponent } from '../restorable-route.component';
 import { capacities_translations_de_DE } from './locale/capacities-translations.de-DE';
@@ -44,9 +40,9 @@ export const CAPACITY_ISWP: CapacitiesInputScreenWorkflowPackage = {
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'restorable-capacities',
-    template: '',
-    standalone: false
+    template: ''
 })
 export class RestorableCapacitiesComponent extends RestorableRouteComponent<XoCapacityInformation> implements OnInit {
 
@@ -55,26 +51,18 @@ export class RestorableCapacitiesComponent extends RestorableRouteComponent<XoCa
     protected UNSPECIFIED_SAVE_ERROR = 'fman.restorable-capacities.unspecified-save-error';
     protected CONFIRM_DELETE = 'fman.restorable-capacities.confirm-delete';
 
-    constructor(
-        apiService: ApiService,
-        dialogService: XcDialogService,
-        route: ActivatedRoute,
-        router: Router,
-        i18nService: I18nService,
-        injector: Injector,
-        settings: FactoryManagerSettingsService
-    ) {
-        super(apiService, dialogService, route, router, i18nService, injector, settings);
+    constructor() {
+        super();
 
         this.i18nService.setTranslations(LocaleService.DE_DE, capacities_translations_de_DE);
         this.i18nService.setTranslations(LocaleService.EN_US, capacities_translations_en_US);
     }
 
     private translateConstants() {
-        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translate(this.UNSPECIFIED_DETAILS_ERROR);
-        this.UNSPECIFIED_ADD_ERROR = this.i18nService.translate(this.UNSPECIFIED_ADD_ERROR);
-        this.UNSPECIFIED_SAVE_ERROR = this.i18nService.translate(this.UNSPECIFIED_SAVE_ERROR);
-        this.CONFIRM_DELETE = this.i18nService.translate(this.CONFIRM_DELETE);
+        this.UNSPECIFIED_DETAILS_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_DETAILS_ERROR);
+        this.UNSPECIFIED_ADD_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_ADD_ERROR);
+        this.UNSPECIFIED_SAVE_ERROR = this.i18nService.translateInstant(this.UNSPECIFIED_SAVE_ERROR);
+        this.CONFIRM_DELETE = this.i18nService.translateInstant(this.CONFIRM_DELETE);
     }
 
     ngOnInit() {

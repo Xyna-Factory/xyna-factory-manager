@@ -15,24 +15,22 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectorRef, Component, Injector } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject , signal} from '@angular/core';
 
-import { ApiService, StartOrderOptionsBuilder, XoApplication, XoArray, XoDescriber } from '@zeta/api';
-import { I18nService } from '@zeta/i18n';
-import { XcDialogService } from '@zeta/xc';
+import { StartOrderOptionsBuilder, XoApplication, XoArray, XoDescriber } from '@zeta/api';
+import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 
 import { Subject } from 'rxjs';
 import { filter, skip } from 'rxjs/operators';
 
-import { FM_RTC } from '../const';
-import { FactoryManagerSettingsService } from '../misc/services/factory-manager-settings.service';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { AddNewOrderInputSourceModalComponent, AddNewOrderInputSourceModalComponentData } from './modal/add-new-order-input-source-modal/add-new-order-input-source-modal.component';
-import { OrderInputSourceCloseEvent } from './order-input-source-details/order-input-source-details.component';
+import { OrderInputSourceCloseEvent, OrderInputSourceDetailsComponent } from './order-input-source-details/order-input-source-details.component';
 import { ORDER_INPUT_SOURCE_ISWP, RestorableOrderInputSourcesComponent } from './restorable-order-input-sources.component';
 import { XoGetOrderInputSourceRequest } from './xo/xo-get-order-input-source-request.model';
 import { XoOrderInputSourceId } from './xo/xo-order-input-source-id.model';
 import { XoOrderInputSource, XoOrderInputSourceArray } from './xo/xo-order-input-source.model';
+import { XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective } from '@zeta/xc';
 
 
 const ISWP = ORDER_INPUT_SOURCE_ISWP;
@@ -45,26 +43,21 @@ export interface InputDataTypesTreeData {
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './order-input-sources.component.html',
     styleUrls: ['./order-input-sources.component.scss'],
-    standalone: false
+    imports: [XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, OrderInputSourceDetailsComponent]
 })
 export class OrderInputSourcesComponent extends RestorableOrderInputSourcesComponent {
+    private readonly cdr = inject(ChangeDetectorRef);
+
 
     // FIXME: USE CODE FROM ADD NEW ORDER INPUT SOURCE MODAL !!!!!
 
-    constructor(
-        apiService: ApiService,
-        dialogService: XcDialogService,
-        route: ActivatedRoute,
-        router: Router,
-        i18nService: I18nService,
-        settings: FactoryManagerSettingsService,
-        injector: Injector,
-        private readonly cdr: ChangeDetectorRef
-    ) {
-        super(apiService, dialogService, route, router, i18nService, injector, settings);
-        this.initRemoteTableDataSource(XoOrderInputSource, XoOrderInputSourceArray, FM_RTC, ISWP.List);
+    constructor() {
+        super();
+        
+        this.initRemoteTableDataSource(XoOrderInputSource, XoOrderInputSourceArray, FMAN_RTC, ISWP.List);
 
         this.refresh();
 
@@ -76,13 +69,13 @@ export class OrderInputSourcesComponent extends RestorableOrderInputSourcesCompo
             {
                 class: 'delete-action-element',
                 iconName: 'delete',
-                tooltip: this.i18nService.translate('fman.ois.delete'),
+                tooltip: this.i18nService.translateSignal('fman.ois.delete'),
                 onAction: this.delete.bind(this)
             },
             {
                 class: 'copy-action-element',
                 iconName: 'copy',
-                tooltip: this.i18nService.translate('fman.ois.duplicate'),
+                tooltip: this.i18nService.translateSignal('fman.ois.duplicate'),
                 onAction: this.duplicate.bind(this)
             }
         ];
@@ -179,7 +172,7 @@ export class OrderInputSourcesComponent extends RestorableOrderInputSourcesCompo
             getOrderTypes: ISWP.GetOrderTypes,
             getGeneratingOrderTypes: ISWP.GetGeneratingOrderTypes,
             i18nService: this.i18nService,
-            rtc: FM_RTC,
+            rtc: FMAN_RTC,
             duplicate: duplicated,
              
             GET_GENERATING_ORDER_TYPES_EMPTY_LIST_ERROR: this.GET_GENERATING_ORDER_TYPES_EMPTY_LIST_ERROR,
@@ -201,7 +194,7 @@ export class OrderInputSourcesComponent extends RestorableOrderInputSourcesCompo
         request.inputSourceName = entry.name;
         request.revision = entry.revision;
 
-        const obs = this.apiService.startOrder(FM_RTC, ISWP.Details, request, XoOrderInputSource, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, request, XoOrderInputSource, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             const detailedEntry = (output[0] || null) as XoOrderInputSource;
             this.add(detailedEntry);
@@ -212,15 +205,15 @@ export class OrderInputSourcesComponent extends RestorableOrderInputSourcesCompo
 
     delete(entry: XoOrderInputSource) {
         this.dialogService.confirm(
-            this.i18nService.translate(this.FM_DELETE_ENTRY_HEADER),
-            this.i18nService.translate(this.CONFIRM_DELETE, { key: '$0', value: entry.name })
+            this.i18nService.translateInstant(this.FM_DELETE_ENTRY_HEADER),
+            this.i18nService.translateInstant(this.CONFIRM_DELETE, { key: '$0', value: entry.name })
         ).afterDismissResult().subscribe(
             value => {
                 if (value) {
                     if (entry instanceof XoOrderInputSource) {
                         const id = new XoOrderInputSourceId();
                         id.id = entry.id;
-                        const obs = this.apiService.startOrder(FM_RTC, ISWP.Delete, id, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+                        const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Delete, id, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
                         this.handleStartOrderResult(obs, () => {
                             this.detailsObject = null;
                             this.clearSelection();

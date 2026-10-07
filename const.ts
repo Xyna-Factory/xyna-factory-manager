@@ -15,11 +15,6 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { RuntimeContext } from '@zeta/api';
-
-
-export const FM_RTC = RuntimeContext.guiHttpApplication;
-
 export const FM_WF_GET_RUNTIME_CONTEXTS = 'xmcp.factorymanager.shared.GetRuntimeContexts';
 export const UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR = 'Was unable to receive runtime contexts';
 

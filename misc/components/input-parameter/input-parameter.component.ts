@@ -15,11 +15,11 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-
+import { ChangeDetectionStrategy, Component, inject, Input, input, OnInit, output } from '@angular/core';
 import { ApiService, FullQualifiedName, RuntimeContext, XoArray, XoClassInterfaceFrom, XoDescriber, XoJson, XoObject } from '@zeta/api';
 import { coerceBoolean, isArray } from '@zeta/base';
-import { XcStructureTreeDataSource } from '@zeta/xc';
+import { XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcPanelComponent, XcStructureTreeDataSource, XcTreeComponent } from '@zeta/xc';
 
 import { InputParameterRef } from './input-parameter-ref.class';
 
@@ -42,21 +42,24 @@ export interface InputDataTypesTreeData {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'input-parameter',
     templateUrl: './input-parameter.component.html',
     styleUrls: ['./input-parameter.component.scss'],
-    standalone: false
+    imports: [XcPanelComponent, XcTreeComponent, XcI18nTranslateDirective]
 })
 export class InputParameterComponent implements OnInit {
+    private readonly apiService = inject(ApiService);
+
 
     private _collapsable = false;
     get collapsable(): boolean {
         return this._collapsable;
     }
 
-    @Input('collapsable')
+    @Input({ alias: 'collapsable', transform: coerceBoolean })
     set collapsed(value: boolean) {
-        this._collapsable = coerceBoolean(value);
+        this._collapsable = value;
     }
 
     private _inputString: string;
@@ -105,15 +108,13 @@ export class InputParameterComponent implements OnInit {
         this.updateComponentView();
     }
 
-    @Input()
-    ref: InputParameterRef;
+    readonly ref = input<InputParameterRef>(undefined);
 
-    @Output()
-    readonly markForChange = new EventEmitter<void>();
+    readonly markForChange = output<void>();
 
     inputParamterTreeDataSource: XcStructureTreeDataSource;
 
-    constructor(private readonly apiService: ApiService) {
+    constructor() {
 
         this.inputParamterTreeDataSource = new XcStructureTreeDataSource(this.apiService, undefined, this.runtimeContext, null, null);
         this.inputParamterTreeDataSource.markForChange.subscribe(() => {
@@ -124,8 +125,9 @@ export class InputParameterComponent implements OnInit {
 
     ngOnInit() {
 
-        if (this.ref) {
-            this.ref.setComponent(this);
+        const ref = this.ref();
+        if (ref) {
+            ref.setComponent(this);
         } else {
             console.warn('No Reference set for InputParameterComponent');
         }

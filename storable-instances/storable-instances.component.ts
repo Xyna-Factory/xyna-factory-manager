@@ -15,20 +15,20 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, OnInit } from '@angular/core';
-
-import { ApiService, FullQualifiedName, RuntimeContext, RuntimeContextType, StartOrderResult, XoDescriber, XoObject, XoRuntimeContext, Xo, XoStructureMethod, XoWorkspace, StartOrderOptionsBuilder, XoStorable } from '@zeta/api';
-import { XoXynaProperty, XoXynaPropertyKey } from '@zeta/auth/xo/xyna-property.model';
-import { Comparable, isObject } from '@zeta/base';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { XcAutocompleteDataWrapper, XcDialogService, XcLocalTableDataSource, XcOptionItem, XcSelectionModel, XcSortDirection, XcStructureTreeDataSource, XcTableColumn, XoTableColumn, XoTableColumnArray, XoTableInfo } from '@zeta/xc';
-
 import { Observable, of, Subject } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 
-import { FM_RTC } from '../const';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
+import { ApiService, FullQualifiedName, RuntimeContext, RuntimeContextType, StartOrderOptionsBuilder, StartOrderResult, Xo, XoDescriber, XoObject, XoRuntimeContext, XoStorable, XoStructureMethod, XoWorkspace } from '@zeta/api';
+import { XoXynaProperty, XoXynaPropertyKey } from '@zeta/auth/xo/xyna-property.model';
+import { Comparable, isObject } from '@zeta/base';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcAutocompleteDataWrapper, XcButtonComponent, XcDialogService, XcFormAutocompleteComponent, XcIconButtonComponent, XcLocalTableDataSource, XcMasterDetailComponent, XcOptionItem, XcPanelComponent, XcSelectionModel, XcSortDirection, XcStructureTreeDataSource, XcTableColumn, XcTableComponent, XcTooltipDirective, XoTableColumn, XoTableColumnArray, XoTableInfo } from '@zeta/xc';
+
 import { FactoryManagerSettingsService } from '../misc/services/factory-manager-settings.service';
 import { XYNA_PROPERTY_ISWP } from '../xyna-properties/restorable-xyna-properties.component';
+import { StorableInstanceDetailComponent } from './components/storable-instance-detail/storable-instance-detail.component';
 import { storable_instances_translations_de_DE } from './locale/storable-instances-translations.de-DE';
 import { storable_instances_translations_en_US } from './locale/storable-instances-translations.en-US';
 import { StorableInstanceCreationComponent } from './modal/storable-instance-creation/storable-instance-creation.component';
@@ -38,7 +38,6 @@ import { XoFilterCondition } from './xo/xo-filtercondition.model';
 import { XoQueryParameter } from './xo/xo-queryparamterer.model';
 import { XoSelectionMask } from './xo/xo-selectionmask.model';
 import { XoStoreParameter } from './xo/xo-storeparameter.model';
-
 
 
 interface QueryInput {
@@ -93,7 +92,7 @@ class StorableTableDataSource extends XcLocalTableDataSource<XoObject> {
                 ),
                 map(children =>
                     children.map(child => (<StorableTableColumn>{
-                        name: child.label,
+                        name: signal(child.label),
                         complex: child.complex,
                         path: child.name
                     }))
@@ -115,7 +114,7 @@ class StorableTableDataSource extends XcLocalTableDataSource<XoObject> {
             map(columns => {
                 const xoColumns = columns.map(child => {
                     const column = new XoTableColumn();
-                    column.name = child.name;
+                    column.name = child.name();
                     column.path = child.path;
                     return column;
                 });
@@ -165,7 +164,7 @@ class StorableTableDataSource extends XcLocalTableDataSource<XoObject> {
 
         let tableLimit: number;
         this.apiService.startOrder(
-            FM_RTC,
+            FMAN_RTC,
             XYNA_PROPERTY_ISWP.Details,
             XoXynaPropertyKey.withKey('zeta.table.limit')
         ).pipe(
@@ -198,7 +197,7 @@ class StorableTableDataSource extends XcLocalTableDataSource<XoObject> {
             // fill rows
             tap(result => {
                 if (result.errorMessage) {
-                    this.dialogs.error(this.i18n.translate('fman.storable-instances.query-storable-error', { key: '$0', value: result.errorMessage }));
+                    this.dialogs.error(this.i18n.translateInstant('fman.storable-instances.query-storable-error', { key: '$0', value: result.errorMessage }));
                 }
 
                 this._loadedStorables = result.output?.[0]?.data ?? [];
@@ -248,12 +247,18 @@ class StorableTableDataSource extends XcLocalTableDataSource<XoObject> {
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'storable-instances',
     templateUrl: './storable-instances.component.html',
     styleUrls: ['./storable-instances.component.scss'],
-    standalone: false
+    imports: [XcButtonComponent, XcFormAutocompleteComponent, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, StorableInstanceDetailComponent]
 })
 export class StorableInstancesComponent implements OnInit {
+    private readonly apiService = inject(ApiService);
+    private readonly i18nService = inject(I18nService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly settings = inject(FactoryManagerSettingsService);
+
     rtcDataWrapper: XcAutocompleteDataWrapper<XoRuntimeContext>;
     fqnDataWrapper: XcAutocompleteDataWrapper<FullQualifiedName>;
 
@@ -274,12 +279,7 @@ export class StorableInstancesComponent implements OnInit {
     readonly SELECT_STORABLE_PLACEHOLDER = 'fman.storable-instances.storable-selection-placeholder';
 
 
-    constructor(
-        private readonly apiService: ApiService,
-        private readonly i18nService: I18nService,
-        private readonly dialogService: XcDialogService,
-        private readonly settings: FactoryManagerSettingsService
-    ) {
+    constructor() {
         // prevent XoSelectionMask from being pruned
          
         const mask = new XoSelectionMask();
@@ -287,9 +287,9 @@ export class StorableInstancesComponent implements OnInit {
         this.i18nService.setTranslations(LocaleService.DE_DE, storable_instances_translations_de_DE);
         this.i18nService.setTranslations(LocaleService.EN_US, storable_instances_translations_en_US);
 
-        this.storableTableSource = new StorableTableDataSource(i18nService);
-        this.storableTableSource.apiService = apiService;
-        this.storableTableSource.dialogs = dialogService;
+        this.storableTableSource = new StorableTableDataSource(this.i18nService, false);
+        this.storableTableSource.apiService = this.apiService;
+        this.storableTableSource.dialogs = this.dialogService;
         this.storableTableSource.selectionModel.selectionChange.subscribe((model: XcSelectionModel<Comparable>) => {
             this.selectedRow = this.canEditTable() ? (model.selection[0] as XoObject) : null;
             this.selectedStorable = this.selectedRow;
@@ -329,7 +329,7 @@ export class StorableInstancesComponent implements OnInit {
             {
                 class: 'delete-action-element',
                 iconName: 'delete',
-                tooltip: this.i18nService.translate('fman.storable-instances.delete'),
+                tooltip: this.i18nService.translateSignal('fman.storable-instances.delete'),
                 onAction: this.deleteStorable.bind(this)
             }
         ];
@@ -341,10 +341,10 @@ export class StorableInstancesComponent implements OnInit {
     ngOnInit() {
         this.apiService.getRuntimeContexts().subscribe(contexts => {
             this.rtcDataWrapper.values = [
-                { name: '', value: null },
+                { name: signal(''), value: null },
                 ...contexts.map(context =>
                     (<XcOptionItem>{
-                        name: context.toString(),
+                        name: signal(context.toString()),
                         value: context
                     })
                 )
@@ -380,7 +380,7 @@ export class StorableInstancesComponent implements OnInit {
                 this.fqnDataWrapper.values = structures
                     .filter(structure => !structure.typeAbstract)
                     .map(structure => <XcOptionItem<FullQualifiedName>>{
-                        name: `${structure.typeFqn.path}.${structure.typeFqn.name}`,
+                        name: signal(`${structure.typeFqn.path}.${structure.typeFqn.name}`),
                         value: structure.typeFqn
                     });
                 this.isLoadingFQNs = false;
@@ -393,7 +393,7 @@ export class StorableInstancesComponent implements OnInit {
      */
     private deleteStorable(storableRow: any): void {
         this.dialogService
-            .confirm(this.i18nService.translate('fman.storable-instances.delete'), this.i18nService.translate('fman.storable-instances.delete-confirm-message'))
+            .confirm(this.i18nService.translateInstant('fman.storable-instances.delete'), this.i18nService.translateInstant('fman.storable-instances.delete-confirm-message'))
             .afterDismiss().pipe(filter(isConfirmed => isConfirmed))
             .subscribe(() => {
                 const deleteProxy = storableRow.proxy();
@@ -426,7 +426,7 @@ export class StorableInstancesComponent implements OnInit {
     createStorable(): void {
         const structureTreeDataSource = new XcStructureTreeDataSource(this.apiService, this.i18nService, this.selectedRTC.toRuntimeContext(), [
             <XoDescriber>{ rtc: this.selectedRTC.toRuntimeContext(), fqn: this.selectedFQN }
-        ]);
+        ], undefined, false);
         structureTreeDataSource.refresh();
         this.dialogService
             .custom(StorableInstanceCreationComponent, {
@@ -450,9 +450,9 @@ export class StorableInstancesComponent implements OnInit {
 
     getFQNPlaceholder(): string {
         if (!this.fqnDataWrapper.values.length && this.selectedRTC && !this.isLoadingFQNs) {
-            return this.i18nService.translate(this.NO_STORABLES_FOUND);
+            return this.i18nService.translateInstant(this.NO_STORABLES_FOUND);
         }
-        return this.i18nService.translate(this.SELECT_STORABLE_PLACEHOLDER);
+        return this.i18nService.translateInstant(this.SELECT_STORABLE_PLACEHOLDER);
     }
 
     /**

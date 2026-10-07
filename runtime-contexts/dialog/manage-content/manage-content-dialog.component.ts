@@ -15,18 +15,18 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector, OnDestroy } from '@angular/core';
+import { of, Subscription, throwError } from 'rxjs';
+import { catchError, filter, finalize, first, skip, tap } from 'rxjs/operators';
 
+
+import { ChangeDetectionStrategy, Component, inject, OnDestroy , signal} from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoDependencyType } from '@fman/runtime-contexts/xo/xo-dependency.model';
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { XcDialogComponent, XcDialogService, XcLocalTableDataSource, XcRemoteTableDataSource } from '@zeta/xc';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcIconComponent, XcLocalTableDataSource, XcRemoteTableDataSource, XcTableComponent, XcTooltipDirective } from '@zeta/xc';
 
-import { Subscription, throwError } from 'rxjs';
-import { catchError, filter, finalize, first, skip, tap } from 'rxjs/operators';
-
-import { FM_RTC } from '../../../const';
 import { FactoryManagerSettingsService } from '../../../misc/services/factory-manager-settings.service';
 import { createContentTableInfoClass } from '../../content';
 import { ORDER_TYPES } from '../../order-types';
@@ -38,40 +38,66 @@ import { manageContent_translations_de_DE } from './locale/manage-content-transl
 import { manageContent_translations_en_US } from './locale/manage-content-translations.en-US';
 
 
+enum ElementType {
+    WORKFLOW = 'WORKFLOW',
+    DATATYPE = 'DATATYPE',
+    EXCEPTION = 'EXCEPTION',
+    TRIGGER = 'TRIGGER',
+    TRIGGERINSTANCE = 'TRIGGERINSTANCE',
+    FILTERINSTANCE = 'FILTERINSTANCE',
+    FILTER = 'FILTER',
+    ORDERTYPE = 'ORDERTYPE',
+    CAPACITY = 'CAPACITY',
+    XYNAPROPERTY = 'XYNAPROPERTY',
+    SHAREDLIB = 'SHAREDLIB',
+    FORMDEFINITION = 'FORMDEFINITION',
+    ORDERINPUTSOURCE = 'ORDERINPUTSOURCE',
+}
+
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './manage-content-dialog.component.html',
     styleUrls: ['./manage-content-dialog.component.scss'],
-    standalone: false
+    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcIconComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class ManageContentDialogComponent extends XcDialogComponent<boolean, XoRuntimeContext> implements OnDestroy {
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly i18n = inject(I18nService);
+    private readonly settings = inject(FactoryManagerSettingsService);
+
 
     dataSource: XcRemoteTableDataSource<XoApplicationElement>;
     changedContentTable: XcLocalTableDataSource;
     includeIndependent = true;
     includeImplicit = false;
     includeIndirect = false;
+    includeAssigned = true;
     loading: boolean;
 
     readonly changedApplicationElements = new Map<string, XoApplicationElement>();
     readonly subscriptions = new Array<Subscription>();
 
 
-    constructor(injector: Injector, private readonly apiService: ApiService, private readonly dialogService: XcDialogService, private readonly i18n: I18nService, private readonly settings: FactoryManagerSettingsService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.i18n.setTranslations(LocaleService.DE_DE, manageContent_translations_de_DE);
         this.i18n.setTranslations(LocaleService.EN_US, manageContent_translations_en_US);
 
         // create data source
-        this.dataSource = new XcRemoteTableDataSource(this.apiService, undefined, FM_RTC, ORDER_TYPES.GET_APPLICATION_CONTENT, createContentTableInfoClass(!this.readonly));
+        this.dataSource = new XcRemoteTableDataSource(this.apiService, undefined, FMAN_RTC, ORDER_TYPES.GET_APPLICATION_CONTENT, createContentTableInfoClass(!this.readonly));
         // this.dataSource.actionElements = [
         //     {
         //         class: 'delete-action-element',
         //         iconName: 'delete',
-        //         tooltip: this.i18n.translate('xfm.fman.rtcs.manage-content-table-open'),
+        //         tooltip: this.i18n.translateSignal('xfm.fman.rtcs.manage-content-table-open'),
         //         onAction: this.openInProcessModeller.bind(this)
         //     }
         // ];
+        const elementTypes = Object.values(ElementType).map(value => ({ name: signal(value), value }));
+        this.dataSource.filterEnums.set(XoApplicationElement.getAccessorMap().elementType, of(elementTypes));
+        this.dataSource.filterEnumsAsMultiselect.add(XoApplicationElement.getAccessorMap().elementType);
         this.updateDataSource();
 
 
@@ -80,9 +106,9 @@ export class ManageContentDialogComponent extends XcDialogComponent<boolean, XoR
         this.changedContentTable.localTableData = {
             rows: [],
             columns: [
-                {path: 'changeTemplate', name: this.i18n.translate('xfm.fman.rtcs.manage-content.table.changes'), disableFilter: true, disableSort: true, shrink: true},
-                {path: 'name', name: this.i18n.translate('xfm.fman.rtcs.manage-content.table.name')},
-                {path: 'elementType', name: this.i18n.translate('xfm.fman.rtcs.manage-content.table.rtc')}
+                { path: 'changeTemplate', name: this.i18n.translateSignal('xfm.fman.rtcs.manage-content.table.changes'), disableFilter: true, disableSort: true, shrink: true },
+                { path: 'name', name: this.i18n.translateSignal('xfm.fman.rtcs.manage-content.table.name')},
+                { path: 'elementType', name: this.i18n.translateSignal('xfm.fman.rtcs.manage-content.table.rtc')}
             ]
         };
         this.changedContentTable.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
@@ -95,7 +121,7 @@ export class ManageContentDialogComponent extends XcDialogComponent<boolean, XoR
 
 
     updateDataSource() {
-        this.dataSource.input = XoGetApplicationContentRequest.create(this.injectedData, this.includeIndependent, this.includeImplicit, this.includeIndirect);
+        this.dataSource.input = XoGetApplicationContentRequest.create(this.injectedData, this.includeIndependent, this.includeImplicit, this.includeIndirect, this.includeAssigned);
         this.dataSource.output = XoApplicationElementArray;
         this.dataSource.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
         this.dataSource.dataChange.subscribe(this.dataChange.bind(this));
@@ -138,18 +164,6 @@ export class ManageContentDialogComponent extends XcDialogComponent<boolean, XoR
     }
 
 
-    private openInProcessModeller(item: XoApplicationElement) {
-        const rtc = item.originRTC;
-        const fqn = item.fqn;
-        const type = item.elementType;
-        console.log(JSON.stringify({rtc, fqn, type}));
-        console.log(rtc);
-        console.log(item);
-
-        window.history.pushState({}, null, 'xfm/Process-Modeller?tab1=' + encodeURI(JSON.stringify({rtc, fqn, type})));
-    }
-
-
     private dependencyTypeChange(applicationElement: XoApplicationElement) {
         if (applicationElement.dependencyTypeModified) {
             this.changedApplicationElements.set(applicationElement.uniqueKey, applicationElement);
@@ -168,7 +182,7 @@ export class ManageContentDialogComponent extends XcDialogComponent<boolean, XoR
         const applicationElements = new XoApplicationElementArray();
         applicationElements.data.push(...Array.from(this.changedApplicationElements.values()));
 
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.SET_AD_CONTENT, [this.injectedData.proxy(), applicationElements], undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.SET_AD_CONTENT, [this.injectedData.proxy(), applicationElements], undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             catchError((error: any) => {
                 this.dismiss();
                 return throwError(error);

@@ -15,17 +15,16 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector, OnDestroy } from '@angular/core';
-import { XoForce } from '@yggdrasil/force.model';
-
-import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { XcDialogComponent, XcDialogService, XcLocalTableDataSource, XcRemoteTableDataSource } from '@zeta/xc';
-
 import { Observable, Subscription, throwError } from 'rxjs';
 import { catchError, filter, finalize, first, map, skip, switchMap } from 'rxjs/operators';
 
-import { FM_RTC } from '../../../const';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy } from '@angular/core';
+import { FMAN_RTC } from '@fman/factory-manager.component';
+import { XoForce } from '@yggdrasil/force.model';
+import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcIconComponent, XcLocalTableDataSource, XcRemoteTableDataSource, XcTableComponent, XcTooltipDirective } from '@zeta/xc';
+
 import { FactoryManagerSettingsService } from '../../../misc/services/factory-manager-settings.service';
 import { createDependenciesTableInfoClass, createDependenciesTableInput, createFilterEnumOfState } from '../../dependencies';
 import { ORDER_TYPES } from '../../order-types';
@@ -40,11 +39,17 @@ import { manageDependencies_translations_en_US } from './locale/manage-dependenc
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './manage-dependencies-dialog.component.html',
     styleUrls: ['./manage-dependencies-dialog.component.scss'],
-    standalone: false
+    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcIconComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, XcI18nPipe]
 })
 export class ManageDependenciesDialogComponent extends XcDialogComponent<boolean, XoRuntimeContext> implements OnDestroy {
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly i18n = inject(I18nService);
+    private readonly settings = inject(FactoryManagerSettingsService);
+
 
     dataSource: XcRemoteTableDataSource<XoDependency>;
     changedDependencyTable: XcLocalTableDataSource;
@@ -56,14 +61,14 @@ export class ManageDependenciesDialogComponent extends XcDialogComponent<boolean
     readonly subscriptions = new Array<Subscription>();
 
 
-    constructor(injector: Injector, private readonly apiService: ApiService, private readonly dialogService: XcDialogService, private readonly i18n: I18nService, private readonly settings: FactoryManagerSettingsService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.i18n.setTranslations(LocaleService.DE_DE, manageDependencies_translations_de_DE);
         this.i18n.setTranslations(LocaleService.EN_US, manageDependencies_translations_en_US);
 
         // create data source
-        this.dataSource = new XcRemoteTableDataSource(this.apiService, undefined, FM_RTC, ORDER_TYPES.GET_DEPENDENT_RTCS, createDependenciesTableInfoClass(true));
+        this.dataSource = new XcRemoteTableDataSource(this.apiService, undefined, FMAN_RTC, ORDER_TYPES.GET_DEPENDENT_RTCS, createDependenciesTableInfoClass(true));
         this.dataSource.output = XoDependencyArray;
         this.dataSource.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
         this.dataSource.filterEnums.set(XoDependency.getAccessorMap().runtimeContext.stateTemplates, createFilterEnumOfState(this.i18n));
@@ -75,9 +80,9 @@ export class ManageDependenciesDialogComponent extends XcDialogComponent<boolean
         this.changedDependencyTable.localTableData = {
             rows: [],
             columns: [
-                {path: 'changeTemplate', name: this.i18n.translate('xfm.fman.rtcs.manage-dependencies.table.changes'), disableFilter: true, disableSort: true, shrink: true},
-                {path: 'nameTemplates', name: this.i18n.translate('xfm.fman.rtcs.manage-dependencies.table.name')},
-                {path: 'rtcType', name: this.i18n.translate('xfm.fman.rtcs.manage-dependencies.table.rtc')}
+                { path: 'changeTemplate', name: this.i18n.translateSignal('xfm.fman.rtcs.manage-dependencies.table.changes'), disableFilter: true, disableSort: true, shrink: true },
+                { path: 'nameTemplates', name: this.i18n.translateSignal('xfm.fman.rtcs.manage-dependencies.table.name') },
+                { path: 'rtcType', name: this.i18n.translateSignal('xfm.fman.rtcs.manage-dependencies.table.rtc') }
             ]
         };
         this.changedDependencyTable.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
@@ -148,7 +153,7 @@ export class ManageDependenciesDialogComponent extends XcDialogComponent<boolean
         const dependencies = new XoDependencyArray();
         dependencies.data.push(...Array.from(this.changedDependencies.values()));
 
-        return this.apiService.startOrder(FM_RTC, ORDER_TYPES.SET_DEPENDENT_RTCS, [this.injectedData.proxy(), dependencies, XoForce.withForce(force)], undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        return this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.SET_DEPENDENT_RTCS, [this.injectedData.proxy(), dependencies, XoForce.withForce(force)], undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             catchError((error: any) => {
                 this.dismiss();
                 return throwError(error);
@@ -167,8 +172,8 @@ export class ManageDependenciesDialogComponent extends XcDialogComponent<boolean
             filter(error => !!error),
             switchMap(error => {
                 // confirm to use the force
-                const title = this.i18n.translate('Confirm');
-                const message = this.i18n.translate('xfm.fman.rtcs.manage-dependencies.force-message', { key: '$0', value: error });
+                const title = this.i18n.translateInstant('Confirm');
+                const message = this.i18n.translateInstant('xfm.fman.rtcs.manage-dependencies.force-message', { key: '$0', value: error });
                 return this.dialogService.confirm(title, message).afterDismissResult().pipe(
                     filter(confirmed => !!confirmed),
                     switchMap(() => this.apply(true))

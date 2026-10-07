@@ -15,16 +15,16 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject , signal} from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nService, LocaleService } from '@zeta/i18n';
-import { XcAutocompleteDataWrapper, XcDialogComponent, XcDialogService, XcOptionItem, XcRemoteTableDataSource, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
+import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
+import { XcAutocompleteDataWrapper, XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormLabelComponent, XcFormValidatorRequiredDirective, XcOptionItem, XcRemoteTableDataSource, XcTableComponent, XoRemappingTableInfoClass, XoTableInfo } from '@zeta/xc';
 
 import { throwError } from 'rxjs';
 import { catchError, filter, finalize, map, tap } from 'rxjs/operators';
 
-import { FM_RTC } from '../../../const';
+import { FMAN_RTC } from '@fman/factory-manager.component';
 import { FactoryManagerSettingsService } from '../../../misc/services/factory-manager-settings.service';
 import { createFilterEnumOfState } from '../../dependencies';
 import { ORDER_TYPES } from '../../order-types';
@@ -47,11 +47,17 @@ class RuntimeApplicationsTableInfo extends XoTableInfo {
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './load-runtime-application-dialog.component.html',
     styleUrls: ['./load-runtime-application-dialog.component.scss'],
-    standalone: false
+    imports: [XcButtonComponent, XcCheckboxComponent, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormLabelComponent, XcFormValidatorRequiredDirective, XcTableComponent, XcI18nContextDirective, XcI18nTranslateDirective]
 })
 export class LoadRuntimeApplicationDialogComponent extends XcDialogComponent<boolean, { workspaceName: string; runtimeApplication: XoRuntimeApplication }> {
+    private readonly apiService = inject(ApiService);
+    private readonly dialogService = inject(XcDialogService);
+    private readonly i18n = inject(I18nService);
+    private readonly settings = inject(FactoryManagerSettingsService);
+
 
     workspaceDataWrapper: XcAutocompleteDataWrapper<XoWorkspace>;
     workspace: XoWorkspace;
@@ -61,8 +67,8 @@ export class LoadRuntimeApplicationDialogComponent extends XcDialogComponent<boo
     overwrite = true;
     loading: boolean;
 
-    constructor(injector: Injector, private readonly apiService: ApiService, private readonly dialogService: XcDialogService, private readonly i18n: I18nService, private readonly settings: FactoryManagerSettingsService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.i18n.setTranslations(LocaleService.DE_DE, loadRuntimeApplication_translations_de_DE);
         this.i18n.setTranslations(LocaleService.EN_US, loadRuntimeApplication_translations_en_US);
@@ -77,14 +83,14 @@ export class LoadRuntimeApplicationDialogComponent extends XcDialogComponent<boo
         this.workspaceDataWrapper = new XcAutocompleteDataWrapper(
             () => this.workspace,
             () => { },
-            this.apiService.startOrderAssertFlat<XoWorkspace>(FM_RTC, ORDER_TYPES.GET_WORKSPACES, undefined, XoWorkspaceArray).pipe(
+            this.apiService.startOrderAssertFlat<XoWorkspace>(FMAN_RTC, ORDER_TYPES.GET_WORKSPACES, undefined, XoWorkspaceArray).pipe(
                 tap(workspaces => this.changeWorkspace(workspaces.find(workspace => workspace.name === this.injectedData.workspaceName))),
-                map(workspaces => workspaces.map(workspace => <XcOptionItem>{ name: workspace.name, value: workspace }))
+                map(workspaces => workspaces.map(workspace => <XcOptionItem>{ name: signal(workspace.name), value: workspace }))
             )
         );
 
         // create data source
-        this.dataSource = new XcRemoteTableDataSource(this.apiService, undefined, FM_RTC, ORDER_TYPES.GET_RUNTIME_APPLICATIONS_TABLE, remappingTableInfoClass);
+        this.dataSource = new XcRemoteTableDataSource(this.apiService, undefined, FMAN_RTC, ORDER_TYPES.GET_RUNTIME_APPLICATIONS_TABLE, remappingTableInfoClass);
         this.dataSource.output = XoRuntimeApplicationArray;
         this.dataSource.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
         this.dataSource.filterEnums.set(XoRuntimeApplication.getAccessorMap().stateTemplates, createFilterEnumOfState(this.i18n));
@@ -107,7 +113,7 @@ export class LoadRuntimeApplicationDialogComponent extends XcDialogComponent<boo
         request.documentation = this.documentation;
         request.overwrite = this.overwrite;
 
-        this.apiService.startOrder(FM_RTC, ORDER_TYPES.LOAD_RUNTIME_APPLICATION_INTO_WORKSPACE, request, undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+        this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.LOAD_RUNTIME_APPLICATION_INTO_WORKSPACE, request, undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             catchError((error: any) => {
                 this.dismiss();
                 return throwError(error);

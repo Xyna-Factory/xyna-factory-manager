@@ -15,9 +15,10 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, InjectionToken } from '@angular/core';
+import { ChangeDetectionStrategy, Component, InjectionToken } from '@angular/core';
 
 import { XC_COMPONENT_DATA, XcDynamicComponent } from '@zeta/xc';
+
 
 
 export interface CapacityTableInuseTemplateData {
@@ -26,15 +27,15 @@ export interface CapacityTableInuseTemplateData {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: `
         <div class="capacity-box">
-            <div class="progress-bar" [ngStyle]="{ right: 100 - inPercent + '%'}"></div>
+            <div class="progress-bar" [style.right]="100 - inPercent + '%'"></div>
             <div class="value">
                 <div>{{isValue}} / {{maxValue}}<div>
             </div>
         </div>`,
-    styleUrls: ['./capacity-table-inuse-template.model.scss'],
-    standalone: false
+    styleUrls: ['./capacity-table-inuse-template.model.scss']
 })
 export class CapacityTableInuseTemplateComponent extends XcDynamicComponent<CapacityTableInuseTemplateData> {
 

@@ -15,10 +15,10 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { Component, InjectionToken, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, InjectionToken } from '@angular/core';
 
 import { I18nParam, I18nService, LocaleService } from '@zeta/i18n';
-import { XC_COMPONENT_DATA, XcDynamicComponent, XcStringIntegerDataWrapper } from '@zeta/xc';
+import { XC_COMPONENT_DATA, XcDynamicComponent, XcFormInputComponent, XcStringIntegerDataWrapper, XcTooltipDirective } from '@zeta/xc';
 
 import { capacities_translations_de_DE } from '../locale/capacities-translations.de-DE';
 import { capacities_translations_en_US } from '../locale/capacities-translations.en-US';
@@ -31,12 +31,15 @@ export interface CapacityUsageTemplateData {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'capacity-usage-template',
     templateUrl: './capacity-usage-template.component.html',
     styleUrls: ['./capacity-usage-template.component.scss'],
-    standalone: false
+    imports: [XcFormInputComponent, XcTooltipDirective]
 })
 export class CapacityUsageTemplateComponent extends XcDynamicComponent<CapacityUsageTemplateData> {
+    readonly i18n = inject(I18nService);
+
 
     get order(): string {
         return this.injectedData.order;
@@ -54,8 +57,8 @@ export class CapacityUsageTemplateComponent extends XcDynamicComponent<CapacityU
 
     tooltip: string;
 
-    constructor(readonly injector: Injector, readonly i18n: I18nService) {
-        super(injector);
+    constructor() {
+        super();
 
         this.i18n.setTranslations(LocaleService.DE_DE, capacities_translations_de_DE);
         this.i18n.setTranslations(LocaleService.EN_US, capacities_translations_en_US);
@@ -71,6 +74,6 @@ export class CapacityUsageTemplateComponent extends XcDynamicComponent<CapacityU
             }
         ];
 
-        this.tooltip = i18n.translate('fman.capacities-usage-template.tooltip', ...values);
+        this.tooltip = this.i18n.translateInstant('fman.capacities-usage-template.tooltip', ...values);
     }
 }
