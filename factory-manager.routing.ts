@@ -15,14 +15,24 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { RouterModule } from '@angular/router';
+import { RouterModule, UrlMatchResult, UrlSegment } from '@angular/router';
+
 import { RedirectComponent, redirectGuardCanActivate, redirectGuardCanDeactivate, RedirectGuardConfigProvider, RedirectGuardProvider, XynaRoutes } from '@zeta/nav';
 import { rightGuardCanActivate } from '@zeta/nav/right.guard';
 
 import { FACTORY_MANAGER, RIGHT_FACTORY_MANAGER, RIGHT_FACTORY_MANAGER_ADMINISTRATIVE_VETOES, RIGHT_FACTORY_MANAGER_CAPACITIES, RIGHT_FACTORY_MANAGER_CRON_LIKE_ORDERS, RIGHT_FACTORY_MANAGER_DEPLOYMENT_ITEMS, RIGHT_FACTORY_MANAGER_FILTER, RIGHT_FACTORY_MANAGER_ORDER_INPUT_SOURCES, RIGHT_FACTORY_MANAGER_ORDER_TYPES, RIGHT_FACTORY_MANAGER_STORABLE_INSTANCES, RIGHT_FACTORY_MANAGER_TIME_CONTROLLED_ORDERS, RIGHT_FACTORY_MANAGER_TRIGGER, RIGHT_FACTORY_MANAGER_WORKSPACES_AND_APPLICATIONS, RIGHT_FACTORY_MANAGER_XYNA_PROPERTIES } from './const';
+import { PluginComponent } from './plugin/plugin.component';
+import { CronlikeOrdersComponent } from './cronlike-orders/cronlike-orders.component';
 
 
 const ROOT = 'Factory-Manager';
+
+// matcher instead of a route param, because the RedirectGuard strips route params from the stored url
+export function pluginMatcher(segments: UrlSegment[]): UrlMatchResult {
+    return segments.length === 1 && segments[0].path.startsWith(FACTORY_MANAGER.PLUGIN)
+        ? { consumed: segments }
+        : null;
+}
 
 export const FactoryManagerRoutes: XynaRoutes = [
     {
@@ -85,12 +95,12 @@ export const FactoryManagerRoutes: XynaRoutes = [
                 data : {right: RIGHT_FACTORY_MANAGER_ORDER_TYPES, reuse: FACTORY_MANAGER.ORDERTYPES + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.ORDERTYPES}
             },
             {
-                path: FACTORY_MANAGER.CRONLIKE_ORDRES,
-                loadComponent: () => import('./cronlike-orders/cronlike-orders.component').then(m => m.CronlikeOrdersComponent),
+                path: FACTORY_MANAGER.CRONLIKE_ORDERS,
+                component: CronlikeOrdersComponent,
                 canActivate: [rightGuardCanActivate],
                 canDeactivate: [redirectGuardCanDeactivate],
                 pathMatch: 'full',
-                data : {right: RIGHT_FACTORY_MANAGER_CRON_LIKE_ORDERS, reuse: FACTORY_MANAGER.CRONLIKE_ORDRES + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.CRONLIKE_ORDRES}
+                data : {right: RIGHT_FACTORY_MANAGER_CRON_LIKE_ORDERS, reuse: FACTORY_MANAGER.CRONLIKE_ORDERS + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.CRONLIKE_ORDERS}
             },
             {
                 path: FACTORY_MANAGER.TIMECONTROLLED_ORDERS,
@@ -154,74 +164,10 @@ export const FactoryManagerRoutes: XynaRoutes = [
                 data : {right: RIGHT_FACTORY_MANAGER_XYNA_PROPERTIES, reuse: FACTORY_MANAGER.XYNA_PROPERTIES + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.XYNA_PROPERTIES}
             },
             {
-                path: FACTORY_MANAGER.PLUGIN_00,
-                loadComponent: () => import('./plugin/plugin.component').then(m => m.PluginComponent),
+                matcher: pluginMatcher,
+                component: PluginComponent,
                 canDeactivate: [redirectGuardCanDeactivate],
-                pathMatch: 'full',
-                data : {reuse: FACTORY_MANAGER.PLUGIN_00 + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.PLUGIN_00}
-            },
-            {
-                path: FACTORY_MANAGER.PLUGIN_01,
-                loadComponent: () => import('./plugin/plugin.component').then(m => m.PluginComponent),
-                canDeactivate: [redirectGuardCanDeactivate],
-                pathMatch: 'full',
-                data : {reuse: FACTORY_MANAGER.PLUGIN_01 + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.PLUGIN_01}
-            },
-            {
-                path: FACTORY_MANAGER.PLUGIN_02,
-                loadComponent: () => import('./plugin/plugin.component').then(m => m.PluginComponent),
-                canDeactivate: [redirectGuardCanDeactivate],
-                pathMatch: 'full',
-                data : {reuse: FACTORY_MANAGER.PLUGIN_02 + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.PLUGIN_02}
-            },
-            {
-                path: FACTORY_MANAGER.PLUGIN_03,
-                loadComponent: () => import('./plugin/plugin.component').then(m => m.PluginComponent),
-                canDeactivate: [redirectGuardCanDeactivate],
-                pathMatch: 'full',
-                data : {reuse: FACTORY_MANAGER.PLUGIN_03 + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.PLUGIN_03}
-            },
-            {
-                path: FACTORY_MANAGER.PLUGIN_04,
-                loadComponent: () => import('./plugin/plugin.component').then(m => m.PluginComponent),
-                canDeactivate: [redirectGuardCanDeactivate],
-                pathMatch: 'full',
-                data : {reuse: FACTORY_MANAGER.PLUGIN_04 + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.PLUGIN_04}
-            },
-            {
-                path: FACTORY_MANAGER.PLUGIN_05,
-                loadComponent: () => import('./plugin/plugin.component').then(m => m.PluginComponent),
-                canDeactivate: [redirectGuardCanDeactivate],
-                pathMatch: 'full',
-                data : {reuse: FACTORY_MANAGER.PLUGIN_05 + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.PLUGIN_05}
-            },
-            {
-                path: FACTORY_MANAGER.PLUGIN_06,
-                loadComponent: () => import('./plugin/plugin.component').then(m => m.PluginComponent),
-                canDeactivate: [redirectGuardCanDeactivate],
-                pathMatch: 'full',
-                data : {reuse: FACTORY_MANAGER.PLUGIN_06 + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.PLUGIN_06}
-            },
-            {
-                path: FACTORY_MANAGER.PLUGIN_07,
-                loadComponent: () => import('./plugin/plugin.component').then(m => m.PluginComponent),
-                canDeactivate: [redirectGuardCanDeactivate],
-                pathMatch: 'full',
-                data : {reuse: FACTORY_MANAGER.PLUGIN_07 + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.PLUGIN_07}
-            },
-            {
-                path: FACTORY_MANAGER.PLUGIN_08,
-                loadComponent: () => import('./plugin/plugin.component').then(m => m.PluginComponent),
-                canDeactivate: [redirectGuardCanDeactivate],
-                pathMatch: 'full',
-                data : {reuse: FACTORY_MANAGER.PLUGIN_08 + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.PLUGIN_08}
-            },
-            {
-                path: FACTORY_MANAGER.PLUGIN_09,
-                loadComponent: () => import('./plugin/plugin.component').then(m => m.PluginComponent),
-                canDeactivate: [redirectGuardCanDeactivate],
-                pathMatch: 'full',
-                data : {reuse: FACTORY_MANAGER.PLUGIN_09 + '_reuse_id', redirectKey: ROOT, title: FACTORY_MANAGER.PLUGIN_09}
+                data : {reuse: FACTORY_MANAGER.PLUGIN + '_reuse_id', redirectKey: ROOT, title:FACTORY_MANAGER.PLUGIN}
             }
         ]
     }

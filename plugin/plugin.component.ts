@@ -53,13 +53,10 @@ export class PluginComponent extends RouteComponent implements OnDestroy {
         super();
 
         // get plugin for route
-        this.route.data.pipe(
-            take(1),
-            filter(data => data.title)
-        ).subscribe(data => {
-            this.pluginService.plugins.pipe(filter(plugins => !!plugins)).subscribe(plugins => {
-                const plugin = plugins.get(data.title);
-
+        const pluginId = this.route.snapshot.url[0].path;
+        this.pluginService.plugins.pipe(filter(plugins => !!plugins)).subscribe(plugins => {
+            const plugin = plugins.get(pluginId);
+            if (plugin) {
                 // get definition
                 this.api.startOrder(
                     plugin.pluginRTC.toRuntimeContext(),
@@ -79,7 +76,7 @@ export class PluginComponent extends RouteComponent implements OnDestroy {
                     ));
                     this.stackDataSource.add(item);
                 });
-            });
+            }
         });
 
         this.subscription = this.stackDataSource.stackItemsChange.subscribe(() =>
