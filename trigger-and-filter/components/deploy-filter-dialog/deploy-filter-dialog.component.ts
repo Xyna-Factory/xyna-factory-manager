@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, inject , signal} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal} from '@angular/core';
 
 import { XoRuntimeContext, XoRuntimeContextArray } from '@fman/runtime-contexts/xo/xo-runtime-context.model';
 import { XoDeployFilterRequest } from '@fman/trigger-and-filter/xo/xo-deploy-filter-request.model';
@@ -41,13 +41,20 @@ export class DeployFilterDialogComponent extends XcDialogComponent<XoFilterInsta
     private readonly dialogService = inject(XcDialogService);
 
 
+    // @ts-expect-error(TODO:)
     instance: string;
+    // @ts-expect-error(TODO:)
     parameter: string;
+    // @ts-expect-error(TODO:)
     documentation: string;
+    // @ts-expect-error(TODO:)
     optional: boolean;
+    // @ts-expect-error(TODO:)
     busy: boolean;
 
+    // @ts-expect-error(TODO:)
     context: XoRuntimeContext;
+    // @ts-expect-error(TODO:)
     triggerInstance: string;
 
     runtimeContextDataWrapper: XcAutocompleteDataWrapper<XoRuntimeContext> = new XcAutocompleteDataWrapper<XoRuntimeContext>(
@@ -74,7 +81,7 @@ export class DeployFilterDialogComponent extends XcDialogComponent<XoFilterInsta
         this.apiService.startOrderAssertFlat<XoRuntimeContext>(FMAN_RTC, ORDER_TYPES.POSSIBLE_CONTEXT_FILTER, this.injectedData, XoRuntimeContextArray)
             .subscribe({
                 next: result => {
-                    this.runtimeContextDataWrapper.values = result.map(rtc => <XcOptionItem<XoRuntimeContext>>{ name: signal(rtc.label), value: rtc });
+                    this.runtimeContextDataWrapper.values = result.map(rtc => ({ name: signal(rtc.label), value: rtc }));
                 },
                 error: err => {
                     this.dialogService.error(err);
@@ -110,6 +117,7 @@ export class DeployFilterDialogComponent extends XcDialogComponent<XoFilterInsta
         request.documentation = this.documentation;
         request.optional = this.optional;
 
+        // @ts-expect-error(TODO:)
         this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.DEPLOY_FILTER, request, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {

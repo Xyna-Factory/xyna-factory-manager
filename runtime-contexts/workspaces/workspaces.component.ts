@@ -53,14 +53,19 @@ export class WorkspacesComponent extends RouteComponent implements AfterViewInit
 
 
     private readonly remoteDataSource: XcRemoteDataSource<XoWorkspace>;
+    // @ts-expect-error(TODO:)
     private detailsObject: XoWorkspaceDetails | XoApplicationDefinitionDetails;
     private markedForRefresh = false;
+    // @ts-expect-error(TODO:)
     private workspaceTilesSubscription: Subscription;
+    // @ts-expect-error(TODO:)
     private _filterText: string;
 
+    // @ts-expect-error(TODO:)
     filteredWorkspaces: XoWorkspace[];
 
     @ViewChildren('workspaceTiles')
+    // @ts-expect-error(TODO:)
     workspaceTiles: QueryList<any>;
 
 
@@ -142,7 +147,7 @@ export class WorkspacesComponent extends RouteComponent implements AfterViewInit
 
 
     startMigration() {
-        this.dialogService.custom(MigrateWizardComponent, <MigrationWizardData>{i18n: this.i18n, rtc: FMAN_RTC, apiService: this.apiService});
+        this.dialogService.custom(MigrateWizardComponent, {i18n: this.i18n, rtc: FMAN_RTC, apiService: this.apiService});
     }
 
 
@@ -155,13 +160,16 @@ export class WorkspacesComponent extends RouteComponent implements AfterViewInit
 
 
     selectDetails(runtimeContext: XoRuntimeContext) {
+        // @ts-expect-error(TODO:)
         this.detailsObject = null;
         if (runtimeContext instanceof XoWorkspace) {
+            // @ts-expect-error(TODO:)
             this.apiService.startOrderAssert<XoWorkspaceDetails>(FMAN_RTC, ORDER_TYPES.GET_WORKSPACE_DETAILS, runtimeContext.proxy(), XoWorkspaceDetails, null).subscribe(
                 workspaceDetails => this.detailsObject = workspaceDetails
             );
         }
         if (runtimeContext instanceof XoApplicationDefinition) {
+            // @ts-expect-error(TODO:)
             this.apiService.startOrderAssert<XoApplicationDefinitionDetails>(FMAN_RTC, ORDER_TYPES.GET_APPLICATION_DEFINITION_DETAILS, runtimeContext.proxy(), XoApplicationDefinitionDetails, null).subscribe(
                 applicationDefinitionDetails => this.detailsObject = applicationDefinitionDetails
             );

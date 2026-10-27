@@ -22,8 +22,7 @@ import { ORDER_TYPES } from '@fman/trigger-and-filter/order-types';
 import { XoFilterInstanceDetails } from '@fman/trigger-and-filter/xo/xo-filter-instance-details.model';
 import { XoFilterInstance } from '@fman/trigger-and-filter/xo/xo-filter-instance.model';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
-import { I18nService } from '@zeta/i18n';
-import { XcI18nTranslateDirective } from '@zeta/i18n';
+import { I18nService, XcI18nTranslateDirective  } from '@zeta/i18n';
 import { XC_COMPONENT_DATA, XcButtonComponent, XcDialogService, XcDynamicComponent, XcIconComponent, XcPanelComponent, XcSpinnerComponent, XcTooltipDirective, XDSIconName } from '@zeta/xc';
 
 import { filter } from 'rxjs';
@@ -67,6 +66,7 @@ export class FilterInstanceDetailComponent extends XcDynamicComponent<FilterInst
             .subscribe({
                 next: result => {
                     if (!result.errorMessage) {
+                        // @ts-expect-error(TODO:)
                         this.detail = result.output[0] as XoFilterInstanceDetails;
                     } else {
                         this.dialogService.error(result.errorMessage);
@@ -84,6 +84,7 @@ export class FilterInstanceDetailComponent extends XcDynamicComponent<FilterInst
 
     enable() {
         this.busy = true;
+        // @ts-expect-error(TODO:)
         this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.ENABLE_FILTER, this.injectedData.filterinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
@@ -105,6 +106,7 @@ export class FilterInstanceDetailComponent extends XcDynamicComponent<FilterInst
 
     disable() {
         this.busy = true;
+        // @ts-expect-error(TODO:)
         this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.DISABLE_FILTER, this.injectedData.filterinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
@@ -129,6 +131,7 @@ export class FilterInstanceDetailComponent extends XcDynamicComponent<FilterInst
             .pipe(filter(res => !!res)).subscribe({
                 next: () => {
                     this.busy = true;
+                    // @ts-expect-error(TODO:)
                     this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.UNDEPLOY_FILTER, this.injectedData.filterinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
                         .subscribe({
                             next: result => {

@@ -62,6 +62,7 @@ export class InputParameterComponent implements OnInit {
         this._collapsable = value;
     }
 
+    // @ts-expect-error(TODO:)
     private _inputString: string;
     get inputString(): string {
         return this._inputString;
@@ -78,6 +79,7 @@ export class InputParameterComponent implements OnInit {
         return !this.inputParamterTreeDataSource || !this.inputParamterTreeDataSource.container || this.inputParamterTreeDataSource.container.data.length === 0;
     }
 
+    // @ts-expect-error(TODO:)
     private _runtimeContext: RuntimeContext;
     get runtimeContext(): RuntimeContext {
         return this._runtimeContext;
@@ -96,6 +98,7 @@ export class InputParameterComponent implements OnInit {
     }
 
 
+    // @ts-expect-error(TODO:)
     private _orderType: string;
     get orderType(): string {
         return this._orderType;
@@ -108,6 +111,7 @@ export class InputParameterComponent implements OnInit {
         this.updateComponentView();
     }
 
+    // @ts-expect-error(TODO:)
     readonly ref = input<InputParameterRef>(undefined);
 
     readonly markForChange = output<void>();
@@ -116,6 +120,7 @@ export class InputParameterComponent implements OnInit {
 
     constructor() {
 
+        // @ts-expect-error(TODO:)
         this.inputParamterTreeDataSource = new XcStructureTreeDataSource(this.apiService, undefined, this.runtimeContext, null, null);
         this.inputParamterTreeDataSource.markForChange.subscribe(() => {
             this.markForChange.emit();
@@ -137,6 +142,7 @@ export class InputParameterComponent implements OnInit {
         this.inputParamterTreeDataSource.container = new XoArray();
         this.inputParamterTreeDataSource.describers = [];
         this.inputParamterTreeDataSource.refresh();
+        // @ts-expect-error(TODO:)
         this._inputString = this.getInputParameterString();
         this.markForChange.emit();
 
@@ -219,10 +225,11 @@ export class InputParameterComponent implements OnInit {
                         this.inputParamterTreeDataSource.describers = descContainer;
                         this.inputParamterTreeDataSource.container = dataContainer;
                         this.inputParamterTreeDataSource.refresh();
+                        // @ts-expect-error(TODO:)
                         this._inputString = this.getInputParameterString();
                         this.markForChange.emit();
                     }
-                }, 
+                },
                 error: () => {
                     // console.log(error);
                 }
@@ -230,6 +237,7 @@ export class InputParameterComponent implements OnInit {
         }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-shadow
     private transformInputParameterJson(input: string): InputDataTypesTreeData {
 
         const object = JSON.parse(input);

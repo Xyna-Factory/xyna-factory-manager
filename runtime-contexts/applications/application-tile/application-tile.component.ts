@@ -44,7 +44,6 @@ import { XoReferenceDirectionForward } from '../../xo/xo-reference-direction-for
 import { XoRuntimeApplicationDetails } from '../../xo/xo-runtime-application-details.model';
 import { XoRuntimeApplication } from '../../xo/xo-runtime-application.model';
 import { XoRuntimeContextState } from '../../xo/xo-runtime-context-state.model';
-import { XoRuntimeContext } from '../../xo/xo-runtime-context.model';
 import { Application } from '../application-data-source';
 
 
@@ -77,6 +76,7 @@ export class ApplicationTileComponent implements OnInit {
 
     collapsedRequiredRow = false;
 
+    // @ts-expect-error(TODO:)
     private _forceRefresh: boolean;
 
     @Input()
@@ -96,10 +96,13 @@ export class ApplicationTileComponent implements OnInit {
 
     readonly selectionDetailsChange = output<XoRuntimeApplication>();
 
+    // @ts-expect-error(TODO:)
     requiresDataSource: XcRemoteTableDataSource;
 
+    // @ts-expect-error(TODO:)
     requiredByDataSource: XcRemoteTableDataSource;
 
+    // @ts-expect-error(TODO:)
     contentDataSource: XcRemoteTableDataSource;
 
     issues = new Array<XoIssue>();
@@ -108,14 +111,17 @@ export class ApplicationTileComponent implements OnInit {
 
     ngOnInit() {
         // create requires data source
+        // @ts-expect-error(TODO:)
         this.requiresDataSource = new XcRemoteTableDataSource(this.apiService, undefined, FMAN_RTC, ORDER_TYPES.GET_DEPENDENT_RTCS, createDependenciesTableInfoClass(false));
         this.requiresDataSource.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
         this.requiresDataSource.output = XoDependencyArray;
         // create required-by data source
+        // @ts-expect-error(TODO:)
         this.requiredByDataSource = new XcRemoteTableDataSource(this.apiService, undefined, FMAN_RTC, ORDER_TYPES.GET_DEPENDENT_RTCS, createDependenciesTableInfoClass(false));
         this.requiredByDataSource.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
         this.requiredByDataSource.output = XoDependencyArray;
         // create content data source
+        // @ts-expect-error(TODO:)
         this.contentDataSource = new XcRemoteTableDataSource(this.apiService, undefined, FMAN_RTC, ORDER_TYPES.GET_APPLICATION_CONTENT, createContentTableInfoClass(false));
         this.contentDataSource.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
         this.contentDataSource.output = XoApplicationElementArray;
@@ -131,6 +137,7 @@ export class ApplicationTileComponent implements OnInit {
         );
         // If this component gets built but was selected before, the forceRefresh flag is set and the component will load its content immediately
         if (this.forceRefresh) {
+            // @ts-expect-error(TODO:)
             this.updateDataSources(this.details());
             this._forceRefresh = false;
         }
@@ -155,8 +162,10 @@ export class ApplicationTileComponent implements OnInit {
         this.issues = [];
         this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.GET_ISSUES, runtimeApplication, XoIssueArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).subscribe(result => {
             if (result.errorMessage) {
+                // @ts-expect-error(TODO:)
                 this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n'));
             } else {
+                // @ts-expect-error(TODO:)
                 this.issues = result.output[0].data as XoIssue[];
             }
         });
@@ -165,12 +174,15 @@ export class ApplicationTileComponent implements OnInit {
 
     select(runtimeApplication: XoRuntimeApplication) {
         if (runtimeApplication) {
+            // @ts-expect-error(TODO:)
             this.selectionChange.emit(this.application());
             this.selectionDetailsChange.emit(runtimeApplication);
             this.updateDataSources(runtimeApplication);
             this.scrollTo();
         } else {
+            // @ts-expect-error(TODO:)
             this.selectionChange.emit(undefined);
+            // @ts-expect-error(TODO:)
             this.selectionDetailsChange.emit(undefined);
         }
     }
@@ -180,10 +192,13 @@ export class ApplicationTileComponent implements OnInit {
         // Workaround because angular material has no observer that completes when data is loaded and the table is rendered.
         // See https://github.com/angular/components/issues/8068
         this.zone.onStable.pipe(skip(2), first(), debounceTime(100)).subscribe(() => {
+            // @ts-expect-error(TODO:)
             this.headerRef().nativeElement.scrollIntoView(true);
             // The parent is the scroll section. Used to get a margin of 8px at the top of the card.
+            // @ts-expect-error(TODO:)
             const parent = this.headerRef().nativeElement.parentElement.parentElement;
             if (parent) {
+                // @ts-expect-error(TODO:)
                 this.headerRef().nativeElement.parentElement.parentElement.scrollTop -= 8;
             }
         });
@@ -192,16 +207,19 @@ export class ApplicationTileComponent implements OnInit {
 
     @HostBinding('class.runtime-application')
     get hasDetails(): boolean {
+        // @ts-expect-error(TODO:)
         return this.application().equals(this.selection()) && this.details() instanceof XoRuntimeApplicationDetails;
     }
 
 
     isSelected(runtimeApplication: XoRuntimeApplication): boolean {
+        // @ts-expect-error(TODO:)
         return runtimeApplication.equals(this.details());
     }
 
 
     loadRuntimeApplication() {
+        // @ts-expect-error(TODO:)
         this.dialogService.custom(LoadRuntimeApplicationDialogComponent, { workspaceName: undefined, runtimeApplication: this.details() as XoRuntimeApplication }).afterDismissResult().subscribe(
             () => { }
         );
@@ -209,12 +227,17 @@ export class ApplicationTileComponent implements OnInit {
 
 
     deleteRuntimeApplication() {
-        this.dialogService.custom(DeleteRuntimeApplicationDialogComponent, this.details() as XoRuntimeApplication).afterDismissResult().subscribe(
+        // @ts-expect-error(TODO:)
+        this.dialogService.custom(DeleteRuntimeApplicationDialogComponent, this.details()).afterDismissResult().subscribe(
             () => {
                 this.validationChange.emit();
+                // @ts-expect-error(TODO:)
                 this.selection.set(null);
+                // @ts-expect-error(TODO:)
                 this.application.set(null);
+                // @ts-expect-error(TODO:)
                 this.details.set(null);
+                // @ts-expect-error(TODO:)
                 this.select(null);
             }
         );
@@ -222,38 +245,51 @@ export class ApplicationTileComponent implements OnInit {
 
 
     start() {
+        // @ts-expect-error(TODO:)
         this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.START_RUNTIME_APPLICATION, this.details().proxy(), undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+            // @ts-expect-error(TODO:)
             filter(result => result.errorMessage ? (this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n')), false) : true)
         ).subscribe(() => {
+            // @ts-expect-error(TODO:)
             const runtimeApplication = this.application().runtimeApplications.find(value => value.equals(this.details()));
+            // @ts-expect-error(TODO:)
             runtimeApplication.state = XoRuntimeContextState.RUNNING;
+            // @ts-expect-error(TODO:)
             this.selectionDetailsChange.emit(runtimeApplication);
         });
     }
 
 
     stop() {
+        // @ts-expect-error(TODO:)
         this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.STOP_RUNTIME_APPLICATION, this.details().proxy(), undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+            // @ts-expect-error(TODO:)
             filter(result => result.errorMessage ? (this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n')), false) : true)
         ).subscribe(() => {
+            // @ts-expect-error(TODO:)
             const runtimeApplication = this.application().runtimeApplications.find(value => value.equals(this.details()));
+            // @ts-expect-error(TODO:)
             runtimeApplication.state = XoRuntimeContextState.STOPPED;
+            // @ts-expect-error(TODO:)
             this.selectionDetailsChange.emit(runtimeApplication);
         });
     }
 
 
     startMigration() {
-        this.dialogService.custom(MigrateWizardComponent, <MigrationWizardData>{
+        // @ts-expect-error(TODO:)
+        this.dialogService.custom(MigrateWizardComponent, {
             i18n: this.i18n,
             apiService: this.apiService,
             rtc: FMAN_RTC,
+            // @ts-expect-error(TODO:)
             presetSource: this.application().runtimeApplications.find(value => value.equals(this.details()))
         });
     }
 
 
     export() {
+        // @ts-expect-error(TODO:)
         this.dialogService.custom(ExportApplicationDialogComponent, this.application().runtimeApplications.find(value => value.equals(this.details())));
     }
 
@@ -271,24 +307,29 @@ export class ApplicationTileComponent implements OnInit {
 
 
     manageDependencies() {
-        this.dialogService.custom(ManageDependenciesDialogComponent, this.details() as XoRuntimeContext).afterDismissResult().subscribe(
+        // @ts-expect-error(TODO:)
+        this.dialogService.custom(ManageDependenciesDialogComponent, this.details()).afterDismissResult().subscribe(
             () => this.requiresDataSource.refresh()
         );
     }
 
 
     manageContent() {
-        this.dialogService.custom(ManageContentDialogComponent, this.details() as XoRuntimeContext).afterDismissResult().subscribe(
+        // @ts-expect-error(TODO:)
+        this.dialogService.custom(ManageContentDialogComponent, this.details()).afterDismissResult().subscribe(
             () => this.contentDataSource.refresh()
         );
     }
 
 
     changeOrderEntry(orderEntry: XoOrderEntry) {
+        // @ts-expect-error(TODO:)
         this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.SET_RUNTIME_APPLICATION_ORDER_ENTRY, [this.details().proxy(), orderEntry], undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             filter(result => result.errorMessage ? (this.dialogService.error(result.errorMessage), false) : true)
         ).subscribe(() => {
+            // @ts-expect-error(TODO:)
             const runtimeApplication = this.application().runtimeApplications.find(value => value.equals(this.details()));
+            // @ts-expect-error(TODO:)
             this.selectionDetailsChange.emit(runtimeApplication);
         });
     }

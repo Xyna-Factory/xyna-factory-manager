@@ -45,6 +45,7 @@ export class DeleteRuntimeApplicationDialogComponent extends XcDialogComponent<b
 
 
     stopRunningOrders = false;
+    // @ts-expect-error(TODO:)
     loading: boolean;
 
     constructor() {
@@ -67,6 +68,7 @@ export class DeleteRuntimeApplicationDialogComponent extends XcDialogComponent<b
             }),
             tap(result => this.dismiss(!result.errorMessage ? true : undefined)),
             filter(result => !!result.errorMessage),
+            // @ts-expect-error(TODO:)
             tap(result => this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n'))),
             finalize(() => {
                 this.loading = false;

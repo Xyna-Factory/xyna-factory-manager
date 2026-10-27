@@ -34,12 +34,14 @@ export class InputParameterRef {
         return this._referenceIsEstablishedSubject.asObservable();
     }
 
+    // @ts-expect-error(TODO:)
     private _updateSupscription: Subscription;
 
     get isReferenceEstablished(): boolean {
         return !!this.component;
     }
 
+    // @ts-expect-error(TODO:)
     private _component: InputParameterComponent;
     private get component(): InputParameterComponent {
         return this._component;
@@ -83,6 +85,7 @@ export class InputParameterRef {
     }
 
     get inputParameter(): string {
+        // @ts-expect-error(TODO:)
         return this.component ? this.component.getInputParameterString() : null;
     }
 

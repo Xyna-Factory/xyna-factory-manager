@@ -51,13 +51,19 @@ export class RestorableRouteComponent<T extends XoObject = XoObject, D = T> exte
 
 
     private readonly _selectedEntryChange: Subject<T[]> = new Subject();
+    // @ts-expect-error(TODO:)
     private selectedEntry: T;
 
+    // @ts-expect-error(TODO:)
     private selectionDataSource: XcSelectionDataSource<T>;
+    // @ts-expect-error(TODO:)
     private clazz: XoObjectClassInterface;
+    // @ts-expect-error(TODO:)
     private orderType: string;
 
+    // @ts-expect-error(TODO:)
     rtc: RuntimeContext;
+    // @ts-expect-error(TODO:)
     detailsObject: D = null;
     refreshing = false;
 
@@ -180,10 +186,13 @@ export class RestorableRouteComponent<T extends XoObject = XoObject, D = T> exte
         resObs.subscribe({
             next: result => {
                 if (result && !result.errorMessage) {
+                    // @ts-expect-error(TODO:)
                     handler(result.output);
                 } else {
+                    // @ts-expect-error(TODO:)
                     this.dialogService.error(this.i18nService.translateErrorCode(result.errorMessage));
                     if (onError) {
+                        // @ts-expect-error(TODO:)
                         onError(result.errorMessage);
                     }
                     console.error(result);

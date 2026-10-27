@@ -68,8 +68,10 @@ export class DeleteDuplicatesDialogComponent extends XcDialogComponent<boolean, 
 
             tap(result => {
                 if (result.errorMessage) {
+                    // @ts-expect-error(TODO:)
                     this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n'));
                 } else {
+                    // @ts-expect-error(TODO:)
                     const deleteResponse = result.output[0] as XoDeleteDuplicatesResponse;
                     if (deleteResponse?.problematicFQNs.length > 0) {
                         const problematicFQNsStr = deleteResponse.problematicFQNs.map(fqn => fqn).join('\r\n');

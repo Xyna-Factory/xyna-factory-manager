@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, inject , signal} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal} from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -49,13 +49,16 @@ export class CreateRuntimeApplicationDialogComponent extends XcDialogComponent<R
 
 
     workspaceDataWrapper: XcAutocompleteDataWrapper<XoWorkspace>;
+    // @ts-expect-error(TODO:)
     workspace: XoWorkspace;
 
     applicationDefinitionDataWrapper: XcAutocompleteDataWrapper<XoApplicationDefinition>;
+    // @ts-expect-error(TODO:)
     applicationDefinition: XoApplicationDefinition;
 
     version = '';
     documentation = '';
+    // @ts-expect-error(TODO:)
     loading: boolean;
 
     constructor() {
@@ -67,7 +70,9 @@ export class CreateRuntimeApplicationDialogComponent extends XcDialogComponent<R
         this.workspaceDataWrapper = new XcAutocompleteDataWrapper(
             () => this.workspace,
             () => { },
+            // @ts-expect-error(TODO:)
             this.apiService.startOrderAssertFlat<XoWorkspace>(FMAN_RTC, ORDER_TYPES.GET_WORKSPACES, undefined, XoWorkspaceArray).pipe(
+                // @ts-expect-error(TODO:)
                 tap(workspaces => this.changeWorkspace(workspaces.find(workspace => workspace.name === this.injectedData.workspaceName))),
                 map(workspaces => workspaces.map(workspace => <XcOptionItem>{ name: signal(workspace.name), value: workspace }))
             )
@@ -86,6 +91,7 @@ export class CreateRuntimeApplicationDialogComponent extends XcDialogComponent<R
             this.workspace = workspace;
 
             // pre-set application definition
+            // @ts-expect-error(TODO:)
             this.applicationDefinition = this.workspace.applicationDefinitions.data.find(applicationDefinition => applicationDefinition.name === this.injectedData.applicationDefinitionName);
 
             // update application definition options
@@ -109,6 +115,7 @@ export class CreateRuntimeApplicationDialogComponent extends XcDialogComponent<R
             }),
             tap(result => this.dismiss(!result.errorMessage ? this.version : undefined)),
             filter(result => !!result.errorMessage),
+            // @ts-expect-error(TODO:)
             tap(result => this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n'))),
             finalize(() => {
                 this.loading = false;

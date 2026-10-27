@@ -48,6 +48,7 @@ export class UndeployReportComponent extends XcDialogComponent<XoUndeployDeploym
     resultListItems: XcRichListItem<UndeployReportItemComponentData>[] = [];
 
     selectedResultSubject = new Subject<XoUndeployDeploymentItemResult>();
+    // @ts-expect-error(TODO:)
     selectedResult: XoUndeployDeploymentItemResult;
 
     get stacktrace(): string {
@@ -71,11 +72,13 @@ export class UndeployReportComponent extends XcDialogComponent<XoUndeployDeploym
 
         this.resultListItems.forEach(resultListItem => {
 
+            // @ts-expect-error(TODO:)
             const resolution = resultListItem.data.resolution;
 
             if (resolution !== DeployResolution.SKIP) {
 
                 const param = new XoUndeployDeploymentItemParam();
+                // @ts-expect-error(TODO:)
                 param.deploymentItemId = resultListItem.data.result.deploymentItem.id;
 
                 if (resolution === DeployResolution.FORCE_UNDEPLOY) {

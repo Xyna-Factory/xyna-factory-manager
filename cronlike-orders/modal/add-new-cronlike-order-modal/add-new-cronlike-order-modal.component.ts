@@ -60,6 +60,7 @@ export class AddNewCronlikeOrderModalComponent extends XcDialogComponent<boolean
 
     executionTimeInvalid = false;
     orderTypeValid = false;
+    // @ts-expect-error(TODO:)
     busy: boolean;
 
     get invalid(): boolean {
@@ -72,6 +73,7 @@ export class AddNewCronlikeOrderModalComponent extends XcDialogComponent<boolean
 
     cronlikeOrder: XoCronLikeOrder;
 
+    // @ts-expect-error(TODO:)
     private _error: string;
     get error(): string {
         return this._error;
@@ -91,12 +93,14 @@ export class AddNewCronlikeOrderModalComponent extends XcDialogComponent<boolean
         if (this.cronlikeOrder) {
             return this.cronlikeOrder.destination.runtimeContext;
         }
+        // @ts-expect-error(TODO:)
         return null;
     }
 
     set selectedServerRuntimeContext(value: XoRuntimeContext) {
         if (this.cronlikeOrder) {
             this.cronlikeOrder.destination.runtimeContext = value;
+            // @ts-expect-error(TODO:)
             this.selectedGUIRuntimeContext = value instanceof XoWorkspace ? RuntimeContext.fromWorkspace(value.name) : value instanceof XoApplication ? RuntimeContext.fromApplicationVersion(value.name, value.versionName) : null;
             this.cronlikeOrder.destination.orderType = '';
             this.cronlikeOrder.payload = '';
@@ -104,6 +108,7 @@ export class AddNewCronlikeOrderModalComponent extends XcDialogComponent<boolean
         }
     }
 
+    // @ts-expect-error(TODO:)
     private _selectedGUIRuntimeContext: RuntimeContext;
     get selectedGUIRuntimeContext(): RuntimeContext {
         if (this.cronlikeOrder) {
@@ -208,6 +213,7 @@ export class AddNewCronlikeOrderModalComponent extends XcDialogComponent<boolean
             }
         }
 
+        // @ts-expect-error(TODO:)
         this.apiService.startOrder(this.injectedData.rtc, this.injectedData.addWorkflow, this.cronlikeOrder, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).subscribe({
             next: result => {
                 this.busy = false;
@@ -238,6 +244,7 @@ export class AddNewCronlikeOrderModalComponent extends XcDialogComponent<boolean
     }
 
     addDefaultValues() {
+        // @ts-expect-error(TODO:)
         delete this.cronlikeOrder.iD;
         this.cronlikeOrder.enabled = true;
         const ex = this.cronlikeOrder.executionTime;

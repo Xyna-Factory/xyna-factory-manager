@@ -82,6 +82,7 @@ export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
             return [new XcComponentTemplate(XynaPropertyTableValueTemplateComponent, data)];
         };
 
+        // @ts-expect-error(TODO:)
         this.initRemoteTableDataSource(XoXynaProperty, XoXynaPropertyArray, FMAN_RTC, ISWP.List);
         const lang = new XoDocumentationLanguage();
         lang.languageTag = this.i18nService.language;
@@ -123,6 +124,7 @@ export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
         const key = new XoXynaPropertyKey();
         key.key = entry.key;
 
+        // @ts-expect-error(TODO:)
         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, key, XoXynaProperty, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             this.detailsObject = (output[0] || null) as XoXynaProperty;
@@ -132,6 +134,7 @@ export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
                 this._setLanguageTagOfXynaProperty(this.detailsObject, this.i18nService.language);
             }
 
+        // @ts-expect-error(TODO:)
         }, this.UNSPECIFIED_DETAILS_ERROR, null);
     }
 
@@ -139,9 +142,11 @@ export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
         this.remoteTableDataSource.resetFilters();
     }
 
+    // @ts-expect-error(TODO:)
     add(duplicatedProperty: XoXynaProperty = null) {
 
         const data: AddNewXynaPropertyModalComponentData = {
+            // @ts-expect-error(TODO:)
             addWorkflow: ISWP.Add,
             apiService: this.apiService,
             i18nService: this.i18nService,
@@ -159,6 +164,7 @@ export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
         if (entry instanceof XoXynaProperty) {
             const key = new XoXynaPropertyKey();
             key.key = entry.key;
+            // @ts-expect-error(TODO:)
             const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, key, XoXynaProperty, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
             this.handleStartOrderResult(obs, output => {
                 const duplicatedProperty = (output[0] || null) as XoXynaProperty;
@@ -180,8 +186,10 @@ export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
                     if (entry instanceof XoXynaProperty) {
                         const key = new XoXynaPropertyKey();
                         key.key = entry.key;
+                        // @ts-expect-error(TODO:)
                         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Delete, key, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
                         this.handleStartOrderResult(obs, output => {
+                            // @ts-expect-error(TODO:)
                             this.detailsObject = null;
                             this.clearSelection();
                             this.refresh();
@@ -193,11 +201,13 @@ export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
     }
 
     dismiss() {
+        // @ts-expect-error(TODO:)
         this.detailsObject = null;
         this.clearSelection();
     }
 
     save() {
+        // @ts-expect-error(TODO:)
         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Save, this.detailsObject.clone(), null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             // console.log('save was successful', output);
@@ -211,6 +221,7 @@ export class XynaPropertiesComponent extends RestorableXynaPropertiesComponent {
         const fn = () => {
             const resetObj = this.detailsObject.clone();
             resetObj.data[XoXynaProperty.getAccessorMap().value] = undefined;
+            // @ts-expect-error(TODO:)
             const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Save, resetObj, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
             this.handleStartOrderResult(obs, output => {
                 this.dismiss();

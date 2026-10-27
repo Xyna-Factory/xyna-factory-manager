@@ -40,6 +40,7 @@ import { XoTimeControlledOrder } from './xo/xo-time-controlled-order.model';
     imports: [XcButtonComponent, XcCheckboxComponent, XcFormDirective, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective, XcI18nContextDirective, XcI18nTranslateDirective, TcoDetailSectionComponent]
 })
 export class TimeControlledOrdersComponent extends RestorableTimeControlledOrderComponent implements OnInit {
+    // @ts-expect-error(TODO:)
     selection: XoTimeControlledOrderTableEntry;
     private _showArchived = false;
 
@@ -96,7 +97,7 @@ export class TimeControlledOrdersComponent extends RestorableTimeControlledOrder
                 class: 'copy-action-element',
                 iconName: 'copy',
                 tooltip: this.i18nService.translateSignal('fman.tco.duplicate-tco'),
-                onAction: this.duplicate.bind(this),
+                onAction: this.duplicate.bind(this)
             }
         ];
 
@@ -122,6 +123,7 @@ export class TimeControlledOrdersComponent extends RestorableTimeControlledOrder
                                 FMAN_RTC,
                                 this.WFP_KILL_TCO,
                                 timeControlledOrder.id,
+                                // @ts-expect-error(TODO:)
                                 null,
                                 StartOrderOptionsBuilder.defaultOptionsWithErrorMessage
                             )
@@ -132,6 +134,7 @@ export class TimeControlledOrdersComponent extends RestorableTimeControlledOrder
                             )
                             .subscribe(result => {
                                 if (result.errorMessage) {
+                                    // @ts-expect-error(TODO:)
                                     this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n'));
                                 }
                             });
@@ -141,6 +144,7 @@ export class TimeControlledOrdersComponent extends RestorableTimeControlledOrder
     }
 
     cancelDetail() {
+        // @ts-expect-error(TODO:)
         this.selection = null;
         this.remoteTableDataSource.selectionModel.clear();
     }
@@ -170,9 +174,11 @@ export class TimeControlledOrdersComponent extends RestorableTimeControlledOrder
         ).subscribe({
             next: startOrderResult => {
                 if (startOrderResult.errorMessage) {
+                    // @ts-expect-error(TODO:)
                     this.dialogService.error(startOrderResult.errorMessage, null, startOrderResult.stackTrace.join('\r\n'));
                 } else {
                     this.dialogService
+                        // @ts-expect-error(TODO:)
                         .custom(CreateTimeControlledOrderComponent, { default: startOrderResult.output[0] as XoTimeControlledOrder })
                         .afterDismissResult()
                         .subscribe(result => {

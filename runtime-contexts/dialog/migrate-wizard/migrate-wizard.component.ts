@@ -135,12 +135,18 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
     private readonly tableMigrationSource: XcLocalTableDataSource;
     private tableTargetsSource: XcRemoteTableDataSource;
 
+    // @ts-expect-error(TODO:)
     private activeSelectedNode: XoFactoryNode;
+    // @ts-expect-error(TODO:)
     private activeSelectedSource: XoRuntimeContext;
+    // @ts-expect-error(TODO:)
     private activeSelectedTarget: XoRuntimeContext;
 
+    // @ts-expect-error(TODO:)
     private currentWizardSelectedNode: XoFactoryNode;
+    // @ts-expect-error(TODO:)
     private currentWizardSelectedSource: XoRuntimeContext;
+    // @ts-expect-error(TODO:)
     private currentWizardSelectedTarget: XoRuntimeContext;
 
     private readonly migrationData: MigrationObject[] = [];
@@ -149,11 +155,16 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
     private readonly nodeSourceOrder = 'xmcp.factorymanager.rtcmanager.GetFactoryNodes';
     private readonly migrationOrder = 'xmcp.factorymanager.rtcmanager.MigrateRTCs';
 
+    // @ts-expect-error(TODO:)
     abortProbelamticOrders: boolean;
+    // @ts-expect-error(TODO:)
     onlyOneFactoryNode: boolean;
     XDSIconName = XDSIconName;
+    // @ts-expect-error(TODO:)
     loading: boolean;
+    // @ts-expect-error(TODO:)
     result: XoRTCMigrationResultArray;
+    // @ts-expect-error(TODO:)
     resultError: string;
 
     /** Return translated name of current step */
@@ -174,8 +185,10 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
     /** Label for the back button */
     get stepBackButtonName(): string {
         if (this.migrateWizardState === MigrateWizardStateEnum.SUMMARY || this.migrateWizardState === MigrateWizardStateEnum.RESULT) {
+            // @ts-expect-error(TODO:)
             return null;
         }
+        // @ts-expect-error(TODO:)
         return this.getStepByOffset(-1) ? this.injectedData.i18n.translateInstant(`xfm.fman.rtcs.migrate-wizard.step.${this.getStepByOffset(-1)}`) : null;
     }
 
@@ -190,6 +203,7 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
         if (this.migrateWizardState === MigrateWizardStateEnum.SUMMARY) {
             return this.injectedData.i18n.translateInstant('xfm.fman.rtcs.migrate-wizard.step.migrate');
         }
+        // @ts-expect-error(TODO:)
         return this.getStepByOffset(+1) ? this.injectedData.i18n.translateInstant(`xfm.fman.rtcs.migrate-wizard.step.${this.getStepByOffset(+1)}`) : null;
     }
 
@@ -218,6 +232,7 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
                 this.tableMigrationSource.localTableData.rows = this.migrationData;
                 return this.tableMigrationSource;
         }
+        // @ts-expect-error(TODO:)
         return null;
     }
 
@@ -270,13 +285,14 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
         this.injectedData.apiService
             .startOrder(this.injectedData.rtc, this.nodeSourceOrder, [], XoFactoryNodeArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe(result => {
+                const data = result.output?.[0].data;
                 // Fill rows
-                this.tableNodesSource.localTableData.rows = result.output[0].data;
+                this.tableNodesSource.localTableData.rows = data ?? [];
 
                 // Select the node if only one exists and go to the next wizard step
-                if (result.output[0].data.length === 1) {
+                if (data?.length === 1) {
                     this.onlyOneFactoryNode = true;
-                    this.tableNodesSource.selectionModel.select(result.output[0].data[0]);
+                    this.tableNodesSource.selectionModel.select(data[0]);
                     this.step(1);
                 }
 
@@ -285,11 +301,13 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
 
         // Listen for selection changes
         this.tableNodesSource.selectionModel.selectionChange.subscribe(selectionModel => {
+            // @ts-expect-error(TODO:)
             this.activeSelectedNode = selectionModel.selection ? selectionModel.selection[0] : null;
             if (this.activeSelectedNode) {
                 this.currentWizardSelectedNode = this.activeSelectedNode;
                 if (this.tableSourcesSource && this.tableTargetsSource) {
                     [this.tableSourcesSource, this.tableTargetsSource].forEach(source => {
+                        // @ts-expect-error(TODO:)
                         source.input[1] = this.currentWizardSelectedNode;
                         source.resetTableInfo();
                     });
@@ -302,6 +320,7 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
 
         // Listen for selection change events
         this.tableSourcesSource.selectionModel.selectionChange.subscribe(selectionModel => {
+            // @ts-expect-error(TODO:)
             this.activeSelectedSource =
                 selectionModel.selection && selectionModel.selection[0] ? (selectionModel.selection[0] as XoRuntimeContextTableEntry).runtimeContext : null;
             if (this.activeSelectedSource) {
@@ -323,6 +342,7 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
 
         // Listen for selection change events
         this.tableTargetsSource.selectionModel.selectionChange.subscribe(selectionModel => {
+            // @ts-expect-error(TODO:)
             this.activeSelectedTarget =
                 selectionModel.selection && selectionModel.selection[0] ? (selectionModel.selection[0] as XoRuntimeContextTableEntry).runtimeContext : null;
             if (this.activeSelectedTarget) {
@@ -347,6 +367,7 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
     private restoreEntry(entrys: XoObject[], target: XoRuntimeContext, dataSource: XcRemoteTableDataSource) {
         if (entrys.find(this.restore(target))) {
             dataSource.selectionModel.select(
+                // @ts-expect-error(TODO:)
                 entrys.find(this.restore(target))
             );
         }
@@ -408,7 +429,7 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
             )
             .subscribe(result => {
                 if (!result.errorMessage) {
-                    this.result = result.output[0] as XoRTCMigrationResultArray;
+                    this.result = result.output?.[0] as XoRTCMigrationResultArray;
                 } else {
                     this.resultError = result.errorMessage;
                 }
@@ -438,6 +459,7 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
     /** Return a translated message if the button is disabled */
     disabledTooltipForOffset(offset: number): string {
         // Currently only a missing selection can prevent the user from going a step forth
+        // @ts-expect-error(TODO:)
         return this.canStepToOffset(offset) ? null : this.injectedData.i18n.translateInstant('xfm.fman.rtcs.migrate-wizard.needSelecion');
     }
 
@@ -445,6 +467,7 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
     getStepByOffset(offset: number): MigrateWizardStateEnum {
         return this.stepNumber + offset >= 0 && this.stepNumber + offset < MigrateWizardStateArray.length
             ? MigrateWizardStateArray[this.stepNumber + offset]
+            // @ts-expect-error(TODO:)
             : null;
     }
 
@@ -489,6 +512,7 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
 
             // Listen for selection change events
             this.tableTargetsSource.selectionModel.selectionChange.subscribe(selectionModel => {
+                // @ts-expect-error(TODO:)
                 this.activeSelectedTarget =
                     selectionModel.selection && selectionModel.selection[0] ? (selectionModel.selection[0] as XoRuntimeContextTableEntry).runtimeContext : null;
                 if (this.activeSelectedTarget) {
@@ -518,23 +542,34 @@ export class MigrateWizardComponent extends XcDialogComponent<boolean, Migration
 
     /** Restarts the wizard */
     addAnother() {
+        // @ts-expect-error(TODO:)
         this.injectedData.presetSource = null;
+        // @ts-expect-error(TODO:)
         this.injectedData.presetState = null;
 
+        // @ts-expect-error(TODO:)
         this.currentWizardSelectedSource = null;
+        // @ts-expect-error(TODO:)
         this.activeSelectedSource = null;
+        // @ts-expect-error(TODO:)
         this.tableSourcesSource.selectionModel.activate(null);
         this.tableSourcesSource.selectionModel.clear();
 
+        // @ts-expect-error(TODO:)
         this.currentWizardSelectedTarget = null;
+        // @ts-expect-error(TODO:)
         this.activeSelectedTarget = null;
+        // @ts-expect-error(TODO:)
         this.tableTargetsSource.selectionModel.activate(null);
         this.tableTargetsSource.selectionModel.clear();
 
         // Skip node selection
         if (!this.onlyOneFactoryNode) {
+            // @ts-expect-error(TODO:)
             this.currentWizardSelectedNode = null;
+            // @ts-expect-error(TODO:)
             this.activeSelectedNode = null;
+            // @ts-expect-error(TODO:)
             this.tableNodesSource.selectionModel.activate(null);
             this.tableNodesSource.selectionModel.clear();
             this.migrateWizardState = MigrateWizardStateEnum.CHOOSENODE;

@@ -18,7 +18,7 @@
 import { throwError } from 'rxjs';
 import { catchError, finalize, tap } from 'rxjs/operators';
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject , signal} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, signal} from '@angular/core';
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
 import { XcAutocompleteDataWrapper, XcButtonComponent, XcCheckboxComponent, XcDialogComponent, XcDialogService, XcDialogWrapperComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormLabelComponent, XcFormValidatorRequiredDirective, XcOptionItem } from '@zeta/xc';
@@ -69,11 +69,11 @@ export class ImportXynaPropertiesDialogComponent extends XcDialogComponent<boole
         this.i18n.setTranslations(LocaleService.EN_US, importXynaProperties_translations_en_US);
 
         this.formatDataWrapper.values = [
-            <XcOptionItem<XynaPropertiesFormat>>{
+            {
                 name: this.i18n.translateSignal('fman.import-xyna-properties.format-csv'),
                 value: XynaPropertiesFormat.CSV
             },
-            <XcOptionItem<XynaPropertiesFormat>>{
+            {
                 name: this.i18n.translateSignal('fman.import-xyna-properties.format-yaml'),
                 value: XynaPropertiesFormat.YAML
             }
@@ -128,6 +128,7 @@ export class ImportXynaPropertiesDialogComponent extends XcDialogComponent<boole
         this.apiService.startOrder(FMAN_RTC, ISWP.Import, [this.importData, this.importSettings], undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             tap(result => {
                 if (result?.errorMessage) {
+                    // @ts-expect-error(TODO:)
                     this.dialogService.error(result.errorMessage, null, result.stackTrace?.join('\r\n'));
                     this.dismiss();
                 }

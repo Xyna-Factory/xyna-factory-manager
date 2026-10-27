@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -23,7 +25,7 @@ export class XoImportSettings extends XoObject {
 
 
     @XoProperty()
-    overwriteExising: boolean = false;
+    overwriteExising = false;
 
 
 }

@@ -39,6 +39,7 @@ export const TriggerFilterState = {
 })
 export class TriggerFilterStateIconComponent extends XcDynamicComponent<{ state: string }> {
 
+    // @ts-expect-error(TODO:)
     readonly state = input<string>(undefined);
 
 

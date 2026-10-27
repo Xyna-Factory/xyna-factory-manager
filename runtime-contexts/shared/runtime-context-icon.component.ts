@@ -32,6 +32,7 @@ import { XoRuntimeContextState } from '../xo/xo-runtime-context-state.model';
 })
 export class RuntimeContextIconComponent extends XcDynamicComponent<{ state: string }> {
 
+    // @ts-expect-error(TODO:)
     readonly state = input<string>(undefined);
 
 

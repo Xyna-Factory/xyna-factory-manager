@@ -29,8 +29,10 @@ import { XC_COMPONENT_DATA, XcDynamicComponent } from '@zeta/xc';
 })
 export class RuntimeContextNameComponent extends XcDynamicComponent<{ name: string; hierarchyLevel: number }> {
 
+    // @ts-expect-error(TODO:)
     readonly name = input<string>(undefined);
 
+    // @ts-expect-error(TODO:)
     readonly hierarchyLevel = input<number>(undefined);
 
 

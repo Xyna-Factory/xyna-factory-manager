@@ -58,6 +58,7 @@ export class CronlikeOrderIntervalTemplateComponent extends XcDynamicComponent<C
         this.interval = this.i18n.translateInstant(intervalObject.message, ...intervalObject.values);
     }
 
+    // @ts-expect-error(TODO:)
     private _readIntervalAndItsValuesFromObject(): IntervalData {
         if (this.executionTime && this.executionTime.timeWindow) {
             const tw = this.executionTime.timeWindow;
@@ -101,24 +102,31 @@ export class CronlikeOrderIntervalTemplateComponent extends XcDynamicComponent<C
                         for (const day of dayArr) {
                             switch (day) {
                                 case 'MON':
+                                    // @ts-expect-error(TODO:)
                                     days.push(this.i18n.translateInstant('monday'));
                                     break;
                                 case 'TUE':
+                                    // @ts-expect-error(TODO:)
                                     days.push(this.i18n.translateInstant('tuesday'));
                                     break;
                                 case 'WED':
+                                    // @ts-expect-error(TODO:)
                                     days.push(this.i18n.translateInstant('wednesday'));
                                     break;
                                 case 'THU':
+                                    // @ts-expect-error(TODO:)
                                     days.push(this.i18n.translateInstant('thursday'));
                                     break;
                                 case 'FRI':
+                                    // @ts-expect-error(TODO:)
                                     days.push(this.i18n.translateInstant('friday'));
                                     break;
                                 case 'SAT':
+                                    // @ts-expect-error(TODO:)
                                     days.push(this.i18n.translateInstant('saturday'));
                                     break;
                                 case 'SUN':
+                                    // @ts-expect-error(TODO:)
                                     days.push(this.i18n.translateInstant('sunday'));
                                     break;
                             }
@@ -151,6 +159,7 @@ export class CronlikeOrderIntervalTemplateComponent extends XcDynamicComponent<C
                         interval.message += 'monthsonday';
                         const info = /([\d]*[L]?)#([\d]*)/.exec(restr0value);
 
+                        // @ts-expect-error(TODO:)
                         switch (info[1]) {
                             case '1':
                                 interval.values.push({ key: '%value2%', value: this.i18n.translateInstant('first') });
@@ -169,6 +178,7 @@ export class CronlikeOrderIntervalTemplateComponent extends XcDynamicComponent<C
                                 break;
                         }
 
+                        // @ts-expect-error(TODO:)
                         switch (info[2]) {
                             case '1':
                                 interval.values.push({ key: '%value3%', value: this.i18n.translateInstant('monday') });
@@ -258,9 +268,11 @@ export class CronlikeOrderIntervalTemplateComponent extends XcDynamicComponent<C
                         const info = /([\d]*[L]?)#([\d]*)/.exec(restr0value);
                         interval.message += 'yearsonof';
 
+                        // @ts-expect-error(TODO:)
                         if (info.length === 3) {
                             // [info[0]] => whole expression, info[1] => number left of #, info[2] => nr. right
 
+                            // @ts-expect-error(TODO:)
                             switch (info[1]) {
                                 case '1':
                                     interval.values.push({ key: '%value3%', value: this.i18n.translateInstant('first') });
@@ -279,6 +291,7 @@ export class CronlikeOrderIntervalTemplateComponent extends XcDynamicComponent<C
                                     break;
                             }
 
+                            // @ts-expect-error(TODO:)
                             switch (info[2]) {
                                 case '1':
                                     interval.values.push({ key: '%value4%', value: this.i18n.translateInstant('monday') });

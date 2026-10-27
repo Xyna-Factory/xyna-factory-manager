@@ -85,6 +85,7 @@ export class WorkspaceTileComponent implements OnInit {
 
     collapsedRequiredRow = false;
 
+    // @ts-expect-error(TODO:)
     private _forceRefresh: boolean;
 
     @Input()
@@ -104,14 +105,17 @@ export class WorkspaceTileComponent implements OnInit {
 
     readonly selectionDetailsChange = output<XoRuntimeContext>();
 
+    // @ts-expect-error(TODO:)
     requiresDataSource: XcRemoteTableDataSource;
 
+    // @ts-expect-error(TODO:)
     requiredByDataSource: XcRemoteTableDataSource;
 
     /*
      * This data source is shared between Workspace- and Application Definition-view
      * Different Order-Types, inputs and result types are used
      */
+    // @ts-expect-error(TODO:)
     contentDataSource: XcRemoteTableDataSource;
 
     documentationPending = false;
@@ -123,14 +127,17 @@ export class WorkspaceTileComponent implements OnInit {
 
     ngOnInit() {
         // create requires data source
+        // @ts-expect-error(TODO:)
         this.requiresDataSource = new XcRemoteTableDataSource(this.apiService, undefined, FMAN_RTC, ORDER_TYPES.GET_DEPENDENT_RTCS, createDependenciesTableInfoClass(false));
         this.requiresDataSource.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
         this.requiresDataSource.output = XoDependencyArray;
         // create required-by data source
+        // @ts-expect-error(TODO:)
         this.requiredByDataSource = new XcRemoteTableDataSource(this.apiService, undefined, FMAN_RTC, ORDER_TYPES.GET_DEPENDENT_RTCS, createDependenciesTableInfoClass(false));
         this.requiredByDataSource.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
         this.requiredByDataSource.output = XoDependencyArray;
         // create content data source
+        // @ts-expect-error(TODO:)
         this.contentDataSource = new XcRemoteTableDataSource(this.apiService, undefined, FMAN_RTC, undefined, createContentTableInfoClass(false));
         this.contentDataSource.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
         this.contentDataSource.output = XoApplicationElementArray;
@@ -147,6 +154,7 @@ export class WorkspaceTileComponent implements OnInit {
         );
         // If this component gets built but was selected before, the forceRefresh flag is set and the component will load its content immediately
         if (this.forceRefresh) {
+            // @ts-expect-error(TODO:)
             this.updateDataSources(this.details());
             this._forceRefresh = false;
         }
@@ -178,8 +186,10 @@ export class WorkspaceTileComponent implements OnInit {
         this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.GET_ISSUES, runtimeContext, XoIssueArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe(result => {
                 if (result.errorMessage) {
+                    // @ts-expect-error(TODO:)
                     this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n'));
                 } else {
+                    // @ts-expect-error(TODO:)
                     this.issues = result.output[0].data as XoIssue[];
                     this.hasDuplicateElements = this.issues.filter(issue => issue.identifier === DUPLICATE_ELEMENT_IDENTIFIER).length > 0;
                 }
@@ -189,18 +199,22 @@ export class WorkspaceTileComponent implements OnInit {
 
     select(runtimeContext: XoRuntimeContext) {
         if (runtimeContext) {
+            // @ts-expect-error(TODO:)
             this.selectionChange.emit(this.workspace());
             this.selectionDetailsChange.emit(runtimeContext);
             this.updateDataSources(runtimeContext);
             this.scrollTo();
         } else {
+            // @ts-expect-error(TODO:)
             this.selectionChange.emit(undefined);
+            // @ts-expect-error(TODO:)
             this.selectionDetailsChange.emit(undefined);
         }
     }
 
 
     get hasDetails(): boolean {
+        // @ts-expect-error(TODO:)
         return this.workspace().equals(this.selection());
     }
 
@@ -221,18 +235,22 @@ export class WorkspaceTileComponent implements OnInit {
         // Workaround because angular material has no observer that completes when data is loaded and the table is rendered.
         // See https://github.com/angular/components/issues/8068
         this.zone.onStable.pipe(skip(2), first(), debounceTime(100)).subscribe(() => {
+            // @ts-expect-error(TODO:)
             this.headerRef().nativeElement.scrollIntoView(true);
             // The parent is the scroll section. Used to get a margin of 8px at the top of the card.
+            // @ts-expect-error(TODO:)
             const parent = this.headerRef().nativeElement.parentElement.parentElement;
             if (parent) {
+                // @ts-expect-error(TODO:)
                 this.headerRef().nativeElement.parentElement.parentElement.scrollTop -= 8;
             }
         });
     }
 
 
-    isSelected(runtimeContext: XoRuntimeContext): boolean {
-        return (runtimeContext.equals(this.details()) && (
+    isSelected(runtimeContext?: XoRuntimeContext): boolean {
+        const details = this.details();
+        return (runtimeContext !== undefined && details !== undefined && runtimeContext.equals(details) && (
             (this.hasWorkspaceDetails && runtimeContext instanceof XoWorkspace) ||
             (this.hasApplicationDefinitionDetails && runtimeContext instanceof XoApplicationDefinition)
         ));
@@ -240,11 +258,13 @@ export class WorkspaceTileComponent implements OnInit {
 
 
     isActive(): boolean {
+        // @ts-expect-error(TODO:)
         return RuntimeContext.fromWorkspace(this.workspace().name).equals(this.apiService.runtimeContext);
     }
 
 
     setAsActive() {
+        // @ts-expect-error(TODO:)
         this.apiService.runtimeContext = RuntimeContext.fromWorkspace(this.workspace().name);
     }
 
@@ -254,23 +274,28 @@ export class WorkspaceTileComponent implements OnInit {
         // find application definition
         const details = this.details();
         if (details instanceof XoApplicationDefinitionDetails) {
+            // @ts-expect-error(TODO:)
             const applicationDefinition = this.workspace().applicationDefinitions.data.find(ad => ad.uniqueKey === this.details().uniqueKey);
             if (applicationDefinition) {
                 presetApplicationDefinition = applicationDefinition.clone();
+                // @ts-expect-error(TODO:)
                 presetApplicationDefinition.workspaceName = null;
             }
         }
         // open migration wizard dialog
-        this.dialogService.custom(MigrateWizardComponent, <MigrationWizardData>{
+        // @ts-expect-error(TODO:)
+        this.dialogService.custom(MigrateWizardComponent, {
             apiService: this.apiService,
             i18n: this.i18n,
             rtc: FMAN_RTC,
+            // @ts-expect-error(TODO:)
             presetSource: presetApplicationDefinition ?? details
         });
     }
 
 
     createApplicationDefinition() {
+        // @ts-expect-error(TODO:)
         this.dialogService.custom(CreateApplicationDefinitionDialogComponent, this.workspace().name).afterDismissResult().subscribe(
             () => this.validationChange.emit()
         );
@@ -278,6 +303,7 @@ export class WorkspaceTileComponent implements OnInit {
 
 
     loadRuntimeApplication() {
+        // @ts-expect-error(TODO:)
         this.dialogService.custom(LoadRuntimeApplicationDialogComponent, { workspaceName: this.workspace().name, runtimeApplication: undefined }).afterDismissResult().subscribe(
             () => this.validationChange.emit()
         );
@@ -295,9 +321,13 @@ export class WorkspaceTileComponent implements OnInit {
         this.dialogService.custom(DeleteWorkspaceDialogComponent, this.workspace()).afterDismissResult().subscribe(
             () => {
                 this.validationChange.emit();
+                // @ts-expect-error(TODO:)
                 this.selection.set(null);
+                // @ts-expect-error(TODO:)
                 this.workspace.set(null);
+                // @ts-expect-error(TODO:)
                 this.details.set(null);
+                // @ts-expect-error(TODO:)
                 this.select(null);
             }
         );
@@ -305,6 +335,7 @@ export class WorkspaceTileComponent implements OnInit {
 
 
     buildNewVersion() {
+        // @ts-expect-error(TODO:)
         this.dialogService.custom(CreateRuntimeApplicationDialogComponent, { workspaceName: this.workspace().name, applicationDefinitionName: this.details().name }).afterDismissResult().subscribe(
         );
     }
@@ -318,13 +349,19 @@ export class WorkspaceTileComponent implements OnInit {
 
             this.dialogService.confirm(title, message).afterDismissResult().subscribe((confirm: boolean) => {
                 if (confirm) {
+                    // @ts-expect-error(TODO:)
                     this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.DELETE_APPLICATION_DEFINITION, this.details().proxy(), undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
+                        // @ts-expect-error(TODO:)
                         filter(result => result.errorMessage ? (this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n')), false) : true)
                     ).subscribe(() => {
                         this.validationChange.emit();
+                        // @ts-expect-error(TODO:)
                         this.selection.set(null);
+                        // @ts-expect-error(TODO:)
                         this.workspace.set(null);
+                        // @ts-expect-error(TODO:)
                         this.details.set(null);
+                        // @ts-expect-error(TODO:)
                         this.select(null);
                     });
                 }
@@ -340,6 +377,7 @@ export class WorkspaceTileComponent implements OnInit {
             const documentation = new XoDocumentation();
             documentation.value = value;
             this.documentationPending = true;
+            // @ts-expect-error(TODO:)
             this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.SET_APPLICATION_DEFINITION_DOCUMENTATION, [details.proxy(), documentation], null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
                 finalize(() => {
                     // trigger change detection even with an unchanged value to reset input field
@@ -358,21 +396,24 @@ export class WorkspaceTileComponent implements OnInit {
 
 
     manageDependencies() {
-        this.dialogService.custom(ManageDependenciesDialogComponent, this.details() as XoRuntimeContext).afterDismissResult().subscribe(
+        // @ts-expect-error(TODO:)
+        this.dialogService.custom(ManageDependenciesDialogComponent, this.details()).afterDismissResult().subscribe(
             () => this.requiresDataSource.refresh()
         );
     }
 
 
     manageContent() {
-        this.dialogService.custom(ManageContentDialogComponent, this.details() as XoRuntimeContext).afterDismissResult().subscribe(
+        // @ts-expect-error(TODO:)
+        this.dialogService.custom(ManageContentDialogComponent, this.details()).afterDismissResult().subscribe(
             () => this.contentDataSource.refresh()
         );
     }
 
 
     showWorkspaceContent() {
-        this.dialogService.custom(ShowWorkspaceContentDialogComponent, this.details() as XoRuntimeContext);
+        // @ts-expect-error(TODO:)
+        this.dialogService.custom(ShowWorkspaceContentDialogComponent, this.details());
     }
 
 

@@ -52,15 +52,20 @@ export class StorableInputParameterComponent {
     readonly destinationChange = output<XoOrderDestination>();
     readonly payloadChange = output<string>();
 
+    // @ts-expect-error(TODO:)
     private _destination: XoOrderDestination;
     private _querySelection;
     private renewCachedRTC = true;
     private storablesInCurrentRTC: XoStructureType[] = [];
+    // @ts-expect-error(TODO:)
     private hasQuery: boolean;
     private readonly restoredPayloads: any[] = [];
+    // @ts-expect-error(TODO:)
     private _storableFqn: string;
 
+    // @ts-expect-error(TODO:)
     inputParameters: InputParameter[];
+    // @ts-expect-error(TODO:)
     loadedPayload: boolean;
 
     @Input()
@@ -74,6 +79,7 @@ export class StorableInputParameterComponent {
         }
         this.hasQuery = false;
         this._destination = value;
+        // @ts-expect-error(TODO:)
         this.querySelectionChange.emit(null);
         if (value) {
             this.destinationChange.emit(value);
@@ -156,6 +162,7 @@ export class StorableInputParameterComponent {
             set querySet(checkboxValue: boolean) {
                 this.that.hasQuery = checkboxValue;
                 this._querySet = checkboxValue;
+                // @ts-expect-error(TODO:)
                 this.that.querySelection = this._querySet ? { ...this } : null;
                 // this.treeDataSource.readonlyMode = this._querySet;
             }
@@ -173,6 +180,7 @@ export class StorableInputParameterComponent {
      * @param finalFunction can be passed to be executed when all XoStructureTypes got emitted
      */
     private updateStorablesInCurrentRTC(): Observable<XoStructureType[]> {
+        // @ts-expect-error(TODO:)
         return this.apiService.getSubtypes(this.destination.runtimeContext.toRuntimeContext(), [XoStorable]).get(XoStorable).pipe(
             tap((structures: XoStructureType[]) => structures.filter(structure => !structure.typeAbstract))
         );
@@ -185,6 +193,7 @@ export class StorableInputParameterComponent {
         if (this.storablesInCurrentRTC.length) {
             this.storablesInCurrentRTC.forEach((storableStrcuture: XoStructureType) => {
                 this.inputParameters.forEach(inputParameter => {
+                    // @ts-expect-error(TODO:)
                     if (inputParameter.fqn.uniqueKey === storableStrcuture.typeFqn.uniqueKey) {
                         inputParameter.queryable = true;
                     }
@@ -293,9 +302,11 @@ export class StorableInputParameterComponent {
             }
         });
         if (payloadStrings.length === 0) {
+            // @ts-expect-error(TODO:)
             return null;
         }
         if (payloadStrings.length === 1 && this.hasQuery) {
+            // @ts-expect-error(TODO:)
             return null;
         }
         if (payloadStrings.length === 1) {

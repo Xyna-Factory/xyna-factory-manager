@@ -45,12 +45,14 @@ export class TriggerDetailComponent extends XcDynamicComponent<XoTrigger> {
     private readonly cdr = inject(ChangeDetectorRef);
 
 
+    // @ts-expect-error(TODO:)
     startParameter: XoStartParameterDetails[];
 
     protected getToken(): InjectionToken<string> {
         return XC_COMPONENT_DATA;
     }
 
+    // @ts-expect-error(TODO:)
     detail: XoTriggerDetail;
     busy = false;
 
@@ -78,6 +80,7 @@ export class TriggerDetailComponent extends XcDynamicComponent<XoTrigger> {
             .subscribe({
                 next: result => {
                     if (!result.errorMessage) {
+                        // @ts-expect-error(TODO:)
                         this.detail = result.output[0] as XoTriggerDetail;
                     } else {
                         this.dialogService.error(result.errorMessage);
@@ -95,6 +98,7 @@ export class TriggerDetailComponent extends XcDynamicComponent<XoTrigger> {
 
     get name(): string {
         if (!this.detail) {
+            // @ts-expect-error(TODO:)
             return undefined;
         }
         return this.detail.name;
@@ -102,6 +106,7 @@ export class TriggerDetailComponent extends XcDynamicComponent<XoTrigger> {
 
     get runtimeContextTitle(): string {
         if (!this.detail) {
+            // @ts-expect-error(TODO:)
             return undefined;
         }
         if (this.detail.runtimeContext instanceof XoRuntimeApplication) {
@@ -115,6 +120,7 @@ export class TriggerDetailComponent extends XcDynamicComponent<XoTrigger> {
 
     get runtimeContextLabel(): string {
         if (!this.detail) {
+            // @ts-expect-error(TODO:)
             return undefined;
         }
         return this.detail.runtimeContext.label;

@@ -34,6 +34,7 @@ export class PluginService {
     private readonly api = inject(ApiService);
 
 
+    // @ts-expect-error(TODO:)
     private readonly _plugins = new BehaviorSubject<Map<string, XoPlugin>>(null);
     private pending = false;
 
@@ -57,6 +58,7 @@ export class PluginService {
                 ),
                 filter(response => !!response.output),
                 map(response => {
+                    // @ts-expect-error(TODO:)
                     const pluginList = response.output[0] as XoPluginArray;
                     const pluginMap = new Map<string, XoPlugin>();
                     pluginList.data.forEach((plugin: XoPlugin, index) => pluginMap.set(FACTORY_MANAGER.PLUGIN + '-' + index, plugin));

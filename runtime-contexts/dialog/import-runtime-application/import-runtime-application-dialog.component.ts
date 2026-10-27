@@ -117,6 +117,7 @@ export class ImportRuntimeApplicationDialogComponent extends XcDialogComponent<b
         this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.IMPORT_RTA, this.importRequest, undefined, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             tap(result => {
                 if (result?.errorMessage) {
+                    // @ts-expect-error(TODO:)
                     this.dialogService.error(result.errorMessage, null, result.stackTrace?.join('\r\n'));
                     this.dismiss();
                 }

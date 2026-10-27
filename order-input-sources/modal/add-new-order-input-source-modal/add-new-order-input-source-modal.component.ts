@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, viewChild , signal} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, viewChild, signal} from '@angular/core';
 
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoRuntimeContext, XoWorkspace } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -68,6 +68,7 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
 
     busy = false;
 
+    // @ts-expect-error(TODO:)
     private _error: string;
 
     get error(): string {
@@ -83,6 +84,7 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
 
     errorBoxFocusCandidateRef = FMFocusCandidateRef.getInstance();
 
+    // @ts-expect-error(TODO:)
     orderInputSource: XoOrderInputSource;
 
 
@@ -91,6 +93,7 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
 
     runtimeContextsDataWrapper: XcAutocompleteDataWrapper;
 
+    // @ts-expect-error(TODO:)
     private _selectedServerRuntimeContext: XoRuntimeContext;
 
     get selectedServerRuntimeContext(): XoRuntimeContext {
@@ -110,17 +113,23 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
     set selectedServerRuntimeContext(value: XoRuntimeContext) {
         this._selectedServerRuntimeContext = value;
         if (this.orderInputSource) {
+            // @ts-expect-error(TODO:)
             this.orderInputSource.revision = value ? value.revision : null;
+            // @ts-expect-error(TODO:)
             this.orderInputSource.workspaceName = (value instanceof XoWorkspace) ? value.name : null;
+            // @ts-expect-error(TODO:)
             this.orderInputSource.applicationName = (value instanceof XoApplication) ? value.name : null;
+            // @ts-expect-error(TODO:)
             this.orderInputSource.versionName = (value instanceof XoApplication) ? value.versionName : null;
 
+            // @ts-expect-error(TODO:)
             this.selectedGUIRuntimeContext = value instanceof XoWorkspace
                 ? RuntimeContext.fromWorkspace(value.name)
                 : value instanceof XoApplication
                     ? RuntimeContext.fromApplicationVersion(value.name, value.versionName)
                     : null;
 
+            // @ts-expect-error(TODO:)
             this.orderInputSource.orderType = null;
             this.inputParamterString = '';
             this.updateInputParameterTree();
@@ -129,6 +138,7 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
     }
 
 
+    // @ts-expect-error(TODO:)
     private _selectedGUIRuntimeContext: RuntimeContext;
 
     get selectedGUIRuntimeContext(): RuntimeContext {
@@ -163,6 +173,7 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
 
     set selectedOrderType(value: XoOrderType) {
         this.orderInputSource.orderType = value;
+        // @ts-expect-error(TODO:)
         this.inputParamterString = null;
         this.updateInputParameterTree();
         this._getGeneratingOrderTypes();
@@ -184,6 +195,7 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
 
     set selectedSourceType(value) {
         if (this.orderInputSource) {
+            // @ts-expect-error(TODO:)
             this.orderInputSource.sourceType = value;
         }
     }
@@ -192,6 +204,7 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
     // ############################################################ INPUT PARAMETERS
 
 
+    // @ts-expect-error(TODO:)
     private _inputParamterString: string;
 
     get inputParamterString(): string {
@@ -217,9 +230,12 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
     monitoringLevelDataWrapper: XcAutocompleteDataWrapper;
 
     generatingOrderTypeDataWrapper: XcAutocompleteDataWrapper;
+    // @ts-expect-error(TODO:)
     selectedGeneratingOrderType: XoOrderType;
 
+    // @ts-expect-error(TODO:)
     xTFTestCaseID: string;
+    // @ts-expect-error(TODO:)
     xTFTestCaseName: string;
 
 
@@ -317,6 +333,7 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
             StartOrderOptionsBuilder.defaultOptionsWithErrorMessage
         ).subscribe(result => {
             if (!result.errorMessage) {
+                // @ts-expect-error(TODO:)
                 const output = result.output[0] as XoSourceTypeArray;
                 this.sourceTypeDataWrapper.values = output.data
                     .filter(sourceType => !this.isSourceTypeXTF(sourceType))
@@ -342,6 +359,7 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
                 StartOrderOptionsBuilder.defaultOptionsWithErrorMessage
             ).subscribe(result => {
                 if (!result.errorMessage) {
+                    // @ts-expect-error(TODO:)
                     const output = result.output[0] as XoOrderTypeArray;
                     if (output?.length > 0) {
                         this.error = '';
@@ -373,6 +391,7 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
             StartOrderOptionsBuilder.defaultOptionsWithErrorMessage
         ).subscribe(result => {
             if (!result.errorMessage) {
+                // @ts-expect-error(TODO:)
                 const output = result.output[0] as XoOrderTypeArray;
                 if (output?.length > 0) {
                     this.error = '';
@@ -433,7 +452,9 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
 
 
     private _readFromDetailsObjectParameters() {
+        // @ts-expect-error(TODO:)
         this.monitoringLevel = null;
+        // @ts-expect-error(TODO:)
         this.priority = null;
         this.customField0 = '';
         this.customField1 = '';
@@ -494,16 +515,19 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
 
 
     get isSourceTypeConstantSelected(): boolean {
+        // @ts-expect-error(TODO:)
         return this.isSourceTypeConstant(this.selectedSourceType);
     }
 
 
     get isSourceTypeWorkflowSelected(): boolean {
+        // @ts-expect-error(TODO:)
         return this.isSourceTypeWorkflow(this.selectedSourceType);
     }
 
 
     get isSourceTypeXTFSelected(): boolean {
+        // @ts-expect-error(TODO:)
         return this.isSourceTypeXTF(this.selectedSourceType);
     }
 
@@ -521,6 +545,7 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
         request.orderType = this.orderInputSource.orderType.type;
         request.runtimeContext = this.selectedServerRuntimeContext;
         request.parameter = parameter;
+        // @ts-expect-error(TODO:)
         request.sourceType = this.selectedSourceType;
         request.documentation = this.orderInputSource.documentation;
 
@@ -529,6 +554,7 @@ export class AddNewOrderInputSourceModalComponent extends XcDialogComponent<bool
             this.injectedData.rtc,
             this.injectedData.addWorkflow,
             request,
+            // @ts-expect-error(TODO:)
             null,
             StartOrderOptionsBuilder.defaultOptionsWithErrorMessage
         ).pipe(

@@ -51,8 +51,11 @@ export class CreateWorkspaceDialogComponent extends XcDialogComponent<WorkspaceN
     readonly SVNRepositoryAccess = 'SVNRepositoryAccess';
 
     repositoryLinkTypeDataWrapper: XcAutocompleteDataWrapper<string>;
+    // @ts-expect-error(TODO:)
     repositoryLinkType: string;
+    // @ts-expect-error(TODO:)
     repositoryLink: XoRepositoryLink;
+    // @ts-expect-error(TODO:)
     loading: boolean;
     name = '';
     plainPassword = '';
@@ -78,6 +81,7 @@ export class CreateWorkspaceDialogComponent extends XcDialogComponent<WorkspaceN
                         break;
                     }
                     default:
+                        // @ts-expect-error(TODO:)
                         this.repositoryLink = undefined;
                 }
             },
@@ -93,7 +97,7 @@ export class CreateWorkspaceDialogComponent extends XcDialogComponent<WorkspaceN
     create() {
         if (this.repositoryLink instanceof XoSVNRepositoryLink) {
             // encode password before sending
-            const svnRepositoryLink = this.repositoryLink as XoSVNRepositoryLink;
+            const svnRepositoryLink = this.repositoryLink;
             this.api.encode([this.plainPassword]).subscribe(encodedValues => {
                 const encodedPw = encodedValues[0];
                 svnRepositoryLink.password = encodedPw;
@@ -116,6 +120,7 @@ export class CreateWorkspaceDialogComponent extends XcDialogComponent<WorkspaceN
             }),
             tap(result => this.dismiss(!result.errorMessage ? this.name : undefined)),
             filter(result => !!result.errorMessage),
+            // @ts-expect-error(TODO:)
             tap(result => this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n'))),
             finalize(() => {
                 this.loading = false;

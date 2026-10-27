@@ -47,6 +47,7 @@ export class ApplicationDataSource<T extends XoRuntimeApplication = XoRuntimeApp
         this.apiService.startOrderAssertFlat<T>(
             this.rtc,
             this.orderType,
+            // @ts-expect-error(TODO:)
             this.input,
             this.output
         ).pipe(

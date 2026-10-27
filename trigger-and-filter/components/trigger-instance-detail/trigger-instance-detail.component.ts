@@ -79,6 +79,7 @@ export class TriggerInstanceDetailComponent extends XcDynamicComponent<TriggerIn
             .subscribe({
                 next: result => {
                     if (!result.errorMessage) {
+                        // @ts-expect-error(TODO:)
                         this.detail = result.output[0] as XoTriggerInstanceDetail;
                         this.fillDatasource(this.detail.filterInstance.data);
                     } else {
@@ -97,6 +98,7 @@ export class TriggerInstanceDetailComponent extends XcDynamicComponent<TriggerIn
 
     enable() {
         this.busy = true;
+        // @ts-expect-error(TODO:)
         this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.ENABLE_TRIGGER, this.injectedData.triggerinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
@@ -115,6 +117,7 @@ export class TriggerInstanceDetailComponent extends XcDynamicComponent<TriggerIn
 
     disable() {
         this.busy = true;
+        // @ts-expect-error(TODO:)
         this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.DISABLE_TRIGGER, this.injectedData.triggerinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
@@ -136,6 +139,7 @@ export class TriggerInstanceDetailComponent extends XcDynamicComponent<TriggerIn
             .pipe(filter(res => !!res)).subscribe({
                 next: () => {
                     this.busy = true;
+                    // @ts-expect-error(TODO:)
                     this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.UNDEPLOY_TRIGGER, this.injectedData.triggerinstance, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
                         .subscribe({
                             next: result => {

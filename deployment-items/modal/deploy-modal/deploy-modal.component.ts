@@ -49,6 +49,7 @@ export class DeployModalComponent extends XcDialogComponent<boolean, DeployModal
 
     busy = false;
 
+    // @ts-expect-error(TODO:)
     private _error: string;
     get error(): string {
         return this._error;
@@ -80,13 +81,14 @@ export class DeployModalComponent extends XcDialogComponent<boolean, DeployModal
             this.injectedData.rtc,
             this.injectedData.deployWorkflow,
             [ids, this.injectedData.runtimeContext],
-            null,
+            undefined,
             StartOrderOptionsBuilder.defaultOptionsWithErrorMessage
         ).subscribe({
             next: result => {
                 if (result && !result.errorMessage) {
                     this.dismiss(true);
                 } else {
+                    // @ts-expect-error(TODO:)
                     this.error = this.injectedData.i18nService.translateErrorCode(result.errorMessage);
                 }
             },

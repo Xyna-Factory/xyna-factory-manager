@@ -32,7 +32,9 @@ export interface TileItem extends Comparable {
 
 export class TileDataSource extends XcSelectionDataSource<TileItem> {
 
+    // @ts-expect-error(TODO:)
     private left: TileItem[];
+    // @ts-expect-error(TODO:)
     private right: TileItem[];
     private _isSelected = true;
     private leftSelected = true;
@@ -64,6 +66,7 @@ export class TileDataSource extends XcSelectionDataSource<TileItem> {
     private readonly actionButton = new Subject<(void)>();
 
     get detailItem(): TileItem {
+        // @ts-expect-error(TODO:)
         return this.hasDetail() ? this.selectionModel.selection[0] : undefined;
     }
 

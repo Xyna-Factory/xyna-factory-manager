@@ -62,34 +62,48 @@ export class CreateTimeControlledOrderComponent extends XcDialogComponent<boolea
     readonly errorMessageRef = viewChild<ElementRef>('errorMessage');
 
     selectedExecutionRestriction = new XoTCOExecutionRestriction();
+    // @ts-expect-error(TODO:)
     selectedBehaviorOnError: ExecutionTimeBehaviorOnError;
     selectedExecutionTime = new XoOrderExecutionTime();
+    // @ts-expect-error(TODO:)
     selectedRuntimeContext: XoRuntimeContext;
+    // @ts-expect-error(TODO:)
     selectedDestination: XoOrderDestination;
     selectedCustomFields: XoOrderCustoms = new XoOrderCustoms();
+    // @ts-expect-error(TODO:)
     selectedfilterCriteria: string;
+    // @ts-expect-error(TODO:)
     selectedSortCriteria: string;
+    // @ts-expect-error(TODO:)
     selectedStorableFqn: string;
     selectedActiveState = true;
     selectedOrderType = '';
     selectedName = '';
 
+    // @ts-expect-error(TODO:)
     executionRestrictionValid: boolean;
+    // @ts-expect-error(TODO:)
     executionTimeValid: boolean;
+    // @ts-expect-error(TODO:)
     orderTypeValid: boolean;
+    // @ts-expect-error(TODO:)
     error: string;
+    // @ts-expect-error(TODO:)
     loading: boolean;
 
     private readonly CREATE_TCO_WP = 'xmcp.factorymanager.timecontrolledorders.CreateTCO';
 
+    // @ts-expect-error(TODO:)
     private _querySelection: InputParameter;
 
     get valid(): boolean {
+        // @ts-expect-error(TODO:)
         return this.executionTimeValid && this.orderTypeValid && this.executionRestrictionValid && this.xcFormDirective().valid;
     }
 
     set querySelection(value: InputParameter) {
         this._querySelection = value;
+        // @ts-expect-error(TODO:)
         this.selectedStorableFqn = value ? value.fqn.encode() : undefined;
     }
 
@@ -137,6 +151,7 @@ export class CreateTimeControlledOrderComponent extends XcDialogComponent<boolea
         tmpTCO.planningHorizon = this.selectedExecutionTime;
         tmpTCO.tCOExecutionRestriction = this.selectedExecutionRestriction;
         tmpTCO.orderCustoms = this.selectedCustomFields;
+        // @ts-expect-error(TODO:)
         tmpTCO.inputPayload = this.storableInputComponent().getPayload();
         tmpTCO.filterCriteria = this.selectedfilterCriteria;
         tmpTCO.sortCriteria = this.selectedSortCriteria;
@@ -151,6 +166,7 @@ export class CreateTimeControlledOrderComponent extends XcDialogComponent<boolea
                 if (result.errorMessage) {
                     console.error(result.errorMessage);
                     this.error = result.errorMessage;
+                    // @ts-expect-error(TODO:)
                     this.errorMessageRef().nativeElement.scrollIntoView({ block: 'center' });
                 } else {
                     this.dismiss(true);
@@ -190,6 +206,7 @@ export class CreateTimeControlledOrderComponent extends XcDialogComponent<boolea
         date.setMinutes(date.getMinutes() + 10);
         ex.endTime = date.getTime();
         ex.timezone = 'UTC';
+        // @ts-expect-error(TODO:)
         ex.timeWindow = null;
         this.selectedExecutionTime = ex;
         this.selectedBehaviorOnError = ExecutionTimeBehaviorOnError.IGNORE;

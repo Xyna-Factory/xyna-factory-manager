@@ -32,12 +32,14 @@ import { TileItem } from '../tile-data-source';
 })
 export class TileButtonComponent {
 
+    // @ts-expect-error(TODO:)
     readonly item = input<TileItem>(undefined);
 
     readonly selected = input(false, { transform: coerceBoolean });
 
     @HostBinding('class.selected')
     get hostSelected(): boolean {
+        // @ts-expect-error(TODO:)
         return this.selected();
     }
 
@@ -45,6 +47,7 @@ export class TileButtonComponent {
 
 
     click() {
+        // @ts-expect-error(TODO:)
         this.selectItem.emit(this.selected() ? undefined : this.item());
     }
 
@@ -65,6 +68,7 @@ export class TileButtonComponent {
 
     get cursiveLabel(): string {
         const item = this.item();
+        // @ts-expect-error(TODO:)
         return item.getCursiveLabel ? item.getCursiveLabel() : undefined;
     }
 

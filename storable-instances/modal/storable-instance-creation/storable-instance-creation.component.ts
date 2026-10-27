@@ -80,6 +80,7 @@ export class StorableInstanceCreationComponent extends XcDialogComponent<any, an
             this.errorMessage = this.i18nService.translateInstant(this.EMPTY_STORABLE);
         } else {
             this.apiService
+                // @ts-expect-error(TODO:)
                 .startOrder(this.rtc, this.storeOrderType, [this.structureTreeDataSource.container.data[0], this.storeParameter], null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
                 .pipe(
                     finalize(() => {

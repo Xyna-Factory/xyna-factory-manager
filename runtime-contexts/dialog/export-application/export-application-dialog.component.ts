@@ -62,9 +62,11 @@ export class ExportApplicationDialogComponent extends XcDialogComponent<boolean,
         this.pending = true;
         this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.EXPORT_RUNTIME_APPLICATION, this.application, XoManagedFileId, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             filter(result => {
+                // @ts-expect-error(TODO:)
                 if (result.errorMessage || !(result?.output[0] as XoManagedFileId)?.id) {
                     this.dismiss(false);
                     if (result.errorMessage) {
+                        // @ts-expect-error(TODO:)
                         this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n'));
                     } else {
                         this.dialogService.error(this.i18n.translateInstant('fman.export-application.export-failed', {key: '$0', value: this.application.name}));
@@ -75,7 +77,9 @@ export class ExportApplicationDialogComponent extends XcDialogComponent<boolean,
             }),
             finalize(() => this.pending = false)
         ).subscribe(result => {
+            // @ts-expect-error(TODO:)
             const fileId = (result.output[0] as XoManagedFileId).id;
+            // @ts-expect-error(TODO:)
             window.location.href = `${this.configService.config.zeta.url}download?p0=${fileId}`;
             this.dismiss(true);
         });

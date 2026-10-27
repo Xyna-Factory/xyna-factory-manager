@@ -59,20 +59,26 @@ export class PluginComponent extends RouteComponent implements OnDestroy {
             if (plugin) {
                 // get definition
                 this.api.startOrder(
+                    // @ts-expect-error(TODO:)
                     plugin.pluginRTC.toRuntimeContext(),
+                    // @ts-expect-error(TODO:)
                     plugin.definitionWorkflowFQN,
+                    // @ts-expect-error(TODO:)
                     null,
                     null,
                     StartOrderOptionsBuilder.defaultOptionsWithErrorMessage
                 ).subscribe(response => {
+                    // @ts-expect-error(TODO:)
                     const formDefinition = response.output[0] as XoFormDefinition;
+                    // @ts-expect-error(TODO:)
                     const detailData = response.output.slice(1);
 
                     // create stack item
                     const item = new XcStackItem();
                     item.setTemplate(new XcComponentTemplate(
                         XcDefinitionStackItemComponent,
-                        <DefinitionStackItemComponentData>{ stackItem: item, definition: formDefinition, data: detailData }
+                        // @ts-expect-error(TODO:)
+                        { stackItem: item, definition: formDefinition, data: detailData }
                     ));
                     this.stackDataSource.add(item);
                 });

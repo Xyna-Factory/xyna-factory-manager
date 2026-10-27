@@ -55,6 +55,7 @@ export class ShowWorkspaceContentDialogComponent extends XcDialogComponent<boole
         this.i18n.setTranslations(LocaleService.DE_DE, showWorkspaceContent_translations_de_DE);
 
         // create data source
+        // @ts-expect-error(TODO:)
         this.dataSource = new XcRemoteTableDataSource(this.apiService, undefined, FMAN_RTC, ORDER_TYPES.GET_WORKSPACE_CONTENT, createContentTableInfoClass(false));
         this.updateDataSource();
     }

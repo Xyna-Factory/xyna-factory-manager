@@ -55,6 +55,7 @@ export class ManageDependenciesDialogComponent extends XcDialogComponent<boolean
     changedDependencyTable: XcLocalTableDataSource;
     includeIndependent = true;
     includeImplicit = false;
+    // @ts-expect-error(TODO:)
     loading: boolean;
 
     readonly changedDependencies = new Map<string, XoDependency>();
@@ -68,6 +69,7 @@ export class ManageDependenciesDialogComponent extends XcDialogComponent<boolean
         this.i18n.setTranslations(LocaleService.EN_US, manageDependencies_translations_en_US);
 
         // create data source
+        // @ts-expect-error(TODO:)
         this.dataSource = new XcRemoteTableDataSource(this.apiService, undefined, FMAN_RTC, ORDER_TYPES.GET_DEPENDENT_RTCS, createDependenciesTableInfoClass(true));
         this.dataSource.output = XoDependencyArray;
         this.dataSource.refreshOnFilterChange = this.settings.tableRefreshOnFilterChange;
@@ -162,6 +164,7 @@ export class ManageDependenciesDialogComponent extends XcDialogComponent<boolean
                 if (!result.errorMessage || result.errorMessage && force) {
                     this.dismiss(true);
                     if (result.errorMessage) {
+                        // @ts-expect-error(TODO:)
                         this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n'));
                     }
                     return null;
@@ -173,6 +176,7 @@ export class ManageDependenciesDialogComponent extends XcDialogComponent<boolean
             switchMap(error => {
                 // confirm to use the force
                 const title = this.i18n.translateInstant('Confirm');
+                // @ts-expect-error(TODO:)
                 const message = this.i18n.translateInstant('xfm.fman.rtcs.manage-dependencies.force-message', { key: '$0', value: error });
                 return this.dialogService.confirm(title, message).afterDismissResult().pipe(
                     filter(confirmed => !!confirmed),

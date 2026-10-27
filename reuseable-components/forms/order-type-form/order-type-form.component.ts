@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, inject, Input, input, output, viewChild , signal} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, input, output, viewChild, signal} from '@angular/core';
 import { FM_WF_GET_ORDER_TYPES } from '@fman/const';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService, StartOrderOptionsBuilder, XoArray, XoRuntimeContext } from '@zeta/api';
@@ -41,8 +41,10 @@ export class OrderTypeFormComponent {
     readonly selectedOrderTypeChange = output<string>();
     readonly validationChange = output<boolean>();
 
+    // @ts-expect-error(TODO:)
     readonly masterWorkflowInfoText = input<boolean>(undefined);
     /** Error key which gets translated */
+    // @ts-expect-error(TODO:)
     error: string;
 
     readonly runtimeContext = FMAN_RTC;
@@ -50,6 +52,7 @@ export class OrderTypeFormComponent {
     orderTypeStringDataWrapper: XcAutocompleteDataWrapper;
     runtimeContextsDataWrapper: XcAutocompleteDataWrapper;
 
+    // @ts-expect-error(TODO:)
     private _selectedRTC: XoRuntimeContext;
     private _selectedOrderType = '';
 
@@ -121,6 +124,7 @@ export class OrderTypeFormComponent {
         this.apiService.startOrder(this.runtimeContext, FM_WF_GET_ORDER_TYPES, this.selectedRuntimeContext, XoOrderTypeArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).subscribe({
             next: result => {
                 if (result && !result.errorMessage) {
+                    // @ts-expect-error(TODO:)
                     const orderTypeArray = result.output[0] as XoOrderTypeArray;
                     if (orderTypeArray instanceof XoArray) {
                         this.orderTypeStringDataWrapper.values = orderTypeArray.data.map(ot => ({ value: ot.name, name: signal(ot.name) }));

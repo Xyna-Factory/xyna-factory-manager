@@ -10,7 +10,7 @@
     </div>
     <div class="aside">
         @for (
-            applicationDefinition of workspace().applicationDefinitions.data;
+            applicationDefinition of workspace()?.applicationDefinitions?.data ?? [];
             track applicationDefinition
         ) {
             <runtime-context-button [runtimeContext]="applicationDefinition"

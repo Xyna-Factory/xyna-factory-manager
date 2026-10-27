@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, inject , signal} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal} from '@angular/core';
 
 import { ApiService, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, LocaleService, XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -49,6 +49,7 @@ export class CreateApplicationDefinitionDialogComponent extends XcDialogComponen
 
 
     workspaceDataWrapper: XcAutocompleteDataWrapper<XoWorkspace>;
+    // @ts-expect-error(TODO:)
     workspace: XoWorkspace;
 
     name = '';
@@ -64,7 +65,9 @@ export class CreateApplicationDefinitionDialogComponent extends XcDialogComponen
         this.workspaceDataWrapper = new XcAutocompleteDataWrapper(
             () => this.workspace,
             () => {},
+            // @ts-expect-error(TODO:)
             this.apiService.startOrderAssertFlat<XoWorkspace>(FMAN_RTC, ORDER_TYPES.GET_WORKSPACES, undefined, XoWorkspaceArray).pipe(
+                // @ts-expect-error(TODO:)
                 tap(workspaces => this.changeWorkspace(workspaces.find(workspace => workspace.name === this.injectedData))),
                 map(workspaces => workspaces.map(workspace => <XcOptionItem>{name: signal(workspace.name), value: workspace}))
             )
@@ -92,6 +95,7 @@ export class CreateApplicationDefinitionDialogComponent extends XcDialogComponen
             }),
             tap(result => this.dismiss(!result.errorMessage ? this.name : undefined)),
             filter(result => !!result.errorMessage),
+            // @ts-expect-error(TODO:)
             tap(result => this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n')))
         ).subscribe();
     }

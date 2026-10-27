@@ -92,15 +92,15 @@ export class FactoryManagerComponent extends RouteComponent {
     constructor() {
         super();
         const configService = inject(ConfigService);
-        if (configService.config['modeller']?.runtimeContext)  {
-            if (configService.config['modeller'].runtimeContext.application) {
+        if (configService.config.modeller?.runtimeContext)  {
+            if (configService.config.modeller.runtimeContext.application) {
                 FMAN_RTC = RuntimeContext.fromApplicationVersion(
-                    configService.config['modeller'].runtimeContext.application,
-                    configService.config['modeller'].runtimeContext.version
+                    configService.config.modeller.runtimeContext.application,
+                    configService.config.modeller.runtimeContext.version
                 );
-            } else if (configService.config['modeller'].runtimeContext.workspace) {
+            } else if (configService.config.modeller.runtimeContext.workspace) {
                 FMAN_RTC = RuntimeContext.fromWorkspace(
-                    configService.config['modeller'].runtimeContext.workspace
+                    configService.config.modeller.runtimeContext.workspace
                 );
             }
         }
@@ -116,6 +116,7 @@ export class FactoryManagerComponent extends RouteComponent {
 
         this.navListItems.forEach(item => {
             item.disabled = item.disabled || !!item.right && !this.authService.hasRight(item.right);
+            // @ts-expect-error(TODO:)
             item.name = this.i18n.translateSignal(item.name());
         });
 

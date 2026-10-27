@@ -80,6 +80,7 @@ export class StorableInstanceDetailComponent implements OnDestroy {
 
             let isSucceeded = false;
             this.apiService
+                // @ts-expect-error(TODO:)
                 .startOrder(this._rtc, 'xnwh.persistence.Store', [updatedObject, new XoStoreParameter()], null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
                 .pipe(
                     finalize(() => {
@@ -94,19 +95,25 @@ export class StorableInstanceDetailComponent implements OnDestroy {
                             isSucceeded = true;
                             this.valueChange.emit();
                         } else {
+                            // @ts-expect-error(TODO:)
                             this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n'));
                         }
                     },
                     error: error => this.dialogService.error(error)
-            });
+                });
         });
     }
 
+    // @ts-expect-error(TODO:)
     private editSubscription: Subscription;
+    // @ts-expect-error(TODO:)
     private _rtc: RuntimeContext;
+    // @ts-expect-error(TODO:)
     private _fqn: FullQualifiedName;
+    // @ts-expect-error(TODO:)
     private _selectedStorable: XoObject;
 
+    // @ts-expect-error(TODO:)
     structureTreeDataSource: XcStructureTreeDataSource = new XcStructureTreeDataSource(this.apiService, this.i18n, null, [], undefined, false);
 
     ERROR_MESSAGE = 'fman.storable-instances.storable-instances-details.error-message';

@@ -55,6 +55,7 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
     readonly xcFormDirective = viewChild(XcFormDirective);
 
     behaviorOnErrorDataWrapper: XcAutocompleteDataWrapper;
+    // @ts-expect-error(TODO:)
     selectedBehaviorOnError: ExecutionTimeBehaviorOnError;
 
     executionIntervalUnitDataWrapper: XcAutocompleteDataWrapper<TimeRestrictionOptions>;
@@ -65,15 +66,21 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
     schedulingTimeoutUnit: TimeRestrictionOptions = TimeRestrictionOptions.milliseconds;
     executionTimeoutUnit: TimeRestrictionOptions = TimeRestrictionOptions.milliseconds;
 
+    // @ts-expect-error(TODO:)
     private _executionInterval: number;
+    // @ts-expect-error(TODO:)
     private _schedulingTimeout: number;
+    // @ts-expect-error(TODO:)
     private _executionTimeout: number;
+    // @ts-expect-error(TODO:)
     private validityChangeSubscription: Subscription;
+    // @ts-expect-error(TODO:)
     private _executionRestriction: XoTCOExecutionRestriction;
 
     readonly validationChange = output<boolean>();
     readonly executionRestrictionChange = output<XoTCOExecutionRestriction>();
 
+    // @ts-expect-error(TODO:)
     readonly hasTooltip = input<boolean>(undefined);
 
     @Input()
@@ -87,11 +94,13 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
     }
 
     get timeoutTooltip(): string {
+        // @ts-expect-error(TODO:)
         return this.hasTooltip() ? this.i18n.translateInstant('fman.tco.detail-section.tco-execution-restriction.tooltip-timeout') : null;
     }
 
     set executionInterval(value: number) {
         this._executionInterval = value;
+        // @ts-expect-error(TODO:)
         this.executionRestriction.executionInterval = this.toMilliSeconds(value, this.executionIntervalUnit);
         this.executionRestrictionChange.emit(this.executionRestriction);
     }
@@ -101,6 +110,7 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
 
     set schedulingTimeout(value: number) {
         this._schedulingTimeout = value;
+        // @ts-expect-error(TODO:)
         this.executionRestriction.schedulingTimeout = this.toMilliSeconds(value, this.schedulingTimeoutUnit);
         this.executionRestrictionChange.emit(this.executionRestriction);
     }
@@ -110,6 +120,7 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
 
     set executionTimeout(value: number) {
         this._executionTimeout = value;
+        // @ts-expect-error(TODO:)
         this.executionRestriction.executionTimeout = this.toMilliSeconds(value, this.executionTimeoutUnit);
         this.executionRestrictionChange.emit(this.executionRestriction);
     }
@@ -152,6 +163,7 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
             () => this.executionIntervalUnit,
             (value: TimeRestrictionOptions) => {
                 this.executionIntervalUnit = value;
+                // @ts-expect-error(TODO:)
                 this.executionRestriction.executionInterval = this.toMilliSeconds(this.executionInterval, value);
                 this.executionRestrictionChange.emit(this.executionRestriction);
             },
@@ -162,6 +174,7 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
             () => this.schedulingTimeoutUnit,
             (value: TimeRestrictionOptions) => {
                 this.schedulingTimeoutUnit = value;
+                // @ts-expect-error(TODO:)
                 this.executionRestriction.schedulingTimeout = this.toMilliSeconds(this.schedulingTimeout, value);
                 this.executionRestrictionChange.emit(this.executionRestriction);
             },
@@ -172,6 +185,7 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
             () => this.executionTimeoutUnit,
             (value: TimeRestrictionOptions) => {
                 this.executionTimeoutUnit = value;
+                // @ts-expect-error(TODO:)
                 this.executionRestriction.executionTimeout = this.toMilliSeconds(this.executionTimeout, value);
                 this.executionRestrictionChange.emit(this.executionRestriction);
             },
@@ -218,10 +232,12 @@ export class TcoExecutionRestrictionComponent implements OnInit, OnDestroy, Afte
 
     ngAfterViewInit() {
         // Setting up an observable to detect validity change in parent
+        // @ts-expect-error(TODO:)
         this.validityChangeSubscription = this.xcFormDirective().validityChange.subscribe(form => {
             this.validationChange.emit(form.valid);
         });
         // Because validityChange is not a behavior subject
+        // @ts-expect-error(TODO:)
         this.validationChange.emit(this.xcFormDirective().valid);
     }
 
