@@ -59,13 +59,10 @@ export class PluginComponent extends RouteComponent implements OnDestroy {
             if (plugin) {
                 // get definition
                 this.api.startOrder(
-                    // @ts-expect-error(TODO:)
                     plugin.pluginRTC.toRuntimeContext(),
-                    // @ts-expect-error(TODO:)
                     plugin.definitionWorkflowFQN,
-                    // @ts-expect-error(TODO:)
-                    null,
-                    null,
+                    undefined,
+                    undefined,
                     StartOrderOptionsBuilder.defaultOptionsWithErrorMessage
                 ).subscribe(response => {
                     // @ts-expect-error(TODO:)
