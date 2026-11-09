@@ -48,6 +48,7 @@ export class DeleteReportComponent extends XcDialogComponent<XoDeleteDeploymentI
     resultListItems: XcRichListItem<DeleteReportItemComponentData>[] = [];
 
     selectedResultSubject = new Subject<XoDeleteDeploymentItemResult>();
+    // @ts-expect-error(TODO:)
     selectedResult: XoDeleteDeploymentItemResult;
 
     get stacktrace(): string {
@@ -71,11 +72,13 @@ export class DeleteReportComponent extends XcDialogComponent<XoDeleteDeploymentI
 
         this.resultListItems.forEach(resultListItem => {
 
+            // @ts-expect-error(TODO:)
             const resolution = resultListItem.data.resolution;
 
             if (resolution !== DeleteDeploymentItemResolution.SKIP) {
 
                 const param = new XoDeleteDeploymentItemParam();
+                // @ts-expect-error(TODO:)
                 param.deploymentItemId = resultListItem.data.result.deploymentItem.id;
 
                 if (resolution === DeleteDeploymentItemResolution.FORCE_DELETE_AND_RECURSIVE_UNDEPLOY) {

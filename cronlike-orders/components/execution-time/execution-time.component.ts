@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, inject, Input, input, output, viewChild , signal} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, input, output, viewChild, signal} from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { ApiService, RuntimeContext, StartOrderOptionsBuilder } from '@zeta/api';
 import { I18nService, XcI18nContextDirective, XcI18nPipe, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -48,6 +48,7 @@ export class ExecutionTimeComponent {
     readonly executionTimeChange = output<XoOrderExecutionTime>();
 
     /** Changes the header of the xc-panel */
+    // @ts-expect-error(TODO:)
     readonly header = input<string>(undefined);
 
     /** @description Decides if the form can have a time window and therefore a:
@@ -56,34 +57,55 @@ export class ExecutionTimeComponent {
      *  - end time
      * @usecase Using this component to build a TCOExecutionRestriction, you need a time window.
      */
+    // @ts-expect-error(TODO:)
     readonly hasTimeWindow = input<boolean>(undefined);
 
+    // @ts-expect-error(TODO:)
     private _executionTime: XoOrderExecutionTime;
+    // @ts-expect-error(TODO:)
     private _year: number;
+    // @ts-expect-error(TODO:)
     private _month: number;
+    // @ts-expect-error(TODO:)
     private _date: number;
+    // @ts-expect-error(TODO:)
     private _hours: number;
+    // @ts-expect-error(TODO:)
     private _minutes: number;
+    // @ts-expect-error(TODO:)
     private _seconds: number;
+    // @ts-expect-error(TODO:)
     private _milliseconds: number;
+    // @ts-expect-error(TODO:)
     private _intervalValue: string;
+    // @ts-expect-error(TODO:)
     private _yearlyByDateDayValue: string;
+    // @ts-expect-error(TODO:)
     private _customWindowLengthYYYY: number;
+    // @ts-expect-error(TODO:)
     private _customWindowLengthMM: number;
+    // @ts-expect-error(TODO:)
     private _customWindowLengthDD: number;
+    // @ts-expect-error(TODO:)
     private _customWindowLengthhh: number;
+    // @ts-expect-error(TODO:)
     private _customWindowLengthmm: number;
+    // @ts-expect-error(TODO:)
     private _customWindowLengthss: number;
+    // @ts-expect-error(TODO:)
     private _noEndTime: boolean;
 
+    // @ts-expect-error(TODO:)
     intervalUnit: string;
 
     timeZoneDataWrapper: XcAutocompleteDataWrapper;
 
     windowLengthDataWrapper: XcAutocompleteDataWrapper<WindowLengths>;
+    // @ts-expect-error(TODO:)
     windowLengthSelection: WindowLengths;
 
     intervalValueIdentityDataWrapper: XcIdentityDataWrapper;
+    // @ts-expect-error(TODO:)
     intervalWeekday: string;
     intervalDataWrapper: XcAutocompleteDataWrapper;
     ExecutionTimeInterval = ExecutionTimeInterval; // make enum usable in the VIEW - needed for ngSwitchCases
@@ -95,35 +117,45 @@ export class ExecutionTimeComponent {
 
     ExecutionTimeMonthlyBy = ExecutionTimeMonthlyBy;
     monthlyByDataWrapper: XcAutocompleteDataWrapper;
+    // @ts-expect-error(TODO:)
     monthlyBySwitchValue: string;
 
     ExecutionTimeMonthlyAtWhichDayOfTheMonth = ExecutionTimeMonthlyAtWhichDayOfTheMonth;
     atWhichDayOfTheMonthDataWrapper: XcAutocompleteDataWrapper;
+    // @ts-expect-error(TODO:)
     atWhichDaySwitchValue: string;
+    // @ts-expect-error(TODO:)
     atWhichDayValue: string;
     atWhichDayValueIdentityDataWrapper: XcIdentityDataWrapper;
 
+    // @ts-expect-error(TODO:)
     monthlyByWeekdayPositionValue: string;
     monthlyByWeekdayPositionDataWrapper: XcAutocompleteDataWrapper;
 
+    // @ts-expect-error(TODO:)
     monthlyByWeekdayWeekdayValue: string;
     monthlyByWeekdayWeekdayDataWrapper: XcAutocompleteDataWrapper;
 
     ExecutionTimeYearlyBy = ExecutionTimeYearlyBy;
     yearlyByDataWrapper: XcAutocompleteDataWrapper;
+    // @ts-expect-error(TODO:)
     yearlyBySwitchValue: string;
 
     yearlyByDateDayValueIdentityDateWrapper: XcIdentityDataWrapper;
 
+    // @ts-expect-error(TODO:)
     yearlyByDateMonthValue: string;
     yearlyByDateMonthDataWrapper: XcAutocompleteDataWrapper;
 
+    // @ts-expect-error(TODO:)
     yearlyByWeekdayPositionValue: string;
     yearlyByWeekdayPositionDataWrapper: XcAutocompleteDataWrapper;
 
+    // @ts-expect-error(TODO:)
     yearlyByWeekdayWeekdayValue: string;
     yearlyByWeekdayWeekdayDataWrapper: XcAutocompleteDataWrapper;
 
+    // @ts-expect-error(TODO:)
     yearlyByWeekdayMonthValue: string;
     yearlyByWeekdayMonthDataWrapper: XcAutocompleteDataWrapper;
 
@@ -255,6 +287,7 @@ export class ExecutionTimeComponent {
 
     set noEndTime(value: boolean) {
         this._noEndTime = value;
+        // @ts-expect-error(TODO:)
         this.endTime = value ? null : -1;
     }
 
@@ -407,6 +440,7 @@ export class ExecutionTimeComponent {
 
         this.apiService.startOrder(FMAN_RTC, FM_WF_GET_TIMEZONES, [], XoTimezoneArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).subscribe(result => {
             if (result && !result.errorMessage) {
+                // @ts-expect-error(TODO:)
                 const tzArr = result.output[0] as XoTimezoneArray;
                 if (tzArr) {
                     if (tzArr.length) {
@@ -418,6 +452,7 @@ export class ExecutionTimeComponent {
                     this.dialogService.error(this.i18nService.translateInstant(UNSPECIFIED_GET_TIMEZONE_ERROR));
                 }
             } else {
+                // @ts-expect-error(TODO:)
                 this.dialogService.error(result.errorMessage);
             }
         });
@@ -810,9 +845,11 @@ export class ExecutionTimeComponent {
 
                         // example for restr0unit: 4#3 => 4.th Wednesday (3rd day of the week) of month
                         const info = /([\d]*[L]?)#([\d]*)/.exec(restr0value);
+                        // @ts-expect-error(TODO:)
                         if (info.length === 3) {
                             // [info[0]] => whole expression, info[1] => number left of #, info[2] => nr. right
 
+                            // @ts-expect-error(TODO:)
                             switch (info[1]) {
                                 case '1':
                                     this.monthlyByWeekdayPositionValue = ExecutionTimeWeekdayPositionInMonth.FIRST;
@@ -832,6 +869,7 @@ export class ExecutionTimeComponent {
                             }
                             this.monthlyByWeekdayPositionDataWrapper.update();
 
+                            // @ts-expect-error(TODO:)
                             switch (info[2]) {
                                 case '1':
                                     this.monthlyByWeekdayWeekdayValue = ExecutionTimeWeekday.MONDAY;
@@ -927,9 +965,11 @@ export class ExecutionTimeComponent {
                         // example for restr0unit: 4#3 => 4.th Wednesday (3rd day of the week) of month
                         const info = /([\d]*[L]?)#([\d]*)/.exec(restr0value);
 
+                        // @ts-expect-error(TODO:)
                         if (info.length === 3) {
                             // [info[0]] => whole expression, info[1] => number left of #, info[2] => nr. right
 
+                            // @ts-expect-error(TODO:)
                             switch (info[1]) {
                                 case '1':
                                     this.yearlyByWeekdayPositionValue = ExecutionTimeWeekdayPositionInMonth.FIRST;
@@ -949,6 +989,7 @@ export class ExecutionTimeComponent {
                             }
                             this.yearlyByWeekdayPositionDataWrapper.update();
 
+                            // @ts-expect-error(TODO:)
                             switch (info[2]) {
                                 case '1':
                                     this.yearlyByWeekdayWeekdayValue = ExecutionTimeWeekday.MONDAY;
@@ -1028,6 +1069,7 @@ export class ExecutionTimeComponent {
     private _writeIntervalAndItsValuesToObject() {
         // If the execution type is set to always there is no time window
         if (this.hasTimeWindow() && this.executionType === ExecutionTypes.ALWAYS) {
+            // @ts-expect-error(TODO:)
             this.executionTime.timeWindow = null;
         } else {
             const tw = this.executionTime.timeWindow;
@@ -1179,6 +1221,7 @@ export class ExecutionTimeComponent {
                                 break;
                         }
 
+                        // @ts-expect-error(TODO:)
                         firstRestriction.value = info1 + '#' + info2;
                     }
                     //#endregion
@@ -1197,6 +1240,7 @@ export class ExecutionTimeComponent {
                     thirdRestriction.unit = 'Year';
                     thirdRestriction.value = this._encodeIntervalValue(this.intervalValue);
 
+                    // eslint-disable-next-line @typescript-eslint/no-shadow
                     const getNumberOfMonth = (input: string) => {
                         switch (input) {
                             case ExecutionTimeMonth.JANUARY:
@@ -1229,6 +1273,7 @@ export class ExecutionTimeComponent {
                     //#region - INTERVAL = YEAR - DATE
                     if (this.yearlyBySwitchValue === ExecutionTimeYearlyBy.DATE) {
                         firstRestriction.value = this.yearlyByDateDayValue;
+                        // @ts-expect-error(TODO:)
                         secondRestriction.value = getNumberOfMonth(this.yearlyByDateMonthValue);
                     }
                     //#endregion
@@ -1237,6 +1282,7 @@ export class ExecutionTimeComponent {
                     if (this.yearlyBySwitchValue === ExecutionTimeYearlyBy.WEEKDAY) {
                         let info1: string, info2: string;
 
+                        // @ts-expect-error(TODO:)
                         secondRestriction.value = getNumberOfMonth(this.yearlyByWeekdayMonthValue);
 
                         switch (this.yearlyByWeekdayPositionValue) {
@@ -1281,6 +1327,7 @@ export class ExecutionTimeComponent {
                                 break;
                         }
 
+                        // @ts-expect-error(TODO:)
                         firstRestriction.value = info1 + '#' + info2;
                     }
                     //#endregion

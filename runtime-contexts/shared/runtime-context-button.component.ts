@@ -36,19 +36,23 @@ import { XcButtonComponent, XcTooltipDirective } from '@zeta/xc';
 })
 export class RuntimeContextButtonComponent {
 
+    // @ts-expect-error(TODO:)
     readonly runtimeContext = input<XoRuntimeContext>(undefined);
 
     readonly selected = input(false, { transform: coerceBoolean });
 
     @HostBinding('class.selected')
     get hostSelected(): boolean {
+        // @ts-expect-error(TODO:)
         return this.selected();
     }
 
+    // eslint-disable-next-line @angular-eslint/no-output-native
     readonly select = output<XoRuntimeContext>();
 
 
     click() {
+        // @ts-expect-error(TODO:)
         this.select.emit(this.selected() ? undefined : this.runtimeContext());
     }
 

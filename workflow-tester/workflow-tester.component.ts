@@ -56,12 +56,17 @@ export class WorkflowTesterComponent {
     private readonly i18n = inject(I18nService);
 
     private static readonly history = new Map<string, WorkflowTest>();
+    // @ts-expect-error(TODO:)
     test: WorkflowTest;
 
+    // @ts-expect-error(TODO:)
     private _runtimeContext: RuntimeContext;
+    // @ts-expect-error(TODO:)
     private _orderType: string;
+    // @ts-expect-error(TODO:)
     private _input: Xo[];
 
+    // @ts-expect-error(TODO:)
     private inputTypes: (typeof XoStructureObject | typeof XoStructureArray)[];
 
     inputTree: XcStructureTreeDataSource;
@@ -69,12 +74,17 @@ export class WorkflowTesterComponent {
 
     hideOutput = false;
     launching = false;
+    // @ts-expect-error(TODO:)
     customField1: string;
+    // @ts-expect-error(TODO:)
     customField2: string;
+    // @ts-expect-error(TODO:)
     customField3: string;
+    // @ts-expect-error(TODO:)
     customField4: string;
 
     private monitoringLevel: XynaMonitoringLevel = 20;
+    // @ts-expect-error(TODO:)
     private priority: XynaPriority;
 
     readonly monitoringLevelDataWrapper = new XcAutocompleteDataWrapper<XynaMonitoringLevel>(
@@ -98,9 +108,11 @@ export class WorkflowTesterComponent {
 
     constructor() {
         // create input tree
+        // @ts-expect-error(TODO:)
         this.inputTree = new XcStructureTreeDataSource(this.apiService, this.i18n, undefined, []);
         this.inputTree.structureFallbackFunction = idx => this.inputTypes[idx];
         // create output tree
+        // @ts-expect-error(TODO:)
         this.outputTree = new XcStructureTreeDataSource(this.apiService, this.i18n, undefined, []);
         this.outputTree.readonlyMode = true;
         this.outputTree.arrayTypesLimit = 20;
@@ -114,6 +126,7 @@ export class WorkflowTesterComponent {
 
     private computeSignatureKey(signature: OrderTypeSignature): string {
         return signature.inputs.map(input => this.computeVariableKey(input)).join('') + '~' +
+               // eslint-disable-next-line @typescript-eslint/no-shadow
                signature.outputs.map(output => this.computeVariableKey(output)).join('');
     }
 
@@ -177,6 +190,7 @@ export class WorkflowTesterComponent {
                 .withErrorMessage(true)
                 .options;
 
+            // @ts-expect-error(TODO:)
             this.apiService.startOrder(this.runtimeContext, this.orderType, payload, null, options).pipe(
                 finalize(() => {
                     this.hideOutput = false;
@@ -220,6 +234,7 @@ export class WorkflowTesterComponent {
                 const testkey = this.computeTestKey();
                 const signatureKey = this.computeSignatureKey(signature);
                 // get test from history, if any
+                // @ts-expect-error(TODO:)
                 this.test = WorkflowTesterComponent.history.get(testkey);
                 // test does not match signature?
                 if (!this.test || this.test.signatureKey !== signatureKey) {
@@ -235,12 +250,18 @@ export class WorkflowTesterComponent {
                     if (this.test.output) {
                         this.updateOutputTree();
                     }
+                    // @ts-expect-error(TODO:)
                     this.customField1 = this.test.customField1;
+                    // @ts-expect-error(TODO:)
                     this.customField2 = this.test.customField2;
+                    // @ts-expect-error(TODO:)
                     this.customField3 = this.test.customField3;
+                    // @ts-expect-error(TODO:)
                     this.customField4 = this.test.customField4;
+                    // @ts-expect-error(TODO:)
                     this.monitoringLevel = this.test.monitoringLevel;
                     this.monitoringLevelDataWrapper.update();
+                    // @ts-expect-error(TODO:)
                     this.priority = this.test.priority;
                     this.priorityDataWrapper.update();
                     this.hideOutput = false;

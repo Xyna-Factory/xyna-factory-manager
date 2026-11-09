@@ -49,12 +49,17 @@ export class GenerateInputComponent {
     private readonly cdr = inject(ChangeDetectorRef);
 
 
+    // @ts-expect-error(TODO:)
     startOrderBusy: boolean;
+    // @ts-expect-error(TODO:)
     rtc: RuntimeContext;
 
+    // @ts-expect-error(TODO:)
     processOrderId: string;
+    // @ts-expect-error(TODO:)
     processError: string;
 
+    // @ts-expect-error(TODO:)
     ois: XoOrderInputSource;
 
     get noInputData(): boolean {
@@ -73,7 +78,9 @@ export class GenerateInputComponent {
         return this.ois && this.ois.sourceType.name.indexOf(ORDER_INPUT_SOURCE_TYPE_XTF_NAME_PREFIX) >= 0;
     }
 
+    // @ts-expect-error(TODO:)
     private lastStringContainerForXTF: string[];
+    // @ts-expect-error(TODO:)
     private lastInputSourceId: number;
 
     @Input()
@@ -82,13 +89,16 @@ export class GenerateInputComponent {
         this.resetComponent(true);
     }
 
+    // @ts-expect-error(TODO:)
     readonly fmanRtc = input<RuntimeContext>(undefined);
 
     readonly disabled = input(false, { transform: coerceBoolean });
 
     readonly generatingErrorEmitter = output<any>();
 
+    // @ts-expect-error(TODO:)
     errorMsg: string;
+    // @ts-expect-error(TODO:)
     inputParamterTreeDataSource: XcStructureTreeDataSource;
 
 
@@ -115,6 +125,7 @@ export class GenerateInputComponent {
                 //
                 const paramGenOrderType = this.ois.parameter.data
                     .find(para => para.key === OrderInputSourceParameterKey.WorkflowGeneratingOrderType);
+                // @ts-expect-error(TODO:)
                 const genOrderType = paramGenOrderType.value;
                 this.startGeneratingOrderAndBuildTree(this.rtc, genOrderType);
             }
@@ -128,11 +139,13 @@ export class GenerateInputComponent {
                     para => para.key === OrderInputSourceParameterKey.XTFTestCaseName
                 );
 
+                // @ts-expect-error(TODO:)
                 this.apiService.generateInput(this.rtc, paramCaseName.value, {withErrorMessage: true}).pipe(
                     finalize(() => this.cdr.markForCheck())
                 ).subscribe({
                     next: result => {
                         if (result && !result.error) {
+                            // @ts-expect-error(TODO:)
                             this.lastInputSourceId = result.inputSourceId;
 
                             // 3. cf must be the user who generated it
@@ -140,8 +153,10 @@ export class GenerateInputComponent {
                                 result.customStringContainer[2] = this.authService.username;
                             }
 
+                            // @ts-expect-error(TODO:)
                             this.lastStringContainerForXTF = result.customStringContainer;
 
+                            // eslint-disable-next-line @typescript-eslint/no-shadow
                             const output = new XoArray<XoObject>();
                             output.data.push(...(<XoObject[]>result.output));
 
@@ -165,6 +180,7 @@ export class GenerateInputComponent {
         this.resetComponent(false);
         this.startOrderBusy = true;
         const orderType = this.ois.orderType.type;
+        // eslint-disable-next-line @typescript-eslint/no-shadow
         const input = this.inputParamterTreeDataSource.container.data;
 
         const opt: StartOrderOptions = {
@@ -182,6 +198,7 @@ export class GenerateInputComponent {
             opt.customStringContainer = this.lastStringContainerForXTF;
         }
 
+        // @ts-expect-error(TODO:)
         this.apiService.startOrder(this.rtc, orderType, input, null, opt).pipe(
             finalize(() => {
                 this.startOrderBusy = false;
@@ -209,6 +226,7 @@ export class GenerateInputComponent {
 
     resetComponent(withTree = false) {
         if (withTree) {
+            // @ts-expect-error(TODO:)
             this.inputParamterTreeDataSource = null;
         }
         this.processError = '';
@@ -239,6 +257,7 @@ export class GenerateInputComponent {
         this._buildTree(rtc, dataContainer, descContainer);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-shadow
     private _transformInputParameterJson(rtc: RuntimeContext, input: string): InputDataTypesTreeData {
 
         const object = JSON.parse(input);
@@ -284,17 +303,21 @@ export class GenerateInputComponent {
                     const optionsWithErrorAndCFs: StartOrderOptions = {
                         async: false,
                         withErrorMessage: true,
+                        // @ts-expect-error(TODO:)
                         customStringContainer: [cf0, cf1, this.authService.username]
                     };
 
+                    // @ts-expect-error(TODO:)
                     this.apiService.startOrder(rtc, ordertype, null, null, optionsWithErrorAndCFs).subscribe(result => {
                         if (result && !result.errorMessage) {
+                            // @ts-expect-error(TODO:)
                             result.output.forEach(item => {
                                 dataContainer.data.push(item);
                             });
 
                             this._buildTree(rtc, dataContainer, dataContainer.data);
                         } else {
+                            // @ts-expect-error(TODO:)
                             this.dialogService.error(result.errorMessage);
                         }
                     });
@@ -317,6 +340,7 @@ export class GenerateInputComponent {
     _buildTree(rtc: RuntimeContext, dataContainer: XoArray, descContainer: XoDescriber[]) {
 
         if (!this.inputParamterTreeDataSource) {
+            // @ts-expect-error(TODO:)
             this.inputParamterTreeDataSource = new XcStructureTreeDataSource(this.apiService, undefined, rtc, null, null);
         }
 

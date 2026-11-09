@@ -19,7 +19,7 @@ import { of, Subscription, throwError } from 'rxjs';
 import { catchError, filter, finalize, first, skip, tap } from 'rxjs/operators';
 
 
-import { ChangeDetectionStrategy, Component, inject, OnDestroy , signal} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, signal} from '@angular/core';
 import { FMAN_RTC } from '@fman/factory-manager.component';
 import { XoDependencyType } from '@fman/runtime-contexts/xo/xo-dependency.model';
 import { XoGetApplicationContentRequest } from '@fman/runtime-contexts/xo/xo-get-application-content-request.model';
@@ -51,7 +51,7 @@ enum ElementType {
     XYNAPROPERTY = 'XYNAPROPERTY',
     SHAREDLIB = 'SHAREDLIB',
     FORMDEFINITION = 'FORMDEFINITION',
-    ORDERINPUTSOURCE = 'ORDERINPUTSOURCE',
+    ORDERINPUTSOURCE = 'ORDERINPUTSOURCE'
 }
 
 @Component({
@@ -73,6 +73,7 @@ export class ManageContentDialogComponent extends XcDialogComponent<boolean, XoR
     includeImplicit = false;
     includeIndirect = false;
     includeAssigned = true;
+    // @ts-expect-error(TODO:)
     loading: boolean;
 
     readonly changedApplicationElements = new Map<string, XoApplicationElement>();
@@ -86,6 +87,7 @@ export class ManageContentDialogComponent extends XcDialogComponent<boolean, XoR
         this.i18n.setTranslations(LocaleService.EN_US, manageContent_translations_en_US);
 
         // create data source
+        // @ts-expect-error(TODO:)
         this.dataSource = new XcRemoteTableDataSource(this.apiService, undefined, FMAN_RTC, ORDER_TYPES.GET_APPLICATION_CONTENT, createContentTableInfoClass(!this.readonly));
         // this.dataSource.actionElements = [
         //     {
@@ -189,6 +191,7 @@ export class ManageContentDialogComponent extends XcDialogComponent<boolean, XoR
             }),
             tap(result => this.dismiss(!result.errorMessage ? true : undefined)),
             filter(result => !!result.errorMessage),
+            // @ts-expect-error(TODO:)
             tap(result => this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n'))),
             finalize(() => {
                 this.loading = false;

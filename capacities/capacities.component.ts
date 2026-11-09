@@ -57,6 +57,7 @@ export class CapacitiesComponent extends RestorableCapacitiesComponent {
 
     constructor() {
         super();
+        // @ts-expect-error(TODO:)
         this.initRemoteTableDataSource(XoCapacityInformation, XoCapacityInformationArray, FMAN_RTC, ISWP.List);
 
         this.remoteTableDataSource.tableInfoClass = XoRemappingTableInfoClass(
@@ -93,15 +94,19 @@ export class CapacitiesComponent extends RestorableCapacitiesComponent {
         const name = new XoCapacityName();
         name.name = entry.name;
 
+        // @ts-expect-error(TODO:)
         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, name, XoCapacityInformation, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             this.detailsObject = (output[0] || null) as XoCapacityInformation;
+        // @ts-expect-error(TODO:)
         }, this.UNSPECIFIED_DETAILS_ERROR, null);
     }
 
+    // @ts-expect-error(TODO:)
     add(duplicatedProperty: XoCapacityInformation = null) {
 
         const data: AddNewCapacityModalComponentData = {
+            // @ts-expect-error(TODO:)
             addWorkflow: ISWP.Add,
             apiService: this.apiService,
             i18nService: this.i18nService,
@@ -128,8 +133,10 @@ export class CapacitiesComponent extends RestorableCapacitiesComponent {
                     if (entry instanceof XoCapacityInformation) {
                         const name = new XoCapacityName();
                         name.name = entry.name;
+                        // @ts-expect-error(TODO:)
                         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Delete, name, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
                         this.handleStartOrderResult(obs, output => {
+                            // @ts-expect-error(TODO:)
                             this.detailsObject = null;
                             this.clearSelection();
                             this.refresh();
@@ -141,11 +148,13 @@ export class CapacitiesComponent extends RestorableCapacitiesComponent {
     }
 
     dismiss() {
+        // @ts-expect-error(TODO:)
         this.detailsObject = null;
         this.clearSelection();
     }
 
     save() {
+        // @ts-expect-error(TODO:)
         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Save, this.detailsObject.clone(), null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             this.dismiss();

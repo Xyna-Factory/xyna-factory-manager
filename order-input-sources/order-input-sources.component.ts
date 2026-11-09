@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject , signal} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, signal} from '@angular/core';
 
 import { StartOrderOptionsBuilder, XoApplication, XoArray, XoDescriber } from '@zeta/api';
 import { XcI18nContextDirective, XcI18nTranslateDirective } from '@zeta/i18n';
@@ -56,7 +56,8 @@ export class OrderInputSourcesComponent extends RestorableOrderInputSourcesCompo
 
     constructor() {
         super();
-        
+
+        // @ts-expect-error(TODO:)
         this.initRemoteTableDataSource(XoOrderInputSource, XoOrderInputSourceArray, FMAN_RTC, ISWP.List);
 
         this.refresh();
@@ -119,6 +120,7 @@ export class OrderInputSourcesComponent extends RestorableOrderInputSourcesCompo
                 }
             }
             // handle special revision filter
+            // @ts-expect-error(TODO:)
             if (revision !== undefined) {
                 // find RTC by revision-ID
                 this.apiService.getRuntimeContexts(true).subscribe(rtcs => {
@@ -156,6 +158,7 @@ export class OrderInputSourcesComponent extends RestorableOrderInputSourcesCompo
                 if (qParams[key]) {
                     needsRestore = true;
                 }
+                // @ts-expect-error(TODO:)
                 keys.push(qParams[key]);
             }
         }
@@ -165,20 +168,25 @@ export class OrderInputSourcesComponent extends RestorableOrderInputSourcesCompo
     }
 
 
+    // @ts-expect-error(TODO:)
     add(duplicated: XoOrderInputSource = null) {
         const data: AddNewOrderInputSourceModalComponentData = {
+            // @ts-expect-error(TODO:)
             addWorkflow: ISWP.Add,
+            // @ts-expect-error(TODO:)
             getOrderSourceTypesWorkflow: ISWP.GetOrderSourceTypes,
+            // @ts-expect-error(TODO:)
             getOrderTypes: ISWP.GetOrderTypes,
+            // @ts-expect-error(TODO:)
             getGeneratingOrderTypes: ISWP.GetGeneratingOrderTypes,
             i18nService: this.i18nService,
             rtc: FMAN_RTC,
             duplicate: duplicated,
-             
-            GET_GENERATING_ORDER_TYPES_EMPTY_LIST_ERROR: this.GET_GENERATING_ORDER_TYPES_EMPTY_LIST_ERROR,
+
+            GET_GENERATING_ORDER_TYPES_EMPTY_LIST_ERROR: this.GET_GENERATING_ORDER_TYPES_EMPTY_LIST_ERROR.bind(this),
             GET_GENERATING_ORDER_TYPES_ERROR: this.GET_GENERATING_ORDER_TYPES_ERROR,
-             
-            GET_ORDER_TYPES_EMPTY_LIST_ERROR: this.GET_ORDER_TYPES_EMPTY_LIST_ERROR,
+
+            GET_ORDER_TYPES_EMPTY_LIST_ERROR: this.GET_ORDER_TYPES_EMPTY_LIST_ERROR.bind(this),
             UNSPECIFIED_GET_ORDER_TYPES_ERROR: this.UNSPECIFIED_GET_ORDER_TYPES_ERROR,
             UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR: this.UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR
         };
@@ -194,6 +202,7 @@ export class OrderInputSourcesComponent extends RestorableOrderInputSourcesCompo
         request.inputSourceName = entry.name;
         request.revision = entry.revision;
 
+        // @ts-expect-error(TODO:)
         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, request, XoOrderInputSource, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             const detailedEntry = (output[0] || null) as XoOrderInputSource;
@@ -213,8 +222,10 @@ export class OrderInputSourcesComponent extends RestorableOrderInputSourcesCompo
                     if (entry instanceof XoOrderInputSource) {
                         const id = new XoOrderInputSourceId();
                         id.id = entry.id;
+                        // @ts-expect-error(TODO:)
                         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Delete, id, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
                         this.handleStartOrderResult(obs, () => {
+                            // @ts-expect-error(TODO:)
                             this.detailsObject = null;
                             this.clearSelection();
                             this.refresh();
@@ -227,6 +238,7 @@ export class OrderInputSourcesComponent extends RestorableOrderInputSourcesCompo
 
 
     dismiss(event?: OrderInputSourceCloseEvent) {
+        // @ts-expect-error(TODO:)
         this.detailsObject = null;
         this.clearSelection();
         if (event?.dataChanged) {

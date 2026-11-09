@@ -41,6 +41,7 @@ import { XoTrigger, XoTriggerArray } from './xo/xo-trigger.model';
 
 class TriggerTile extends Comparable implements TileItem {
 
+    // @ts-expect-error(TODO:)
     private template: XcTemplate;
 
     constructor(private readonly trigger: XoTrigger) {
@@ -69,6 +70,7 @@ class TriggerTile extends Comparable implements TileItem {
 
 class TriggerInstanceTile extends Comparable implements TileItem {
 
+    // @ts-expect-error(TODO:)
     private template: XcTemplate;
 
     constructor(private readonly triggerInstance: XoTriggerInstance, private readonly refresh: () => void) {
@@ -109,6 +111,7 @@ export class TriggerComponent extends RouteComponent {
 
 
     refreshing = false;
+    // @ts-expect-error(TODO:)
     datasources: TileDataSource[];
     private subscription: Subscription[] = [];
     deployButton: ActionButtonData = {  iconName: 'add', tooltip: 'deploy'  };
@@ -130,10 +133,12 @@ export class TriggerComponent extends RouteComponent {
                 next: result => {
                     if (result && !result.errorMessage) {
                         this.unSubscribe();
+                        // @ts-expect-error(TODO:)
                         const triggers: XoTrigger[] = (result.output[0] as XoTriggerArray).data;
                         this.datasources = triggers.map(trigger => this.buildTileDatasource(trigger));
 
                     } else {
+                        // @ts-expect-error(TODO:)
                         this.dialogService.error(result.errorMessage);
                     }
                 },

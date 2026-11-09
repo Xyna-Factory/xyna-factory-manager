@@ -18,8 +18,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, Input, NgZone, OnInit, inject, viewChild } from '@angular/core';
 
 import { ApiService } from '@zeta/api';
-import { I18nService } from '@zeta/i18n';
-import { XcI18nTranslateDirective } from '@zeta/i18n';
+import { I18nService, XcI18nTranslateDirective  } from '@zeta/i18n';
 import { XcDialogService, XDSIconName, XcIconButtonComponent, XcTemplateComponent, XcTooltipDirective } from '@zeta/xc';
 
 import { debounceTime, first, skip } from 'rxjs';
@@ -51,7 +50,9 @@ export class TileComponent  implements OnInit {
 
     readonly XDSIconName = XDSIconName;
 
+    // @ts-expect-error(TODO:)
     private _dataSource: TileDataSource;
+    // @ts-expect-error(TODO:)
     private _actionButton: ActionButtonData;
 
     @Input('tile-datasource')
@@ -89,6 +90,7 @@ export class TileComponent  implements OnInit {
             this.dataSource.detailItem = item;
             this.scrollTo();
         } else {
+            // @ts-expect-error(TODO:)
             this.dataSource.detailItem = undefined;
         }
     }
@@ -115,10 +117,13 @@ export class TileComponent  implements OnInit {
         // Workaround because angular material has no observer that completes when data is loaded and the table is rendered.
         // See https://github.com/angular/components/issues/8068
         this.zone.onStable.pipe(skip(2), first(), debounceTime(100)).subscribe(() => {
+            // @ts-expect-error(TODO:)
             this.headerRef().nativeElement.scrollIntoView(true);
             // The parent is the scroll section. Used to get a margin of 8px at the top of the card.
+            // @ts-expect-error(TODO:)
             const parent = this.headerRef().nativeElement.parentElement.parentElement;
             if (parent) {
+                // @ts-expect-error(TODO:)
                 this.headerRef().nativeElement.parentElement.parentElement.scrollTop -= 8;
             }
         });

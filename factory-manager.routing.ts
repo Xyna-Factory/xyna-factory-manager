@@ -28,7 +28,7 @@ import { CronlikeOrdersComponent } from './cronlike-orders/cronlike-orders.compo
 const ROOT = 'Factory-Manager';
 
 // matcher instead of a route param, because the RedirectGuard strips route params from the stored url
-export function pluginMatcher(segments: UrlSegment[]): UrlMatchResult {
+export function pluginMatcher(segments: UrlSegment[]): UrlMatchResult | null {
     return segments.length === 1 && segments[0].path.startsWith(FACTORY_MANAGER.PLUGIN)
         ? { consumed: segments }
         : null;

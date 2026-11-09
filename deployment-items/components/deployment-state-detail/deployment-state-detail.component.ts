@@ -34,6 +34,7 @@ import { XoDeploymentItem } from '../../xo/xo-deployment-item.model';
 export class DeploymentStateDetailComponent {
     private readonly dialogService = inject(XcDialogService);
 
+    // @ts-expect-error(TODO:)
     private _deploymentItem: XoDeploymentItem;
 
 

@@ -65,6 +65,7 @@ export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, Ad
     }
 
     busy = false;
+    // @ts-expect-error(TODO:)
     private _error: string;
     get error(): string {
         return this._error;
@@ -77,11 +78,13 @@ export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, Ad
     }
     errorBoxFocusCandidateRef = FMFocusCandidateRef.getInstance();
 
+    // @ts-expect-error(TODO:)
     orderType: XoOrderType;
 
     //#region - ########################################################### RUNTIME CONTEXT
     runtimeContextsDataWrapper: XcAutocompleteDataWrapper;
 
+    // @ts-expect-error(TODO:)
     private _selectedServerRuntimeContext: XoRuntimeContext;
     get selectedServerRuntimeContext(): XoRuntimeContext {
         if (this.orderType && this.orderType.runtimeContext) {
@@ -116,6 +119,7 @@ export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, Ad
     monitoringLevelDataWrapper: XcAutocompleteDataWrapper;
 
     get precedence(): number {
+        // @ts-expect-error(TODO:)
         return this.orderType ? this.orderType.precedence : null;
     }
     set precedence(value: number) {
@@ -141,10 +145,12 @@ export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, Ad
         }
     }
 
+    // @ts-expect-error(TODO:)
     childOrderInheritanceRulesFilter: string;
     childOrderInheritanceRulesMonitoringLevel = '20';
     childOrderInheritanceRulesMonitoringLevelDataWrapper: XcAutocompleteDataWrapper;
 
+    // @ts-expect-error(TODO:)
     childOrderInheritanceRulesPrecedence: number;
     childOrderInheritanceRulesPrecedenceDataWrapper = new XcStringIntegerDataWrapper(
         () => this.childOrderInheritanceRulesPrecedence,
@@ -153,6 +159,7 @@ export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, Ad
 
     childOrderInheritanceRulesItems: XcRichListItem<ChildOrderInheritanceRuleComponentData>[] = [];
 
+    // @ts-expect-error(TODO:)
     dsOrderTypeCapacitiesDataSource: XcRemoteTableDataSource<XoCapacityInformation>;
 
     constructor() {
@@ -178,11 +185,13 @@ export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, Ad
 
         this.planningDestinationDataWrapper = new XcAutocompleteDataWrapper(
             () => this.orderType ? this.orderType.planningDestination : null,
+            // @ts-expect-error(TODO:)
             value => this.orderType ? this.orderType.planningDestination = value : null
         );
 
         this.executionDestinationDataWrapper = new XcAutocompleteDataWrapper(
             () => this.orderType ? this.orderType.executionDestination : null,
+            // @ts-expect-error(TODO:)
             value => this.orderType ? this.orderType.executionDestination = value : null
         );
 
@@ -262,7 +271,7 @@ export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, Ad
                 } else {
                     this.error = this.injectedData.UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR;
                 }
-            }, 
+            },
             error: error => this.error = error
         });
     }
@@ -283,13 +292,14 @@ export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, Ad
         obs.subscribe({
             next: result => {
                 if (result && !result.errorMessage) {
+                    // @ts-expect-error(TODO:)
                     const dtArr = (result.output[0] || { data: []}) as XoDestinationTypeArray;
                     this.planningDestinationDataWrapper.values = dtArr.data.map(dt => ({name: signal(dt.name), value: dt}));
                     this.executionDestinationDataWrapper.values = dtArr.data.map(dt => ({name: signal(dt.name), value: dt}));
                 } else {
                     // console.log('_getDestinations\' result error: ', result);
                 }
-            }, 
+            },
             error: error => console.log('_getDestinations error: ', error)
         });
     }
@@ -381,6 +391,7 @@ export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, Ad
 
             this.orderType.requiredCapacities.data.forEach(rc => {
                 // cardinality is the usage of the Capacities in the detail panel of the selected order type
+                // @ts-expect-error(TODO:)
                 rc.cardinality = nameUsageMap.get(rc.name);
             });
 
@@ -399,6 +410,7 @@ export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, Ad
     add() {
 
         if (!this.orderType.priorityIsCustom) {
+            // @ts-expect-error(TODO:)
             delete this.orderType.priority;
         }
 
@@ -410,10 +422,12 @@ export class AddNewOrderTypeModalComponent extends XcDialogComponent<boolean, Ad
         // save all rules in the ordertype, which will be send to the server
         let item: XcRichListItem<ChildOrderInheritanceRuleComponentData>;
         for (item of this.childOrderInheritanceRulesItems) {
+            // @ts-expect-error(TODO:)
             this.orderType.parameterInheritanceRules.data.push(item.data.rule);
         }
 
         this.busy = true;
+        // @ts-expect-error(TODO:)
         this.apiService.startOrder(this.injectedData.rtc, this.injectedData.addWorkflow, [this.orderType], null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).subscribe({
             next: result => {
                 if (result && result.errorMessage) {

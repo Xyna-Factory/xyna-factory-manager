@@ -53,6 +53,7 @@ export class AddNewAdministrativeVetoModalComponent extends XcDialogComponent<bo
         return xcFormDirective ? xcFormDirective.invalid : true;
     }
 
+    // @ts-expect-error(TODO:)
     private _error: string;
     get error(): string {
         return this._error;
@@ -98,7 +99,7 @@ export class AddNewAdministrativeVetoModalComponent extends XcDialogComponent<bo
             this.injectedData.rtc,
             this.injectedData.addWorkflow,
             request,
-            null,
+            undefined,
             StartOrderOptionsBuilder.defaultOptionsWithErrorMessage
         ).subscribe({
             next: result => {

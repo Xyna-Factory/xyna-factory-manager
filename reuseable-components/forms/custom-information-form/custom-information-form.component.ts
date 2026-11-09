@@ -30,6 +30,7 @@ import { XcFormInputComponent, XcPanelComponent } from '@zeta/xc';
     imports: [XcFormInputComponent, XcPanelComponent, XcI18nTranslateDirective]
 })
 export class CustomInformationFormComponent {
+    // @ts-expect-error(TODO:)
     _customFields: XoOrderCustoms;
 
     /**

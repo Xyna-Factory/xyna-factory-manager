@@ -41,6 +41,7 @@ import { FMAN_RTC } from '@fman/factory-manager.component';
 
 class FilterTile extends Comparable implements TileItem {
 
+    // @ts-expect-error(TODO:)
     private template: XcTemplate;
 
     constructor(private readonly filter: XoFilter) {
@@ -69,6 +70,7 @@ class FilterTile extends Comparable implements TileItem {
 
 class FilterInstanceTile extends Comparable implements TileItem {
 
+    // @ts-expect-error(TODO:)
     private template: XcTemplate;
 
     constructor(private readonly filterInstance: XoFilterInstance, private readonly refresh: () => void) {
@@ -109,6 +111,7 @@ export class FilterComponent extends RouteComponent {
 
 
     refreshing = false;
+    // @ts-expect-error(TODO:)
     datasources: TileDataSource[];
     private subscription: Subscription[] = [];
     deployButton: ActionButtonData = {  iconName: 'add', tooltip: 'deploy'  };
@@ -130,10 +133,12 @@ export class FilterComponent extends RouteComponent {
                 next: result => {
                     if (result && !result.errorMessage) {
                         this.unSubscribe();
+                        // @ts-expect-error(TODO:)
                         const filters: XoFilter[] = (result.output[0] as XoFilterArray).data;
                         this.datasources = filters.map(filter => this.buildTileDatasource(filter));
 
                     } else {
+                        // @ts-expect-error(TODO:)
                         this.dialogService.error(result.errorMessage);
                     }
                 },

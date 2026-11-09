@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 /*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Copyright 2023 Xyna GmbH, Germany
@@ -28,7 +30,7 @@ export class XoExportSettings extends XoObject {
     filter: string;
 
     @XoProperty()
-    includeDocumentation: boolean = true;
+    includeDocumentation = true;
 }
 
 @XoArrayClass(XoExportSettings)

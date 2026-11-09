@@ -20,14 +20,15 @@ import { Directive, ElementRef, Input, OnDestroy, OnInit, inject } from '@angula
 import { coerceBoolean } from '@zeta/base';
 
 
-@Directive({ 
+@Directive({
     // tslint:disable-next-line: directive-selector
-    selector: '[fm-focus-candidate]' 
+    selector: '[fm-focus-candidate]'
 })
 export class FMFocusCandidateDirective implements OnInit, OnDestroy {
 
     private readonly element: HTMLElement;
 
+    // @ts-expect-error(TODO:)
     private _ref: FMFocusCandidateRef;
 
     // tslint:disable-next-line: no-output-rename
@@ -44,6 +45,7 @@ export class FMFocusCandidateDirective implements OnInit, OnDestroy {
     @Input('fm-focus-candidate-focus-onload')
     private set onload(value: any) {
         // this._onload = !!(value || value === '');
+        // @ts-expect-error(TODO:)
         this._onload = coerceBoolean(value);
     }
 
@@ -51,6 +53,7 @@ export class FMFocusCandidateDirective implements OnInit, OnDestroy {
     constructor() {
         const elementRef = inject(ElementRef, { optional: true, host: true });
 
+        // @ts-expect-error(TODO:)
         this.element = elementRef.nativeElement;
         if (!(this.element.tabIndex >= 0)) {
             this.element.tabIndex = -1;
@@ -67,6 +70,7 @@ export class FMFocusCandidateDirective implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         if (this._ref) {
+            // @ts-expect-error(TODO:)
             this._ref.setRef(null);
         }
     }
@@ -87,6 +91,7 @@ export class FMFocusCandidateDirective implements OnInit, OnDestroy {
 
 export class FMFocusCandidateRef {
 
+    // @ts-expect-error(TODO:)
     private _directiveRef: FMFocusCandidateDirective;
 
 

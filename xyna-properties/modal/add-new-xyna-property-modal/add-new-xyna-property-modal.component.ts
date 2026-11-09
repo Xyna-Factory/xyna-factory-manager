@@ -56,7 +56,9 @@ export class AddNewXynaPropertyModalComponent extends XcDialogComponent<boolean,
     xynaProperty: XoXynaProperty;
     busy = false;
 
+    // @ts-expect-error(TODO:)
     private _languageTag: string;
+    // @ts-expect-error(TODO:)
     private _error: string;
 
     get error(): string {
@@ -113,6 +115,7 @@ export class AddNewXynaPropertyModalComponent extends XcDialogComponent<boolean,
     add() {
         this.busy = true;
         this.injectedData.apiService.startOrder(
+            // @ts-expect-error(TODO:)
             this.injectedData.rtc, this.injectedData.addWorkflow, this.xynaProperty, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe(
                 result => {

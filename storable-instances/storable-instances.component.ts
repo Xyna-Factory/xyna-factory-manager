@@ -54,9 +54,13 @@ interface StorableTableColumn extends XcTableColumn {
 
 class StorableTableDataSource extends XcLocalTableDataSource<XoObject> {
 
+    // @ts-expect-error(TODO:)
     apiService: ApiService;
+    // @ts-expect-error(TODO:)
     dialogs: XcDialogService;
+    // @ts-expect-error(TODO:)
     private tableInfo: XoTableInfo;
+    // @ts-expect-error(TODO:)
     private storableType: XoDescriber;
 
     private _loadedStorables: XoObject[] = [];
@@ -77,7 +81,9 @@ class StorableTableDataSource extends XcLocalTableDataSource<XoObject> {
      * and returns an observable of the table columns
      */
     private queryStorableColumns(describer: XoDescriber): Observable<StorableTableColumn[]> {
+        // @ts-expect-error(TODO:)
         return this.apiService
+            // @ts-expect-error(TODO:)
             .getStructure(describer.rtc, [describer]).get(describer)
             .pipe(
                 map(structure =>
@@ -87,6 +93,7 @@ class StorableTableDataSource extends XcLocalTableDataSource<XoObject> {
                         // check, if the child has a complex type or a list of primitives
                         .map(c => ({
                             ...c,
+                            // @ts-expect-error(TODO:)
                             complex: !!c.typeFqn.path || !!(c as any)._children
                         }))
                 ),
@@ -121,6 +128,7 @@ class StorableTableDataSource extends XcLocalTableDataSource<XoObject> {
                 const tableInfo = new XoTableInfo();
                 tableInfo.columns = new XoTableColumnArray();
                 tableInfo.columns.append(...xoColumns);
+                // @ts-expect-error(TODO:)
                 tableInfo.rootType = `${describer.fqn.path}.${describer.fqn.name}`;
                 tableInfo.bootstrap = false;
                 return tableInfo;
@@ -134,8 +142,11 @@ class StorableTableDataSource extends XcLocalTableDataSource<XoObject> {
     private queryQueryInput(tableInfo: XoTableInfo): Observable<QueryInput> {
         return this.apiService.startOrder(RuntimeContext.guiHttpApplication, 'xmcp.tables.BuildQueryInput', tableInfo).pipe(
             map(response => (<QueryInput>{
+                // @ts-expect-error(TODO:)
                 selectionMask: response.output[0],
+                // @ts-expect-error(TODO:)
                 filterCondition: response.output[1],
+                // @ts-expect-error(TODO:)
                 parameters: response.output[2]
             })),
             tap(queryInput => {
@@ -165,9 +176,11 @@ class StorableTableDataSource extends XcLocalTableDataSource<XoObject> {
         let tableLimit: number;
         this.apiService.startOrder(
             FMAN_RTC,
+            // @ts-expect-error(TODO:)
             XYNA_PROPERTY_ISWP.Details,
             XoXynaPropertyKey.withKey('zeta.table.limit')
         ).pipe(
+            // @ts-expect-error(TODO:)
             map(result => result.output[0] as XoXynaProperty),
             filter(xynaProperty =>
                 !!xynaProperty
@@ -181,6 +194,7 @@ class StorableTableDataSource extends XcLocalTableDataSource<XoObject> {
             // perform query
             switchMap(queryInput =>
                 this.apiService.startOrder(
+                    // @ts-expect-error(TODO:)
                     this.storableType.rtc,
                     'xnwh.persistence.Query',
                     [
@@ -197,6 +211,7 @@ class StorableTableDataSource extends XcLocalTableDataSource<XoObject> {
             // fill rows
             tap(result => {
                 if (result.errorMessage) {
+                    // @ts-expect-error(TODO:)
                     this.dialogs.error(this.i18n.translateInstant('fman.storable-instances.query-storable-error', { key: '$0', value: result.errorMessage }));
                 }
 
@@ -262,13 +277,19 @@ export class StorableInstancesComponent implements OnInit {
     rtcDataWrapper: XcAutocompleteDataWrapper<XoRuntimeContext>;
     fqnDataWrapper: XcAutocompleteDataWrapper<FullQualifiedName>;
 
+    // @ts-expect-error(TODO:)
     selectedRTC: XoRuntimeContext;
+    // @ts-expect-error(TODO:)
     selectedFQN: FullQualifiedName;
+    // @ts-expect-error(TODO:)
     selectedRow: XoObject;
+    // @ts-expect-error(TODO:)
     selectedStorable: XoObject;
 
     storableTableSource: StorableTableDataSource;
+    // @ts-expect-error(TODO:)
     tableInfo: XoTableInfo;
+    // @ts-expect-error(TODO:)
     structureTreeDataSource: XcStructureTreeDataSource;
     editSubject: Subject<void> = new Subject<void>();
 
@@ -281,7 +302,7 @@ export class StorableInstancesComponent implements OnInit {
 
     constructor() {
         // prevent XoSelectionMask from being pruned
-         
+
         const mask = new XoSelectionMask();
 
         this.i18nService.setTranslations(LocaleService.DE_DE, storable_instances_translations_de_DE);
@@ -291,6 +312,7 @@ export class StorableInstancesComponent implements OnInit {
         this.storableTableSource.apiService = this.apiService;
         this.storableTableSource.dialogs = this.dialogService;
         this.storableTableSource.selectionModel.selectionChange.subscribe((model: XcSelectionModel<Comparable>) => {
+            // @ts-expect-error(TODO:)
             this.selectedRow = this.canEditTable() ? (model.selection[0] as XoObject) : null;
             this.selectedStorable = this.selectedRow;
             if (this.selectedRow) {
@@ -361,8 +383,10 @@ export class StorableInstancesComponent implements OnInit {
         const uniqueKey = `${RuntimeContextType.Workspace},${
             this.apiService.runtimeContext && this.apiService.runtimeContext.ws && this.apiService.runtimeContext.ws.workspace
                 ? this.apiService.runtimeContext.ws.workspace
+                // @ts-expect-error(TODO:)
                 : XoRuntimeContext.fromType('Workspace', RuntimeContext.defaultWorkspace.ws.workspace, -1).uniqueKey
         }`;
+        // @ts-expect-error(TODO:)
         this.selectedRTC = this.rtcDataWrapper.values.filter(r => !!r?.value).find(rtc => rtc?.value.uniqueKey === uniqueKey)?.value ?? XoWorkspace.fromName(RuntimeContext.defaultWorkspace.ws.workspace);
         this.rtcDataWrapper.update();
         this.fqnDataWrapper.values = [];
@@ -375,11 +399,13 @@ export class StorableInstancesComponent implements OnInit {
      */
     private updateFQNDataWrapper() {
         this.isLoadingFQNs = true;
+        // @ts-expect-error(TODO:)
         this.apiService.getSubtypes(this.selectedRTC.toRuntimeContext(), [XoStorable]).get(XoStorable)
             .subscribe(structures => {
                 this.fqnDataWrapper.values = structures
                     .filter(structure => !structure.typeAbstract)
                     .map(structure => <XcOptionItem<FullQualifiedName>>{
+                        // @ts-expect-error(TODO:)
                         name: signal(`${structure.typeFqn.path}.${structure.typeFqn.name}`),
                         value: structure.typeFqn
                     });
@@ -425,7 +451,7 @@ export class StorableInstancesComponent implements OnInit {
      */
     createStorable(): void {
         const structureTreeDataSource = new XcStructureTreeDataSource(this.apiService, this.i18nService, this.selectedRTC.toRuntimeContext(), [
-            <XoDescriber>{ rtc: this.selectedRTC.toRuntimeContext(), fqn: this.selectedFQN }
+            { rtc: this.selectedRTC.toRuntimeContext(), fqn: this.selectedFQN }
         ], undefined, false);
         structureTreeDataSource.refresh();
         this.dialogService
@@ -460,6 +486,7 @@ export class StorableInstancesComponent implements OnInit {
      */
     refreshRows(): void {
         this.storableTableSource.refresh();
+        // @ts-expect-error(TODO:)
         this.selectedRow = null;
         this.detailOpen = false;
         this.updateFQNDataWrapper();
@@ -474,8 +501,9 @@ export class StorableInstancesComponent implements OnInit {
 
     getDescriber(): XoDescriber {
         if (this.selectedRTC && this.selectedFQN) {
-            return <XoDescriber>{ rtc: this.selectedRTC.toRuntimeContext(), fqn: this.selectedFQN };
+            return { rtc: this.selectedRTC.toRuntimeContext(), fqn: this.selectedFQN };
         }
+        // @ts-expect-error(TODO:)
         return null;
     }
 

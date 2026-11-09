@@ -43,6 +43,7 @@ export class AdministrativeVetoesComponent extends RestorableAdministrativeVetoC
 
     constructor() {
         super();
+        // @ts-expect-error(TODO:)
         this.initRemoteTableDataSource(XoAdministrativeVeto, XoAdministrativeVetoArray, FMAN_RTC, ISWP.List);
 
         this.selectedEntryChange.subscribe(
@@ -74,6 +75,7 @@ export class AdministrativeVetoesComponent extends RestorableAdministrativeVetoC
         const request = new XoAdministrativeVetoName();
         request.name = entry.name;
 
+        // @ts-expect-error(TODO:)
         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, request, XoAdministrativeVeto, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             this.detailsObject = (output[0] || null) as XoAdministrativeVeto;
@@ -81,8 +83,10 @@ export class AdministrativeVetoesComponent extends RestorableAdministrativeVetoC
         }, this.UNSPECIFIED_DETAILS_ERROR);
     }
 
+    // @ts-expect-error(TODO:)
     add(duplicated: XoAdministrativeVeto = null) {
         const data: AddNewAdministrativeVetoModalData = {
+            // @ts-expect-error(TODO:)
             addWorkflow: ISWP.Add,
             apiService: this.apiService,
             i18nService: this.i18nService,
@@ -105,8 +109,10 @@ export class AdministrativeVetoesComponent extends RestorableAdministrativeVetoC
                     if (entry instanceof XoAdministrativeVeto) {
                         const veto = new XoAdministrativeVetoName();
                         veto.name = entry.name;
+                        // @ts-expect-error(TODO:)
                         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Delete, veto, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
                         this.handleStartOrderResult(obs, () => {
+                            // @ts-expect-error(TODO:)
                             this.detailsObject = null;
                             this.clearSelection();
                             this.refresh();
@@ -122,6 +128,7 @@ export class AdministrativeVetoesComponent extends RestorableAdministrativeVetoC
         const request = new XoAdministrativeVetoName();
         request.name = entry.name;
 
+        // @ts-expect-error(TODO:)
         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, request, XoAdministrativeVeto, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             const detailedEntry = (output[0] || null) as XoAdministrativeVeto;
@@ -132,11 +139,13 @@ export class AdministrativeVetoesComponent extends RestorableAdministrativeVetoC
     }
 
     dismiss() {
+        // @ts-expect-error(TODO:)
         this.detailsObject = null;
         this.clearSelection();
     }
 
     save() {
+        // @ts-expect-error(TODO:)
         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Save, this.detailsObject.clone(), null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             // console.log('save was successful?', output);

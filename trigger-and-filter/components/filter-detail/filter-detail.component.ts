@@ -47,6 +47,7 @@ export class FilterDetailComponent extends XcDynamicComponent<XoFilter> {
         return XC_COMPONENT_DATA;
     }
 
+    // @ts-expect-error(TODO:)
     detail: XoFilterDetails;
     busy = false;
 
@@ -61,6 +62,7 @@ export class FilterDetailComponent extends XcDynamicComponent<XoFilter> {
             .subscribe({
                 next: result => {
                     if (!result.errorMessage) {
+                        // @ts-expect-error(TODO:)
                         this.detail = result.output[0] as XoFilterDetails;
                     } else {
                         this.dialogService.error(result.errorMessage);
@@ -78,6 +80,7 @@ export class FilterDetailComponent extends XcDynamicComponent<XoFilter> {
 
     get name(): string {
         if (!this.detail) {
+            // @ts-expect-error(TODO:)
             return undefined;
         }
         return this.detail.name;
@@ -85,6 +88,7 @@ export class FilterDetailComponent extends XcDynamicComponent<XoFilter> {
 
     get runtimeContextTitle(): string {
         if (!this.detail) {
+            // @ts-expect-error(TODO:)
             return undefined;
         }
         if (this.detail.runtimeContext instanceof XoRuntimeApplication) {
@@ -98,6 +102,7 @@ export class FilterDetailComponent extends XcDynamicComponent<XoFilter> {
 
     get runtimeContextLabel(): string {
         if (!this.detail) {
+            // @ts-expect-error(TODO:)
             return undefined;
         }
         return this.detail.runtimeContext.label;

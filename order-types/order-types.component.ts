@@ -83,6 +83,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
     monitoringLevelDataWrapper: XcAutocompleteDataWrapper;
 
     get precedence(): number {
+        // @ts-expect-error(TODO:)
         return this.detailsObject ? this.detailsObject.precedence : null;
     }
     set precedence(value: number) {
@@ -109,10 +110,12 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
         }
     }
 
+    // @ts-expect-error(TODO:)
     childOrderInheritanceRulesFilter: string;
     childOrderInheritanceRulesMonitoringLevel = '20';
     childOrderInheritanceRulesMonitoringLevelDataWrapper: XcAutocompleteDataWrapper;
 
+    // @ts-expect-error(TODO:)
     childOrderInheritanceRulesPrecedence: number;
     childOrderInheritanceRulesPrecedenceDataWrapper = new XcStringIntegerDataWrapper(
         () => this.childOrderInheritanceRulesPrecedence,
@@ -121,6 +124,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
 
     childOrderInheritanceRulesItems: XcRichListItem<ChildOrderInheritanceRuleComponentData>[] = [];
 
+    // @ts-expect-error(TODO:)
     dsOrderTypeCapacitiesDataSource: XcRemoteTableDataSource<XoCapacityInformation>;
 
     private readonly tableInfoChangeSubscription: Subscription;
@@ -132,6 +136,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
 
         this.orderTypeTableFilter.showPath = false;
 
+        // @ts-expect-error(TODO:)
         this.initRemoteTableDataSource(XoOrderType, XoOrderTypeArray, FMAN_RTC, ISWP.List, [new XoExecutionDestinationFilter(), this.orderTypeTableFilter]);
 
         this.tableInfoChangeSubscription = this.remoteTableDataSource.tableInfoChange.subscribe(() => {
@@ -165,11 +170,13 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
 
         this.planningDestinationDataWrapper = new XcAutocompleteDataWrapper(
             () => this.detailsObject ? this.detailsObject.planningDestination : null,
+            // @ts-expect-error(TODO:)
             value => this.detailsObject ? this.detailsObject.planningDestination = value : null
         );
 
         this.executionDestinationDataWrapper = new XcAutocompleteDataWrapper(
             () => this.detailsObject ? this.detailsObject.executionDestination : null,
+            // @ts-expect-error(TODO:)
             value => this.detailsObject ? this.detailsObject.executionDestination = value : null
         );
 
@@ -257,6 +264,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
         const name = new XoOrderTypeName();
         name.name = entry.fullQualifiedName;
 
+        // @ts-expect-error(TODO:)
         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, [entry.runtimeContext, name], XoOrderType, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
 
@@ -307,12 +315,15 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
             this.readOrderTypeCapacitiesFromDetailsObject();
 
 
+        // @ts-expect-error(TODO:)
         }, this.UNSPECIFIED_DETAILS_ERROR, null);
     }
 
+    // @ts-expect-error(TODO:)
     add(duplicated: XoOrderType = null) {
 
         const data: AddNewOrderTypeModalComponentData = {
+            // @ts-expect-error(TODO:)
             addWorkflow: ISWP.Add,
             GetDestinationsWorkflow: ISWP.GetDestinations,
             GetOrdertypeCapacitiesWorkflow: ISWP.GetOrdertypeCapacities,
@@ -332,10 +343,10 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
                     if (result) {
                         this.refresh();
                     }
-                }, 
+                },
                 error: error => console.log('AddNewOrderTypeModalComponent error = ', error),
                 complete: () => XoCapacityInformation.isInModalFlag = false
-        });
+            });
 
         // this.dialogService.error('not implemented yet');
     }
@@ -345,6 +356,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
         const name = new XoOrderTypeName();
         name.name = entry.fullQualifiedName;
 
+        // @ts-expect-error(TODO:)
         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, [entry.runtimeContext, name], XoOrderType, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
 
@@ -366,8 +378,10 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
                     if (entry instanceof XoOrderType) {
                         const name = new XoOrderTypeName();
                         name.name = entry.fullQualifiedName;
+                        // @ts-expect-error(TODO:)
                         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Delete, [entry.runtimeContext, name], null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
                         this.handleStartOrderResult(obs, () => {
+                            // @ts-expect-error(TODO:)
                             this.detailsObject = null;
                             this.clearSelection();
                         }, this.UNSPECIFIED_DETAILS_ERROR, () => this.refresh());
@@ -378,6 +392,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
     }
 
     dismiss() {
+        // @ts-expect-error(TODO:)
         this.detailsObject = null;
         this.clearSelection();
     }
@@ -385,6 +400,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
     save() {
 
         if (!this.detailsObject.priorityIsCustom) {
+            // @ts-expect-error(TODO:)
             delete this.detailsObject.priority;
         }
 
@@ -396,9 +412,11 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
         // save all rules in the ordertype, which will be sent to the server
         let item: XcRichListItem<ChildOrderInheritanceRuleComponentData>;
         for (item of this.childOrderInheritanceRulesItems) {
+            // @ts-expect-error(TODO:)
             this.detailsObject.parameterInheritanceRules.data.push(item.data.rule);
         }
 
+        // @ts-expect-error(TODO:)
         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Save, this.detailsObject.clone(), null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, () => {
             this.dismiss();
@@ -496,6 +514,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
 
             this.detailsObject.requiredCapacities.data.forEach(rc => {
                 // cardinality is the usage of the Capacities in the detail panel of the selected order type
+                // @ts-expect-error(TODO:)
                 rc.cardinality = nameUsageMap.get(rc.name);
             });
         }
@@ -506,6 +525,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
         const name = new XoOrderTypeName();
         name.name = this.detailsObject.fullQualifiedName;
 
+        // @ts-expect-error(TODO:)
         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, [this.detailsObject.runtimeContext, name], XoOrderType, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
 
@@ -526,6 +546,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
             );
             this.dsOrderTypeCapacitiesDataSource.refresh();
             this.readOrderTypeCapacitiesFromDetailsObject();
+        // @ts-expect-error(TODO:)
         }, this.UNSPECIFIED_DETAILS_ERROR, null);
     }
 
@@ -534,6 +555,7 @@ export class OrderTypesComponent extends RestorableOrderTypesComponent implement
             return;
         }
 
+        // @ts-expect-error(TODO:)
         const url = PROCESS_MODELLER_TAB_URL + QueryParameterService.createQueryValue(this.detailsObject.runtimeContext.toRuntimeContext().uniqueKey, this.executionDestinationDataWrapper.value.name(), EXECUTION_DESTINATION_DOCUMENT_TYPE);
         void this.router.navigateByUrl(url);
     }

@@ -51,13 +51,17 @@ const ISWP = DEPLOYMENT_ITEMS_ISWP;
 })
 export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent {
 
+    // @ts-expect-error(TODO:)
     detailsLastStateChange: string;
+    // @ts-expect-error(TODO:)
     detailsLastModified: string;
 
     runtimeContextsLoading = false;
     runtimeContextsDataWrapper: XcAutocompleteDataWrapper<XoRuntimeContext>;
 
+    // @ts-expect-error(TODO:)
     selectedRuntimeContext: XoRuntimeContext;
+    // @ts-expect-error(TODO:)
     detailsRuntimeContext: XoRuntimeContext;
 
     private destroy$ = new Subject<void>();
@@ -65,6 +69,7 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
     constructor() {
         super();
 
+        // @ts-expect-error(TODO:)
         this.initRemoteTableDataSource(XoDeploymentItem, XoDeploymentItemArray, FMAN_RTC, ISWP.List);
 
         // const deploymentItemStates: XcOptionItem[] = [
@@ -85,7 +90,9 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
                 if (selection && selection.length === 1) {
                     this.getDetails(selection[0]);
                 } else {
+                    // @ts-expect-error(TODO:)
                     this.detailsObject = null;
+                    // @ts-expect-error(TODO:)
                     this.detailsRuntimeContext = null;
                 }
             }
@@ -176,8 +183,9 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
         // Because you can only choose workspaces this can be used to find the XoRuntimeContext in the datawrapper
         const uniqueKey = `${RuntimeContextType.Workspace},${this.apiService.runtimeContext && this.apiService.runtimeContext.ws && this.apiService.runtimeContext.ws.workspace
             ? this.apiService.runtimeContext.ws.workspace
+            // @ts-expect-error(TODO:)
             : XoRuntimeContext.fromType('Workspace', RuntimeContext.defaultWorkspace.ws.workspace, -1).uniqueKey
-            }`;
+        }`;
         const optionItem = this.runtimeContextsDataWrapper.values
             .find(item => item.value?.uniqueKey === uniqueKey);
         if (optionItem) {
@@ -190,13 +198,16 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
 
 
     private getDetails(entry: XoDeploymentItem) {
+        // @ts-expect-error(TODO:)
         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, [entry.id, this.selectedRuntimeContext], XoDeploymentItem, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             this.detailsObject = (output[0] || null) as XoDeploymentItem;
             this.detailsRuntimeContext = this.selectedRuntimeContext.clone();
             this.detailsLastStateChange = dateTimeString(this.detailsObject.lastStateChange, false);
             this.detailsLastModified = dateTimeString(this.detailsObject.lastModified, false);
+        // @ts-expect-error(TODO:)
         }, this.UNSPECIFIED_DETAILS_ERROR, null, () => {
+            // @ts-expect-error(TODO:)
             this.detailsRuntimeContext = null;
             this.dismiss();
         });
@@ -215,11 +226,13 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
 
                     param.deleteDependencies = false;
                     param.recursivlyUndeployIfDeployedAndDependenciesExist = false;
+                    // @ts-expect-error(TODO:)
                     params.data.push(param);
                 });
             }
 
             const obs = this.apiService.startOrder(
+                // @ts-expect-error(TODO:)
                 FMAN_RTC, ISWP.Delete,
                 [params, this.selectedRuntimeContext],
                 XoDeleteDeploymentItemResultArray,
@@ -286,6 +299,7 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
 
 
     dismiss() {
+        // @ts-expect-error(TODO:)
         this.detailsObject = null;
         this.clearSelection();
     }
@@ -334,6 +348,7 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
                 param.deploymentItemId = item.id;
                 param.undeployDependendObjects = false;
                 param.disableChecks = false;
+                // @ts-expect-error(TODO:)
                 params.data.push(param);
             });
         }
@@ -358,13 +373,13 @@ export class DeploymentItemsComponent extends RestorableDeploymentItemsComponent
                 // console.log('Undeploying was (partially/completely) unsuccessful - starting "Undeploy Report"');
 
                 this.dialogService.custom<XoUndeployDeploymentItemParamArray, UndeployReportComponentData>
-                    (UndeployReportComponent, { results: resInputArr, i18nService: this.i18nService }).afterDismissResult().subscribe(
+                (UndeployReportComponent, { results: resInputArr, i18nService: this.i18nService }).afterDismissResult().subscribe(
                         paramArr => {
                             if (paramArr) {
                                 this.undeploy(paramArr);
                             }
                         }
-                    );
+                );
 
             } else {
                 // console.log('Undeploying was successful');

@@ -55,7 +55,7 @@ export class FrequencyControlledTaskRatePreset extends FrequencyControlledTaskPr
 
     constructor(rate: number, duration: number) {
         super();
-        
+
         this.rate = rate;
         this.duration = duration;
     }
@@ -158,6 +158,7 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
     // ############################################################ RUNTIME CONTEXT
     runtimeContextsDataWrapper: XcAutocompleteDataWrapper;
 
+    // @ts-expect-error(TODO:)
     private _selectedServerRuntimeContext: XoRuntimeContext;
     get selectedServerRuntimeContext(): XoRuntimeContext {
         if (this.detailsObject) {
@@ -175,16 +176,22 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
     set selectedServerRuntimeContext(value: XoRuntimeContext) {
         this._selectedServerRuntimeContext = value;
         if (this.detailsObject) {
+            // @ts-expect-error(TODO:)
             this.detailsObject.revision = value ? value.revision : null;
+            // @ts-expect-error(TODO:)
             this.detailsObject.workspaceName = (value instanceof XoWorkspace) ? value.name : null;
+            // @ts-expect-error(TODO:)
             this.detailsObject.applicationName = (value instanceof XoApplication) ? value.name : null;
+            // @ts-expect-error(TODO:)
             this.detailsObject.versionName = (value instanceof XoApplication) ? value.versionName : null;
 
+            // @ts-expect-error(TODO:)
             this.selectedGUIRuntimeContext =
                 value instanceof XoWorkspace ? RuntimeContext.fromWorkspace(value.name)
                     : value instanceof XoApplication ? RuntimeContext.fromApplicationVersion(value.name, value.versionName)
                         : null;
 
+            // @ts-expect-error(TODO:)
             this.detailsObject.orderType = null;
             this.inputParamterString = '';
             this.updateInputParameterTree();
@@ -192,6 +199,7 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
         }
     }
 
+    // @ts-expect-error(TODO:)
     private _selectedGUIRuntimeContext: RuntimeContext;
     get selectedGUIRuntimeContext(): RuntimeContext {
         if (this.detailsObject) {
@@ -226,6 +234,7 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
     }
 
     get selectedOrderType(): XoOrderType {
+        // @ts-expect-error(TODO:)
         return this.detailsObject ? this.detailsObject.orderType : null;
     }
 
@@ -245,11 +254,13 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
     }
     set selectedSourceType(value) {
         if (this.detailsObject) {
+            // @ts-expect-error(TODO:)
             this.detailsObject.sourceType = value;
         }
         this._getGeneratingOrderTypes();
     }
 
+    // @ts-expect-error(TODO:)
     private _inputParamterString: string;
     get inputParamterString(): string {
         return this._inputParamterString;
@@ -270,7 +281,9 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
 
     monitoringLevelDataWrapper: XcAutocompleteDataWrapper;
 
+    // @ts-expect-error(TODO:)
     xTFTestCaseID: string;
+    // @ts-expect-error(TODO:)
     xTFTestCaseName: string;
     generatingOrderTypeDataWrapper: XcAutocompleteDataWrapper;
     selectedGeneratingOrderType: XoOrderType;
@@ -279,9 +292,11 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
     frequencyControlledTaskTypes: XcAutocompleteDataWrapper;
     fctParameters: XoStartFrequencyControlledTaskParameter = new XoStartFrequencyControlledTaskParameter();
     fctType = '';
+    // @ts-expect-error(TODO:)
     frequencyId: XoFrequencyControlledTaskId;
     delayDataWrapper = new XcIntegerStringDataWrapper(
         () => this.fctParameters.delay,
+        // @ts-expect-error(TODO:)
         value => this.fctParameters.delay = this.startDelayed ? value : null
     );
     startDelayed = false;
@@ -372,7 +387,9 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
         request.inputSourceName = entry.name;
         request.revision = entry.revision;
 
+        // @ts-expect-error(TODO:)
         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, request, XoOrderInputSource, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        // eslint-disable-next-line @typescript-eslint/no-shadow
         this.handleStartOrderResult(obs, output => {
             this.detailsObject = (output[0] || null) as XoOrderInputSource;
 
@@ -383,9 +400,11 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
             this._readFromDetailsObjectParameters();
             this.updateInputParameterTree();
             this.cdr.markForCheck();
+        // @ts-expect-error(TODO:)
         }, this.UNSPECIFIED_DETAILS_ERROR, null);
 
         // reset ID of last started task
+        // @ts-expect-error(TODO:)
         this.frequencyId = null;
         this.startingTask = false;
     }
@@ -399,6 +418,7 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
     save() {
         this._writeToDetailsObjectParameters();
 
+        // @ts-expect-error(TODO:)
         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Save, this.detailsObject.clone(), null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, _ => {
             this.closed.emit({ dataChanged: true });
@@ -424,7 +444,9 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
             return false;
         }
 
+        // @ts-expect-error(TODO:)
         const sub = this.apiService.startOrder(FMAN_RTC, ISWP.GetOrderTypes, this.selectedServerRuntimeContext, XoOrderTypeArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        // eslint-disable-next-line @typescript-eslint/no-shadow
         this.handleStartOrderResult(sub, output => {
             const otarr = output && output.length ? (output[0] as XoOrderTypeArray) : null;
             if (otarr instanceof XoArray) {
@@ -448,7 +470,9 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
     }
 
     private _getSourceTypes() {
+        // @ts-expect-error(TODO:)
         const sub = this.apiService.startOrder(FMAN_RTC, ISWP.GetOrderSourceTypes, [], XoSourceTypeArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
+        // eslint-disable-next-line @typescript-eslint/no-shadow
         this.handleStartOrderResult(sub, output => {
             const stArr = output[0] as XoSourceTypeArray;
             this.sourceTypeDataWrapper.values = stArr.data.map(st => ({ name: signal(st.label), value: st }));
@@ -457,7 +481,9 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
     }
 
     private _readFromDetailsObjectParameters() {
+        // @ts-expect-error(TODO:)
         this.monitoringLevel = null;
+        // @ts-expect-error(TODO:)
         this.priority = null;
         this.customField0 = '';
         this.customField1 = '';
@@ -545,9 +571,11 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
 
         if (this.selectedServerRuntimeContext && this.selectedOrderType && !!this.selectedOrderType.name && this.selectedOrderType.name !== '') {
             const sub =
-            this.apiService.startOrder(
+                this.apiService.startOrder(
+                // @ts-expect-error(TODO:)
                 FMAN_RTC, ISWP.GetGeneratingOrderTypes, [this.selectedServerRuntimeContext, this.selectedOrderType], XoOrderTypeArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
 
+            // eslint-disable-next-line @typescript-eslint/no-shadow
             this.handleStartOrderResult(sub, output => {
                 const otArr = (output[0] || []) as XoOrderTypeArray;
                 if (otArr) {
@@ -594,14 +622,18 @@ export class OrderInputSourceDetailsComponent extends RestorableOrderInputSource
         this.fctParameters.orderInputSource = this.detailsObject;
         this.fctParameters.name = this.detailsObject.name;
         if (!this.startDelayed) {
+            // @ts-expect-error(TODO:)
             this.fctParameters.delay = null;
         }
 
+        // @ts-expect-error(TODO:)
         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.StartFrequencyControlledTaskRequest, this.fctParameters, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
 
         this.startingTask = true;
+        // @ts-expect-error(TODO:)
         this.frequencyId = null;
         this.handleStartOrderResult(obs,
+            // eslint-disable-next-line @typescript-eslint/no-shadow
             output => {
                 this.frequencyId = output[0].data.id;
                 this.cdr.markForCheck();

@@ -49,14 +49,21 @@ export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerIns
 
     readonly XDSIconName = XDSIconName;
 
+    // @ts-expect-error(TODO:)
     instance: string;
+    // @ts-expect-error(TODO:)
     parameter: string;
+    // @ts-expect-error(TODO:)
     documentation: string;
+    // @ts-expect-error(TODO:)
     busy: boolean;
+    // @ts-expect-error(TODO:)
     startParameter: XoStartParameterDetails[];
+    // @ts-expect-error(TODO:)
     legacy: boolean;
     startparameter: { parameter: StartParameter; wrapper: XcAutocompleteDataWrapper<string> }[] = [];
 
+    // @ts-expect-error(TODO:)
     context: XoRuntimeContext;
 
     runtimeContextDataWrapper: XcAutocompleteDataWrapper<XoRuntimeContext> = new XcAutocompleteDataWrapper<XoRuntimeContext>(
@@ -86,7 +93,7 @@ export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerIns
                     param.key = value;
                 },
                 this.startParameter.map(para =>
-                    <XcOptionItem<string>>{ name: signal(para.name), value: para.name }
+                    ({ name: signal(para.name), value: para.name })
                 )
             )
         });
@@ -102,7 +109,7 @@ export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerIns
         this.apiService.startOrderAssertFlat<XoRuntimeContext>(FMAN_RTC, ORDER_TYPES.POSSIBLE_CONTEXT_TRIGGER, this.injectedData, XoRuntimeContextArray)
             .subscribe({
                 next: result => {
-                    this.runtimeContextDataWrapper.values = result.map(rtc => <XcOptionItem<XoRuntimeContext>>{ name: signal(rtc.label), value: rtc });
+                    this.runtimeContextDataWrapper.values = result.map(rtc => ({ name: signal(rtc.label), value: rtc }));
                 },
                 error: err => {
                     this.dialogService.error(err);
@@ -137,6 +144,7 @@ export class DeployTriggerDialogComponent extends XcDialogComponent<XoTriggerIns
         }
         request.documentation = this.documentation;
 
+        // @ts-expect-error(TODO:)
         this.apiService.startOrder(FMAN_RTC, ORDER_TYPES.DEPLOY_TRIGGER, request, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {

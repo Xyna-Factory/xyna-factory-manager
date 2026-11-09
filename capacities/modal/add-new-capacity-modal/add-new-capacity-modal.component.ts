@@ -54,6 +54,7 @@ export class AddNewCapacityModalComponent extends XcDialogComponent<boolean, Add
 
     busy = false;
 
+    // @ts-expect-error(TODO:)
     private _error: string;
     get error(): string {
         return this._error;
@@ -94,6 +95,7 @@ export class AddNewCapacityModalComponent extends XcDialogComponent<boolean, Add
     add() {
         this.busy = true;
         this.injectedData.apiService.startOrder(
+            // @ts-expect-error(TODO:)
             this.injectedData.rtc, this.injectedData.addWorkflow, this.capacity, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe(
                 result => {

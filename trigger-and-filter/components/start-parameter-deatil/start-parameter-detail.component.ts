@@ -40,8 +40,10 @@ export class StartParameterDetailComponent {
 
     private readonly i18n = inject<I18nService>(I18nService);
 
+    // @ts-expect-error(TODO:)
     private _startParameter: XoStartParameterDetails[];
     tableDataSource: XcLocalTableDataSource<ParameterTableRow> = new XcLocalTableDataSource<ParameterTableRow>(this.i18n);
+    // @ts-expect-error(TODO:)
     legacy: boolean;
 
     @Input('start-parameter')

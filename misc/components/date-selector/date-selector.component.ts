@@ -40,6 +40,7 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
 
     private static readonly FM_WF_GET_TIMEZONES = 'xmcp.factorymanager.shared.GetTimezones';
 
+    // @ts-expect-error(TODO:)
     private _timezone: string;
     timezoneDataWrapper = new XcAutocompleteDataWrapper(
         () => this._timezone,
@@ -49,7 +50,9 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
         }
     );
 
+    // @ts-expect-error(TODO:)
     readonly header = input<string>(undefined);
+    // @ts-expect-error(TODO:)
     readonly disableTimeZoneSelection = input<boolean>(undefined);
 
     @Input('timezone')
@@ -62,12 +65,14 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
 
 
     readonly form = viewChild(XcFormDirective);
+    // @ts-expect-error(TODO:)
     private validityChangeSubscription: Subscription;
 
     readonly validityChangeEmitter = output<boolean>({ alias: 'validityChange' });
 
 
 
+    // @ts-expect-error(TODO:)
     private _datetime: number;
 
     @Input('datetime')
@@ -93,6 +98,7 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
     set runtimeContext(value: RuntimeContext) {
         this.apiService.startOrder(value, DateSelectorComponent.FM_WF_GET_TIMEZONES, [], XoTimezoneArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).subscribe(result => {
             if (result && !result.errorMessage) {
+                // @ts-expect-error(TODO:)
                 const zones = result.output[0] as XoTimezoneArray;
                 if (zones && zones.length > 0) {
                     this.timezoneDataWrapper.values = zones.data.map(zone => <XcOptionItem>{ name: signal(zone.label), value: zone.label });
@@ -100,6 +106,7 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
                     this.dialogService.error(this.i18n.translateInstant('fman.date-selector.error-timezone'));
                 }
             } else {
+                // @ts-expect-error(TODO:)
                 this.dialogService.error(result.errorMessage);
             }
         });
@@ -107,6 +114,7 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
 
 
     //#region  - start time variables
+    // @ts-expect-error(TODO:)
     private _year: number;
     yearDataWrapper = new XcStringIntegerDataWrapper(
         () => this._year,
@@ -116,6 +124,7 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
         }
     );
 
+    // @ts-expect-error(TODO:)
     private _month: number;
     monthDataWrapper = new XcStringIntegerDataWrapper(
         () => this._month,
@@ -125,6 +134,7 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
         }
     );
 
+    // @ts-expect-error(TODO:)
     private _date: number;
     dateDataWrapper = new XcStringIntegerDataWrapper(
         () => this._date,
@@ -135,6 +145,7 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
     );
     // ##########################################################################
 
+    // @ts-expect-error(TODO:)
     private _hours: number;
     hoursDataWrapper = new XcStringIntegerDataWrapper(
         () => this._hours,
@@ -144,6 +155,7 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
         }
     );
 
+    // @ts-expect-error(TODO:)
     private _minutes: number;
     minutesDataWrapper = new XcStringIntegerDataWrapper(
         () => this._minutes,
@@ -153,6 +165,7 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
         }
     );
 
+    // @ts-expect-error(TODO:)
     private _seconds: number;
     secondsDataWrapper = new XcStringIntegerDataWrapper(
         () => this._seconds,
@@ -162,6 +175,7 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
         }
     );
 
+    // @ts-expect-error(TODO:)
     private _milliseconds: number;
     millisecondsDataWrapper = new XcStringIntegerDataWrapper(
         () => this._milliseconds,
@@ -173,6 +187,7 @@ export class DateSelectorComponent implements AfterViewInit, OnDestroy {
 
 
     ngAfterViewInit() {
+        // @ts-expect-error(TODO:)
         this.validityChangeSubscription = this.form().validityChange.subscribe(formDirective => this.validityChangeEmitter.emit(formDirective.valid));
     }
 

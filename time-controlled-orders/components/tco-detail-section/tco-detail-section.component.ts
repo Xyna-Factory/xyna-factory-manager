@@ -55,19 +55,27 @@ export class TcoDetailSectionComponent implements OnInit, OnDestroy {
     readonly refresh = output<void>();
     readonly validationChange = output<boolean>();
 
+    // @ts-expect-error(TODO:)
     readonly selectionObservable = input<Observable<XcSelectionModel<XoTimeControlledOrderTableEntry>>>(undefined);
 
+    // @ts-expect-error(TODO:)
     selectionSubscription: Subscription;
+    // @ts-expect-error(TODO:)
     querySelection: InputParameter;
+    // @ts-expect-error(TODO:)
     hasQueryInput: boolean;
+    // @ts-expect-error(TODO:)
     loading: boolean;
 
     executionRestrictionValid = true;
     executionTimeValid = true;
     orderTypeValid = true;
 
+    // @ts-expect-error(TODO:)
     private _timeControlledOrderTableEntry: XoTimeControlledOrderTableEntry;
+    // @ts-expect-error(TODO:)
     private _timeControlledOrder: XoTimeControlledOrder;
+    // @ts-expect-error(TODO:)
     private _orderDestination: XoOrderDestination;
 
     get valid() {
@@ -97,6 +105,7 @@ export class TcoDetailSectionComponent implements OnInit, OnDestroy {
     }
 
     get timeControlledOrder(): XoTimeControlledOrder {
+        // @ts-expect-error(TODO:)
         return this.loading ? null : this._timeControlledOrder;
     }
 
@@ -117,6 +126,7 @@ export class TcoDetailSectionComponent implements OnInit, OnDestroy {
 
     private reset() {
         this.hasQueryInput = false;
+        // @ts-expect-error(TODO:)
         this.querySelection = null;
     }
 
@@ -129,15 +139,20 @@ export class TcoDetailSectionComponent implements OnInit, OnDestroy {
 
     getDetailsAboutTableEntry(id: XoTimeControlledOrderId) {
         this.loading = true;
+        // @ts-expect-error(TODO:)
         this.apiService.startOrder(FMAN_RTC, this.WFP_GET_TCO_DETAILS(), id, XoTimeControlledOrder, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage).pipe(
             finalize(() => this.loading = false)
         ).subscribe({
             next: result => {
                 if (result.errorMessage) {
+                    // @ts-expect-error(TODO:)
                     this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n'));
+                    // @ts-expect-error(TODO:)
                     this.timeControlledOrder = null;
                 } else {
+                    // @ts-expect-error(TODO:)
                     this.hasQueryInput = !!(result.output[0] as XoTimeControlledOrder).storableFqn;
+                    // @ts-expect-error(TODO:)
                     this.timeControlledOrder = result.output[0] as XoTimeControlledOrder;
                 }
             },
@@ -146,12 +161,15 @@ export class TcoDetailSectionComponent implements OnInit, OnDestroy {
     }
 
     saveChanges() {
+        // @ts-expect-error(TODO:)
         this.timeControlledOrder.inputPayload = this.storableInputComponent().getPayload();
         this.apiService
+            // @ts-expect-error(TODO:)
             .startOrder(FMAN_RTC, this.WFP_UPDATE_TCO(), this.timeControlledOrder, [], StartOrderOptionsBuilder.defaultOptionsWithErrorMessage)
             .subscribe({
                 next: result => {
                     if (result.errorMessage) {
+                        // @ts-expect-error(TODO:)
                         this.dialogService.error(result.errorMessage, null, result.stackTrace.join('\r\n'));
                     } else {
                         this.refresh.emit();

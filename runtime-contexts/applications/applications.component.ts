@@ -52,14 +52,19 @@ export class ApplicationsComponent extends RouteComponent implements OnDestroy, 
 
 
     private readonly dataSource: ApplicationDataSource;
+    // @ts-expect-error(TODO:)
     private detailsObject: XoRuntimeApplicationDetails;
     private markedForRefresh = false;
+    // @ts-expect-error(TODO:)
     private applicationTilesSubscription: Subscription;
+    // @ts-expect-error(TODO:)
     private _filterText: string;
 
+    // @ts-expect-error(TODO:)
     filteredApplications: Application[];
 
     @ViewChildren('applicationTiles')
+    // @ts-expect-error(TODO:)
     applicationTiles: QueryList<any>;
 
 
@@ -143,6 +148,7 @@ export class ApplicationsComponent extends RouteComponent implements OnDestroy, 
 
 
     selectDetails(runtimeApplication: XoRuntimeApplication) {
+        // @ts-expect-error(TODO:)
         this.detailsObject = null;
         if (runtimeApplication) {
             this.apiService.startOrder(
@@ -153,8 +159,10 @@ export class ApplicationsComponent extends RouteComponent implements OnDestroy, 
                 StartOrderOptionsBuilder.defaultOptionsWithErrorMessage
             ).subscribe(result => {
                 if (result.errorMessage) {
+                    // @ts-expect-error(TODO:)
                     this.dialogService.error(result.errorMessage, 'Error', result.stackTrace.join('\r\n'));
                 } else {
+                    // @ts-expect-error(TODO:)
                     this.detailsObject = result.output[0] as XoRuntimeApplicationDetails;
                 }
             });
@@ -163,7 +171,7 @@ export class ApplicationsComponent extends RouteComponent implements OnDestroy, 
 
 
     startMigration() {
-        this.dialogService.custom(MigrateWizardComponent, <MigrationWizardData>{i18n: this.i18n, rtc: FMAN_RTC, apiService: this.apiService});
+        this.dialogService.custom(MigrateWizardComponent, {i18n: this.i18n, rtc: FMAN_RTC, apiService: this.apiService});
     }
 
 
@@ -190,6 +198,7 @@ export class ApplicationsComponent extends RouteComponent implements OnDestroy, 
 
 
     createRuntimeApplication() {
+        // @ts-expect-error(TODO:)
         this.dialogService.custom(CreateRuntimeApplicationDialogComponent, {workspaceName: undefined, applicationDefinitionName: undefined}).afterDismissResult().subscribe(
             () => this.refresh()
         );

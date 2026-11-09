@@ -15,7 +15,7 @@
  * limitations under the License.
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
-import { ChangeDetectionStrategy, Component, viewChild , signal} from '@angular/core';
+import { ChangeDetectionStrategy, Component, viewChild, signal} from '@angular/core';
 
 import { FullQualifiedName, RuntimeContext, StartOrderOptionsBuilder, XoApplication, XoArray, XoRuntimeContext, XoWorkspace } from '@zeta/api';
 import { XcAutocompleteDataWrapper, XcButtonComponent, XcCheckboxComponent, XcFormAutocompleteComponent, XcFormDirective, XcFormInputComponent, XcFormValidatorRequiredDirective, XcIconButtonComponent, XcMasterDetailComponent, XcPanelComponent, XcTableComponent, XcTooltipDirective } from '@zeta/xc';
@@ -58,6 +58,7 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
     //#region ############################################################ RUNTIME CONTEXT
     runtimeContextsDataWrapper: XcAutocompleteDataWrapper;
 
+    // @ts-expect-error(TODO:)
     private _selectedServerRuntimeContext: XoRuntimeContext;
     get selectedServerRuntimeContext(): XoRuntimeContext {
         if (this.detailsObject) {
@@ -71,6 +72,7 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
         if (this.detailsObject) {
             this.detailsObject.destination.runtimeContext = value;
 
+            // @ts-expect-error(TODO:)
             this.selectedGUIRuntimeContext =
                 value instanceof XoWorkspace ? RuntimeContext.fromWorkspace(value.name)
                     : value instanceof XoApplication ? RuntimeContext.fromApplicationVersion(value.name, value.versionName)
@@ -83,6 +85,7 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
         }
     }
 
+    // @ts-expect-error(TODO:)
     private _selectedGUIRuntimeContext: RuntimeContext;
     get selectedGUIRuntimeContext(): RuntimeContext {
         if (this.detailsObject) { // TODO: is this even necessary
@@ -140,6 +143,7 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
     constructor() {
         super();
 
+        // @ts-expect-error(TODO:)
         this.initRemoteTableDataSource(XoCronLikeOrder, XoCronLikeOrderArray, FMAN_RTC, ISWP.List);
 
         this.remoteTableDataSource.tableInfoClass = CronlikeOrderTableInfo;
@@ -207,6 +211,7 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
             return false;
         }
 
+        // @ts-expect-error(TODO:)
         const sub = this.apiService.startOrder(this.rtc, ISWP.GetOrderTypes, this.selectedServerRuntimeContext, XoOrderTypeArray, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(sub, output => {
             const otarr = output && output.length ? (output[0] as XoOrderTypeArray) : null;
@@ -217,6 +222,7 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
                     this.dialogService.error(error);
                 }
             }
+        // @ts-expect-error(TODO:)
         }, this.UNSPECIFIED_GET_ORDER_TYPES_ERROR, null, () => this.orderTypeStringDataWrapper.values = []);
     }
 
@@ -230,8 +236,10 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
                     if (entry instanceof XoCronLikeOrder) {
                         const id = new XoCronLikeOrderId();
                         id.id = entry.iD;
+                        // @ts-expect-error(TODO:)
                         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Delete, id, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
                         this.handleStartOrderResult(obs, () => {
+                            // @ts-expect-error(TODO:)
                             this.detailsObject = null;
                             this.clearSelection();
                             this.refresh();
@@ -244,6 +252,7 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
 
     duplicate(entry: XoCronLikeOrder) {
 
+        // @ts-expect-error(TODO:)
         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, entry, XoCronLikeOrder, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             const detailedEntry = (output[0] || null) as XoCronLikeOrder;
@@ -255,13 +264,16 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
     add(duplicated?: XoCronLikeOrder) {
 
         const data: AddNewCronLikeOrderModalComponentData = {
+            // @ts-expect-error(TODO:)
             addWorkflow: ISWP.Add,
+            // @ts-expect-error(TODO:)
             getOrderTypes: ISWP.GetOrderTypes,
             i18nService: this.i18nService,
             rtc: FMAN_RTC,
+            // @ts-expect-error(TODO:)
             duplicate: duplicated,
-             
-            GET_ORDER_TYPES_EMPTY_LIST_ERROR: this.GET_ORDER_TYPES_EMPTY_LIST_ERROR,
+
+            GET_ORDER_TYPES_EMPTY_LIST_ERROR: this.GET_ORDER_TYPES_EMPTY_LIST_ERROR.bind(this),
             UNSPECIFIED_GET_ORDER_TYPES_ERROR: this.UNSPECIFIED_GET_ORDER_TYPES_ERROR,
             UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR: this.UNSPECIFIED_GET_RUNTIME_CONTEXTS_ERROR
         };
@@ -272,6 +284,7 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
     }
 
     dismiss() {
+        // @ts-expect-error(TODO:)
         this.detailsObject = null;
         this.clearSelection();
     }
@@ -286,6 +299,7 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
             }
         }
 
+        // @ts-expect-error(TODO:)
         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Save, this.detailsObject, null, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, () => {
             // console.log('save was successful?', output);
@@ -297,6 +311,7 @@ export class CronlikeOrdersComponent extends RestorableCronlikeOrdersComponent {
 
     private getDetails(entry: XoCronLikeOrder) {
 
+        // @ts-expect-error(TODO:)
         const obs = this.apiService.startOrder(FMAN_RTC, ISWP.Details, entry, XoCronLikeOrder, StartOrderOptionsBuilder.defaultOptionsWithErrorMessage);
         this.handleStartOrderResult(obs, output => {
             this.detailsObject = (output[0] || null) as XoCronLikeOrder;
