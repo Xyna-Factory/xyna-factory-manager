@@ -16,7 +16,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  */
 
-import { Injectable, inject } from '@angular/core';
+import { inject, Service } from '@angular/core';
 
 import { FACTORY_MANAGER } from '@fman/const';
 import { FMAN_RTC } from '@fman/factory-manager.component';
@@ -27,9 +27,7 @@ import { XoPluginPath, XoPluginPathArray } from '@zeta/xc/xc-form/definitions/xo
 import { BehaviorSubject, catchError, filter, finalize, map, Observable, of } from 'rxjs';
 
 
-@Injectable({
-    providedIn: 'root'
-})
+@Service()
 export class PluginService {
     private readonly api = inject(ApiService);
 
